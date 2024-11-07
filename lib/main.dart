@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:window_manager/window_manager.dart';
@@ -33,7 +34,7 @@ void main() async {
     isMobile = true;
     //Enable background playback on the mobile terminal
     await JustAudioBackground.init(
-      androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+      androidNotificationChannelId: 'com.namehu.musify.audio',
       androidNotificationChannelName: 'Audio playback',
       androidNotificationOngoing: true,
     );
@@ -55,13 +56,15 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final AudioPlayer player;
+
   const MyApp({
     Key? key,
     required this.player,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       //useInheritedMediaQuery: true,
       title: "Musify",

@@ -12,10 +12,12 @@ import 'util/roter.dart';
 
 class MainScreen extends StatelessWidget {
   final AudioPlayer player;
+
   const MainScreen({
     Key? key,
     required this.player,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     switch (serversInfo.value.languageCode) {
@@ -32,7 +34,7 @@ class MainScreen extends StatelessWidget {
         S.load(Locale('zh', 'Hant'));
         break;
       default:
-        S.load(Locale('en', ''));
+        S.load(Locale('zh', ''));
         break;
     }
     final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();

@@ -28,6 +28,7 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_lyric: ^2.0.4+6
   share_plus: ^10.0.2
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:
