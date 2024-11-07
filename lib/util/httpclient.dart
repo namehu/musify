@@ -7,7 +7,7 @@ testServer(String _baseUrl, String _username, String _password) async {
   try {
     var _response = await Dio().get(
       _baseUrl +
-          '/rest/ping?v=$version&c=xiumusic&f=json&u=' +
+          '/rest/ping?v=$version&c=musify&f=json&u=' +
           _username +
           '&p=' +
           _password,
@@ -41,7 +41,7 @@ getCoverArt(String _id, {int size = 350}) {
 
 getServerInfo(String _api) {
   String _request = serversInfo.value.baseurl +
-      '/rest/$_api?v=0.0.1&c=xiumusic&f=json&u=' +
+      '/rest/$_api?v=0.0.1&c=musify&f=json&u=' +
       serversInfo.value.username +
       '&s=' +
       serversInfo.value.salt +

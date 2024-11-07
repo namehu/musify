@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:xiumusic/models/myModel.dart';
+import 'package:musify/models/myModel.dart';
 import '../../generated/l10n.dart';
 
 import '../../models/notifierValue.dart';

@@ -1,16 +1,15 @@
-My Apple developer certificate has expired, so you need to build by yourself. Because it has been more than a year, I have just upgraded all the dependencies to ensure that it can run on IOS14+ and MAC OS13+. I have not tested other platforms (2024.10.8)
-Although the lyrics can be displayed, the method of obtaining the lyrics is still difficult to use. If all your music is standard, then there is no problem, but many of the songs I listen to are recorded by streaming, which will result in the inability to automatically identify and need to be manually selected. (2024.10.8)
+# Musify
 
-# XiuMusic
+a music player base form Flutter that supports all kinds of music servers, including Subsonic, Navidrome.
+
+> fork from [xiumusic](https://github.com/wellmoonloft/xiumusic), thanks!
+> 感谢原项目作者的初始源码。作者似乎是使用Apple 开发环境。项目对安卓端的适配存在较大问题。所以本项目主要是针对 Windows 和 Android 以及可能的鸿蒙进行适配。并且深度扩展播放器功能。
+
+# Musify
 ![](https://img.shields.io/badge/Toolkit-Flutter-blue.svg)  ![](https://img.shields.io/badge/Language-Dart-orange.svg)  ![](https://img.shields.io/badge/license-MIT-green)  ![](https://img.shields.io/badge/Process-Developing-blueviolet.svg)
 
-Based on the personal NAS music player, Navidrome server development, theoretically supports Subsonic server
-
- 🇨🇳[简体中文](README-cn.md) | 🇺🇸[English](README.md)
 
 ## Introduction
-
-**Xiu** is [a music anchor](https://www.douyu.com/7884070) that I often watch recently. There is a word Xiu in her name, so she is called **XiuMusic**.
 
 This is developed and debugged on the server environment of [Navidrome](https://www.navidrome.org/) based on the interface of [Subsonic API](http://www.subsonic.org/pages/api.jsp) , so all Subsonic api servers are supported. In the process, I got help from many people in the [Navidrome discord group](https://discord.gg/xh7j7yF), thank them.
 
@@ -68,6 +67,7 @@ Info.plist
 AndroidManifest.xml
 
 ```
+<!-- you must add xmlns:tools config because of [error](https://stackoverflow.com/questions/76387262/flutter-just-audio-background-error-execution-failed-for-task-appprocessdebu) -->
 <manifest xmlns:tools="http://schemas.android.com/tools" ...>
   <!-- ADD THESE TWO PERMISSIONS -->
   <uses-permission android:name="android.permission.WAKE_LOCK"/>

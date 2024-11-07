@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:xiumusic/util/mycss.dart';
+import 'package:musify/util/mycss.dart';
 
 class PlayerSeekBar extends StatefulWidget {
   final Duration duration;

@@ -7,7 +7,7 @@ class DbProvider {
   static Database? _db;
   DbProvider._init();
 
-  final String dbName = "xiumusic.db";
+  final String dbName = "musify.db";
   // ignore: non_constant_identifier_names
   final String ServerInfoTable = "serverInfo";
   // ignore: non_constant_identifier_names

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xiumusic/screens/common/myTextButton.dart';
+import 'package:musify/screens/common/myTextButton.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';

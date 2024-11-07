@@ -5,8 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:xiumusic/mainScreen.dart';
-import 'package:xiumusic/util/mycss.dart';
+import 'package:musify/mainScreen.dart';
+import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
 import 'models/notifierValue.dart';
 import 'util/audioTools.dart';
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       //useInheritedMediaQuery: true,
-      title: "Xiu Music",
+      title: "Musify",
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
