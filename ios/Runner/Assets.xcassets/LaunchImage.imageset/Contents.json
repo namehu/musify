@@ -1,51 +1,23 @@
 {
   "images" : [
     {
-      "filename" : "iPhone Portrait-Retina 5.png",
       "idiom" : "universal",
+      "filename" : "LaunchImage.png",
       "scale" : "1x"
     },
     {
-      "filename" : "iPhone Portrait-Retina HD 4.7 1.png",
       "idiom" : "universal",
+      "filename" : "LaunchImage@2x.png",
       "scale" : "2x"
     },
     {
-      "filename" : "iPhone Portrait-Retina HD 5.5 1.png",
       "idiom" : "universal",
+      "filename" : "LaunchImage@3x.png",
       "scale" : "3x"
-    },
-    {
-      "filename" : "iPhone Portrait-Retina 4.png",
-      "idiom" : "iphone",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "iPhone Portrait-Retina HD 4.7.png",
-      "idiom" : "iphone",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "iPhone Portrait-Retina HD 5.5.png",
-      "idiom" : "iphone",
-      "scale" : "3x"
-    },
-    {
-      "filename" : "iPad Portrait.png",
-      "idiom" : "ipad",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "iPad Portrait@2x.png",
-      "idiom" : "ipad",
-      "scale" : "2x"
     }
   ],
   "info" : {
-    "author" : "xcode",
-    "version" : 1
-  },
-  "properties" : {
-    "localizable" : true
+    "version" : 1,
+    "author" : "xcode"
   }
 }

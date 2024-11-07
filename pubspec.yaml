@@ -17,7 +17,7 @@ dependencies:
   intl: ^0.19.0
   just_audio: ^0.9.41
   just_audio_background: ^0.0.1-beta.13
-  #just_audio_windows: ^0.2.0  
+  #just_audio_windows: ^0.2.0
   #https://pub.flutter-io.cn/packages/just_audio_mpv
   window_manager: ^0.4.2
   dio: ^5.7.0
@@ -27,7 +27,7 @@ dependencies:
   flutter_staggered_grid_view: ^0.7.0
   cached_network_image: ^3.4.1
   flutter_lyric: ^2.0.4+6
-  share_plus: ^10.0.2     
+  share_plus: ^10.0.2
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +46,6 @@ flutter:
     - family: NotoSansSC
       fonts:
         - asset: assets/fonts/NotoSansSC-Regular.otf
-        
+
 flutter_intl:
   enabled: true
