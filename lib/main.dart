@@ -8,6 +8,7 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
@@ -72,7 +73,11 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-      theme: ThemeData(fontFamily: 'NotoSansSC', brightness: Brightness.dark),
+      theme: ThemeData(
+        primaryColor: StyleColor.primaryColor,
+        fontFamily: 'NotoSansSC',
+        brightness: Brightness.dark,
+      ),
       // home: MainScreen(),
       initialRoute: Routes.HOME,
       getPages: AppPages.pages,

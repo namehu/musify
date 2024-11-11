@@ -8,7 +8,6 @@ import 'models/notifierValue.dart';
 import 'util/mycss.dart';
 import 'screens/bottomScreen.dart';
 import 'screens/myAppBar.dart';
-import 'screens/layout/settings.dart';
 import 'screens/leftScreen.dart';
 import 'util/roter.dart';
 

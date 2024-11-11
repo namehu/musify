@@ -14,13 +14,15 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: Text('选择服务器'),
-        ),
-        body: Container(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text('选择服务器'),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
           width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(28),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,26 +33,61 @@ class LoginView extends GetView<LoginController> {
                 height: 56,
               ),
               SizedBox(height: 80),
-              SizedBox(
-                width: 320,
-                height: 48,
-                child: TextButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStatePropertyAll(StyleColor.primaryButtonColor),
-                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        side: BorderSide(color: Colors.red),
-                      ))),
-                  child: Text(
-                    '登录',
-                    style: TextStyle(color: Colors.white),
+              TextField(
+                controller: controller.servercontroller,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(
+                    borderSide: BorderSide(),
                   ),
+                  labelText: '服务器地址',
                 ),
               ),
+              SizedBox(height: 40),
+              TextField(
+                controller: controller.usernamecontroller,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: '用户名',
+                ),
+              ),
+              SizedBox(height: 40),
+              TextField(
+                controller: controller.passwordcontroller,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: UnderlineInputBorder(),
+                  labelText: '密码',
+                ),
+              ),
+              SizedBox(height: 40),
+              Flex(
+                direction: Axis.horizontal,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        controller.handleSubmit(context);
+                      },
+                      style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(
+                              StyleColor.primaryButtonColor),
+                          shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            side: BorderSide(color: Colors.red),
+                          ))),
+                      child: Text(
+                        '登录',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
-import 'package:musify/routes/pages.dart';
 import 'package:musify/util/dbProvider.dart';
 
 import '../generated/l10n.dart';
@@ -21,12 +19,9 @@ class ServerService extends GetxService {
 
   Future<ServerService> init() async {
     final _serverInfo = await DbProvider.instance.getServerInfo();
+
     if (_serverInfo != null) {
-      // TODO: 移除serversInfo
-      serversInfo.value = _serverInfo;
       updateCurrentServerInfo(_serverInfo);
-    } else {
-      // Get.toNamed(Routes.LOGIN);
     }
 
     return this;
@@ -35,6 +30,8 @@ class ServerService extends GetxService {
   /// 更新当前服务器信息
   /// 同时重新加载国际化
   updateCurrentServerInfo(ServerInfo sInfo) {
+    // TODO: 移除serversInfo
+    serversInfo.value = sInfo;
     serverInfo.value = sInfo;
     switch (serversInfo.value.languageCode) {
       case "en":

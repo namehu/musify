@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:musify/styles/colors.dart';
+import 'package:musify/styles/size.dart';
 import '../../generated/l10n.dart';
 import '../../util/mycss.dart';
 import 'myTextButton.dart';
 
-showMyAlertDialog(BuildContext _context, String _title, String _content) {
+showMyAlertDialog(BuildContext context, String title, String content) {
   showDialog(
     barrierDismissible: false,
-    context: _context,
-    builder: (_context) {
+    context: context,
+    builder: (context) {
       return AlertDialog(
-        titlePadding: EdgeInsets.all(10),
-        contentPadding: EdgeInsets.all(10),
-        titleTextStyle: nomalText,
-        contentTextStyle: nomalText,
-        backgroundColor: badgeDark,
-        title: Text(
-          _title,
+        titlePadding: EdgeInsets.all(16),
+        contentPadding: EdgeInsets.all(16),
+        backgroundColor: StyleColor.dialogBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: StyleProperty.borderRadius,
         ),
-        content: Text(
-          _content,
-        ),
+        title: Text(title),
+        titleTextStyle: StyleProperty.normalText,
+        content: Text(content),
+        contentTextStyle: StyleProperty.normalText,
         actions: <Widget>[
           MyTextButton(
-            title: S.of(_context).confrim,
+            title: S.of(context).confrim,
             press: () {
-              Navigator.of(_context).pop();
+              Navigator.of(context).pop();
             },
           )
         ],
