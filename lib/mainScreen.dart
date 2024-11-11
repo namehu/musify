@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'generated/l10n.dart';
-import 'models/myModel.dart';
+import 'package:get/get.dart';
+import 'package:musify/controllers/home_controller.dart';
+// import 'package:get/get.dart';
+import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/server_service.dart';
 import 'models/notifierValue.dart';
 import 'util/mycss.dart';
 import 'screens/bottomScreen.dart';
@@ -10,33 +12,36 @@ import 'screens/layout/settings.dart';
 import 'screens/leftScreen.dart';
 import 'util/roter.dart';
 
-class MainScreen extends StatelessWidget {
-  final AudioPlayer player;
+class HomeViewBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put<HomeController>(HomeController());
+  }
+}
 
-  const MainScreen({
-    Key? key,
-    required this.player,
-  }) : super(key: key);
+class MainScreen extends GetView<HomeController> {
+  final serverService = Get.find<ServerService>();
+  final player = AudioPlayerService.player;
 
   @override
   Widget build(BuildContext context) {
-    switch (serversInfo.value.languageCode) {
-      case "en":
-        S.load(Locale('en', ''));
-        break;
-      case "zh":
-        S.load(Locale('zh', ''));
-        break;
-      case "zh_Hans":
-        S.load(Locale('zh', 'Hans'));
-        break;
-      case "zh_Hant":
-        S.load(Locale('zh', 'Hant'));
-        break;
-      default:
-        S.load(Locale('zh', ''));
-        break;
-    }
+    // switch (serversInfo.value.languageCode) {
+    //   case "en":
+    //     S.load(Locale('en', ''));
+    //     break;
+    //   case "zh":
+    //     S.load(Locale('zh', ''));
+    //     break;
+    //   case "zh_Hans":
+    //     S.load(Locale('zh', 'Hans'));
+    //     break;
+    //   case "zh_Hant":
+    //     S.load(Locale('zh', 'Hant'));
+    //     break;
+    //   default:
+    //     S.load(Locale('zh', ''));
+    //     break;
+    // }
     final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
 
     _drawer() {
@@ -98,24 +103,24 @@ class MainScreen extends StatelessWidget {
                           child: LeftScreen(),
                         ),
                       Container(
-                          width: isMobile
-                              ? windowsWidth.value
-                              : windowsWidth.value - drawerWidth,
-                          color: bkColor,
-                          child: ValueListenableBuilder<ServerInfo>(
-                              valueListenable: serversInfo,
-                              builder: ((context, _value, child) {
-                                return Container(
-                                  child: _value.baseurl.isNotEmpty
-                                      ? ValueListenableBuilder<int>(
-                                          valueListenable: indexValue,
-                                          builder: ((context, value, child) {
-                                            return Roter(
-                                                roter: value, player: player);
-                                          }))
-                                      : Settings(),
-                                );
-                              })))
+                        width: isMobile
+                            ? windowsWidth.value
+                            : windowsWidth.value - drawerWidth,
+                        color: bkColor,
+                        child: Obx(() {
+                          var isNotEmpty =
+                              serverService.serverInfo.value.baseurl.isNotEmpty;
+                          return isNotEmpty
+                              ? Container(
+                                  child: ValueListenableBuilder<int>(
+                                      valueListenable: indexValue,
+                                      builder: ((context, value, child) {
+                                        return Roter(
+                                            roter: value, player: player);
+                                      })))
+                              : Text('111');
+                        }),
+                      )
                     ],
                   )),
               Container(

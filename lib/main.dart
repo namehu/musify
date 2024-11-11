@@ -5,13 +5,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musify/routes/pages.dart';
+import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/server_service.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:musify/mainScreen.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
-import 'models/notifierValue.dart';
 import 'util/audioTools.dart';
-import 'util/dbProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,26 +40,23 @@ void main() async {
     );
   }
 
-  final _serverInfo = await DbProvider.instance.getServerInfo();
-  if (_serverInfo != null) {
-    serversInfo.value = _serverInfo;
-  }
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+
   //Register Unique Player
-  final AudioPlayer _player = AudioPlayer();
+  await Get.putAsync(() => AudioPlayerService().init());
+  await Get.putAsync(() => ServerService().init());
+
+  final AudioPlayer _player = AudioPlayerService.player;
   //监听器
   //register listener
   audioCurrentIndexStream(_player);
   audioActiveSongListener(_player);
-  runApp(MyApp(player: _player));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AudioPlayer player;
-
-  const MyApp({
+  MyApp({
     Key? key,
-    required this.player,
   }) : super(key: key);
 
   @override
@@ -76,7 +73,9 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(fontFamily: 'NotoSansSC', brightness: Brightness.dark),
-      home: MainScreen(player: player),
+      // home: MainScreen(),
+      initialRoute: Routes.HOME,
+      getPages: AppPages.pages,
     );
   }
 }

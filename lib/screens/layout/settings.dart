@@ -37,7 +37,7 @@ class _SettingsState extends State<Settings>
     if (servercontroller.text != "" &&
         usernamecontroller.text != "" &&
         passwordcontroller.text != "") {
-      String _serverURL = servercontroller.text;
+      String _serverURL = servercontroller.text.trim();
       if (_serverURL.endsWith("/")) {
         _serverURL = _serverURL.substring(0, _serverURL.length - 1);
       }
