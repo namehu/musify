@@ -7,19 +7,21 @@ class HomeController extends GetxController {
   final serverService = Get.find<ServerService>();
   final languageService = Get.find<LanguageService>();
 
+  get hasServer => serverService.serverInfo.value.baseurl.isNotEmpty;
+
   @override
   void onInit() {
     super.onInit();
 
     /// 加载国际化
-    languageService.loadLanguage(languageService.languageCode);
+    languageService.loadLanguage(languageService.languageCode.value);
   }
 
   @override
   void onReady() {
     super.onInit();
 
-    if (serverService.serverInfo.value.baseurl.isEmpty) {
+    if (!hasServer) {
       Get.toNamed(Routes.LOGIN);
     }
   }

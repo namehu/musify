@@ -7,45 +7,45 @@ import '../generated/l10n.dart';
 
 class LanguageService extends GetxService {
   var ser = Get.find<PreferencesService>();
-  var _languageCode = 'zh'.obs;
-
-  get languageCode => _languageCode.value;
-  set languageCode(value) {
-    _languageCode.value = value;
-  }
+  var languageCode = 'zh'.obs;
 
   Future<LanguageService> init() async {
     final prefs = PreferencesService.instance;
-    languageCode = prefs.getString('languageCode') ?? 'zh';
+    languageCode.value = prefs.getString('languageCode') ?? 'zh';
     return this;
   }
 
   /// 加载国际化
-  loadLanguage(String languageCode) async {
-    switch (languageCode) {
+  loadLanguage(String code) async {
+    switch (code) {
       case "en":
-        S.load(Locale('en', ''));
+        await S.load(Locale('en', ''));
         break;
       case "zh":
-        S.load(Locale('zh', ''));
+        await S.load(Locale('zh', ''));
         break;
       case "zh_Hans":
-        S.load(Locale('zh', 'Hans'));
+        await S.load(Locale('zh', 'Hans'));
         break;
       case "zh_Hant":
-        S.load(Locale('zh', 'Hant'));
+        await S.load(Locale('zh', 'Hant'));
         break;
       default:
-        S.load(Locale('zh', ''));
+        await S.load(Locale('zh', ''));
         break;
     }
-    print(languageCode);
+    print('code ===========$code');
   }
 
   /// 修改语言
-  changeLanguage(String languageCode) async {
-    languageCode = languageCode;
-    loadLanguage(languageCode);
-    PreferencesService.instance.setString('languageCode', languageCode);
+  changeLanguage(String code) async {
+    try {
+      await loadLanguage(code);
+      await PreferencesService.instance.setString('languageCode', code);
+    } catch (e) {
+      print('修改失败');
+    } finally {
+      languageCode.value = code;
+    }
   }
 }

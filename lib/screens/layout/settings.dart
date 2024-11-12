@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/language_service.dart';
+import 'package:musify/services/server_service.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -37,41 +38,7 @@ class _SettingsState extends State<Settings>
   List<DropdownMenuItem<String>> _sortItems = [];
 
   final languageService = Get.find<LanguageService>();
-
-  _saveServer() async {
-    if (servercontroller.text != "" &&
-        usernamecontroller.text != "" &&
-        passwordcontroller.text != "") {
-      String _serverURL = servercontroller.text.trim();
-      if (_serverURL.endsWith("/")) {
-        _serverURL = _serverURL.substring(0, _serverURL.length - 1);
-      }
-      var status = await testServer(
-          _serverURL, usernamecontroller.text, passwordcontroller.text);
-
-      if (status) {
-        final _randomNumber = generateRandomString();
-        final _randomBytes =
-            utf8.encode(passwordcontroller.text.toString() + _randomNumber);
-        final _randomString = md5.convert(_randomBytes).toString();
-
-        ServerInfo _serverInfo = ServerInfo(
-            baseurl: _serverURL,
-            username: usernamecontroller.text.toString(),
-            salt: _randomNumber,
-            hash: _randomString,
-            neteaseapi: "",
-            languageCode: '');
-        await DbProvider.instance.addServerInfo(_serverInfo);
-        serversInfo.value = _serverInfo;
-        indexValue.value = 0;
-      } else {
-        showMyAlertDialog(context, S.current.notive, S.current.serverErr);
-      }
-    } else {
-      showMyAlertDialog(context, S.current.notive, S.current.noContent);
-    }
-  }
+  final serverService = Get.find<ServerService>();
 
   _saveNetease() async {
     if (neteasecontroller.text != "") {
@@ -201,19 +168,10 @@ class _SettingsState extends State<Settings>
                       S.current.song + S.current.server,
                       style: titleText2,
                     ),
-                    ValueListenableBuilder<ServerInfo>(
-                        valueListenable: serversInfo,
-                        builder: ((context, _value, child) {
-                          return MyTextButton(
-                              press: () {
-                                _value.baseurl.isNotEmpty
-                                    ? _deleteServer()
-                                    : _saveServer();
-                              },
-                              title: _value.baseurl.isNotEmpty
-                                  ? S.current.disConnect
-                                  : S.current.save);
-                        }))
+                    MyTextButton(
+                      title: S.current.server,
+                      press: () => Get.toNamed(Routes.CHANGE_SERVER),
+                    ),
                   ],
                 ),
                 Container(
@@ -234,9 +192,6 @@ class _SettingsState extends State<Settings>
                   titleStyle: nomalText,
                   mainaxis: MainAxisAlignment.spaceBetween,
                   crossaxis: CrossAxisAlignment.center,
-                  press: () {
-                    _saveServer();
-                  },
                 ),
                 MyTextInput(
                   control: usernamecontroller,
@@ -244,9 +199,6 @@ class _SettingsState extends State<Settings>
                   hintLabel: S.current.username,
                   hideText: false,
                   icon: Icons.person,
-                  press: () {
-                    _saveServer();
-                  },
                   titleStyle: nomalText,
                   mainaxis: MainAxisAlignment.spaceBetween,
                   crossaxis: CrossAxisAlignment.center,
@@ -257,9 +209,6 @@ class _SettingsState extends State<Settings>
                   hintLabel: S.current.password,
                   hideText: true,
                   icon: Icons.password,
-                  press: () {
-                    _saveServer();
-                  },
                   titleStyle: nomalText,
                   mainaxis: MainAxisAlignment.spaceBetween,
                   crossaxis: CrossAxisAlignment.center,

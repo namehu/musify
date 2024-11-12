@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:musify/routes/pages.dart';
 import '../generated/l10n.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';
@@ -92,7 +94,8 @@ class _MyAppBarState extends State<MyAppBar> {
               size: 15,
             ),
             onPressed: () {
-              indexValue.value = 11;
+              // indexValue.value = 11;
+              Get.toNamed(Routes.SETTING);
             },
           ),
         ),

@@ -88,7 +88,7 @@ class MainScreen extends GetView<HomeController> {
                         width: isMobile
                             ? windowsWidth.value
                             : windowsWidth.value - drawerWidth,
-                        color: bkColor,
+                        // color: bkColor,
                         child: Obx(() {
                           var isNotEmpty =
                               serverService.serverInfo.value.baseurl.isNotEmpty;

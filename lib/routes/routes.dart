@@ -5,4 +5,5 @@ abstract class Routes {
   static const HOME = '/home';
   static const LOGIN = '/login';
   static const CHANGE_SERVER = '/change_server';
+  static const SETTING = '/setting';
 }

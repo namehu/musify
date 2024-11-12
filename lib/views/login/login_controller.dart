@@ -37,6 +37,15 @@ class LoginController extends GetxController {
     }
   }
 
+  @override
+  void onClose() {
+    super.onClose();
+
+    servercontroller.dispose();
+    usernamecontroller.dispose();
+    passwordcontroller.dispose();
+  }
+
   /// 点击提交按钮
   handleSubmit(BuildContext context) async {
     String baseurl = servercontroller.text.toString().trim();

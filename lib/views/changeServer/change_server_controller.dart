@@ -15,7 +15,7 @@ class ChangeServerViewController extends GetxController {
     _serverList.value = await DbProvider.instance.getServerList();
   }
 
-  handleTap(ServerInfo item) {
+  handleTap([ServerInfo? item]) {
     Get.toNamed(Routes.LOGIN, arguments: item);
   }
 }

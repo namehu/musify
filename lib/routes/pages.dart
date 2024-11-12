@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:musify/mainScreen.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
 import 'package:musify/views/login/login_view.dart';
+import 'package:musify/views/setting/setting_view.dart';
 
 part 'routes.dart';
 
@@ -21,6 +22,11 @@ abstract class AppPages {
       name: Routes.CHANGE_SERVER,
       page: () => ChangeServerView(),
       binding: ChangeServerBinding(),
+    ),
+    GetPage(
+      name: Routes.SETTING,
+      page: () => SettingView(),
+      binding: SettingBinding(),
     ),
   ];
 }

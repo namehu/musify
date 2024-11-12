@@ -10,7 +10,7 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
-import 'package:musify/styles/colors.dart';
+import 'package:musify/styles/dark_theme.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
@@ -78,10 +78,10 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       theme: ThemeData(
-        primaryColor: StyleColor.primaryColor,
-        fontFamily: 'NotoSansSC',
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
       ),
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.dark,
       // home: MainScreen(),
       getPages: AppPages.pages,
       initialRoute: Routes.HOME,
