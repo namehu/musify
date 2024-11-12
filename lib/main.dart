@@ -10,7 +10,9 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
-import 'package:musify/styles/dark_theme.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/theme_dark.dart';
+import 'package:musify/styles/theme_light.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
@@ -45,8 +47,9 @@ void main() async {
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
-  //Register Unique Player
+  //Register Get Services
   await Get.putAsync(() => PreferencesService().init());
+  await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => AudioPlayerService().init());
   await Get.putAsync(() => ServerService().init());
   await Get.putAsync(() => LanguageService().init());
@@ -56,6 +59,8 @@ void main() async {
   //register listener
   audioCurrentIndexStream(_player);
   audioActiveSongListener(_player);
+
+  // PreferencesService.instance.getString('')
   runApp(MyApp());
 }
 
@@ -66,25 +71,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      //useInheritedMediaQuery: true,
-      title: "Musify",
-      localizationsDelegates: [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      theme: ThemeData(
-        brightness: Brightness.light,
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        //useInheritedMediaQuery: true,
+        title: "Musify",
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        theme: themeLight,
+        darkTheme: themeDark,
+        themeMode: ThemeService.mode.value,
+        // home: MainScreen(),
+        getPages: AppPages.pages,
+        initialRoute: Routes.SETTING,
       ),
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
-      // home: MainScreen(),
-      getPages: AppPages.pages,
-      initialRoute: Routes.HOME,
     );
   }
 }

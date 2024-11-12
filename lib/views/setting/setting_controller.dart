@@ -4,16 +4,19 @@ import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/server_service.dart';
+import 'package:musify/services/theme_service.dart';
 import 'package:musify/util/mycss.dart';
 
 class SettingController extends GetxController {
   final serverService = Get.find<ServerService>();
   final languageService = Get.find<LanguageService>();
+  final themeService = Get.find<ThemeService>();
 
   ServerInfo get sever => serverService.serverInfo.value;
 
-  final sortItems = <DropdownMenuItem<String>>[].obs;
   final selectedSort = 'en'.obs;
+  final lanMenuItems = <DropdownMenuItem<String>>[].obs;
+  final themeMenuItems = <DropdownMenuItem<String>>[].obs;
 
   get title => selectedSort.value == 'en' ? "setting" : '设置';
 
@@ -24,10 +27,10 @@ class SettingController extends GetxController {
     super.onInit();
     // print('init setting');
     selectedSort.value = languageService.languageCode.value;
-    setSortItems();
+    setMenuItems();
     // print('${selectedSort.value}   ${languageService.languageCode.value}');
     _codeWork = ever(languageService.languageCode, (_) {
-      setSortItems();
+      setMenuItems();
     });
   }
 
@@ -40,8 +43,9 @@ class SettingController extends GetxController {
     }
   }
 
-  setSortItems() {
-    sortItems.value = [
+  setMenuItems() {
+    print('${ThemeMode.dark}1111');
+    lanMenuItems.value = [
       DropdownMenuItem(
           value: "en", child: Text(S.current.english, style: nomalText)),
       DropdownMenuItem(
@@ -52,6 +56,11 @@ class SettingController extends GetxController {
       DropdownMenuItem(
           value: "zh_Hant",
           child: Text(S.current.traditional, style: nomalText))
+    ];
+
+    themeMenuItems.value = [
+      DropdownMenuItem(value: "2", child: Text('dark', style: nomalText)),
+      DropdownMenuItem(value: "1", child: Text('light', style: nomalText)),
     ];
   }
 }

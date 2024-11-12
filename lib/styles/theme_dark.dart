@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musify/styles/colors.dart';
 
-var darkTheme = ThemeData(
+var themeDark = ThemeData(
   useMaterial3: true,
   brightness: Brightness.dark,
   //   Brightness brightness, // 应用主题亮度，可选（dark、light）

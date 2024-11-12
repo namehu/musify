@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
-import 'package:musify/styles/colors.dart';
 import '../generated/l10n.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';

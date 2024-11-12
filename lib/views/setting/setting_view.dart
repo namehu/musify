@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:musify/enums/size_enums.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/views/setting/setting_controller.dart';
 import 'package:musify/widgets/m_button.dart';
+import 'package:musify/widgets/m_title.dart';
 
 class SettingBinding implements Bindings {
   @override
@@ -24,7 +27,7 @@ class SettingView extends GetView<SettingController> {
         appBar: AppBar(title: Text(controller.title)),
         backgroundColor: StyleColor.bgColor,
         body: Container(
-          padding: EdgeInsets.all(StyleSize.spaceLarge),
+          padding: EdgeInsets.all(StyleSize.space),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -41,71 +44,90 @@ class SettingView extends GetView<SettingController> {
                   ),
                 ),
               ),
+              // server config card
               SliverToBoxAdapter(
                 child: Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: _card(
-                    title: S.current.server,
-                    extra: [
+                  margin: EdgeInsets.only(top: 15, bottom: 10),
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MTitle(title: S.current.server, level: 4),
                       MButton(
                         size: SizeEnum.samll,
                         onTap: () {
                           Get.toNamed(Routes.CHANGE_SERVER);
                         },
-                        title: '修改',
+                        title: '修改服务器',
                       )
                     ],
-                    child: Column(
-                      children: [
-                        _listItem(
-                          icon: Icons.dns,
-                          title: S.current.serverURL,
-                          value: Text(
-                            controller.sever.baseurl,
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _card(
+                  child: Column(
+                    children: [
+                      _listItem(
+                        icon: Icons.dns,
+                        title: S.current.serverURL,
+                        value: Text(
+                          controller.sever.baseurl,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
                         ),
-                        _listItem(
-                          icon: Icons.person,
-                          title: S.current.username,
-                          value: Text(
-                            controller.sever.username,
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
+                      ),
+                      _listItem(
+                        icon: Icons.person,
+                        title: S.current.username,
+                        value: Text(
+                          controller.sever.username,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
                         ),
-                        _listItem(
-                          icon: Icons.password,
-                          title: S.current.password,
-                          value: Text(
-                            '********',
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
+                      ),
+                      _listItem(
+                        icon: Icons.password,
+                        title: S.current.password,
+                        value: Text(
+                          '********',
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
               SliverToBoxAdapter(
                 child: Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: _card(
-                    child: _listItem(
+                  margin: EdgeInsets.only(top: 15, bottom: 10),
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MTitle(title: '系统配置', level: 4),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _card(
+                    child: Column(
+                  children: [
+                    _listItem(
                       icon: Icons.museum,
                       title: S.current.language,
                       value: Obx(
@@ -115,7 +137,7 @@ class SettingView extends GetView<SettingController> {
                           children: [
                             DropdownButton(
                               value: controller.selectedSort.value,
-                              items: controller.sortItems,
+                              items: controller.lanMenuItems,
                               isDense: true,
                               underline: Container(),
                               onChanged: (value) async {
@@ -131,8 +153,30 @@ class SettingView extends GetView<SettingController> {
                         ),
                       ),
                     ),
-                  ),
-                ),
+                    _listItem(
+                      icon: Icons.museum,
+                      title: '主题',
+                      value: Obx(
+                        () => Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            DropdownButton(
+                              value: ThemeService.modekey,
+                              items: controller.themeMenuItems,
+                              isDense: true,
+                              underline: Container(),
+                              onChanged: (value) async {
+                                var va = int.parse(value.toString());
+                                await ThemeService.setThemeMode(va);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
               ),
             ],
           ),
@@ -171,7 +215,7 @@ class SettingView extends GetView<SettingController> {
     containerChild.addIf(child != null, child!);
 
     return Container(
-      padding: EdgeInsets.only(left: 16, right: 16, top: 20, bottom: 20),
+      padding: EdgeInsets.only(left: 16, right: 16),
       decoration: BoxDecoration(
         color: StyleColor.gray9,
         borderRadius: StyleProperty.borderRadius,
