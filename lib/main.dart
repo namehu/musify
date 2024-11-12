@@ -83,8 +83,8 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       // home: MainScreen(),
-      initialRoute: Routes.HOME,
       getPages: AppPages.pages,
+      initialRoute: Routes.HOME,
     );
   }
 }

@@ -7,6 +7,7 @@ class PositionData {
 }
 
 class ServerInfo {
+  int? id;
   late String baseurl;
   late String username;
   late String salt;
@@ -14,15 +15,17 @@ class ServerInfo {
   late String neteaseapi;
   late String languageCode;
 
-  ServerInfo(
-      {required this.baseurl,
-      required this.username,
-      required this.salt,
-      required this.hash,
-      required this.neteaseapi,
-      required this.languageCode});
+  ServerInfo({
+    required this.baseurl,
+    required this.username,
+    required this.salt,
+    required this.hash,
+    required this.neteaseapi,
+    required this.languageCode,
+  });
 
   ServerInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     baseurl = json['baseurl'];
     username = json['username'];
     salt = json['salt'];
@@ -33,6 +36,7 @@ class ServerInfo {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = new Map<String, dynamic>();
+    _data['id'] = this.id;
     _data['baseurl'] = this.baseurl;
     _data['username'] = this.username;
     _data['salt'] = this.salt;

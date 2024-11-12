@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/controllers/login_controller.dart';
 import 'package:musify/styles/colors.dart';
+import 'login_controller.dart';
 
 class LoginViewBinding implements Bindings {
   @override
@@ -26,7 +26,7 @@ class LoginView extends GetView<LoginController> {
           automaticallyImplyLeading: false,
           centerTitle: true,
           backgroundColor: Colors.transparent,
-          title: Text('选择服务器'),
+          title: Text(controller.editId != null ? '编辑服务器' : '选择服务器'),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -88,7 +88,7 @@ class LoginView extends GetView<LoginController> {
                               side: BorderSide(color: Colors.red),
                             ))),
                         child: Text(
-                          '登录',
+                          controller.editId != null ? '修改' : '登录',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

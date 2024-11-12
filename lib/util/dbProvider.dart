@@ -29,7 +29,7 @@ class DbProvider {
   void _onCreate(Database _database, int _version) async {
     await _database.execute('''
               create table $ServerInfoTable (
-                uid INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 baseurl TEXT NOT NULL,
                 username TEXT NOT NULL,
                 salt TEXT NOT NULL,
@@ -41,7 +41,7 @@ class DbProvider {
 
     await _database.execute('''
               create table $SongsAndLyricTable (
-                uid INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 lyric TEXT NOT NULL,
                 songId TEXT NOT NULL
               )
@@ -63,9 +63,12 @@ class DbProvider {
   updateServerInfo(ServerInfo _info) async {
     try {
       final db = await instance.db;
-      Batch batch = db.batch();
-      batch.update(ServerInfoTable, _info.toJson());
-      var res = await batch.commit(noResult: true);
+      var res = await db.update(
+        ServerInfoTable,
+        _info.toJson(),
+        where: 'id = ?',
+        whereArgs: [_info.id],
+      );
       return res;
     } catch (err) {
       print('err is 👉 $err');
@@ -97,6 +100,21 @@ class DbProvider {
     } catch (err) {
       print('err1 is 👉 $err');
     }
+  }
+
+  Future<List<ServerInfo>> getServerList() async {
+    List<ServerInfo> lists = [];
+    try {
+      final db = await instance.db;
+      var res = await db.query(ServerInfoTable);
+      if (res.length > 0) {
+        lists = res.map((e) => ServerInfo.fromJson(e)).toList();
+      }
+    } catch (err) {
+      print('err1 is 👉 $err');
+    }
+
+    return lists;
   }
 
   addSongsAndLyricTable(SongsAndLyric _artists) async {

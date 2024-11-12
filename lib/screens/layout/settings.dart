@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/services/language_service.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
@@ -117,24 +118,25 @@ class _SettingsState extends State<Settings>
   }
 
   _deleteServer() async {
-    await DbProvider.instance.deleteServerInfo();
-    if (mounted) {
-      setState(() {
-        serversInfo.value = ServerInfo(
-            baseurl: '',
-            hash: '',
-            neteaseapi: '',
-            salt: '',
-            username: '',
-            languageCode: '');
-        servercontroller.text = "";
-        usernamecontroller.text = "";
-        passwordcontroller.text = "";
-        neteasecontroller.text = "";
-      });
-    }
-    showMyAlertDialog(
-        context, S.current.success, S.current.server + S.current.delete);
+    Get.toNamed(Routes.CHANGE_SERVER);
+    // await DbProvider.instance.deleteServerInfo();
+    // if (mounted) {
+    //   setState(() {
+    //     serversInfo.value = ServerInfo(
+    //         baseurl: '',
+    //         hash: '',
+    //         neteaseapi: '',
+    //         salt: '',
+    //         username: '',
+    //         languageCode: '');
+    //     servercontroller.text = "";
+    //     usernamecontroller.text = "";
+    //     passwordcontroller.text = "";
+    //     neteasecontroller.text = "";
+    //   });
+    // }
+    // showMyAlertDialog(
+    //     context, S.current.success, S.current.server + S.current.delete);
   }
 
   @override
