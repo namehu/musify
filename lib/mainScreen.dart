@@ -24,23 +24,6 @@ class MainScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    // switch (serversInfo.value.languageCode) {
-    //   case "en":
-    //     S.load(Locale('en', ''));
-    //     break;
-    //   case "zh":
-    //     S.load(Locale('zh', ''));
-    //     break;
-    //   case "zh_Hans":
-    //     S.load(Locale('zh', 'Hans'));
-    //     break;
-    //   case "zh_Hant":
-    //     S.load(Locale('zh', 'Hant'));
-    //     break;
-    //   default:
-    //     S.load(Locale('zh', ''));
-    //     break;
-    // }
     final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
 
     _drawer() {

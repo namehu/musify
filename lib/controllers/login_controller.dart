@@ -23,6 +23,16 @@ class LoginController extends GetxController {
   final usernamecontroller = new TextEditingController();
   final passwordcontroller = new TextEditingController();
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    // FIXME: 测试用
+    servercontroller.text = 'http://namehu.i234.me:4533';
+    usernamecontroller.text = 'navidrome';
+    passwordcontroller.text = 'Navidrome';
+  }
+
   /// 点击提交按钮
   handleSubmit(BuildContext context) async {
     String serverURL = servercontroller.text.toString().trim();

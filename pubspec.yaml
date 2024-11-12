@@ -29,6 +29,7 @@ dependencies:
   flutter_lyric: ^2.0.4+6
   share_plus: ^10.0.2
   get: ^4.6.6
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:

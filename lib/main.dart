@@ -7,6 +7,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/language_service.dart';
+import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:window_manager/window_manager.dart';
@@ -44,8 +46,10 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
   //Register Unique Player
+  await Get.putAsync(() => PreferencesService().init());
   await Get.putAsync(() => AudioPlayerService().init());
   await Get.putAsync(() => ServerService().init());
+  await Get.putAsync(() => LanguageService().init());
 
   final AudioPlayer _player = AudioPlayerService.player;
   //监听器

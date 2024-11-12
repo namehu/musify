@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:musify/services/language_service.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -32,6 +34,8 @@ class _SettingsState extends State<Settings>
   late ServerInfo _myServerInfo;
   String _selectedSort = 'en';
   List<DropdownMenuItem<String>> _sortItems = [];
+
+  final languageService = Get.find<LanguageService>();
 
   _saveServer() async {
     if (servercontroller.text != "" &&
@@ -366,40 +370,10 @@ class _SettingsState extends State<Settings>
                             isExpanded: true,
                             underline: Container(),
                             onChanged: (value) async {
-                              switch (value) {
-                                case "en":
-                                  S.load(Locale('en', ''));
-                                  break;
-                                case "zh":
-                                  S.load(Locale('zh', ''));
-                                  break;
-                                case "zh_Hans":
-                                  S.load(Locale('zh', 'Hans'));
-                                  break;
-                                case "zh_Hant":
-                                  S.load(Locale('zh', 'Hant'));
-                                  break;
-                                default:
-                              }
-
+                              languageService.changeLanguage(value.toString());
                               setState(() {
                                 _selectedSort = value.toString();
                               });
-
-                              if (serversInfo.value.baseurl.isNotEmpty) {
-                                _myServerInfo.languageCode = value.toString();
-                                await DbProvider.instance
-                                    .updateServerInfo(_myServerInfo);
-                                //new一个对象触发值的监听
-                                ServerInfo newServerInfo = new ServerInfo(
-                                    baseurl: _myServerInfo.baseurl,
-                                    hash: _myServerInfo.hash,
-                                    languageCode: _myServerInfo.languageCode,
-                                    neteaseapi: _myServerInfo.neteaseapi,
-                                    salt: _myServerInfo.salt,
-                                    username: _myServerInfo.username);
-                                serversInfo.value = newServerInfo;
-                              }
                             },
                           )),
                     )
