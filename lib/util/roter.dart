@@ -12,7 +12,6 @@ import '../screens/layout/playListScreen.dart';
 import '../screens/layout/playlistDetailScreen.dart';
 import '../screens/layout/searchLyricScreen.dart';
 import '../screens/layout/searchScreen.dart';
-import '../screens/layout/settings.dart';
 import '../screens/layout/shareListScreen.dart';
 
 class Roter extends StatelessWidget {
@@ -49,8 +48,6 @@ class Roter extends StatelessWidget {
             return ArtistDetailScreen(player: player);
           case 10: //搜索
             return SearchScreen(player: player);
-          case 11: //设置
-            return Settings();
           case 12: //播放列表详细
             return PlaylistDetailScreen(player: player);
           case 13: //艺人专辑
@@ -59,7 +56,7 @@ class Roter extends StatelessWidget {
             return ShareListScreen();
 
           default:
-            return Settings();
+            return ShareListScreen();
         }
       },
     );

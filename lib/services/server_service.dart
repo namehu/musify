@@ -1,10 +1,7 @@
-import 'dart:ui';
 import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/util/dbProvider.dart';
-
-import '../generated/l10n.dart';
 
 class ServerService extends GetxService {
   /// 当前服务器信息
@@ -34,4 +31,50 @@ class ServerService extends GetxService {
     serversInfo.value = sInfo;
     serverInfo.value = sInfo;
   }
+
+  //   _saveNetease() async {
+  //   if (neteasecontroller.text != "") {
+  //     String _serverURL = neteasecontroller.text;
+  //     if (_serverURL.endsWith("/")) {
+  //       _serverURL = _serverURL.substring(0, _serverURL.length - 1);
+  //     }
+
+  //     _myServerInfo.neteaseapi = _serverURL;
+  //     await DbProvider.instance.updateServerInfo(_myServerInfo);
+  //     //new一个对象触发值的监听
+  //     ServerInfo newServerInfo = new ServerInfo(
+  //         baseurl: _myServerInfo.baseurl,
+  //         hash: _myServerInfo.hash,
+  //         languageCode: _myServerInfo.languageCode,
+  //         neteaseapi: _myServerInfo.neteaseapi,
+  //         salt: _myServerInfo.salt,
+  //         username: _myServerInfo.username);
+  //     serversInfo.value = newServerInfo;
+  //     showMyAlertDialog(
+  //         context, S.current.success, S.current.save + S.current.success);
+  //   } else {
+  //     showMyAlertDialog(context, S.current.notive, S.current.noContent);
+  //   }
+  // }
+
+  // _deleteServer() async {
+  //   await DbProvider.instance.deleteServerInfo();
+  //   if (mounted) {
+  //     setState(() {
+  //       serversInfo.value = ServerInfo(
+  //           baseurl: '',
+  //           hash: '',
+  //           neteaseapi: '',
+  //           salt: '',
+  //           username: '',
+  //           languageCode: '');
+  //       servercontroller.text = "";
+  //       usernamecontroller.text = "";
+  //       passwordcontroller.text = "";
+  //       neteasecontroller.text = "";
+  //     });
+  //   }
+  //   showMyAlertDialog(
+  //       context, S.current.success, S.current.server + S.current.delete);
+  // }
 }

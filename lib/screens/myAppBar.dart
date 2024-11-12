@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:musify/routes/pages.dart';
 import '../generated/l10n.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';
@@ -70,7 +68,7 @@ class _MyAppBarState extends State<MyAppBar> {
                     icon: Icon(
                       Icons.search,
                       color: _value.baseurl.isNotEmpty ? textGray : badgeDark,
-                      size: 15,
+                      size: 24,
                     ),
                     onPressed: _value.baseurl.isNotEmpty
                         ? () async {
@@ -86,19 +84,6 @@ class _MyAppBarState extends State<MyAppBar> {
                         : null,
                   );
                 }))),
-        Container(
-          child: IconButton(
-            icon: Icon(
-              Icons.settings,
-              color: textGray,
-              size: 15,
-            ),
-            onPressed: () {
-              // indexValue.value = 11;
-              Get.toNamed(Routes.SETTING);
-            },
-          ),
-        ),
       ],
     );
   }
@@ -111,7 +96,7 @@ class _MyAppBarState extends State<MyAppBar> {
             icon: Icon(
               Icons.menu,
               color: textGray,
-              size: 15,
+              size: 24,
             ),
             color: textGray,
             onPressed: () {
