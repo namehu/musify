@@ -11,8 +11,6 @@ import 'package:musify/services/language_service.dart';
 import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/styles/theme_dark.dart';
-import 'package:musify/styles/theme_light.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
@@ -83,12 +81,13 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: S.delegate.supportedLocales,
-        theme: themeLight,
-        darkTheme: themeDark,
-        themeMode: ThemeService.mode.value,
+        theme: ThemeService.theme,
+        // theme: themeLight,
+        // darkTheme: themeDark,
+        // themeMode: ThemeService.mode.value,
         // home: MainScreen(),
         getPages: AppPages.pages,
-        initialRoute: Routes.SETTING,
+        initialRoute: Routes.HOME,
       ),
     );
   }

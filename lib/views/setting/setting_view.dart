@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:musify/enums/size_enums.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/views/setting/setting_controller.dart';
@@ -25,7 +23,7 @@ class SettingView extends GetView<SettingController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(title: Text(controller.title)),
-        backgroundColor: StyleColor.bgColor,
+        // backgroundColor: StyleDarkColor.bgColor,
         body: Container(
           padding: EdgeInsets.all(StyleSize.space),
           child: CustomScrollView(
@@ -217,7 +215,7 @@ class SettingView extends GetView<SettingController> {
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16),
       decoration: BoxDecoration(
-        color: StyleColor.gray9,
+        color: ThemeService.color.cardColor,
         borderRadius: StyleProperty.borderRadius,
       ),
       child: Column(

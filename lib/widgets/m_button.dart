@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musify/enums/size_enums.dart';
-import 'package:musify/styles/colors.dart';
+import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 
 /// 自定义按钮组件
@@ -33,7 +33,7 @@ class MButton extends StatelessWidget {
         // height: height,
         padding: padding,
         decoration: BoxDecoration(
-          color: StyleColor.primaryButtonColor,
+          color: ThemeService.color.primaryButtonColor,
           borderRadius: StyleProperty.borderRadius,
         ),
         child: Text(title,

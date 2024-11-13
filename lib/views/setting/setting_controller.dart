@@ -44,7 +44,6 @@ class SettingController extends GetxController {
   }
 
   setMenuItems() {
-    print('${ThemeMode.dark}1111');
     lanMenuItems.value = [
       DropdownMenuItem(
           value: "en", child: Text(S.current.english, style: nomalText)),
