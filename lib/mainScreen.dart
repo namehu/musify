@@ -96,11 +96,9 @@ class MainScreen extends GetView<HomeController> {
                               ? Container(
                                   child: ValueListenableBuilder<int>(
                                       valueListenable: indexValue,
-                                      builder: ((context, value, child) {
-                                        return Roter(
-                                            roter: value, player: player);
-                                      })))
-                              : Text('111');
+                                      builder: ((context, value, child) =>
+                                          Roter(roter: value, player: player))))
+                              : Container();
                         }),
                       )
                     ],

@@ -383,7 +383,10 @@ class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
   }
 
   List<Widget> _songlistView(
-      List<String> _title, TextStyle _style, int _index) {
+    List<String> _title,
+    TextStyle _style,
+    int _index,
+  ) {
     List<Widget> _list = [];
     for (var i = 0; i < _title.length; i++) {
       if (i == _title.length - 1) {

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
 import '../../util/httpClient.dart';
-import '../../util/mycss.dart';
 import '../common/mySliverControlBar.dart';
 import '../common/mySliverControlList.dart';
 
 class IndexScreen extends StatefulWidget {
-  final AudioPlayer player;
-  const IndexScreen({Key? key, required this.player}) : super(key: key);
+  const IndexScreen({Key? key}) : super(key: key);
   @override
   _IndexScreenState createState() => _IndexScreenState();
 }
@@ -78,11 +75,6 @@ class _IndexScreenState extends State<IndexScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Container(
-              padding: leftrightPadding,
-              child: Text(S.current.index, style: titleText1)),
-        ),
         if (_randomalbums != null && _randomalbums!.length > 0)
           SliverToBoxAdapter(
               child: MySliverControlBar(

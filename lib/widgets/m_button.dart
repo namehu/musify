@@ -7,12 +7,14 @@ import 'package:musify/styles/size.dart';
 class MButton extends StatelessWidget {
   final String title;
   final SizeEnum? size;
+  final double? width;
   final VoidCallback? onTap;
 
   MButton({
     Key? key,
     required this.title,
     this.size = SizeEnum.normal,
+    this.width,
     this.onTap,
   }) : super(key: key);
 
@@ -31,19 +33,22 @@ class MButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         // height: height,
+        width: width,
         padding: padding,
         decoration: BoxDecoration(
           color: ThemeService.color.primaryButtonColor,
           borderRadius: StyleProperty.borderRadius,
         ),
-        child: Text(title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: fontSize,
-            )),
+        child: Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: fontSize,
+          ),
+        ),
       ),
     );
   }

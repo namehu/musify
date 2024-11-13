@@ -22,6 +22,8 @@ class LoginController extends GetxController {
   final usernamecontroller = new TextEditingController();
   final passwordcontroller = new TextEditingController();
 
+  final loading = false.obs;
+
   RxInt? editId; // 编辑数据id
 
   @override
@@ -60,34 +62,40 @@ class LoginController extends GetxController {
       return showMyAlertDialog(context, S.current.notive, S.current.noContent);
     }
 
-    var status = await testServer(baseurl, username, password);
+    loading.value = true;
+    try {
+      var status = await testServer(baseurl, username, password);
 
-    if (!status) {
-      return showMyAlertDialog(context, S.current.notive, S.current.serverErr);
-    }
+      if (!status) {
+        return showMyAlertDialog(
+            context, S.current.notive, S.current.serverErr);
+      }
 
-    final _randomNumber = generateRandomString();
-    final _randomBytes = utf8.encode(password + _randomNumber);
-    final _randomString = md5.convert(_randomBytes).toString();
+      final _randomNumber = generateRandomString();
+      final _randomBytes = utf8.encode(password + _randomNumber);
+      final _randomString = md5.convert(_randomBytes).toString();
 
-    ServerInfo _serverInfo = ServerInfo(
-      baseurl: baseurl,
-      username: username,
-      salt: _randomNumber,
-      hash: _randomString,
-      neteaseapi: "",
-      languageCode: '',
-    );
+      ServerInfo _serverInfo = ServerInfo(
+        baseurl: baseurl,
+        username: username,
+        salt: _randomNumber,
+        hash: _randomString,
+        neteaseapi: "",
+        languageCode: '',
+      );
 
-    if (editId != null) {
-      _serverInfo.id = editId!.value;
-      await DbProvider.instance.updateServerInfo(_serverInfo);
-      Get.back();
-    } else {
-      await DbProvider.instance.addServerInfo(_serverInfo);
-      serverService.updateCurrentServerInfo(_serverInfo);
-      indexValue.value = 0;
-      Get.offNamed(Routes.HOME);
-    }
+      if (editId != null) {
+        _serverInfo.id = editId!.value;
+        await DbProvider.instance.updateServerInfo(_serverInfo);
+        Get.back();
+      } else {
+        await DbProvider.instance.addServerInfo(_serverInfo);
+        serverService.updateCurrentServerInfo(_serverInfo);
+        indexValue.value = 0;
+        Get.offNamed(Routes.HOME);
+      }
+    } catch (e) {}
+
+    loading.value = false;
   }
 }

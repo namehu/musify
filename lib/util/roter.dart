@@ -29,7 +29,7 @@ class Roter extends StatelessWidget {
       builder: (context, constraints) {
         switch (roter) {
           case 0: //首页
-            return IndexScreen(player: player);
+            return IndexScreen();
           case 2: //播放列表
             return PlayListScreen();
           case 3: //收藏
@@ -56,7 +56,7 @@ class Roter extends StatelessWidget {
             return ShareListScreen();
 
           default:
-            return ShareListScreen();
+            return IndexScreen();
         }
       },
     );

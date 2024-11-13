@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:path_provider/path_provider.dart';
+
 import '../models/myModel.dart';
 
 class DbProvider {
@@ -20,10 +25,20 @@ class DbProvider {
   }
 
   Future<Database> _useDatabase() async {
-    final dbPath = await getDatabasesPath();
+    late String dbPath;
+    if (Platform.isWindows) {
+      databaseFactory = databaseFactoryFfi;
+      final appDocumentsDir = await getApplicationDocumentsDirectory();
+      dbPath = join(appDocumentsDir.path, "databases");
+    } else {
+      dbPath = await getDatabasesPath();
+    }
 
-    return await openDatabase(join(dbPath, dbName),
-        version: 1, onCreate: _onCreate);
+    return await openDatabase(
+      join(dbPath, dbName),
+      version: 1,
+      onCreate: _onCreate,
+    );
   }
 
   void _onCreate(Database _database, int _version) async {

@@ -14,10 +14,16 @@ import 'package:musify/services/theme_service.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
+import 'services/global_service.dart';
 import 'util/audioTools.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  if (Platform.isWindows) {
+    sqfliteFfiInit();
+  }
 
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
     await windowManager.ensureInitialized();
@@ -26,7 +32,7 @@ void main() async {
       minimumSize: Size(800, 600),
       backgroundColor: Colors.black,
       skipTaskbar: false,
-      titleBarStyle: TitleBarStyle.hidden,
+      titleBarStyle: TitleBarStyle.normal,
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
@@ -46,6 +52,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
   //Register Get Services
+  await Get.putAsync(() => GloabalService().init());
   await Get.putAsync(() => PreferencesService().init());
   await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => AudioPlayerService().init());

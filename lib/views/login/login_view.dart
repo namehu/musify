@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musify/services/global_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'login_controller.dart';
@@ -24,13 +26,16 @@ class LoginView extends GetView<LoginController> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: controller.editId != null,
           centerTitle: true,
           backgroundColor: Colors.transparent,
-          title: Text(controller.editId != null ? '编辑服务器' : '选择服务器'),
+          title: Text(controller.editId != null ? '编辑服务器' : '设置服务器'),
         ),
         body: SingleChildScrollView(
+            child: Center(
           child: Container(
+            constraints:
+                BoxConstraints(maxWidth: GloabalService.contentMaxWidth),
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(28),
             child: Column(
@@ -88,9 +93,23 @@ class LoginView extends GetView<LoginController> {
                                   BorderRadius.all(Radius.circular(10)),
                               side: BorderSide(color: Colors.red),
                             ))),
-                        child: Text(
-                          controller.editId != null ? '修改' : '登录',
-                          style: TextStyle(color: Colors.white),
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (controller.loading.value)
+                              Container(
+                                margin: EdgeInsets.only(right: 5),
+                                child: LoadingAnimationWidget.dotsTriangle(
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            Text(
+                              controller.editId != null ? '修改' : '登录',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -99,7 +118,7 @@ class LoginView extends GetView<LoginController> {
               ],
             ),
           ),
-        ),
+        )),
       ),
     );
   }

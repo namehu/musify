@@ -34,7 +34,6 @@ class LanguageService extends GetxService {
         await S.load(Locale('zh', ''));
         break;
     }
-    print('code ===========$code');
   }
 
   /// 修改语言
