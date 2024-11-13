@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/controllers/home_controller.dart';
-// import 'package:get/get.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'models/notifierValue.dart';
@@ -25,10 +24,6 @@ class MainScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
-
-    _drawer() {
-      myLeftStateKey.currentState?.openDrawer();
-    }
 
     //当不是移动端的时候使用这个可以动态监听窗体变化
     //如果是移动端的话，窗体不会变化
@@ -62,13 +57,8 @@ class MainScreen extends GetView<HomeController> {
           }
           return Column(
             children: [
-              if (isMobile)
-                Container(
-                  height: topSafeheight,
-                  color: bkColor,
-                ),
               MyAppBar(
-                drawer: () => _drawer(),
+                drawer: () => myLeftStateKey.currentState?.openDrawer(),
               ),
               Container(
                   height: (isMobile)

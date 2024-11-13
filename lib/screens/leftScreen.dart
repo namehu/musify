@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/theme_service.dart';
 import '../generated/l10n.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';
@@ -19,6 +20,7 @@ class LeftScreenState extends State<LeftScreen> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: ThemeService.color.secondBgColor,
       child: MediaQuery.removePadding(
           context: context,
           removeTop: true,

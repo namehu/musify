@@ -17,14 +17,19 @@ const gray13 = Color.fromRGBO(0, 0, 0, 1);
 typedef ColorMapType = ({
   /// 背景色
   Color bgColor,
+
+  /// 次级背景色
   Color secondBgColor,
+
+  /// 探春给背景色
   Color dialogBackgroundColor,
 
   /// 按钮主色
   Color primaryButtonColor,
 
   /// 卡片背景颜色
-  Color cardColor
+  Color cardColor,
+  Color iconColor,
 });
 
 ColorMapType normalColorMap = (
@@ -33,12 +38,14 @@ ColorMapType normalColorMap = (
   secondBgColor: gray11,
   dialogBackgroundColor: gray10,
   cardColor: Colors.white,
+  iconColor: gray2,
 );
 
 ColorMapType darkColorMap = (
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
-  bgColor: gray12,
+  bgColor: gray13,
   secondBgColor: gray11,
   dialogBackgroundColor: gray10,
-  cardColor: gray9
+  cardColor: gray9,
+  iconColor: gray2,
 );

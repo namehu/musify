@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:musify/services/theme_service.dart';
 import '../generated/l10n.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';
@@ -19,6 +19,7 @@ class MyAppBar extends StatefulWidget {
 class _MyAppBarState extends State<MyAppBar> {
   final _searchController = new TextEditingController();
   bool _visible = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +29,55 @@ class _MyAppBarState extends State<MyAppBar> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(top: isMobile ? topSafeheight : 0),
+      color: ThemeService.color.bgColor,
+      child: Container(
+        height: appBarHeight,
+        child: isMobile
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [_menu(), _search()],
+              )
+            : Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [_search(), _back()],
+              ),
+      ),
+    );
+  }
+
+  /// 菜单按钮
+  Widget _menu() {
+    return IconButton(
+      icon: Icon(
+        Icons.menu,
+        color: ThemeService.color.iconColor,
+        size: 24,
+      ),
+      color: textGray,
+      onPressed: () => widget.drawer(),
+    );
+  }
+
+  /// 菜单按钮
+  Widget _back() {
+    return Container(
+      margin: EdgeInsets.only(left: 200),
+      child: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: ThemeService.color.iconColor,
+          size: 24,
+        ),
+        color: textGray,
+        onPressed: () => {},
+      ),
+    );
   }
 
   Widget _search() {
@@ -67,7 +117,7 @@ class _MyAppBarState extends State<MyAppBar> {
                   return IconButton(
                     icon: Icon(
                       Icons.search,
-                      color: _value.baseurl.isNotEmpty ? textGray : badgeDark,
+                      color: ThemeService.color.iconColor,
                       size: 24,
                     ),
                     onPressed: _value.baseurl.isNotEmpty
@@ -85,42 +135,6 @@ class _MyAppBarState extends State<MyAppBar> {
                   );
                 }))),
       ],
-    );
-  }
-
-  Widget _menu() {
-    return Row(
-      children: [
-        if (isMobile)
-          IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: textGray,
-              size: 24,
-            ),
-            color: textGray,
-            onPressed: () {
-              widget.drawer();
-            },
-          ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: appBarHeight,
-      color: bkColor,
-      child: Platform.isWindows
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [_search(), _menu()],
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [_menu(), _search()],
-            ),
     );
   }
 }

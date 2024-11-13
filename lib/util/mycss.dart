@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+final bool isClient =
+    Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 
 final String version = "v0.0.1";
 //底部高度
@@ -6,7 +11,7 @@ const double bottomHeight = 80;
 //appbar高度
 const double appBarHeight = 40;
 //侧拉栏宽度
-const double drawerWidth = 150;
+final double drawerWidth = isClient ? 240 : 150;
 //安全高度
 const double topSafeheight = 40;
 //安全高度
