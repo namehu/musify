@@ -62,9 +62,10 @@ List<Widget> mylistView(List<String> _title, TextStyle _style) {
 
 Widget myRowList(List<String> _title, TextStyle _style) {
   return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: mylistView(_title, _style));
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: mylistView(_title, _style),
+  );
 }
 
 showShareDialog(Sharelist _tem, BuildContext _context) {

@@ -15,37 +15,53 @@ const gray12 = Color.fromRGBO(20, 20, 20, 1);
 const gray13 = Color.fromRGBO(0, 0, 0, 1);
 
 typedef ColorMapType = ({
-  /// 背景色
-  Color bgColor,
+  Color titleColor, // 标题文本
+  Color textColor, // 一级文本
+  Color textSecondColor, // 二级文本
+  Color textPrimaryColor, // 文本主色
+  Color textDisabledColor, // 禁用字体
+  Color borderColor, // 边框颜色
+  Color dividerColor, // 分割线颜色
+  Color bgColor, // 背景色
+  Color secondBgColor, // 次级背景色
+  Color dialogBackgroundColor, // 弹窗给背景色
+  Color cardColor, // 卡片背景颜色
+  Color iconColor, // 图标颜色
 
-  /// 次级背景色
-  Color secondBgColor,
-
-  /// 探春给背景色
-  Color dialogBackgroundColor,
-
-  /// 按钮主色
-  Color primaryButtonColor,
-
-  /// 卡片背景颜色
-  Color cardColor,
-  Color iconColor,
+  Color primaryButtonColor, // 按钮主色
+  Color secondaryButtonColor, // 按钮次色
 });
 
 ColorMapType normalColorMap = (
-  primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
+  titleColor: Color.fromRGBO(0, 0, 0, 0.88),
+  textColor: Color.fromRGBO(0, 0, 0, 0.88),
+  textSecondColor: Color.fromRGBO(0, 0, 0, 0.65),
+  textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
+  textDisabledColor: Color.fromRGBO(0, 0, 0, 0.25),
+  borderColor: Color.fromRGBO(217, 217, 217, 1),
+  dividerColor: Color.fromRGBO(5, 5, 5, 0.06),
   bgColor: gray3,
   secondBgColor: gray11,
   dialogBackgroundColor: gray10,
   cardColor: Colors.white,
   iconColor: gray2,
+  primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
+  secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
 );
 
 ColorMapType darkColorMap = (
-  primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
+  titleColor: Color.fromRGBO(255, 255, 255, 0.85),
+  textColor: Color.fromRGBO(255, 255, 255, 0.85),
+  textSecondColor: Color.fromRGBO(255, 255, 255, 0.65),
+  textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
+  textDisabledColor: Color.fromRGBO(255, 255, 255, 0.25),
+  borderColor: Color.fromRGBO(66, 66, 66, 1),
+  dividerColor: Color.fromRGBO(253, 253, 253, 0.12),
   bgColor: gray13,
   secondBgColor: gray11,
   dialogBackgroundColor: gray10,
   cardColor: gray9,
   iconColor: gray2,
+  primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
+  secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
 );

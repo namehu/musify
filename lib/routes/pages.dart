@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:musify/mainScreen.dart';
+import 'package:musify/views/home/home_view.dart';
 import 'package:musify/views/album_list/album_list_view.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
 import 'package:musify/views/login/login_view.dart';
@@ -11,7 +11,7 @@ abstract class AppPages {
   static final pages = [
     GetPage(
       name: Routes.HOME,
-      page: () => MainScreen(),
+      page: () => HomeView(),
       binding: HomeViewBinding(),
     ),
     GetPage(

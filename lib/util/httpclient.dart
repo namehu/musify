@@ -1,7 +1,46 @@
 import 'package:dio/dio.dart';
+import 'package:musify/util/request/mock_inter.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';
 import 'mycss.dart';
+
+class RequestManager {
+  static Dio? _dio;
+
+  static Dio get dio {
+    if (_dio == null) {
+      _dio = Dio();
+      // 自定义拦截器
+      dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest:
+              (RequestOptions options, RequestInterceptorHandler handler) {
+            // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+            // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+
+            options.baseUrl = serversInfo.value.baseurl;
+            options.responseType = ResponseType.json;
+
+            return handler.next(options);
+          },
+          onResponse: (Response response, ResponseInterceptorHandler handler) {
+            // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+            return handler.next(response);
+          },
+          onError: (DioException error, ErrorInterceptorHandler handler) {
+            // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+            return handler.next(error);
+          },
+        ),
+      );
+      // 添加mock拦截器
+      dio.interceptors.add(MyMockInterceptor());
+    }
+    return _dio!;
+  }
+}
+
+final dio = Dio();
 
 testServer(String _baseUrl, String _username, String _password) async {
   try {
@@ -50,6 +89,21 @@ getServerInfo(String _api) {
   return _request;
 }
 
+(String, Map<String, dynamic>) getServerInfo2(String path) {
+  String requestPath = '/rest/$path';
+  return (
+    requestPath,
+    {
+      'v': '0.0.1',
+      'c': 'musify',
+      'f': 'json',
+      'u': serversInfo.value.username,
+      's': serversInfo.value.salt,
+      't': serversInfo.value.hash
+    }
+  );
+}
+
 //type:random/newest/highest/frequent/recent/
 //subsonic 1.8.0 alphabeticalByName/alphabeticalByArtist/starred
 //size 10 if no
@@ -96,6 +150,8 @@ getRandomSongs() async {
   }
 }
 
+/// 查询专辑信息
+/// Requires Last.fm and Spotify integration
 getAlbumInfo2(String _albumId) async {
   String _sql = getServerInfo("getAlbumInfo2") + '&id=' + _albumId;
   try {
@@ -294,11 +350,12 @@ getArtist(String _id) async {
 }
 
 getSongs(String _id) async {
-  String _sql = await getServerInfo("getAlbum");
+  var (_sql, queryParameters) = getServerInfo2("getAlbum");
+  queryParameters.addAll({'id': _id});
+
   try {
-    var _response = await Dio().get(
-      _sql + '&id=' + _id,
-    );
+    var _response =
+        await RequestManager.dio.get(_sql, queryParameters: queryParameters);
     var _subsonic = checkResponse(_response);
     if (_subsonic == null) return null;
     Map _album = _subsonic['album'];
