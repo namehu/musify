@@ -8,4 +8,5 @@ abstract class Routes {
   static const SETTING = '/setting';
   static const ALBUM_LIST = '/album_list';
   static const ALBUM = '/album';
+  static const PLAY = '/play';
 }

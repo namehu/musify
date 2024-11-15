@@ -9,7 +9,11 @@ import 'package:musify/util/mycss.dart';
 class MusicBarMiddleware extends GetMiddleware {
   static bool inited = false;
 
-  List<String> hiddenRoutes = [Routes.SETTING, Routes.LOGIN]; // 需要隐藏的路由
+  List<String> hiddenRoutes = [
+    Routes.SETTING,
+    Routes.LOGIN,
+    Routes.PLAY,
+  ]; // 需要隐藏的路由
 
   @override
   RouteSettings? redirect(String? route) {

@@ -49,19 +49,7 @@ class _MusicBarState extends State<MusicBar> {
                           // cover image
                           InkWell(
                               onTap: () async {
-                                //正在播放的弹窗入口
-                                // showBottomSheet(
-                                //   constraints: BoxConstraints(
-                                //     maxWidth: windowsWidth.value,
-                                //   ),
-                                //   context: context,
-                                //   builder: (BuildContext context) {
-                                //     return PlayScreen(player: player);
-                                //   },
-                                // );
-
-                                // FIXME: 逻辑补充
-                                Get.toNamed(Routes.SETTING);
+                                Get.toNamed(Routes.PLAY);
                               },
                               child: Container(
                                 margin: EdgeInsets.only(left: 10, right: 10),

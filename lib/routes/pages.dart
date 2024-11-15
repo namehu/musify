@@ -5,6 +5,7 @@ import 'package:musify/views/home/home_view.dart';
 import 'package:musify/views/album_list/album_list_view.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
 import 'package:musify/views/login/login_view.dart';
+import 'package:musify/views/paly/play_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
 
 part 'routes.dart';
@@ -46,6 +47,12 @@ abstract class AppPages {
       page: () => AlbumView(),
       binding: AlbumBinding(),
       middlewares: [MusicBarMiddleware()],
-    )
+    ),
+    GetPage(
+      name: Routes.PLAY,
+      page: () => PlayView(),
+      binding: PlayBinding(),
+      middlewares: [MusicBarMiddleware()],
+    ),
   ];
 }
