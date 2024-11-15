@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/widgets/music_bar/music_bar.dart';
 import 'home_controller.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
 import '../../models/notifierValue.dart';
 import '../../util/mycss.dart';
-import '../../screens/bottomScreen.dart';
 import '../../screens/myAppBar.dart';
 import '../../screens/leftScreen.dart';
 import './widgets/roter.dart';
@@ -53,52 +53,34 @@ class HomeView extends GetView<HomeController> {
               MyAppBar(
                 drawer: () => myLeftStateKey.currentState?.openDrawer(),
               ),
-              Container(
-                  height: (isMobile)
-                      ? windowsHeight.value -
-                          bottomHeight -
-                          appBarHeight -
-                          safeheight
-                      : windowsHeight.value - bottomHeight - appBarHeight,
-                  child: Row(
-                    children: [
-                      if (!isMobile)
-                        Container(
-                          width: drawerWidth,
-                          child: LeftScreen(),
-                        ),
-                      Container(
-                        width: isMobile
-                            ? windowsWidth.value
-                            : windowsWidth.value - drawerWidth,
-                        // color: bkColor,
-                        child: Obx(() {
-                          var isNotEmpty =
-                              serverService.serverInfo.value.baseurl.isNotEmpty;
-                          return isNotEmpty
-                              ? Container(
-                                  child: ValueListenableBuilder<int>(
-                                      valueListenable: indexValue,
-                                      builder: ((context, value, child) =>
-                                          Roter(roter: value, player: player))))
-                              : Container();
-                        }),
-                      )
-                    ],
-                  )),
-              Container(
-                  height: bottomHeight,
-                  width: windowsWidth.value,
-                  child: Column(
-                    children: [
-                      BottomScreen(player: player),
-                    ],
-                  )),
-              if (isMobile)
-                Container(
-                  height: bottomSafeheight,
-                  color: bkColor,
+              Expanded(
+                // height: windowsHeight.value - bottomHeight - appBarHeight,
+                child: Row(
+                  children: [
+                    Container(
+                      width: isMobile
+                          ? windowsWidth.value
+                          : windowsWidth.value - drawerWidth,
+                      // color: bkColor,
+                      child: Obx(() {
+                        var isNotEmpty =
+                            serverService.serverInfo.value.baseurl.isNotEmpty;
+                        return isNotEmpty
+                            ? Container(
+                                child: ValueListenableBuilder<int>(
+                                    valueListenable: indexValue,
+                                    builder: ((context, value, child) =>
+                                        Roter(roter: value, player: player))))
+                            : Container();
+                      }),
+                    )
+                  ],
                 ),
+              ),
+              Container(
+                height: bottomHeight,
+                child: MusicBar(),
+              ),
             ],
           );
         },
