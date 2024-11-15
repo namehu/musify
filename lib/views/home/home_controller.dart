@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/language_service.dart';
+import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/server_service.dart';
 
 class HomeController extends GetxController {
@@ -24,6 +25,8 @@ class HomeController extends GetxController {
 
     if (!hasServer) {
       Get.toNamed(Routes.LOGIN);
+    } else {
+      MusicBarService.show();
     }
   }
 }

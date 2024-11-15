@@ -30,6 +30,8 @@ typedef ColorMapType = ({
 
   Color primaryButtonColor, // 按钮主色
   Color secondaryButtonColor, // 按钮次色
+
+  Color musicBarColor, // 音乐栏背景色
 });
 
 ColorMapType normalColorMap = (
@@ -47,6 +49,7 @@ ColorMapType normalColorMap = (
   iconColor: gray2,
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
   secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
+  musicBarColor: Colors.black,
 );
 
 ColorMapType darkColorMap = (
@@ -64,4 +67,5 @@ ColorMapType darkColorMap = (
   iconColor: gray2,
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
   secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
+  musicBarColor: Colors.white,
 );

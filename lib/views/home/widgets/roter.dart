@@ -7,12 +7,12 @@ import '../../../screens/layout/artistDetailScreen.dart';
 import '../../../screens/layout/artistsScreen.dart';
 import '../../../screens/layout/favoriteScreen.dart';
 import '../../../screens/layout/genresScreen.dart';
-import '../../../screens/layout/indexScreen.dart';
 import '../../../screens/layout/playListScreen.dart';
 import '../../../screens/layout/playlistDetailScreen.dart';
 import '../../../screens/layout/searchLyricScreen.dart';
 import '../../../screens/layout/searchScreen.dart';
 import '../../../screens/layout/shareListScreen.dart';
+import 'indexScreen.dart';
 
 class Roter extends StatelessWidget {
   final int roter;

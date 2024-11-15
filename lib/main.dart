@@ -5,9 +5,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
+import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/services/theme_service.dart';
@@ -58,6 +60,7 @@ void main() async {
   await Get.putAsync(() => AudioPlayerService().init());
   await Get.putAsync(() => ServerService().init());
   await Get.putAsync(() => LanguageService().init());
+  await Get.putAsync(() => MusicBarService().init());
 
   final AudioPlayer _player = AudioPlayerService.player;
   //监听器
@@ -76,25 +79,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        //useInheritedMediaQuery: true,
-        title: "Musify",
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        theme: ThemeService.theme,
-        // theme: themeLight,
-        // darkTheme: themeDark,
-        // themeMode: ThemeService.mode.value,
-        // home: MainScreen(),
-        getPages: AppPages.pages,
-        initialRoute: Routes.HOME,
+    return MaterialApp(
+      home: Obx(
+        () => GetMaterialApp(
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          //useInheritedMediaQuery: true,
+          title: "Musify",
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          theme: ThemeService.theme,
+          // theme: themeLight,
+          // darkTheme: themeDark,
+          // themeMode: ThemeService.mode.value,
+          // home: MainScreen(),
+          getPages: AppPages.pages,
+          initialRoute: Routes.HOME,
+        ),
       ),
     );
   }

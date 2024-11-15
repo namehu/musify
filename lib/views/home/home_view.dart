@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/widgets/music_bar/music_bar.dart';
 import 'home_controller.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
@@ -54,32 +53,29 @@ class HomeView extends GetView<HomeController> {
                 drawer: () => myLeftStateKey.currentState?.openDrawer(),
               ),
               Expanded(
-                // height: windowsHeight.value - bottomHeight - appBarHeight,
+                // height: windowsHeight.value - appBarHeight - topSafeheight,
                 child: Row(
                   children: [
                     Container(
                       width: isMobile
                           ? windowsWidth.value
                           : windowsWidth.value - drawerWidth,
-                      // color: bkColor,
-                      child: Obx(() {
-                        var isNotEmpty =
-                            serverService.serverInfo.value.baseurl.isNotEmpty;
-                        return isNotEmpty
-                            ? Container(
-                                child: ValueListenableBuilder<int>(
-                                    valueListenable: indexValue,
-                                    builder: ((context, value, child) =>
-                                        Roter(roter: value, player: player))))
-                            : Container();
-                      }),
+                      child: Obx(
+                        () {
+                          var isNotEmpty =
+                              serverService.serverInfo.value.baseurl.isNotEmpty;
+                          return isNotEmpty
+                              ? Container(
+                                  child: ValueListenableBuilder<int>(
+                                      valueListenable: indexValue,
+                                      builder: ((context, value, child) =>
+                                          Roter(roter: value, player: player))))
+                              : Container();
+                        },
+                      ),
                     )
                   ],
                 ),
-              ),
-              Container(
-                height: bottomHeight,
-                child: MusicBar(),
               ),
             ],
           );

@@ -1,13 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/styles/colors.dart';
 import '../../../models/notifierValue.dart';
 import '../../../util/mycss.dart';
 import '../../screens/components/myAudio/playerControBar.dart';
-import '../../screens/layout/playScreen.dart';
 
 class MusicBar extends StatefulWidget {
   const MusicBar({super.key});
@@ -22,7 +23,6 @@ class _MusicBarState extends State<MusicBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: bottomHeight,
         color: Colors.transparent,
         padding: EdgeInsets.only(left: 32, right: 32),
         child: Column(
@@ -32,7 +32,7 @@ class _MusicBarState extends State<MusicBar> {
             Container(
               height: 60,
               decoration: BoxDecoration(
-                // color: gray7,
+                color: ThemeService.color.musicBarColor,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
               child: Row(
@@ -46,18 +46,22 @@ class _MusicBarState extends State<MusicBar> {
                     builder: (context, _song, child) {
                       return Row(
                         children: [
+                          // cover image
                           InkWell(
                               onTap: () async {
                                 //正在播放的弹窗入口
-                                showBottomSheet(
-                                  constraints: BoxConstraints(
-                                    maxWidth: windowsWidth.value,
-                                  ),
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return PlayScreen(player: player);
-                                  },
-                                );
+                                // showBottomSheet(
+                                //   constraints: BoxConstraints(
+                                //     maxWidth: windowsWidth.value,
+                                //   ),
+                                //   context: context,
+                                //   builder: (BuildContext context) {
+                                //     return PlayScreen(player: player);
+                                //   },
+                                // );
+
+                                // FIXME: 逻辑补充
+                                Get.toNamed(Routes.SETTING);
                               },
                               child: Container(
                                 margin: EdgeInsets.only(left: 10, right: 10),
