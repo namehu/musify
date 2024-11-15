@@ -19,7 +19,7 @@ class HomeController extends GetxController {
 
   @override
   void onReady() {
-    super.onInit();
+    super.onReady();
 
     if (!hasServer) {
       Get.toNamed(Routes.LOGIN);
