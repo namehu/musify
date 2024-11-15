@@ -27,7 +27,7 @@ const double playingImageWidthAndHeight = 180;
 //图片刷新动画延迟
 const int imageMilli = 500;
 //logo asset地址
-const String mylogoAsset = "assets/images/logo.jpg";
+const String mylogoAsset = "assets/images/icon_music.png";
 //是不是移动端
 late final bool isMobile;
 

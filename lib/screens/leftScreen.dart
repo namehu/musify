@@ -37,7 +37,7 @@ class LeftScreenState extends State<LeftScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: ClipOval(
                           child: Image.asset(
-                            "assets/images/logo.jpg",
+                            "assets/images/icon_music.png",
                             width: 80,
                           ),
                         ),
