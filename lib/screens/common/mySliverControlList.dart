@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:musify/routes/pages.dart';
 
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -42,14 +44,14 @@ class MySliverControlList extends StatelessWidget {
             child: InkWell(
                 onTap: () {
                   activeID.value = _tem.id;
-                  indexValue.value = 8;
+                  // indexValue.value = 8;
+
+                  Get.toNamed(Routes.ALBUM, arguments: {'id': _tem.id});
                 },
                 child: Column(
                   children: [
                     Container(
-                      constraints: BoxConstraints(
-                        maxHeight: _rightHeight - 67,
-                      ),
+                      constraints: BoxConstraints(maxHeight: _rightHeight - 67),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: CachedNetworkImage(

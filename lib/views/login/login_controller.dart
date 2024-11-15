@@ -32,7 +32,7 @@ class LoginController extends GetxController {
 
     if (Get.arguments != null && Get.arguments is ServerInfo) {
       var args = Get.arguments as ServerInfo;
-      print(args.toJson());
+      // print(args.toJson());
       editId = args.id!.obs;
       servercontroller.text = args.baseurl;
       usernamecontroller.text = args.username;

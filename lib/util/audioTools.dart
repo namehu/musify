@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musify/models/songs.dart';
 import '../generated/l10n.dart';
-import '../models/myModel.dart';
 import '../models/notifierValue.dart';
 import 'httpClient.dart';
 import 'mycss.dart';

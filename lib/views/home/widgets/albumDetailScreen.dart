@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/models/myModel.dart';
+import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_button.dart';
@@ -43,8 +44,7 @@ class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
   List<bool> _starsong = [];
 
   _getSongs(String albumId) async {
-    final _albumtem = await getSongs(albumId);
-    print(jsonEncode(_albumtem));
+    final _albumtem = await getAlbum(albumId);
     if (_albumtem != null && _albumtem.length > 0) {
       final _songsList = _albumtem["song"];
       String _url = getCoverArt(_albumtem["id"]);

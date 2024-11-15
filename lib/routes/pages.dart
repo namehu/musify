@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:musify/views/album/album_view.dart';
 import 'package:musify/views/home/home_view.dart';
 import 'package:musify/views/album_list/album_list_view.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
@@ -34,5 +35,10 @@ abstract class AppPages {
       page: () => AlbumListView(),
       binding: AlbumListBinding(),
     ),
+    GetPage(
+      name: Routes.ALBUM,
+      page: () => AlbumView(),
+      binding: AlbumBinding(),
+    )
   ];
 }

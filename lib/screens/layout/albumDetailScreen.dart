@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/models/myModel.dart';
+import 'package:musify/models/songs.dart';
 import '../../generated/l10n.dart';
 
 import '../../models/notifierValue.dart';
@@ -41,7 +42,7 @@ class _AlbumDetailScreenState extends State<AlbumDetailScreen> {
   bool _isbiography = true;
 
   _getSongs(String albumId) async {
-    final _albumtem = await getSongs(albumId);
+    final _albumtem = await getAlbum(albumId);
     if (_albumtem != null && _albumtem.length > 0) {
       final _songsList = _albumtem["song"];
       String _url = getCoverArt(_albumtem["id"]);

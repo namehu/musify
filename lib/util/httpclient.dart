@@ -349,7 +349,7 @@ getArtist(String _id) async {
   }
 }
 
-getSongs(String _id) async {
+getAlbum(String _id) async {
   var (_sql, queryParameters) = getServerInfo2("getAlbum");
   queryParameters.addAll({'id': _id});
 
