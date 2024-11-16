@@ -1,48 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:musify/util/request/mock_inter.dart';
+import 'package:musify/api/index.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';
 import 'mycss.dart';
 
-class RequestManager {
-  static Dio? _dio;
-
-  static Dio get dio {
-    if (_dio == null) {
-      _dio = Dio();
-      // 自定义拦截器
-      dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest:
-              (RequestOptions options, RequestInterceptorHandler handler) {
-            // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
-            // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-
-            options.baseUrl = serversInfo.value.baseurl;
-            options.responseType = ResponseType.json;
-
-            return handler.next(options);
-          },
-          onResponse: (Response response, ResponseInterceptorHandler handler) {
-            // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-            return handler.next(response);
-          },
-          onError: (DioException error, ErrorInterceptorHandler handler) {
-            // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
-            return handler.next(error);
-          },
-        ),
-      );
-      // 添加mock拦截器
-      dio.interceptors.add(MyMockInterceptor());
-    }
-    return _dio!;
-  }
-}
-
-final dio = Dio();
-
-testServer(String _baseUrl, String _username, String _password) async {
+Future<bool> testServer(
+    String _baseUrl, String _username, String _password) async {
   try {
     var _response = await Dio().get(
       _baseUrl +
@@ -56,8 +19,8 @@ testServer(String _baseUrl, String _username, String _password) async {
     return true;
   } catch (e) {
     print(e);
-    return false;
   }
+  return false;
 }
 
 checkResponse(Response<dynamic> _response) {
@@ -355,7 +318,7 @@ getAlbum(String _id) async {
 
   try {
     var _response =
-        await RequestManager.dio.get(_sql, queryParameters: queryParameters);
+        await MRequest.dio.get(_sql, queryParameters: queryParameters);
     var _subsonic = checkResponse(_response);
     if (_subsonic == null) return null;
     Map _album = _subsonic['album'];
