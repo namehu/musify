@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:musify/api/index.dart';
+import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/util/dbProvider.dart';
@@ -6,6 +8,7 @@ import 'package:musify/util/dbProvider.dart';
 class ServerService extends GetxService {
   /// 当前服务器信息
   var serverInfo = ServerInfo(
+    serverType: ServeTypeEnum.navidrome.label,
     baseurl: '',
     hash: '',
     neteaseapi: '',
@@ -30,6 +33,12 @@ class ServerService extends GetxService {
     // TODO: 移除serversInfo
     serversInfo.value = sInfo;
     serverInfo.value = sInfo;
+
+    // 更新api 请求端口
+    // TODO: 这里需要补齐 账号销毁时reset api 的逻辑
+    var serveTypeEnum =
+        ServeTypeEnum.values.firstWhere((e) => e.label == sInfo.serverType);
+    MRequest.setApi(serveTypeEnum);
   }
 
   //   _saveNetease() async {

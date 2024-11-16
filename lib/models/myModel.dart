@@ -8,6 +8,7 @@ class PositionData {
 
 class ServerInfo {
   int? id;
+  late String serverType;
   late String baseurl;
   late String username;
   late String salt;
@@ -16,6 +17,7 @@ class ServerInfo {
   late String languageCode;
 
   ServerInfo({
+    required this.serverType,
     required this.baseurl,
     required this.username,
     required this.salt,
@@ -26,6 +28,7 @@ class ServerInfo {
 
   ServerInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    serverType = json['serverType'];
     baseurl = json['baseurl'];
     username = json['username'];
     salt = json['salt'];
@@ -37,6 +40,7 @@ class ServerInfo {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = new Map<String, dynamic>();
     _data['id'] = this.id;
+    _data['serverType'] = this.serverType;
     _data['baseurl'] = this.baseurl;
     _data['username'] = this.username;
     _data['salt'] = this.salt;

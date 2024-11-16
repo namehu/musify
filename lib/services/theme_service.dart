@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/services/preferences_service.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/styles/colors.dart';
 
 ThemeData getThemData() {
@@ -37,12 +37,12 @@ class ThemeService extends GetxService {
         modeMap.entries.firstWhere(((element) => element.key == key));
     mode.value = _themeMode.value;
 
-    return await PreferencesService.instance.setInt(_modeKey, _themeMode.key);
+    return await sharedPreferences.setInt(_modeKey, _themeMode.key);
   }
 
   /// 获取主题模式
   static ThemeMode getThemeMode() {
-    int? result = PreferencesService.instance.getInt(_modeKey);
+    int? result = sharedPreferences.getInt(_modeKey);
     var mode = modeMap[modeMap.keys.contains(result) ? result : 2]!;
     return mode;
   }

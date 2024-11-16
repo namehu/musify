@@ -45,6 +45,7 @@ class DbProvider {
     await _database.execute('''
               create table $ServerInfoTable (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                serverType TEXT NOT NULL,
                 baseurl TEXT NOT NULL,
                 username TEXT NOT NULL,
                 salt TEXT NOT NULL,

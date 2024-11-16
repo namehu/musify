@@ -1,17 +1,13 @@
 import 'dart:ui';
-
 import 'package:get/get.dart';
-import 'package:musify/services/preferences_service.dart';
-
+import '../constant.dart';
 import '../generated/l10n.dart';
 
 class LanguageService extends GetxService {
-  var ser = Get.find<PreferencesService>();
   var languageCode = 'zh'.obs;
 
   Future<LanguageService> init() async {
-    final prefs = PreferencesService.instance;
-    languageCode.value = prefs.getString('languageCode') ?? 'zh';
+    languageCode.value = sharedPreferences.getString('languageCode') ?? 'zh';
     return this;
   }
 
@@ -40,7 +36,7 @@ class LanguageService extends GetxService {
   changeLanguage(String code) async {
     try {
       await loadLanguage(code);
-      await PreferencesService.instance.setString('languageCode', code);
+      await sharedPreferences.setString('languageCode', code);
     } catch (e) {
       print('修改失败');
     } finally {

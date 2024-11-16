@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:musify/api/index.dart';
+import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
@@ -10,7 +12,6 @@ import 'package:musify/routes/pages.dart';
 import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/util/dbProvider.dart';
-import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/util.dart';
 
 class LoginController extends GetxController {
@@ -23,6 +24,7 @@ class LoginController extends GetxController {
   final passwordcontroller = new TextEditingController();
 
   final loading = false.obs;
+  final serverType = (ServeTypeEnum.navidrome).obs;
 
   RxInt? editId; // 编辑数据id
 
@@ -63,27 +65,34 @@ class LoginController extends GetxController {
     }
 
     loading.value = true;
+
+    bool status = false;
+    MRequest.setApi(serverType.value);
     try {
-      var status = await testServer(baseurl, username, password);
+      // testServer(baseurl, username, password)
+      status = await MRequest.api.authenticate(baseurl, username, password);
+    } catch (e) {}
 
-      if (!status) {
-        return showMyAlertDialog(
-            context, S.current.notive, S.current.serverErr);
-      }
+    if (!status) {
+      MRequest.resetApi();
+      return showMyAlertDialog(context, S.current.notive, S.current.serverErr);
+    }
 
-      final _randomNumber = generateRandomString();
-      final _randomBytes = utf8.encode(password + _randomNumber);
-      final _randomString = md5.convert(_randomBytes).toString();
+    final _randomNumber = generateRandomString();
+    final _randomBytes = utf8.encode(password + _randomNumber);
+    final _randomString = md5.convert(_randomBytes).toString();
 
-      ServerInfo _serverInfo = ServerInfo(
-        baseurl: baseurl,
-        username: username,
-        salt: _randomNumber,
-        hash: _randomString,
-        neteaseapi: "",
-        languageCode: '',
-      );
+    ServerInfo _serverInfo = ServerInfo(
+      serverType: serverType.value.label,
+      baseurl: baseurl,
+      username: username,
+      salt: _randomNumber,
+      hash: _randomString,
+      neteaseapi: "",
+      languageCode: '',
+    );
 
+    try {
       if (editId != null) {
         _serverInfo.id = editId!.value;
         await DbProvider.instance.updateServerInfo(_serverInfo);

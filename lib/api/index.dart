@@ -1,10 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:musify/api/navidrome.dart/index.dart';
+import 'package:musify/api/subsonic/index.dart';
+import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/models/notifierValue.dart';
-import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/request/mock_inter.dart';
+import 'types.dart';
 
 class MRequest {
+  // static String? _sverType;
   static Dio? _dio;
+  static MusicApi _api = resetApi();
 
   static Dio get dio {
     if (_dio == null) {
@@ -39,16 +44,37 @@ class MRequest {
     return _dio!;
   }
 
-  static MusicApi get api => api;
+  // static String get currentServerType {
+  //   if (_sverType == null) {
+  //     _sverType =
+  //         PreferencesService.getString(PreferencesEnum.serverType, 'subsonic');
+  //   }
+  //   return _sverType!;
+  // }
+
+  // static set currentServerType(String? val) {
+  //   _sverType = val;
+  //   if (val != null) {
+  //     PreferencesService.setString(PreferencesEnum.serverType, val);
+  //   } else {
+  //     PreferencesService.remove(PreferencesEnum.serverType);
+  //   }
+  // }
+
+  static MusicApi get api => _api;
+
+  static setApi(ServeTypeEnum serverType) {
+    switch (serverType) {
+      case ServeTypeEnum.navidrome:
+        _api = navidromeApi;
+        break;
+      default:
+        _api = subsonicApi;
+        break;
+    }
+  }
+
+  static resetApi() {
+    _api = subsonicApi;
+  }
 }
-
-typedef MusicApi = ({
-  Future<bool> Function(
-      String _baseUrl, String _username, String _password) authenticate,
-  String getSong,
-});
-
-MusicApi api = (
-  authenticate: testServer,
-  getSong: 'https://api.music.163.com/api/linux/forward',
-);

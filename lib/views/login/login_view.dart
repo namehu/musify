@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/services/global_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'login_controller.dart';
@@ -47,6 +48,33 @@ class LoginView extends GetView<LoginController> {
                   height: 56,
                 ),
                 SizedBox(height: 80),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Obx(
+                        () => DropdownButton(
+                          hint: Text('选择服务器类型'),
+                          isExpanded: true,
+                          underline: Divider(
+                            height: 1,
+                            color: Colors.white,
+                          ),
+                          value: controller.serverType.value,
+                          onChanged: (va) {
+                            controller.serverType.value = va!;
+                          },
+                          items: ServeTypeEnum.values
+                              .map((e) => DropdownMenuItem(
+                                    child: Text(e.label),
+                                    value: e,
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40),
                 TextField(
                   controller: controller.servercontroller,
                   decoration: InputDecoration(
@@ -92,23 +120,25 @@ class LoginView extends GetView<LoginController> {
                                   BorderRadius.all(Radius.circular(10)),
                               side: BorderSide(color: Colors.red),
                             ))),
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            if (controller.loading.value)
-                              Container(
-                                margin: EdgeInsets.only(right: 5),
-                                child: LoadingAnimationWidget.dotsTriangle(
-                                  color: Colors.white,
-                                  size: 20,
+                        child: Obx(
+                          () => Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (controller.loading.value)
+                                Container(
+                                  margin: EdgeInsets.only(right: 5),
+                                  child: LoadingAnimationWidget.dotsTriangle(
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                 ),
+                              Text(
+                                controller.editId != null ? '修改' : '登录',
+                                style: TextStyle(color: Colors.white),
                               ),
-                            Text(
-                              controller.editId != null ? '修改' : '登录',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

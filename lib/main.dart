@@ -13,6 +13,7 @@ import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
@@ -22,6 +23,8 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  sharedPreferences = await SharedPreferences.getInstance();
 
   if (Platform.isWindows) {
     sqfliteFfiInit();
@@ -55,7 +58,7 @@ void main() async {
 
   //Register Get Services
   await Get.putAsync(() => GloabalService().init());
-  await Get.putAsync(() => PreferencesService().init());
+  await Get.putAsync(() => PreferencesService().init(sharedPreferences));
   await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => AudioPlayerService().init());
   await Get.putAsync(() => ServerService().init());
@@ -68,7 +71,6 @@ void main() async {
   audioCurrentIndexStream(_player);
   audioActiveSongListener(_player);
 
-  // PreferencesService.instance.getString('')
   runApp(MyApp());
 }
 

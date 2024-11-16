@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/enums/serve_type_enum.dart';
 
 import 'myModel.dart';
 
@@ -11,6 +12,7 @@ ValueNotifier<int> indexValue = ValueNotifier<int>(0);
 ValueNotifier<String> activeSongValue = ValueNotifier<String>("1");
 
 ValueNotifier<ServerInfo> serversInfo = ValueNotifier<ServerInfo>(ServerInfo(
+  serverType: ServeTypeEnum.navidrome.label,
   baseurl: '',
   hash: '',
   neteaseapi: '',
