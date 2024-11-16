@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../util/mycss.dart';
 
+/// Description: 显示Toast
+@Deprecated('plaese use MToast in widgets folder')
 class MyToast {
   static void show({required BuildContext context, required String message}) {
     OverlayEntry overlayEntry = new OverlayEntry(builder: (context) {

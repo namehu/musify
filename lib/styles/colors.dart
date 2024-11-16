@@ -14,8 +14,25 @@ const gray11 = Color.fromRGBO(31, 31, 31, 1);
 const gray12 = Color.fromRGBO(20, 20, 20, 1);
 const gray13 = Color.fromRGBO(0, 0, 0, 1);
 
+const primaryColor = MaterialColor(
+  -1436359,
+  const <int, Color>{
+    50: const Color(-1436359),
+    100: const Color(-1436359),
+    200: const Color(-1436359),
+    300: const Color(-1436359),
+    400: const Color(-1436359),
+    500: const Color(-1436359),
+    600: const Color(-1436359),
+    700: const Color(-1436359),
+    800: const Color(-1436359),
+    900: const Color(-1436359),
+  },
+);
+
 typedef ColorMapType = ({
   Color titleColor, // 标题文本
+  MaterialColor primaryColor, // 主色
   Color textColor, // 一级文本
   Color textSecondColor, // 二级文本
   Color textPrimaryColor, // 文本主色
@@ -32,10 +49,12 @@ typedef ColorMapType = ({
   Color secondaryButtonColor, // 按钮次色
 
   Color musicBarColor, // 音乐栏背景色
+  Color sliderBorderColor // 滑动条边框颜色
 });
 
 ColorMapType normalColorMap = (
   titleColor: Color.fromRGBO(0, 0, 0, 0.88),
+  primaryColor: primaryColor,
   textColor: Color.fromRGBO(0, 0, 0, 0.88),
   textSecondColor: Color.fromRGBO(0, 0, 0, 0.65),
   textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
@@ -50,10 +69,12 @@ ColorMapType normalColorMap = (
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
   secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
   musicBarColor: Colors.black,
+  sliderBorderColor: Colors.grey,
 );
 
 ColorMapType darkColorMap = (
   titleColor: Color.fromRGBO(255, 255, 255, 0.85),
+  primaryColor: primaryColor,
   textColor: Color.fromRGBO(255, 255, 255, 0.85),
   textSecondColor: Color.fromRGBO(255, 255, 255, 0.65),
   textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
@@ -68,4 +89,5 @@ ColorMapType darkColorMap = (
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
   secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
   musicBarColor: Colors.white,
+  sliderBorderColor: Colors.grey,
 );

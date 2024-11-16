@@ -26,8 +26,6 @@ class AlbumBinding implements Bindings {
 }
 
 class AlbumView extends GetView<AlbumController> {
-  final AudioPlayer _player = AudioPlayerService.player;
-
   // 顶部区域
   final double _toprightwidth =
       windowsWidth.value - screenImageWidthAndHeight - 40 - 15;
@@ -161,14 +159,19 @@ class AlbumView extends GetView<AlbumController> {
       padding: allPadding,
       child: Row(
         children: [
-          Expanded(child: MButton(icon: Icons.play_arrow, title: '全部播放')),
+          Expanded(
+              child: MButton(
+            icon: Icons.play_arrow,
+            title: '全部播放',
+            onTap: () => controller.handlePlay(),
+          )),
           SizedBox(width: 10),
           Expanded(
             child: MButton(
               icon: Icons.shuffle,
               title: '随机播放',
               type: ButtonType.secondary,
-              onTap: () {},
+              onTap: () => controller.handlePlay(true),
             ),
           ),
         ],
@@ -253,17 +256,7 @@ class AlbumView extends GetView<AlbumController> {
               ];
               return ListTile(
                 title: InkWell(
-                  onTap: () async {
-                    if (listEquals(activeList.value, controller.songs)) {
-                      _player.seek(Duration.zero, index: index);
-                    } else {
-                      //当前歌曲队列
-                      activeIndex.value = index;
-                      activeSongValue.value = _song.id;
-                      //歌曲所在专辑歌曲List
-                      activeList.value = controller.songs;
-                    }
-                  },
+                  onTap: () => controller.handleSongClick(_song, index),
                   child: ValueListenableBuilder<Map>(
                     valueListenable: activeSong,
                     builder: ((context, value, child) {

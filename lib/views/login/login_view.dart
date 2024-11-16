@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musify/services/global_service.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/styles/colors.dart';
 import 'login_controller.dart';
 
 class LoginViewBinding implements Bindings {

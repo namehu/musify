@@ -1,10 +1,10 @@
-import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
 import 'package:get/get.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/util/MUINetease.dart';
 
 class PlayController extends GetxController {
   final player = AudioPlayerService.player;
-  var lyricUI = UINetease();
+  var lyricUI = MUINetease();
 
   @override
   void onInit() {

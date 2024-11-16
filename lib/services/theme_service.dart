@@ -37,10 +37,6 @@ class ThemeService extends GetxService {
         modeMap.entries.firstWhere(((element) => element.key == key));
     mode.value = _themeMode.value;
 
-    // Future.delayed(Duration(milliseconds: 200), () {
-    //   Get.forceAppUpdate();
-    // });
-
     return await PreferencesService.instance.setInt(_modeKey, _themeMode.key);
   }
 
@@ -53,16 +49,30 @@ class ThemeService extends GetxService {
 
   /// 获取当前主题
   static get theme {
+    var _primaryColor = ThemeService.color.primaryColor;
+
     if (ThemeService.mode.value == ThemeMode.dark) {
-      return createThemeData(
-        brightness: Brightness.dark, // 应用主题亮度，可选（dark、light）
-        scaffoldBackgroundColor: ThemeService
-            .color.bgColor, // Scaffold的背景颜色。典型Material应用程序或应用程序内页面的背景颜色
+      var _colorSchme = ColorScheme.dark();
+      return ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: ThemeService.color.bgColor,
+        primaryColor: _primaryColor,
+        colorScheme: _colorSchme.copyWith(primary: _primaryColor),
+        primarySwatch: _primaryColor,
+        appBarTheme: AppBarTheme().copyWith(color: ThemeService.color.bgColor),
       );
     }
-    return createThemeData(
-      primaryColor: Colors.red,
+
+    var _colorSchme = ColorScheme.light();
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
       scaffoldBackgroundColor: ThemeService.color.bgColor,
+      primaryColor: _primaryColor,
+      colorScheme: _colorSchme.copyWith(primary: _primaryColor),
+      primarySwatch: _primaryColor,
+      appBarTheme: AppBarTheme().copyWith(color: _primaryColor),
     );
   }
 
@@ -71,25 +81,6 @@ class ThemeService extends GetxService {
         ? darkColorMap
         : normalColorMap;
   }
-}
-
-ThemeData createThemeData({
-  MaterialColor? primaryColor,
-  Brightness? brightness = Brightness.light,
-  Color? scaffoldBackgroundColor = Colors.white,
-}) {
-  var colorSchme =
-      brightness == Brightness.dark ? ColorScheme.dark() : ColorScheme.light();
-
-  return ThemeData(
-    useMaterial3: true,
-    brightness: brightness,
-    scaffoldBackgroundColor: scaffoldBackgroundColor,
-    primaryColor: primaryColor,
-    colorScheme: colorSchme.copyWith(primary: primaryColor),
-    primarySwatch: primaryColor,
-    appBarTheme: AppBarTheme().copyWith(color: primaryColor),
-  );
 }
 
 ///  useMaterial3: true,

@@ -18,14 +18,14 @@ class MStarToogle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      padding: EdgeInsets.all(0),
-      icon: Icon(
+    return InkWell(
+      // padding: EdgeInsets.all(0),
+      child: Icon(
         value ? Icons.favorite : Icons.favorite_border_outlined,
         color: color,
         size: size,
       ),
-      onPressed: () {
+      onTap: () {
         onChange(!value);
       },
     );

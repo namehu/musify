@@ -1,20 +1,21 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
-import 'package:flutter_lyric/lyrics_model_builder.dart';
-import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:get/get.dart' hide Rx;
 import 'package:musify/models/myModel.dart';
-import 'package:musify/screens/components/myAudio/playerControBar.dart';
-import 'package:musify/screens/components/myAudio/playerSeekBar.dart';
-import 'package:musify/screens/components/myAudio/playerVolumeBar.dart';
-import 'package:musify/util/util.dart';
+import 'package:musify/util/httpclient.dart';
+import 'package:musify/views/paly/widgets/lyric_reader.dart';
+import 'package:musify/views/paly/widgets/player_control_bar.dart';
+import 'package:musify/widgets/m_star_toogle.dart';
+import './widgets/seek_bar.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/size.dart';
+import 'package:musify/views/paly/widgets/cover.dart';
+import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../generated/l10n.dart';
 import '../../models/notifierValue.dart';
-import '../../util/mycss.dart';
 import 'play_controller.dart';
 
 class PlayBinding implements Bindings {
@@ -25,68 +26,10 @@ class PlayBinding implements Bindings {
 }
 
 class PlayView extends GetView<PlayController> {
-  final lyricPadding = 40.0;
-  final playing = true;
+  final double _appBarHeight = 96;
 
-  Widget _buildReaderWidget() {
-    return ValueListenableBuilder<String>(
-        valueListenable: activeLyric,
-        builder: ((context, value, child) {
-          var _model =
-              LyricsModelBuilder.create().bindLyricToMain(value).getModel();
-          return StreamBuilder<PositionData>(
-              stream: _positionDataStream,
-              builder: (context, snapshot) {
-                final positionData = snapshot.data;
-                final position = positionData?.position.inMilliseconds ?? 0;
-
-                return LyricsReader(
-                  padding: EdgeInsets.symmetric(horizontal: lyricPadding),
-                  model: _model,
-                  position: position,
-                  lyricUi: controller.lyricUI,
-                  playing: playing,
-                  size: !isMobile
-                      ? Size(windowsWidth.value / 2, windowsHeight.value - 350)
-                      : Size(windowsWidth.value, windowsHeight.value - 385),
-                  emptyBuilder: () => Center(
-                    child: Text(
-                      S.current.no + S.current.lyric,
-                      style: controller.lyricUI.getOtherMainTextStyle(),
-                    ),
-                  ),
-                  selectLineBuilder: (progress, confirm) {
-                    return Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              confirm.call();
-                              //setState(() {
-                              controller.player
-                                  .seek(Duration(milliseconds: progress));
-                              controller.lyricUI =
-                                  UINetease.clone(controller.lyricUI);
-                              // });
-                            },
-                            icon: Icon(Icons.play_arrow, color: textGray)),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(color: textGray),
-                            height: 1,
-                            width: double.infinity,
-                          ),
-                        ),
-                        Text(
-                          formatDurationMilliseconds(progress),
-                          style: TextStyle(color: textGray),
-                        )
-                      ],
-                    );
-                  },
-                );
-              });
-        }));
-  }
+  final double commonPadding = 30;
+  List<String> tabs = ["歌曲", "歌词"];
 
   Stream<PositionData> get _positionDataStream {
     return Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
@@ -99,12 +42,54 @@ class PlayView extends GetView<PlayController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          _buildBackendCover(),
-          _buidMain(),
-        ],
+    return DefaultTabController(
+      initialIndex: 0,
+      length: tabs.length,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: _buildTabTitle(),
+        body: Stack(
+          children: <Widget>[
+            _buildBackendCover(),
+            _buidMain(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildTabTitle() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(_appBarHeight),
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(
+              Icons.keyboard_arrow_down,
+            )),
+        title: Center(
+          child: Container(
+            width: 190,
+            child: TabBar(
+              dividerHeight: 0,
+              indicator: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: ThemeService.color.primaryColor,
+                    width: 4,
+                  ),
+                ),
+              ),
+              // dividerColor: ThemeService.color.primaryColor,
+              tabs: tabs.map((e) => Tab(text: e, height: 32)).toList(),
+            ),
+          ),
+        ),
+        actions: [SizedBox(width: 24)],
       ),
     );
   }
@@ -114,7 +99,8 @@ class PlayView extends GetView<PlayController> {
       constraints: const BoxConstraints.expand(),
       child: ValueListenableBuilder<Map>(
         valueListenable: activeSong,
-        builder: ((context, value, child) => MCover(url: value["url"])),
+        builder: ((context, value, child) =>
+            MCover(url: value.isNotEmpty ? value["url"] : '')),
       ),
     );
   }
@@ -125,36 +111,36 @@ class PlayView extends GetView<PlayController> {
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
           decoration: BoxDecoration(color: Colors.black.withOpacity(0.6)),
+          padding: EdgeInsets.only(top: _appBarHeight),
           child: Column(
             children: [
-              _buildHeader(),
-              Container(height: 50, child: PlayerVolumeBar(controller.player)),
+              _buildTabBarView(),
+              // 进度条
               Container(
-                  height: 5,
-                  child: StreamBuilder<PositionData>(
-                    stream: _positionDataStream,
-                    builder: (context, snapshot) {
-                      final positionData = snapshot.data;
+                margin: EdgeInsets.only(top: 32),
+                child: StreamBuilder<PositionData>(
+                  stream: _positionDataStream,
+                  builder: (context, snapshot) {
+                    final positionData = snapshot.data;
 
-                      return PlayerSeekBar(
-                        trackWidth: windowsWidth.value,
-                        duration: positionData?.duration ?? Duration.zero,
-                        position: positionData?.position ?? Duration.zero,
-                        bufferedPosition:
-                            positionData?.bufferedPosition ?? Duration.zero,
-                        onChangeEnd: controller.player.seek,
-                      );
-                    },
-                  )),
-              SizedBox(height: 5),
-              Container(
-                height: 60,
-                child: PlayerControBar(
-                  isPlayScreen: true,
-                  player: controller.player,
+                    return PlayerSeekBar(
+                      padding: commonPadding,
+                      trackWidth: windowsWidth.value,
+                      duration: positionData?.duration ?? Duration.zero,
+                      position: positionData?.position ?? Duration.zero,
+                      bufferedPosition:
+                          positionData?.bufferedPosition ?? Duration.zero,
+                      onChangeEnd: controller.player.seek,
+                    );
+                  },
                 ),
               ),
-              SizedBox(height: 25),
+              Container(
+                margin: EdgeInsets.only(top: 48, bottom: 48),
+                padding:
+                    EdgeInsets.only(left: commonPadding, right: commonPadding),
+                child: PlayerControlBar(isPlayScreen: true),
+              ),
             ],
           ),
         ),
@@ -162,62 +148,103 @@ class PlayView extends GetView<PlayController> {
     );
   }
 
+  Widget _buildTabBarView() {
+    List<Widget> children = [];
+
+    for (var i = 0; i < tabs.length; i++) {
+      if (i == 0) {
+        children.add(KeepAliveWrapper(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildHeader(),
+          ],
+        )));
+      } else {
+        children.add(KeepAliveWrapper(
+          child: Container(
+            alignment: Alignment.center,
+            child: LyricReader(
+              positionDataStream: _positionDataStream,
+              lyricUI: controller.lyricUI,
+              onLyricUIChange: (ui) => controller.lyricUI = ui,
+            ),
+          ),
+        ));
+      }
+    }
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.only(left: commonPadding, right: commonPadding),
+        child: TabBarView(children: children),
+      ),
+    );
+  }
+
   Widget _buildHeader() {
-    double _width = windowsWidth.value;
     return ValueListenableBuilder<Map>(
       valueListenable: activeSong,
       builder: ((context, value, child) {
         return Container(
-          width: _width,
-          child: Row(
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              PlayCoverWidget(url: value.isNotEmpty ? value["url"] : ''),
               Container(
-                padding: EdgeInsets.all(30),
-                height: windowsHeight.value - 80 - 50 - 25,
-                width: _width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                margin: EdgeInsets.only(
+                    top: StyleSize.space, bottom: StyleSize.spaceSmall),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 50,
-                      width: _width,
-                      child: Text(
-                          (value.isEmpty) ? S.current.unknown : value["title"],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: titleText2),
+                    Text(
+                      (value.isEmpty) ? S.current.unknown : value["title"],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    Container(
-                        width: _width,
-                        child: Text(
-                          (value.isEmpty)
-                              ? S.current.unknown
-                              : S.current.artist + ": " + value["artist"],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: nomalText,
-                          textAlign: TextAlign.center,
-                        )),
-                    SizedBox(
-                      height: 15,
+                    InkWell(onTap: () {}, child: Icon(Icons.more_vert))
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      (value.isEmpty) ? S.current.unknown : value["artist"],
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Container(
-                        width: !isMobile ? _width / 2 : _width,
-                        child: Text(
-                          (value.isEmpty)
-                              ? S.current.unknown
-                              : S.current.album + ": " + value["album"],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: nomalText,
-                          textAlign: TextAlign.center,
-                        )),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    _buildReaderWidget()
+                    ValueListenableBuilder<Map>(
+                      valueListenable: activeSong,
+                      builder: (context, _song, child) {
+                        var value = (_song.isNotEmpty && _song["starred"])
+                            ? true
+                            : false;
+
+                        return MStarToogle(
+                            value: value,
+                            size: 24,
+                            onChange: (val) async {
+                              if (_song.isNotEmpty) {
+                                Favorite _favorite =
+                                    Favorite(id: _song["value"], type: 'song');
+
+                                value
+                                    ? await delStarred(_favorite)
+                                    : await addStarred(_favorite);
+
+                                // activeSong.value["starred"] = !value;
+                                activeSong.value = Map.from(
+                                  activeSong.value..addAll({"starred": !value}),
+                                );
+                              }
+                            });
+                      },
+                    )
                   ],
                 ),
               ),

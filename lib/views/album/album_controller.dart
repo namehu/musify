@@ -1,10 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:musify/models/myModel.dart';
+import 'package:musify/models/notifierValue.dart';
+import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/util/httpclient.dart';
 
 import '../../models/songs.dart';
 
 class AlbumController extends GetxController {
+  final AudioPlayer player = AudioPlayerService.player;
+
   final _album = (Albums.fromJson({})).obs;
   final _songs = <Songs>[].obs;
 
@@ -62,6 +68,36 @@ class AlbumController extends GetxController {
       }
 
       _songs.value = _songtem;
+    }
+  }
+
+  /// 处理播放
+  handlePlay([bool? shuffle]) {
+    if (songs.length <= 0) {
+      return;
+    }
+
+    if (listEquals(activeList.value, songs)) {
+      player.seek(Duration.zero, index: 0);
+    } else {
+      //当前歌曲队列
+      activeIndex.value = 0;
+      activeSongValue.value = songs[0].id;
+      activeList.value = songs; //歌曲所在专辑歌曲List
+    }
+  }
+
+  ///
+  ///
+  /// 点击歌曲播放
+  handleSongClick(Songs _song, int index) {
+    if (listEquals(activeList.value, songs)) {
+      player.seek(Duration.zero, index: index);
+    } else {
+      //当前歌曲队列
+      activeIndex.value = index;
+      activeSongValue.value = _song.id;
+      activeList.value = songs; //歌曲所在专辑歌曲List
     }
   }
 }

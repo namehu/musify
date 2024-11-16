@@ -109,19 +109,19 @@ class LeftScreenState extends State<LeftScreen> {
                                   if (isMobile) Navigator.pop(context);
                                 },
                                 title: S.current.search + S.current.lyric,
-                                icon: Icons.public)
+                                icon: Icons.public),
+                          MyTextIconButton(
+                            press: () {
+                              Get.toNamed(Routes.SETTING);
+                            },
+                            title: '设置',
+                            icon: Icons.settings,
+                          )
                         ],
                       );
                     },
                   ),
                 ),
-                MyTextIconButton(
-                  press: () {
-                    Get.toNamed(Routes.SETTING);
-                  },
-                  title: '设置',
-                  icon: Icons.settings,
-                )
               ],
             ),
           )),
