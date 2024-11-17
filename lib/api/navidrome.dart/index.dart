@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:musify/models/notifierValue.dart';
 
-import '../../util/mycss.dart';
 import '../types.dart';
 
 MusicApi navidromeApi = (
@@ -8,12 +9,36 @@ MusicApi navidromeApi = (
   getSong: 'https://api.music.163.com/api/linux/forward',
 );
 
-checkResponse(Response<dynamic> _response) {
-  if (_response.statusCode == 200) {
-    if (_response.data['subsonic-response'] != null) {
-      Map _subsonic = _response.data['subsonic-response'];
-      String _status = _subsonic['status'];
-      if (_status == 'ok') {
+Interceptor navidromeInterceptor = InterceptorsWrapper(
+  onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
+    // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+    // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+
+    options.baseUrl = serversInfo.value.baseurl;
+    options.responseType = ResponseType.json;
+
+    var _ndCredential = serversInfo.value.ndCredential;
+    if (_ndCredential.isNotEmpty) {
+      options.headers['token'] = 'Bearer $_ndCredential';
+    }
+
+    return handler.next(options);
+  },
+  onResponse: (Response response, ResponseInterceptorHandler handler) {
+    // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+    return handler.next(response);
+  },
+  onError: (DioException error, ErrorInterceptorHandler handler) {
+    // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+    return handler.next(error);
+  },
+);
+
+checkResponse(Response<dynamic> response) {
+  if (response.statusCode == 200) {
+    if (response.data != null) {
+      Map _subsonic = response.data;
+      if (response.statusMessage == 'OK') {
         return _subsonic;
       }
     }
@@ -21,21 +46,26 @@ checkResponse(Response<dynamic> _response) {
   return null;
 }
 
-Future<bool> authenticate(
-    String _baseUrl, String _username, String _password) async {
+Future<Map<String, dynamic>> authenticate(
+    String _baseUrl, String username, String password) async {
+  Map<String, dynamic> res = {};
+
   try {
-    var _response = await Dio().get(
-      _baseUrl +
-          '/rest/ping?v=$version&c=musify&f=json&u=' +
-          _username +
-          '&p=' +
-          _password,
-    );
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return false;
-    return true;
+    var _response = await Dio().post(_baseUrl + '/auth/login', data: {
+      'username': username,
+      'password': password,
+    });
+
+    var data = checkResponse(_response);
+    if (data != null) {
+      res['userId'] = data['id'];
+      res['username'] = username;
+      res['salt'] = data["subsonicSalt"];
+      res['hash'] = data["subsonicToken"];
+      res['credential'] = data["token"];
+    }
   } catch (e) {
     print(e);
   }
-  return false;
+  return res;
 }

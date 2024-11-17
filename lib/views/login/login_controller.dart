@@ -66,44 +66,42 @@ class LoginController extends GetxController {
 
     loading.value = true;
 
-    bool status = false;
+    Map<String, dynamic> res = {};
     MRequest.setApi(serverType.value);
     try {
       // testServer(baseurl, username, password)
-      status = await MRequest.api.authenticate(baseurl, username, password);
+      res = await MRequest.api.authenticate(baseurl, username, password);
     } catch (e) {}
 
-    if (!status) {
+    if (res['username'] == null) {
       MRequest.resetApi();
-      return showMyAlertDialog(context, S.current.notive, S.current.serverErr);
+      showMyAlertDialog(context, S.current.notive, S.current.serverErr);
+    } else {
+      ServerInfo _serverInfo = ServerInfo(
+        serverType: serverType.value.label,
+        baseurl: baseurl,
+        userId: res['userId'] ?? '',
+        username: username,
+        salt: res['salt'] ?? '',
+        hash: res['hash'] ?? '',
+        ndCredential: res['credential'] ?? '',
+        neteaseapi: "",
+        languageCode: '',
+      );
+
+      try {
+        if (editId != null) {
+          _serverInfo.id = editId!.value;
+          await DbProvider.instance.updateServerInfo(_serverInfo);
+          Get.back();
+        } else {
+          await DbProvider.instance.addServerInfo(_serverInfo);
+          serverService.updateCurrentServerInfo(_serverInfo);
+          indexValue.value = 0;
+          Get.offNamed(Routes.HOME);
+        }
+      } catch (e) {}
     }
-
-    final _randomNumber = generateRandomString();
-    final _randomBytes = utf8.encode(password + _randomNumber);
-    final _randomString = md5.convert(_randomBytes).toString();
-
-    ServerInfo _serverInfo = ServerInfo(
-      serverType: serverType.value.label,
-      baseurl: baseurl,
-      username: username,
-      salt: _randomNumber,
-      hash: _randomString,
-      neteaseapi: "",
-      languageCode: '',
-    );
-
-    try {
-      if (editId != null) {
-        _serverInfo.id = editId!.value;
-        await DbProvider.instance.updateServerInfo(_serverInfo);
-        Get.back();
-      } else {
-        await DbProvider.instance.addServerInfo(_serverInfo);
-        serverService.updateCurrentServerInfo(_serverInfo);
-        indexValue.value = 0;
-        Get.offNamed(Routes.HOME);
-      }
-    } catch (e) {}
 
     loading.value = false;
   }

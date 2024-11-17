@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:musify/api/navidrome.dart/index.dart';
 import 'package:musify/api/subsonic/index.dart';
 import 'package:musify/enums/serve_type_enum.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/util/request/mock_inter.dart';
 import 'types.dart';
 
@@ -14,30 +13,7 @@ class MRequest {
   static Dio get dio {
     if (_dio == null) {
       _dio = Dio();
-      // 自定义拦截器
-      dio.interceptors.add(
-        InterceptorsWrapper(
-          onRequest:
-              (RequestOptions options, RequestInterceptorHandler handler) {
-            // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
-            // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-
-            options.baseUrl = serversInfo.value.baseurl;
-            options.responseType = ResponseType.json;
-
-            return handler.next(options);
-          },
-          onResponse: (Response response, ResponseInterceptorHandler handler) {
-            // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-            return handler.next(response);
-          },
-          onError: (DioException error, ErrorInterceptorHandler handler) {
-            // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
-            return handler.next(error);
-          },
-        ),
-      );
-
+      dio.interceptors.add(subsonicInterceptor);
       // 添加mock拦截器
       dio.interceptors.add(MyMockInterceptor());
     }
@@ -64,17 +40,23 @@ class MRequest {
   static MusicApi get api => _api;
 
   static setApi(ServeTypeEnum serverType) {
+    dio.interceptors.clear();
+    dio.interceptors.add(MyMockInterceptor());
+
     switch (serverType) {
       case ServeTypeEnum.navidrome:
         _api = navidromeApi;
+        dio.interceptors.add(navidromeInterceptor);
         break;
       default:
         _api = subsonicApi;
+        dio.interceptors.add(subsonicInterceptor);
         break;
     }
   }
 
   static resetApi() {
-    _api = subsonicApi;
+    // _api = subsonicApi;
+    setApi(ServeTypeEnum.subsnoic);
   }
 }

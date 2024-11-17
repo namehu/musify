@@ -13,6 +13,8 @@ class ServerService extends GetxService {
     hash: '',
     neteaseapi: '',
     salt: '',
+    ndCredential: '',
+    userId: '',
     username: '',
     languageCode: '',
   ).obs;

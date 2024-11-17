@@ -12,12 +12,14 @@ ValueNotifier<int> indexValue = ValueNotifier<int>(0);
 ValueNotifier<String> activeSongValue = ValueNotifier<String>("1");
 
 ValueNotifier<ServerInfo> serversInfo = ValueNotifier<ServerInfo>(ServerInfo(
-  serverType: ServeTypeEnum.navidrome.label,
+  serverType: ServeTypeEnum.subsnoic.label,
   baseurl: '',
-  hash: '',
-  neteaseapi: '',
-  salt: '',
+  userId: '',
   username: '',
+  salt: '',
+  hash: '',
+  ndCredential: '',
+  neteaseapi: '',
   languageCode: '',
 ));
 

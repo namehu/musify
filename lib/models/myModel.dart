@@ -10,18 +10,22 @@ class ServerInfo {
   int? id;
   late String serverType;
   late String baseurl;
+  late String userId;
   late String username;
   late String salt;
   late String hash;
+  late String ndCredential;
   late String neteaseapi;
   late String languageCode;
 
   ServerInfo({
     required this.serverType,
     required this.baseurl,
+    required this.userId,
     required this.username,
     required this.salt,
     required this.hash,
+    required this.ndCredential,
     required this.neteaseapi,
     required this.languageCode,
   });
@@ -30,9 +34,11 @@ class ServerInfo {
     id = json['id'];
     serverType = json['serverType'];
     baseurl = json['baseurl'];
+    userId = json['userId'];
     username = json['username'];
     salt = json['salt'];
     hash = json['hash'];
+    ndCredential = json['ndCredential'];
     neteaseapi = json['neteaseapi'];
     languageCode = json['languageCode'];
   }
@@ -42,9 +48,11 @@ class ServerInfo {
     _data['id'] = this.id;
     _data['serverType'] = this.serverType;
     _data['baseurl'] = this.baseurl;
+    _data['userId'] = this.userId;
     _data['username'] = this.username;
     _data['salt'] = this.salt;
     _data['hash'] = this.hash;
+    _data['ndCredential'] = this.ndCredential;
     _data['neteaseapi'] = this.neteaseapi;
     _data['languageCode'] = this.languageCode;
     return _data;

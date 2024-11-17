@@ -47,9 +47,11 @@ class DbProvider {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 serverType TEXT NOT NULL,
                 baseurl TEXT NOT NULL,
+                userId TEXT NOT NULL,
                 username TEXT NOT NULL,
                 salt TEXT NOT NULL,
                 hash TEXT NOT NULL,
+                ndCredential TEXT NOT NULL,
                 neteaseapi TEXT,
                 languageCode TEXT
               )
