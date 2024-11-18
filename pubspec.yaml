@@ -35,9 +35,12 @@ dependencies:
   transparent_image: ^2.0.1
   event_bus: ^2.0.1
   toastification: ^2.3.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0
+  build_runner: ^2.3.3
+  json_serializable: ^6.8.0
   flutter_test:
     sdk: flutter
   integration_test:
@@ -58,3 +61,21 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+jsonToDart:
+  engine: json_serializable
+  outputFolder: lib/models #default: lib/
+  # typeChecking: true #default: undefined (Select from picker)
+  nullValueDataType: String #default: dynamic
+  nullSafety: true #default: false
+  # copyWithMethod: true #default: false
+  # fromListMethod: true #default: false
+  # mergeArrayApproach: false #default: true
+  package:
+    package:json_annotation/json_annotation.dart
+
+    #default: false,
+    #if true, value = (json[key] as num).toInt() or value = (_data[key] as num).toDouble()
+    #if false, value = json[key]
+    #if "ask", selection popup will apear before parse json
+  checkNumberAsNum: true # true, false, "ask"

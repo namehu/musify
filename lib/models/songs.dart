@@ -1,3 +1,5 @@
+import 'package:musify/models/navidrome/nd_song.dart';
+
 class Songs {
   late String id;
   late String title;
@@ -13,6 +15,8 @@ class Songs {
   late String created;
   late String stream;
   late String coverUrl;
+  late String lyrics;
+  late bool starred;
 
   Songs({
     required this.id,
@@ -29,23 +33,34 @@ class Songs {
     required this.created,
     required this.stream,
     required this.coverUrl,
+    required this.lyrics,
+    required this.starred,
   });
 
   Songs.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    album = json['album'];
-    artist = json['artist'];
+    id = json['id'] == null ? "" : json['id'];
+    title = json['title'] == null ? "" : json['title'];
+    album = json['album'] == null ? "" : json['album'];
+    artist = json['artist'] == null ? "" : json['artist'];
     genre = json['genre'] == null ? "0" : json['genre'];
-    albumId = json['albumId'];
+    albumId = json['albumId'] == null ? "" : json['albumId'];
     duration = json['duration'] == null ? 0 : json['duration'];
     bitRate = json['bitRate'] == null ? 0 : json['bitRate'];
-    suffix = json['suffix'];
-    path = json['path'];
+    suffix = json['suffix'] == null ? "" : json['suffix'];
+    path = json['path'] == null ? "" : json['path'];
     playCount = json['playCount'] == null ? 0 : json['playCount'];
-    created = json['created'];
-    stream = json['stream'];
-    coverUrl = json['coverUrl'];
+    created = json['created'] == null ? "" : json['created'];
+    stream = json['stream'] == null ? "" : json['stream'];
+    coverUrl = json['coverUrl'] == null ? "" : json['coverUrl'];
+    lyrics = json['lyrics'] == null ? "" : json['lyrics'];
+
+    if (json['starred'] == null) {
+      starred = false;
+    } else if (json['starred'] is bool) {
+      starred = json['starred'];
+    } else if (json['starred'] is String) {
+      starred = json['starred'] == '' ? false : true;
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +79,44 @@ class Songs {
     _data['created'] = this.created;
     _data['stream'] = this.stream;
     _data['coverUrl'] = this.coverUrl;
+    _data['lyrics'] = this.lyrics;
+    _data['starred'] = this.starred;
     return _data;
+  }
+
+  Songs.fromNdSong(NdSong ndsong) {
+    id = ndsong.id ?? '';
+    title = ndsong.title ?? '';
+    album = ndsong.album ?? '';
+    artist = ndsong.artist ?? '';
+    genre = ndsong.genre ?? '0';
+    albumId = ndsong.albumId ?? '';
+    duration = ndsong.duration?.toInt() ?? 0;
+    bitRate = ndsong.bitRate ?? 0;
+    suffix = ndsong.suffix ?? '';
+    path = ndsong.path ?? '';
+    playCount = ndsong.playCount ?? 0;
+    created = ndsong.createdAt ?? '';
+    starred = ndsong.starred ?? false;
+    lyrics = ndsong.lyrics ?? '';
+  }
+
+  Songs.fromInitial() {
+    id = "";
+    title = "";
+    album = "";
+    artist = "";
+    genre = "0";
+    albumId = "";
+    duration = 0;
+    bitRate = 0;
+    suffix = "";
+    path = "";
+    playCount = 0;
+    created = "";
+    stream = "";
+    coverUrl = "";
+    lyrics = '';
+    starred = false;
   }
 }

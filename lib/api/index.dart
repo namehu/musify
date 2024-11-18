@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
-import 'package:musify/api/navidrome.dart/index.dart';
+import 'package:musify/api/navidrome/index.dart';
 import 'package:musify/api/subsonic/index.dart';
 import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/util/request/mock_inter.dart';
 import 'types.dart';
 
 class MRequest {
-  // static String? _sverType;
   static Dio? _dio;
-  static MusicApi _api = resetApi();
+  static MusicApi _api = subsonicApi;
 
   static Dio get dio {
     if (_dio == null) {
@@ -19,23 +18,6 @@ class MRequest {
     }
     return _dio!;
   }
-
-  // static String get currentServerType {
-  //   if (_sverType == null) {
-  //     _sverType =
-  //         PreferencesService.getString(PreferencesEnum.serverType, 'subsonic');
-  //   }
-  //   return _sverType!;
-  // }
-
-  // static set currentServerType(String? val) {
-  //   _sverType = val;
-  //   if (val != null) {
-  //     PreferencesService.setString(PreferencesEnum.serverType, val);
-  //   } else {
-  //     PreferencesService.remove(PreferencesEnum.serverType);
-  //   }
-  // }
 
   static MusicApi get api => _api;
 
@@ -56,7 +38,6 @@ class MRequest {
   }
 
   static resetApi() {
-    // _api = subsonicApi;
     setApi(ServeTypeEnum.subsnoic);
   }
 }
