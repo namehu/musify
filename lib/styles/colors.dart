@@ -14,6 +14,8 @@ const gray11 = Color.fromRGBO(31, 31, 31, 1);
 const gray12 = Color.fromRGBO(20, 20, 20, 1);
 const gray13 = Color.fromRGBO(0, 0, 0, 1);
 
+const dialogBackgroundColor = Color.fromARGB(255, 52, 53, 54);
+
 const primaryColor = MaterialColor(
   -1436359,
   const <int, Color>{
@@ -63,7 +65,7 @@ ColorMapType normalColorMap = (
   dividerColor: Color.fromRGBO(5, 5, 5, 0.06),
   bgColor: gray3,
   secondBgColor: gray11,
-  dialogBackgroundColor: gray10,
+  dialogBackgroundColor: dialogBackgroundColor,
   cardColor: Colors.white,
   iconColor: gray2,
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
@@ -83,11 +85,11 @@ ColorMapType darkColorMap = (
   dividerColor: Color.fromRGBO(253, 253, 253, 0.12),
   bgColor: gray13,
   secondBgColor: gray11,
-  dialogBackgroundColor: gray10,
+  dialogBackgroundColor: dialogBackgroundColor,
   cardColor: gray9,
   iconColor: gray2,
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
   secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
-  musicBarColor: Colors.white,
+  musicBarColor: dialogBackgroundColor,
   sliderBorderColor: Colors.grey,
 );

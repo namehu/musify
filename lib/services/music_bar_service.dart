@@ -3,11 +3,13 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/constant.dart';
+import 'package:musify/models/notifierValue.dart';
 import 'package:musify/widgets/music_bar/music_bar.dart';
 
 class MusicBarService extends GetxService {
-  ///显示音乐栏
   static OverlayEntry? overlayEntry;
+
+  static RxBool hideBar = false.obs;
 
   Future<MusicBarService> init() async {
     return this;
@@ -26,7 +28,13 @@ class MusicBarService extends GetxService {
           left: left ?? 100,
           child: Material(
             color: Colors.transparent,
-            child: MusicBar(),
+            child: ValueListenableBuilder<bool>(
+              valueListenable: hideMusicBar,
+              builder: (context, value, child) => Visibility(
+                visible: !value,
+                child: MusicBar(),
+              ),
+            ),
           ),
         );
       });

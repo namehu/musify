@@ -15,8 +15,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
-    /// 加载国际化
-    languageService.loadLanguage(languageService.languageCode.value);
+    languageService.loadLanguage(languageService.languageCode.value); // 加载国际化
   }
 
   @override

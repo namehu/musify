@@ -16,11 +16,7 @@ class _PlayCoverWidgetState extends State<PlayCoverWidget> {
     return Container(
       width: 320,
       height: 320,
-      // color: Colors.red,
-      child: MCover(
-        url: widget.url,
-        radius: 4,
-      ),
+      child: MCover(url: widget.url, radius: 4),
     );
   }
 }

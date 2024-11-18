@@ -3,7 +3,6 @@ import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/util/MUINetease.dart';
@@ -48,7 +47,7 @@ class _LyricReaderState extends State<LyricReader> {
               position: position,
               lyricUi: widget.lyricUI,
               playing: true,
-              size: Size(windowsWidth.value, windowsHeight.value - 385),
+              // size: Size(windowsWidth.value, windowsHeight.value - 385),
               emptyBuilder: () => Center(
                 child: Text(
                   S.current.no + S.current.lyric,

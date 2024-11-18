@@ -9,10 +9,7 @@ import '../../../models/notifierValue.dart';
 import '../../../util/mycss.dart';
 
 class PlayerControlBar extends StatefulWidget {
-  final bool isPlayScreen;
-
-  const PlayerControlBar({Key? key, required this.isPlayScreen})
-      : super(key: key);
+  const PlayerControlBar({Key? key}) : super(key: key);
   @override
   _PlayerControlBarState createState() => _PlayerControlBarState();
 }
@@ -21,7 +18,7 @@ class _PlayerControlBarState extends State<PlayerControlBar> {
   final AudioPlayer player = AudioPlayerService.player;
 
   final double iconSize = 24;
-  int loopMode = 0;
+  final int loopMode = 0;
   bool isactivePlay = true;
   late OverlayEntry activePlaylistOverlay;
 

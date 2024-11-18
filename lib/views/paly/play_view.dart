@@ -139,7 +139,7 @@ class PlayView extends GetView<PlayController> {
                 margin: EdgeInsets.only(top: 48, bottom: 48),
                 padding:
                     EdgeInsets.only(left: commonPadding, right: commonPadding),
-                child: PlayerControlBar(isPlayScreen: true),
+                child: PlayerControlBar(),
               ),
             ],
           ),

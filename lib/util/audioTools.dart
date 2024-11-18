@@ -33,7 +33,7 @@ getSongDetail(String id) async {
     activeSong.value = _activeSong;
 
     var audioPlayerService = Get.find<AudioPlayerService>();
-    audioPlayerService.songs.value = _song;
+    audioPlayerService.currentSong.value = _song;
 
     var lyric = Lyrics.fromJsonString(_song.lyrics ?? '');
     var _lyrictem = lyric.toPlayerlyric();
@@ -46,12 +46,6 @@ getSongDetail(String id) async {
 }
 
 setSongLyric(String id, [String? text]) async {
-  if (text != null) {
-    var lyric = Lyrics.fromJsonString(text);
-    activeLyric.value = lyric.toPlayerlyric();
-    return;
-  }
-
   //获取歌词
   final _lyrictem = await DbProvider.instance.getLyricById(id);
   if (_lyrictem != null && _lyrictem!.isNotEmpty) {

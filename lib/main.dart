@@ -59,11 +59,11 @@ void main() async {
   //Register Get Services
   await Get.putAsync(() => GloabalService().init());
   await Get.putAsync(() => PreferencesService().init(sharedPreferences));
-  await Get.putAsync(() => ThemeService().init());
-  await Get.putAsync(() => AudioPlayerService().init());
-  await Get.putAsync(() => ServerService().init());
   await Get.putAsync(() => LanguageService().init());
+  await Get.putAsync(() => ThemeService().init());
   await Get.putAsync(() => MusicBarService().init());
+  await Get.putAsync(() => ServerService().init());
+  await Get.putAsync(() => AudioPlayerService().init());
 
   final AudioPlayer _player = AudioPlayerService.player;
   //监听器

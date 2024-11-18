@@ -58,3 +58,5 @@ ValueNotifier<double> windowsWidth = ValueNotifier<double>(
 ValueNotifier<double> windowsHeight = ValueNotifier<double>(
     PlatformDispatcher.instance.views.first.physicalSize.height /
         PlatformDispatcher.instance.views.first.devicePixelRatio);
+
+ValueNotifier<bool> hideMusicBar = ValueNotifier<bool>(false);
