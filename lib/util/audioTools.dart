@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/models/lyrics.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/services/audio_player_service.dart';
 import '../generated/l10n.dart';
 import '../models/notifierValue.dart';
 import 'httpClient.dart';
@@ -30,9 +32,12 @@ getSongDetail(String id) async {
 
     activeSong.value = _activeSong;
 
-    if (_song.lyrics != null && _song.lyrics.isNotEmpty) {
-      setSongLyric(id, _song.lyrics);
-    }
+    var audioPlayerService = Get.find<AudioPlayerService>();
+    audioPlayerService.songs.value = _song;
+
+    var lyric = Lyrics.fromJsonString(_song.lyrics ?? '');
+    var _lyrictem = lyric.toPlayerlyric();
+    audioPlayerService.lyric.value = _lyrictem;
 
     return _song;
   } catch (e) {
@@ -42,10 +47,6 @@ getSongDetail(String id) async {
 
 setSongLyric(String id, [String? text]) async {
   if (text != null) {
-    //获取歌词
-    // var text =
-    //     "[{\"lang\":\"xxx\",\"line\":[{\"start\":0,\"value\":\"作词 : 方文山\"},{\"start\":1000,\"value\":\"作曲 : 周杰伦\"},{\"start\":2000,\"value\":\"编曲 : 黄雨勋\"},{\"start\":3000,\"value\":\"制作人 : 周杰伦\"},{\"start\":32010,\"value\":\"信札拆封谁为难 不过寥寥数行\"},{\"start\":35790,\"value\":\"娟秀字迹温柔 却感伤\"},{\"start\":39560,\"value\":\"你将心事 上了淡妆\"},{\"start\":43120,\"value\":\"该说的话 却被仔细收藏\"},{\"start\":46150,\"value\":\"暮色望垂杨 拱桥粼粼月光\"},{\"start\":49490,\"value\":\"忆往事我走笔 也阑珊\"},{\"start\":53620,\"value\":\"红颜如霜 凝结了过往\"},{\"start\":60430,\"value\":\"芦苇花开岁已寒 若霜又降路遥漫长\"},{\"start\":67390,\"value\":\"墙外是谁在吟唱 凤求凰\"},{\"start\":74360,\"value\":\"梨园台上 西皮二黄\"},{\"start\":77820,\"value\":\"却少了你 无人问暖\"},{\"start\":81220,\"value\":\"谁在彼岸 天涯一方\"},{\"start\":85940,\"value\":\"一句甚安勿念 你说落笔太难\"},{\"start\":89380,\"value\":\"窗外古琴幽兰 琴声平添孤单\"},{\"start\":92730,\"value\":\"我墨走了几行 泪潸然落了款\"},{\"start\":96180,\"value\":\"思念徒留纸上 一整篇被晕染\"},{\"start\":99650,\"value\":\"一句甚安勿念 你说落笔太难\"},{\"start\":103040,\"value\":\"何故远走潇湘 你却语多委婉\"},{\"start\":106480,\"value\":\"走过萧瑟秋凉 等来芒草催黄\"},{\"start\":109930,\"value\":\"而我遥望轻轻叹\"},{\"start\":128020,\"value\":\"信札拆封谁为难 不过寥寥数行\"},{\"start\":131790,\"value\":\"娟秀字迹温柔 却感伤\"},{\"start\":135590,\"value\":\"你将心事 上了淡妆\"},{\"start\":139040,\"value\":\"该说的话 却被仔细收藏\"},{\"start\":142090,\"value\":\"捎来的他乡 到底隔几条江\"},{\"start\":145440,\"value\":\"一封信到底转了 几道弯\"},{\"start\":149730,\"value\":\"缘分飘落 在山外山\"},{\"start\":156350,\"value\":\"芦苇花开岁已寒 若霜又降路遥漫长\"},{\"start\":163440,\"value\":\"墙外是谁在吟唱 凤求凰\"},{\"start\":170420,\"value\":\"梨园台上 西皮二黄\"},{\"start\":173800,\"value\":\"却少了你 无人问暖\"},{\"start\":177280,\"value\":\"谁在彼岸 天涯一方\"},{\"start\":182020,\"value\":\"一句甚安勿念 你说落笔太难\"},{\"start\":185260,\"value\":\"窗外古琴幽兰 琴声平添孤单\"},{\"start\":188670,\"value\":\"我墨走了几行 泪潸然落了款\"},{\"start\":192150,\"value\":\"思念徒留纸上 一整篇被晕染\"},{\"start\":195680,\"value\":\"一句甚安勿念 你说落笔太难\"},{\"start\":199070,\"value\":\"何故远走潇湘 你却语多委婉\"},{\"start\":202530,\"value\":\"走过萧瑟秋凉 等来芒草催黄\"},{\"start\":205900,\"value\":\"而我遥望轻轻叹\"},{\"start\":209420,\"value\":\"一句甚安勿念 你说落笔太难\"},{\"start\":211610,\"value\":\"你说落笔太难\"},{\"start\":212900,\"value\":\"窗外古琴幽兰 琴声平添孤单\"},{\"start\":215050,\"value\":\"琴声平添孤单\"},{\"start\":216290,\"value\":\"我墨走了几行 泪潸然落了款\"},{\"start\":218530,\"value\":\"泪潸然落了款\"},{\"start\":219610,\"value\":\"思念徒留纸上 一整篇被晕染\"},{\"start\":223040,\"value\":\"一句甚安勿念 你说落笔太难\"},{\"start\":226470,\"value\":\"何故远走潇湘 你却语多委婉\"},{\"start\":229870,\"value\":\"走过萧瑟秋凉 等来芒草催黄\"},{\"start\":233300,\"value\":\"而鱼雁不再往返\"},{\"start\":239250,\"value\":\"OP : JVR Music Int'l Ltd\"},{\"start\":245200,\"value\":\"录音师 : 杨瑞代\"},{\"start\":251150,\"value\":\"混音师 : 黄雨勋\"},{\"start\":257100,\"value\":\"SP : Universal Music Publishing Ltd\"}],\"synced\":true}]";
-
     var lyric = Lyrics.fromJsonString(text);
     activeLyric.value = lyric.toPlayerlyric();
     return;
@@ -78,7 +79,7 @@ void audioCurrentIndexStream(AudioPlayer _player) {
 
       MediaItem _tag = currentItem.tag;
       scrobble(_tag.id, false);
-      var _song = await getSongDetail(_tag.id);
+      await getSongDetail(_tag.id);
     }
   });
 }
@@ -135,7 +136,7 @@ Future<void> setAudioSource(AudioPlayer _player) async {
   final currentItem = _player.sequenceState!.currentSource;
   MediaItem _tag = currentItem?.tag;
 
-  var _song = await getSongDetail(_tag.id);
+  await getSongDetail(_tag.id);
 
   //更新上下首歌曲
   if (playlist.sequence.isEmpty || currentItem == null) {

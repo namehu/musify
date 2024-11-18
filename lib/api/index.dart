@@ -13,8 +13,8 @@ class MRequest {
     if (_dio == null) {
       _dio = Dio();
       dio.interceptors.add(subsonicInterceptor);
-      // 添加mock拦截器
-      dio.interceptors.add(MyMockInterceptor());
+
+      dio.interceptors.add(MyMockInterceptor()); // 添加mock拦截器
     }
     return _dio!;
   }
@@ -23,7 +23,6 @@ class MRequest {
 
   static setApi(ServeTypeEnum serverType) {
     dio.interceptors.clear();
-    dio.interceptors.add(MyMockInterceptor());
 
     switch (serverType) {
       case ServeTypeEnum.navidrome:
@@ -35,6 +34,8 @@ class MRequest {
         dio.interceptors.add(subsonicInterceptor);
         break;
     }
+
+    dio.interceptors.add(MyMockInterceptor());
   }
 
   static resetApi() {

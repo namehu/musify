@@ -1,3 +1,4 @@
+import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/models/songs.dart';
@@ -10,6 +11,10 @@ class AudioPlayerService extends GetxService {
   static late AudioPlayer player;
 
   Rx<Songs> songs = Songs.fromInitial().obs;
+  Rx<String> lyric = ''.obs;
+
+  get lyricModel =>
+      LyricsModelBuilder.create().bindLyricToMain(lyric.value).getModel();
 
   Future<AudioPlayerService> init() async {
     player = AudioPlayer();
