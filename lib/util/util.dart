@@ -117,7 +117,7 @@ String formatLyircTimeString(int milliseconds) {
   int remainingMilliseconds = milliseconds % 1000;
 
   // 格式化字符串
-  return '[${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}.${remainingMilliseconds}]';
+  return '[${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}.${remainingMilliseconds.toString().padLeft(2, '0')}]';
 }
 
 converToTraditional(String simplified) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lyric/lyric_ui/ui_netease.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:musify/generated/l10n.dart';
