@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
@@ -61,13 +62,18 @@ class _MusicBarState extends State<MusicBar> {
                       ),
                       InkWell(
                         onTap: () {
-                          // if (_song.id.isNotEmpty) {
-                          //   activeID.value = _song.albumId;
-                          //   indexValue.value = 8;
-                          // }
+                          Get.toNamed(Routes.PLAY);
                         },
                         child: Obx(() {
                           var _song = audioPlayerService.currentSong.value;
+                          if (_song.id.isEmpty) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(APP_NAME, style: nomalText),
+                              ],
+                            );
+                          }
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,

@@ -131,15 +131,6 @@ Future<void> setAudioSource(AudioPlayer _player) async {
   MediaItem _tag = currentItem?.tag;
 
   await getSongDetail(_tag.id);
-
-  //更新上下首歌曲
-  if (playlist.sequence.isEmpty || currentItem == null) {
-    isFirstSongNotifier.value = true;
-    isLastSongNotifier.value = true;
-  } else {
-    isFirstSongNotifier.value = playlist.sequence.first == currentItem;
-    isLastSongNotifier.value = playlist.sequence.last == currentItem;
-  }
 }
 
 //新增播放列表

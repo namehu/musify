@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
+import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
@@ -72,10 +73,47 @@ class _PlayListModalState extends State<PlayListModal> {
                 ),
                 SizedBox(
                   width: 100,
-                  child: Text(
-                    '播放模式',
-                    textAlign: TextAlign.center,
-                  ),
+                  child: Obx(() {
+                    var playMode = audioPlayerService.playMode.value;
+
+                    late String label;
+                    late IconData iconData;
+
+                    switch (playMode) {
+                      case PlayModeEnum.loop:
+                        label = '列表循环';
+                        iconData = Icons.loop;
+                        break;
+                      case PlayModeEnum.single:
+                        label = '单曲循环';
+                        iconData = Icons.repeat_one;
+                        break;
+                      case PlayModeEnum.shuffle:
+                        label = '随机播放';
+                        iconData = Icons.shuffle;
+                    }
+
+                    return GestureDetector(
+                      onTap: () => audioPlayerService.tooglePlayMode(),
+                      child: Chip(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        avatar: Icon(
+                          iconData,
+                          size: 12,
+                          color: ThemeService.color.textSecondColor,
+                        ),
+                        label: Text(label),
+                        labelStyle: TextStyle(
+                          fontSize: 12,
+                          color: ThemeService.color.textSecondColor,
+                        ),
+                        labelPadding: EdgeInsets.all(0),
+                        side: BorderSide(width: 0, color: Colors.transparent),
+                        backgroundColor: ThemeService.color.musicBarColor,
+                        //
+                      ),
+                    );
+                  }),
                 )
               ],
             ),

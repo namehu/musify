@@ -6,10 +6,13 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:musify/constant.dart';
+import 'package:musify/enums/play_mode_enum.dart';
+import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/util/audioTools.dart';
 import 'package:musify/util/httpClient.dart';
+import 'package:musify/widgets/m_toast.dart';
 import 'package:musify/widgets/music_bar/play_list_modal.dart';
 
 class HideMusicBarEvent {
@@ -24,15 +27,24 @@ class AudioPlayerService extends GetxService {
   static late AudioPlayer player;
   static final hideMusicEventBus = EventBus();
 
-  Rx<Songs> currentSong = Songs.fromInitial().obs;
-  Rx<String> lyric = ''.obs;
+  /// 播放列表中歌曲
   RxList<Songs> playSongs = <Songs>[].obs;
-
   // 初始化播放列表
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(
     useLazyPreparation: true,
     children: [],
   );
+
+  /// 播放模式
+  Rx<PlayModeEnum> playMode = PlayModeEnum.loop.obs;
+  bool _shuffleModeEnabled = false;
+  LoopMode _loopMode = LoopMode.all;
+
+  /// 当前播放歌曲
+  Rx<Songs> currentSong = Songs.fromInitial().obs;
+
+  /// 当前歌曲歌词
+  Rx<String> lyric = ''.obs;
 
   late Worker _playListWorker;
 
@@ -55,8 +67,6 @@ class AudioPlayerService extends GetxService {
         //新加列表的时候关闭乱序，避免出错
         player.setShuffleModeEnabled(false);
         player.setLoopMode(LoopMode.all);
-        isShuffleModeEnabledNotifier.value = false;
-        playerLoopModeNotifier.value = LoopMode.all;
         _setAudioSource(songs);
       }
     });
@@ -76,9 +86,47 @@ class AudioPlayerService extends GetxService {
     hideMusicBar.value = true;
 
     await showMaterialModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        builder: (BuildContext _contenxt) => PlayListModal());
+      context: context,
+      isDismissible: false,
+      builder: (BuildContext _contenxt) => PlayListModal(),
+    );
+  }
+
+  /// 切换播放模式
+  tooglePlayMode() {
+    PlayModeEnum nextMode;
+    switch (playMode.value) {
+      case PlayModeEnum.loop:
+        nextMode = PlayModeEnum.single;
+        break;
+      case PlayModeEnum.single:
+        nextMode = PlayModeEnum.shuffle;
+        break;
+      default:
+        nextMode = PlayModeEnum.loop;
+        break;
+    }
+
+    switch (nextMode) {
+      case PlayModeEnum.single:
+        _loopMode = LoopMode.one;
+        _shuffleModeEnabled = false;
+        MToast.show(S.current.repeatone);
+        break;
+      case PlayModeEnum.shuffle:
+        _loopMode = LoopMode.all;
+        _shuffleModeEnabled = true;
+        MToast.show(S.current.shuffle);
+        break;
+      default:
+        _loopMode = LoopMode.all;
+        _shuffleModeEnabled = false;
+        MToast.show(S.current.repeatall);
+    }
+
+    playMode(nextMode);
+    player.setLoopMode(_loopMode);
+    player.setShuffleModeEnabled(_shuffleModeEnabled);
   }
 
   // 设置播放歌曲和列表
@@ -110,9 +158,11 @@ class AudioPlayerService extends GetxService {
 
     playlist = ConcatenatingAudioSource(
       useLazyPreparation: true,
-      shuffleOrder: DefaultShuffleOrder(),
       children: children,
     );
+
+    player.setLoopMode(_loopMode);
+    player.setShuffleModeEnabled(_shuffleModeEnabled);
 
     await player.setAudioSource(
       playlist,
@@ -121,18 +171,10 @@ class AudioPlayerService extends GetxService {
     );
 
     player.play();
+
     final currentItem = player.sequenceState!.currentSource;
     MediaItem _tag = currentItem?.tag;
 
     await getSongDetail(_tag.id);
-
-    //更新上下首歌曲
-    if (playlist.sequence.isEmpty || currentItem == null) {
-      isFirstSongNotifier.value = true;
-      isLastSongNotifier.value = true;
-    } else {
-      isFirstSongNotifier.value = playlist.sequence.first == currentItem;
-      isLastSongNotifier.value = playlist.sequence.last == currentItem;
-    }
   }
 }
