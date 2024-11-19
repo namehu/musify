@@ -37,6 +37,7 @@ dependencies:
   toastification: ^2.3.0
   json_annotation: ^4.9.0
   modal_bottom_sheet: ^3.0.0
+  sleek_circular_slider: ^2.0.1
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0

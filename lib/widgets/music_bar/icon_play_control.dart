@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class IconPlayControl extends StatefulWidget {
   final double size;
@@ -57,15 +58,38 @@ class _IconPlayControlState extends State<IconPlayControl> {
             alignment: Alignment.center,
             children: [
               _buildIcon(playerState),
-              CircularProgressIndicator(
-                value: _sliderValue,
-                strokeWidth: 3,
-                color: ThemeService.color.primaryColor,
-              )
+              _buildCircle(),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildCircle() {
+    return IgnorePointer(
+      child: SleekCircularSlider(
+        min: 0,
+        max: 1,
+        initialValue: _sliderValue,
+        innerWidget: (percentage) => Container(),
+        appearance: CircularSliderAppearance(
+          size: 38,
+          startAngle: 270,
+          angleRange: 360,
+          animationEnabled: false,
+          customWidths: CustomSliderWidths(
+            trackWidth: 2,
+            progressBarWidth: _sliderValue == 0 ? 0 : 2,
+            handlerSize: _sliderValue == 0 ? 0 : 3,
+          ),
+          customColors: CustomSliderColors(
+            trackColor: ThemeService.color.dividerColor,
+            progressBarColor: ThemeService.color.primaryColor,
+            dotColor: ThemeService.color.primaryColor.withOpacity(0.8),
+          ),
+        ),
+      ),
     );
   }
 
@@ -81,7 +105,7 @@ class _IconPlayControlState extends State<IconPlayControl> {
             color: ThemeService.color.textSecondColor,
             size: widget.size,
           ),
-          onTap: player.play,
+          onTap: () => player.play(),
         );
       }
 
@@ -92,7 +116,7 @@ class _IconPlayControlState extends State<IconPlayControl> {
             color: ThemeService.color.textSecondColor,
             size: widget.size,
           ),
-          onTap: player.pause,
+          onTap: () => player.pause(),
         );
       }
     }
