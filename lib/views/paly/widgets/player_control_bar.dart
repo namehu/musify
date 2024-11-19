@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_toast.dart';
@@ -15,101 +15,16 @@ class PlayerControlBar extends StatefulWidget {
 }
 
 class _PlayerControlBarState extends State<PlayerControlBar> {
+  final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
   final AudioPlayer player = AudioPlayerService.player;
 
   final double iconSize = 24;
   final int loopMode = 0;
   bool isactivePlay = true;
-  late OverlayEntry activePlaylistOverlay;
 
   @override
   initState() {
     super.initState();
-    activePlaylistOverlay = OverlayEntry(builder: (context) {
-      List _songs = activeList.value;
-      double _height = (_songs.length * 40 + 60) < windowsHeight.value / 2 + 60
-          ? _songs.length * 40 + 60
-          : windowsHeight.value / 2 + 60;
-      return Positioned(
-          bottom: 85,
-          right: 10,
-          child: Material(
-              color: badgeDark,
-              borderRadius: BorderRadius.circular(8.0),
-              child: Container(
-                  width: 200,
-                  height: _height,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: badgeDark,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                          padding: EdgeInsets.all(10),
-                          height: 40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                S.current.playqueue,
-                                style: nomalText,
-                                textAlign: TextAlign.center,
-                              ),
-                              Text(
-                                "(" + _songs.length.toString() + ")",
-                                style: subText,
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          )),
-                      Container(
-                          padding: EdgeInsets.only(bottom: 10),
-                          height: _height - 60,
-                          child: MediaQuery.removePadding(
-                              context: context,
-                              removeTop: true,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount: _songs.length,
-                                  itemExtent: 40.0, //强制高度为50.0
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    Songs _tem = _songs[index];
-                                    return ListTile(
-                                        title: InkWell(
-                                            onTap: () async {
-                                              await player.seek(Duration.zero,
-                                                  index: index);
-                                            },
-                                            child: ValueListenableBuilder<Map>(
-                                                valueListenable: activeSong,
-                                                builder:
-                                                    ((context, value, child) {
-                                                  return Container(
-                                                      width: 200,
-                                                      child: Text(
-                                                        _tem.title,
-                                                        textDirection:
-                                                            TextDirection.ltr,
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: (value
-                                                                    .isNotEmpty &&
-                                                                value["value"] ==
-                                                                    _tem.id)
-                                                            ? activeText
-                                                            : nomalText,
-                                                      ));
-                                                }))));
-                                  })))
-                    ],
-                  ))));
-    });
   }
 
   @override
@@ -268,35 +183,20 @@ class _PlayerControlBarState extends State<PlayerControlBar> {
                 },
               );
             }),
-        ValueListenableBuilder<List>(
-          valueListenable: activeList,
-          builder: (context, _activeList, child) {
-            return IconButton(
+        Obx(() => IconButton(
               icon: Icon(
                 Icons.playlist_play,
-                color: (_activeList.length > 0) ? textGray : badgeDark,
+                color: audioPlayerService.playSongs.isNotEmpty
+                    ? textGray
+                    : badgeDark,
                 size: 30.0,
               ),
-              onPressed: (_activeList.length > 0)
-                  ? () {
-                      if (isactivePlay) {
-                        Overlay.of(context).insert(activePlaylistOverlay);
-                        setState(() {
-                          isactivePlay = false;
-                        });
-                      } else {
-                        if (activePlaylistOverlay.mounted) {
-                          activePlaylistOverlay.remove();
-                        }
-                        setState(() {
-                          isactivePlay = true;
-                        });
-                      }
-                    }
-                  : null,
-            );
-          },
-        ),
+              onPressed: () {
+                if (audioPlayerService.playSongs.isNotEmpty) {
+                  AudioPlayerService.showPlayList();
+                }
+              },
+            )),
       ],
     );
   }

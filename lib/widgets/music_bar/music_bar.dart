@@ -5,9 +5,10 @@ import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_cover.dart';
+import 'package:musify/widgets/music_bar/icon_play_list.dart';
 import '../../../models/notifierValue.dart';
 import '../../../util/mycss.dart';
-import '../../screens/components/myAudio/playerControBar.dart';
+import 'icon_play_control.dart';
 
 class MusicBar extends StatefulWidget {
   const MusicBar({super.key});
@@ -106,11 +107,13 @@ class _MusicBarState extends State<MusicBar> {
                 ),
                 Container(
                   width: 110,
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      PlayerControBar(isPlayScreen: false, player: player),
+                      // PlayerControBar(isPlayScreen: false, player: player),
+                      IconPlayControl(),
+                      IconPlayList(),
                     ],
                   ),
                 ),

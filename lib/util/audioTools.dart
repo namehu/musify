@@ -79,16 +79,16 @@ void audioCurrentIndexStream(AudioPlayer _player) {
 }
 
 void audioActiveSongListener(AudioPlayer _player) {
-  activeList.addListener(() {
-    if (activeSongValue.value != "1") {
-//新加列表的时候关闭乱序，避免出错
-      _player.setShuffleModeEnabled(false);
-      _player.setLoopMode(LoopMode.all);
-      isShuffleModeEnabledNotifier.value = false;
-      playerLoopModeNotifier.value = LoopMode.all;
-      setAudioSource(_player);
-    }
-  });
+//   activeList.addListener(() {
+//     if (activeSongValue.value != "1") {
+// //新加列表的时候关闭乱序，避免出错
+//       _player.setShuffleModeEnabled(false);
+//       _player.setLoopMode(LoopMode.all);
+//       isShuffleModeEnabledNotifier.value = false;
+//       playerLoopModeNotifier.value = LoopMode.all;
+//       setAudioSource(_player);
+//     }
+//   });
 }
 
 Future<void> setAudioSource(AudioPlayer _player) async {

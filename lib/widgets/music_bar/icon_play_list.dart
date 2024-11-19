@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/theme_service.dart';
+
+class IconPlayList extends StatelessWidget {
+  final audioPlayerService = Get.find<AudioPlayerService>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => IconButton(
+        icon: Icon(
+          Icons.playlist_play,
+          color: (audioPlayerService.playSongs.length > 0)
+              ? ThemeService.color.textSecondColor
+              : ThemeService.color.dialogBackgroundColor,
+          size: 30.0,
+        ),
+        onPressed: () {
+          if (audioPlayerService.playSongs.length > 0) {
+            AudioPlayerService.showPlayList();
+          }
+        },
+      ),
+    );
+  }
+}

@@ -10,6 +10,7 @@ import '../../models/songs.dart';
 
 class AlbumController extends GetxController {
   final AudioPlayer player = AudioPlayerService.player;
+  final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
 
   final _album = (Albums.fromJson({})).obs;
   final _songs = <Songs>[].obs;
@@ -77,27 +78,25 @@ class AlbumController extends GetxController {
       return;
     }
 
-    if (listEquals(activeList.value, songs)) {
+    if (listEquals(audioPlayerService.playSongs.value, songs)) {
       player.seek(Duration.zero, index: 0);
     } else {
       //当前歌曲队列
       activeIndex.value = 0;
       activeSongValue.value = songs[0].id;
-      activeList.value = songs; //歌曲所在专辑歌曲List
+      audioPlayerService.playSongs.value = songs; //歌曲所在专辑歌曲List
     }
   }
 
-  ///
-  ///
   /// 点击歌曲播放
   handleSongClick(Songs _song, int index) {
-    if (listEquals(activeList.value, songs)) {
+    if (listEquals(audioPlayerService.playSongs.value, songs)) {
       player.seek(Duration.zero, index: index);
     } else {
       //当前歌曲队列
       activeIndex.value = index;
       activeSongValue.value = _song.id;
-      activeList.value = songs; //歌曲所在专辑歌曲List
+      audioPlayerService.playSongs.value = songs; //歌曲所在专辑歌曲List
     }
   }
 }
