@@ -12,6 +12,7 @@ class ServerInfo {
   late String baseurl;
   late String userId;
   late String username;
+  late String password;
   late String salt;
   late String hash;
   late String ndCredential;
@@ -23,6 +24,7 @@ class ServerInfo {
     required this.baseurl,
     required this.userId,
     required this.username,
+    required this.password,
     required this.salt,
     required this.hash,
     required this.ndCredential,
@@ -36,6 +38,7 @@ class ServerInfo {
     baseurl = json['baseurl'];
     userId = json['userId'];
     username = json['username'];
+    password = json['password'];
     salt = json['salt'];
     hash = json['hash'];
     ndCredential = json['ndCredential'];
@@ -50,6 +53,7 @@ class ServerInfo {
     _data['baseurl'] = this.baseurl;
     _data['userId'] = this.userId;
     _data['username'] = this.username;
+    _data['password'] = this.password;
     _data['salt'] = this.salt;
     _data['hash'] = this.hash;
     _data['ndCredential'] = this.ndCredential;

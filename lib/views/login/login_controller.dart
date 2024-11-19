@@ -82,6 +82,7 @@ class LoginController extends GetxController {
         baseurl: baseurl,
         userId: res['userId'] ?? '',
         username: username,
+        password: password,
         salt: res['salt'] ?? '',
         hash: res['hash'] ?? '',
         ndCredential: res['credential'] ?? '',

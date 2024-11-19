@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:musify/api/index.dart';
 import 'package:musify/models/navidrome/nd_song.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/services/server_service.dart';
+import 'package:musify/util/dbProvider.dart';
 
 import '../../util/httpClient.dart';
 import '../types.dart';
@@ -26,8 +29,42 @@ Interceptor navidromeInterceptor = InterceptorsWrapper(
     // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
     return handler.next(response);
   },
-  onError: (DioException error, ErrorInterceptorHandler handler) {
+  onError: (DioException error, ErrorInterceptorHandler handler) async {
     // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+
+    // 静默刷新token
+    if (error.response?.statusCode == 401 &&
+        serversInfo.value.ndCredential.isNotEmpty) {
+      var auth = await navidromeApi.authenticate(
+        serversInfo.value.baseurl,
+        serversInfo.value.username,
+        serversInfo.value.password,
+      );
+      var serverService = Get.find<ServerService>();
+
+      serversInfo.value.ndCredential = auth['credential'];
+
+      serverService.updateCurrentServerInfo(serversInfo.value);
+      await DbProvider.instance.updateServerInfo(serversInfo.value);
+
+      var option = error.requestOptions;
+      var headers = error.requestOptions.headers;
+      headers['x-nd-authorization'] =
+          'Bearer ${serversInfo.value.ndCredential}';
+      // retry request
+      var response = await Dio().request(
+        serversInfo.value.baseurl + option.path,
+        queryParameters: option.queryParameters,
+        data: option.data,
+        options: Options().copyWith(
+          method: option.method,
+          headers: headers,
+          responseType: ResponseType.json,
+        ),
+      );
+      return handler.resolve(response);
+    }
+
     return handler.next(error);
   },
 );

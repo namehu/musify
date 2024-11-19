@@ -16,6 +16,7 @@ class ServerService extends GetxService {
     ndCredential: '',
     userId: '',
     username: '',
+    password: '',
     languageCode: '',
   ).obs;
 

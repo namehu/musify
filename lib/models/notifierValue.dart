@@ -16,6 +16,7 @@ ValueNotifier<ServerInfo> serversInfo = ValueNotifier<ServerInfo>(ServerInfo(
   baseurl: '',
   userId: '',
   username: '',
+  password: '',
   salt: '',
   hash: '',
   ndCredential: '',

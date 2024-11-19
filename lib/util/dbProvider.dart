@@ -49,6 +49,7 @@ class DbProvider {
                 baseurl TEXT NOT NULL,
                 userId TEXT NOT NULL,
                 username TEXT NOT NULL,
+                password TEXT NOT NULL,
                 salt TEXT NOT NULL,
                 hash TEXT NOT NULL,
                 ndCredential TEXT NOT NULL,
