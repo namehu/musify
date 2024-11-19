@@ -65,8 +65,8 @@ class AudioPlayerService extends GetxService {
     _playListWorker = ever(playSongs, (songs) {
       if (activeSongValue.value != "1") {
         //新加列表的时候关闭乱序，避免出错
-        player.setShuffleModeEnabled(false);
-        player.setLoopMode(LoopMode.all);
+        // player.setShuffleModeEnabled(false);
+        // player.setLoopMode(LoopMode.all);
         _setAudioSource(songs);
       }
     });
@@ -93,35 +93,40 @@ class AudioPlayerService extends GetxService {
   }
 
   /// 切换播放模式
-  tooglePlayMode() {
+  tooglePlayMode([PlayModeEnum? mode, bool toast = true]) {
     PlayModeEnum nextMode;
-    switch (playMode.value) {
-      case PlayModeEnum.loop:
-        nextMode = PlayModeEnum.single;
-        break;
-      case PlayModeEnum.single:
-        nextMode = PlayModeEnum.shuffle;
-        break;
-      default:
-        nextMode = PlayModeEnum.loop;
-        break;
+
+    if (mode != null) {
+      nextMode = mode;
+    } else {
+      switch (playMode.value) {
+        case PlayModeEnum.loop:
+          nextMode = PlayModeEnum.single;
+          break;
+        case PlayModeEnum.single:
+          nextMode = PlayModeEnum.shuffle;
+          break;
+        default:
+          nextMode = PlayModeEnum.loop;
+          break;
+      }
     }
 
     switch (nextMode) {
       case PlayModeEnum.single:
         _loopMode = LoopMode.one;
         _shuffleModeEnabled = false;
-        MToast.show(S.current.repeatone);
+        if (toast) MToast.show(S.current.repeatone);
         break;
       case PlayModeEnum.shuffle:
         _loopMode = LoopMode.all;
         _shuffleModeEnabled = true;
-        MToast.show(S.current.shuffle);
+        if (toast) MToast.show(S.current.shuffle);
         break;
       default:
         _loopMode = LoopMode.all;
         _shuffleModeEnabled = false;
-        MToast.show(S.current.repeatall);
+        if (toast) MToast.show(S.current.repeatall);
     }
 
     playMode(nextMode);
@@ -156,13 +161,8 @@ class AudioPlayerService extends GetxService {
       }
     }
 
-    playlist = ConcatenatingAudioSource(
-      useLazyPreparation: true,
-      children: children,
-    );
-
-    player.setLoopMode(_loopMode);
-    player.setShuffleModeEnabled(_shuffleModeEnabled);
+    playlist =
+        ConcatenatingAudioSource(useLazyPreparation: true, children: children);
 
     await player.setAudioSource(
       playlist,

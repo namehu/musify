@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/util/httpclient.dart';
+import 'package:musify/widgets/m_toast.dart';
 
 import '../../models/songs.dart';
 
@@ -73,19 +75,18 @@ class AlbumController extends GetxController {
   }
 
   /// 处理播放
-  handlePlay([bool? shuffle]) {
+  handlePlay([PlayModeEnum? mode = PlayModeEnum.loop]) {
     if (songs.length <= 0) {
+      // TODO: 国际化
+      MToast.show('暂无歌曲');
       return;
     }
 
-    if (listEquals(audioPlayerService.playSongs.value, songs)) {
-      player.seek(Duration.zero, index: 0);
-    } else {
-      //当前歌曲队列
-      activeIndex.value = 0;
-      activeSongValue.value = songs[0].id;
-      audioPlayerService.playSongs.value = songs; //歌曲所在专辑歌曲List
-    }
+    audioPlayerService.tooglePlayMode(mode, false);
+    int index = 0;
+    Songs song = songs[0];
+
+    handleSongClick(song, index);
   }
 
   /// 点击歌曲播放

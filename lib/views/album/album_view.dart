@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/screens/common/myTextButton.dart';
-import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/httpclient.dart';
@@ -171,7 +169,7 @@ class AlbumView extends GetView<AlbumController> {
               icon: Icons.shuffle,
               title: '随机播放',
               type: ButtonType.secondary,
-              onTap: () => controller.handlePlay(true),
+              onTap: () => controller.handlePlay(PlayModeEnum.shuffle),
             ),
           ),
         ],
