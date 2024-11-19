@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/util/mycss.dart';
+import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../models/myModel.dart';
 import '../../../../util/httpClient.dart';
@@ -117,11 +119,7 @@ class _IndexScreenState extends State<IndexScreen> {
             child: MySliverControlList(
                 controller: _lastAlbumcontroller, albums: _lastalbums!),
           ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: bottomHeight,
-          ),
-        )
+        SliverToBoxAdapter(child: MBottomPlaceholder())
       ],
     );
   }

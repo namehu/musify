@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           //useInheritedMediaQuery: true,
-          title: "Musify",
+          title: APP_NAME,
           localizationsDelegates: [
             S.delegate,
             GlobalMaterialLocalizations.delegate,

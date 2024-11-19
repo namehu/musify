@@ -1,7 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// app名称
 const String APP_NAME = 'Musify';
+
+//底部高度
+const double bottomHeight = 80;
 
 /// 全局key
 /// 用于全局overlay context获取

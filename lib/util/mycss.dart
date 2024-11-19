@@ -6,8 +6,7 @@ final bool isClient =
     Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 
 final String version = "v0.0.1";
-//底部高度
-const double bottomHeight = 80;
+
 //appbar高度
 const double appBarHeight = 40;
 //侧拉栏宽度

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
@@ -12,6 +13,7 @@ import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
 import 'package:musify/views/album/album_controller.dart';
+import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_button.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -38,6 +40,7 @@ class AlbumView extends GetView<AlbumController> {
             SliverToBoxAdapter(child: _buildTopWidget()),
             SliverToBoxAdapter(child: _buildOperations()),
             SliverToBoxAdapter(child: _songsBody(context)),
+            SliverToBoxAdapter(child: MBottomPlaceholder()),
           ],
         ),
       ),
