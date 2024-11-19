@@ -38,7 +38,7 @@ class _MusicBarState extends State<MusicBar> {
               borderRadius: BorderRadius.all(Radius.circular(30)),
             ),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
@@ -117,7 +117,6 @@ class _MusicBarState extends State<MusicBar> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // PlayerControBar(isPlayScreen: false, player: player),
                       IconPlayControl(),
                       IconPlayList(),
                     ],

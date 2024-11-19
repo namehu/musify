@@ -1,11 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 
-class IconPlayControl extends StatelessWidget {
-  final player = AudioPlayerService.player;
-
+class IconPlayControl extends StatefulWidget {
   final double size;
 
   IconPlayControl({
@@ -14,51 +14,93 @@ class IconPlayControl extends StatelessWidget {
   });
 
   @override
+  State<IconPlayControl> createState() => _IconPlayControlState();
+}
+
+class _IconPlayControlState extends State<IconPlayControl> {
+  final player = AudioPlayerService.player;
+
+  double _sliderValue = 0.0;
+  late StreamSubscription<Duration> _durationSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _durationSubscription = player.positionStream.listen((position) {
+      if (player.duration != null) {
+        setState(() {
+          _sliderValue = position.inMilliseconds.toDouble() /
+              player.duration!.inMilliseconds.toDouble();
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _durationSubscription.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<PlayerState>(
       stream: player.playerStateStream,
       builder: (context, snapshot) {
         final playerState = snapshot.data;
-        final processingState = playerState?.processingState;
-        final playing = playerState?.playing;
-        if (player.sequenceState == null) {
-          return IconButton(
-            icon: Icon(
-              Icons.play_circle,
-              color: ThemeService.color.dialogBackgroundColor,
-            ),
-            iconSize: size,
-            onPressed: null,
-          );
-        } else if (playing != true) {
-          return IconButton(
-            icon: Icon(
-              Icons.play_circle,
-              color: ThemeService.color.textSecondColor,
-            ),
-            iconSize: size,
-            onPressed: player.play,
-          );
-        } else if (processingState != ProcessingState.completed) {
-          return IconButton(
-            icon: Icon(
-              Icons.pause_circle_filled,
-              color: ThemeService.color.textSecondColor,
-            ),
-            iconSize: size,
-            onPressed: player.pause,
-          );
-        } else {
-          return IconButton(
-            icon: Icon(
-              Icons.play_circle,
-              color: ThemeService.color.dialogBackgroundColor,
-            ),
-            iconSize: size,
-            onPressed: null,
-          );
-        }
+
+        return Container(
+          width: 42,
+          height: 42,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              _buildIcon(playerState),
+              CircularProgressIndicator(
+                value: _sliderValue,
+                strokeWidth: 3,
+                color: ThemeService.color.primaryColor,
+              )
+            ],
+          ),
+        );
       },
+    );
+  }
+
+  Widget _buildIcon(PlayerState? playerState) {
+    final processingState = playerState?.processingState;
+    final playing = playerState?.playing ?? false;
+
+    if (player.sequenceState != null) {
+      if (playing == false) {
+        return InkWell(
+          child: Icon(
+            Icons.play_circle,
+            color: ThemeService.color.textSecondColor,
+            size: widget.size,
+          ),
+          onTap: player.play,
+        );
+      }
+
+      if (processingState != ProcessingState.completed) {
+        return InkWell(
+          child: Icon(
+            Icons.pause_circle_filled,
+            color: ThemeService.color.textSecondColor,
+            size: widget.size,
+          ),
+          onTap: player.pause,
+        );
+      }
+    }
+
+    return Icon(
+      Icons.play_circle,
+      color: ThemeService.color.textDisabledColor,
+      size: widget.size,
     );
   }
 }

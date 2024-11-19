@@ -14,7 +14,7 @@ class IconPlayList extends StatelessWidget {
           Icons.playlist_play,
           color: (audioPlayerService.playSongs.length > 0)
               ? ThemeService.color.textSecondColor
-              : ThemeService.color.dialogBackgroundColor,
+              : ThemeService.color.textDisabledColor,
           size: 30.0,
         ),
         onPressed: () {
