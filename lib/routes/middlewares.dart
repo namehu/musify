@@ -11,6 +11,7 @@ class MusicBarMiddleware extends GetMiddleware {
 
   List<String> hiddenRoutes = [
     Routes.SETTING,
+    Routes.CHANGE_SERVER,
     Routes.LOGIN,
     Routes.PLAY,
   ]; // 需要隐藏的路由
