@@ -19,6 +19,8 @@ class SettingBinding implements Bindings {
 }
 
 class SettingView extends GetView<SettingController> {
+  var gloabalService = Get.find<GloabalService>();
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -149,6 +151,8 @@ class SettingView extends GetView<SettingController> {
                                       .changeLanguage(va);
 
                                   controller.selectedSort.value = va;
+
+                                  gloabalService.restartApp();
                                 },
                               ),
                             ],
@@ -171,6 +175,7 @@ class SettingView extends GetView<SettingController> {
                                 onChanged: (value) async {
                                   var va = int.parse(value.toString());
                                   await ThemeService.setThemeMode(va);
+                                  gloabalService.restartApp();
                                 },
                               ),
                             ],
