@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musify/enums/size_enums.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 
 enum ButtonType { primary, secondary }
@@ -9,6 +10,7 @@ enum ButtonType { primary, secondary }
 class MButton extends StatelessWidget {
   final String title;
   final IconData? icon;
+  final Color? textColor;
   final ButtonType? type;
   final SizeEnum? size;
   final double? width;
@@ -20,6 +22,7 @@ class MButton extends StatelessWidget {
     this.type = ButtonType.primary,
     this.size = SizeEnum.normal,
     this.icon,
+    this.textColor = gray1,
     this.width,
     this.onTap,
   }) : super(key: key);
@@ -32,7 +35,7 @@ class MButton extends StatelessWidget {
       );
 
   double get fontSize => size == SizeEnum.samll ? 12 : 14;
-  get color {
+  get _color {
     return switch (type) {
       ButtonType.primary => ThemeService.color.primaryButtonColor,
       ButtonType.secondary => ThemeService.color.secondaryButtonColor,
@@ -50,7 +53,7 @@ class MButton extends StatelessWidget {
         width: width,
         padding: padding,
         decoration: BoxDecoration(
-          color: color,
+          color: _color,
           borderRadius: StyleProperty.borderRadius,
         ),
         child: Row(
@@ -62,6 +65,7 @@ class MButton extends StatelessWidget {
                     child: Icon(
                       icon!,
                       size: 16,
+                      color: textColor,
                     ),
                   )
                 : Container(),
@@ -71,7 +75,7 @@ class MButton extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: fontSize,
               ),
             ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/size.dart';
 
 import '../../generated/l10n.dart';
 import '../../models/notifierValue.dart';
@@ -25,42 +27,51 @@ class MySliverControlBar extends StatelessWidget {
             Row(children: [
               Text(
                 title,
-                style: titleText3,
-              ),
-              if (press != null)
-                SizedBox(
-                  width: 5,
+                style: TextStyle(
+                  fontSize: StyleSize.titleSize,
+                  color: ThemeService.color.titleColor,
+                  fontWeight: FontWeight.bold,
                 ),
+              ),
+              if (press != null) SizedBox(width: 5),
               if (press != null)
                 MyTextButton(
                   press: press,
                   title: S.current.more,
                 )
             ]),
-            Row(
-              children: [
-                IconButton(
-                  icon:
-                      const Icon(Icons.chevron_left, color: textGray, size: 16),
-                  onPressed: () {
-                    controller.animateTo(
+            if (!isMobile)
+              Row(
+                children: [
+                  InkWell(
+                    child: Icon(
+                      Icons.chevron_left,
+                      color: ThemeService.color.textColor,
+                    ),
+                    onTap: () {
+                      controller.animateTo(
                         controller.offset - windowsWidth.value / 2,
                         duration: Duration(milliseconds: 200),
-                        curve: Curves.ease);
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.chevron_right,
-                      color: textGray, size: 16),
-                  onPressed: () {
-                    controller.animateTo(
+                        curve: Curves.ease,
+                      );
+                    },
+                  ),
+                  SizedBox(width: 10),
+                  InkWell(
+                    child: Icon(
+                      Icons.chevron_right,
+                      color: ThemeService.color.textColor,
+                    ),
+                    onTap: () {
+                      controller.animateTo(
                         controller.offset + windowsWidth.value / 2,
                         duration: Duration(milliseconds: 200),
-                        curve: Curves.ease);
-                  },
-                )
-              ],
-            )
+                        curve: Curves.ease,
+                      );
+                    },
+                  )
+                ],
+              )
           ]),
     );
   }

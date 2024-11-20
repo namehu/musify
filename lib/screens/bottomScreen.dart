@@ -2,26 +2,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/constant.dart';
-import 'package:rxdart/rxdart.dart';
-import '../models/myModel.dart';
+import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/theme_service.dart';
 import '../models/notifierValue.dart';
-import '../util/httpClient.dart';
 import '../util/mycss.dart';
+import '../widgets/music/music_seek_bar.dart';
 import 'components/myAudio/playerControBar.dart';
-import 'components/myAudio/playerSeekBar.dart';
 import 'components/myAudio/playerVolumeBar.dart';
 import 'layout/playScreen.dart';
 
 class BottomScreen extends StatefulWidget {
-  final AudioPlayer player;
-
-  const BottomScreen({Key? key, required this.player}) : super(key: key);
+  const BottomScreen({Key? key}) : super(key: key);
   @override
   _BottomScreenState createState() => _BottomScreenState();
 }
 
 class _BottomScreenState extends State<BottomScreen>
     with TickerProviderStateMixin {
+  final AudioPlayer player = AudioPlayerService.player;
+
   @override
   initState() {
     super.initState();
@@ -32,69 +31,63 @@ class _BottomScreenState extends State<BottomScreen>
     super.dispose();
   }
 
-  Stream<PositionData> get _positionDataStream {
-    return Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        widget.player.positionStream,
-        widget.player.bufferedPositionStream,
-        widget.player.durationStream,
-        (position, bufferedPosition, duration) => PositionData(
-            position, bufferedPosition, duration ?? Duration.zero));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
         height: bottomHeight,
-        color: bkColor,
+        color: ThemeService.color.bgColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // 进度条
             Container(
-              width: windowsWidth.value,
-              height: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  StreamBuilder<PositionData>(
-                    stream: _positionDataStream,
-                    builder: (context, snapshot) {
-                      final positionData = snapshot.data;
-                      if (positionData != null &&
-                          activeSong.value.isNotEmpty &&
-                          (positionData.duration.inMilliseconds -
-                                      positionData.position.inMilliseconds <
-                                  20000 &&
-                              positionData.duration.inMilliseconds -
-                                      positionData.position.inMilliseconds >
-                                  19800)) {
-                        scrobble(activeSong.value["value"], true);
-                      }
-
-                      return PlayerSeekBar(
-                        trackWidth: windowsWidth.value,
-                        duration: positionData?.duration ?? Duration.zero,
-                        position: positionData?.position ?? Duration.zero,
-                        bufferedPosition:
-                            positionData?.bufferedPosition ?? Duration.zero,
-                        onChangeEnd: widget.player.seek,
-                      );
-                    },
-                  ),
-                ],
+              // height: 10,
+              child: MusicSeekBar(
+                padding: 5,
+                dotSize: 5,
               ),
+              // child: Column(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     StreamBuilder<PositionData>(
+              //       stream: audioPlayerService.positionDataStream,
+              //       builder: (context, snapshot) {
+              //         final positionData = snapshot.data;
+              //         if (positionData != null &&
+              //             activeSong.value.isNotEmpty &&
+              //             (positionData.duration.inMilliseconds -
+              //                         positionData.position.inMilliseconds <
+              //                     20000 &&
+              //                 positionData.duration.inMilliseconds -
+              //                         positionData.position.inMilliseconds >
+              //                     19800)) {
+              //           scrobble(activeSong.value["value"], true);
+              //         }
+
+              //         return PlayerSeekBar(
+              //           trackWidth: windowsWidth.value,
+              //           duration: positionData?.duration ?? Duration.zero,
+              //           position: positionData?.position ?? Duration.zero,
+              //           bufferedPosition:
+              //               positionData?.bufferedPosition ?? Duration.zero,
+              //           onChangeEnd: player.seek,
+              //         );
+              //       },
+              //     ),
+              //   ],
+              // ),
             ),
-            Container(
-              height: 70,
+            Expanded(
+              // height: 70,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  // 歌曲区域
                   Container(
-                      width: (isMobile)
-                          ? windowsWidth.value - 110
-                          : windowsWidth.value / 4,
+                      width: windowsWidth.value / 4,
                       child: ValueListenableBuilder<Map>(
                         valueListenable: activeSong,
                         builder: (context, _song, child) {
@@ -109,8 +102,7 @@ class _BottomScreenState extends State<BottomScreen>
                                       ),
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return PlayScreen(
-                                            player: widget.player);
+                                        return PlayScreen(player: player);
                                       },
                                     );
                                   },
@@ -154,9 +146,8 @@ class _BottomScreenState extends State<BottomScreen>
                                     children: [
                                       Container(
                                         constraints: BoxConstraints(
-                                            maxWidth: (isMobile)
-                                                ? windowsWidth.value - 180
-                                                : windowsWidth.value / 4 - 70),
+                                            maxWidth:
+                                                windowsWidth.value / 4 - 70),
                                         child: Text(
                                             _song.isEmpty ? "" : _song["title"],
                                             maxLines: 1,
@@ -165,9 +156,8 @@ class _BottomScreenState extends State<BottomScreen>
                                       ),
                                       Container(
                                         constraints: BoxConstraints(
-                                            maxWidth: (isMobile)
-                                                ? windowsWidth.value - 180
-                                                : windowsWidth.value / 4 - 70),
+                                            maxWidth:
+                                                windowsWidth.value / 4 - 70),
                                         child: Text(
                                             _song.isEmpty
                                                 ? ""
@@ -178,9 +168,8 @@ class _BottomScreenState extends State<BottomScreen>
                                       ),
                                       Container(
                                         constraints: BoxConstraints(
-                                            maxWidth: (isMobile)
-                                                ? windowsWidth.value - 180
-                                                : windowsWidth.value / 4 - 70),
+                                            maxWidth:
+                                                windowsWidth.value / 4 - 70),
                                         child: Text(
                                             _song.isEmpty ? "" : _song["album"],
                                             maxLines: 1,
@@ -194,17 +183,16 @@ class _BottomScreenState extends State<BottomScreen>
                         },
                       )),
                   Container(
-                    width: isMobile ? 110 : windowsWidth.value * 1 / 2,
+                    width: windowsWidth.value / 2,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        PlayerControBar(
-                            isPlayScreen: false, player: widget.player),
+                        PlayerControBar(isPlayScreen: false, player: player),
                       ],
                     ),
                   ),
-                  if (!isMobile) PlayerVolumeBar(widget.player)
+                  PlayerVolumeBar(player)
                 ],
               ),
             )

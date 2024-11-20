@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/size.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -451,7 +453,10 @@ class _ArtistDetailScreenState extends State<ArtistDetailScreen> {
             children: [
               Text(
                 S.current.top + S.current.song,
-                style: titleText3,
+                style: TextStyle(
+                  fontSize: StyleSize.titleSize,
+                  color: ThemeService.color.titleColor,
+                ),
               ),
               if (_songList.length > 5)
                 SizedBox(

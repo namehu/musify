@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/theme_service.dart';
 
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -39,6 +40,12 @@ class MySliverControlList extends StatelessWidget {
         controller: controller,
         itemBuilder: (context, index) {
           Albums _tem = albums[index];
+
+          String _title = _tem.title;
+          if (_tem.year != 0) {
+            _title = _tem.title + "(" + _tem.year.toString() + ")";
+          }
+
           return Container(
             padding: index == 0 ? leftrightPadding : EdgeInsets.only(right: 15),
             child: InkWell(
@@ -67,34 +74,29 @@ class MySliverControlList extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 5,
+                    Container(
+                      margin: EdgeInsets.only(top: 5, bottom: 5),
+                      constraints: BoxConstraints(
+                        maxWidth: _rightHeight - 67,
+                      ),
+                      child: Text(
+                        _title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Container(
                         constraints: BoxConstraints(
                           maxWidth: _rightHeight - 67,
                         ),
                         child: Text(
-                            _tem.year == 0
-                                ? _tem.title
-                                : (_tem.title +
-                                    "(" +
-                                    _tem.year.toString() +
-                                    ")"),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: nomalText)),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                        constraints: BoxConstraints(
-                          maxWidth: _rightHeight - 67,
-                        ),
-                        child: Text(_tem.artist,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: subText))
+                          _tem.artist,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              color: ThemeService.color.textSecondColor,
+                              fontSize: 12),
+                        ))
                   ],
                 )),
           );

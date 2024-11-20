@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:get/get.dart';
 
 class GloabalService extends GetxService {
@@ -9,6 +8,12 @@ class GloabalService extends GetxService {
 
   /// 是否是移动端
   static final isPhone = Platform.isAndroid || Platform.isIOS;
+
+  void restartApp() {
+    Get.forceAppUpdate();
+    // navigatorKey.currentState!
+    //     .pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
+  }
 
   /// 内容区最大宽度
   static final double contentMaxWidth =

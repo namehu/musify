@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/widgets/music/music_seek_bar.dart';
 import '../../generated/l10n.dart';
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -256,30 +257,28 @@ class _PlayScreenState extends State<PlayScreen> {
                       child: Column(
                         children: [
                           _buildHeader(),
-                          if (isMobile)
-                            Container(
-                                height: 50,
-                                child: PlayerVolumeBar(widget.player)),
                           Container(
-                              height: 5,
-                              child: StreamBuilder<PositionData>(
-                                stream: _positionDataStream,
-                                builder: (context, snapshot) {
-                                  final positionData = snapshot.data;
+                            height: 5,
+                            child: MusicSeekBar(dotSize: 5),
+                            // child: StreamBuilder<PositionData>(
+                            //   stream: _positionDataStream,
+                            //   builder: (context, snapshot) {
+                            //     final positionData = snapshot.data;
 
-                                  return PlayerSeekBar(
-                                    trackWidth: windowsWidth.value,
-                                    duration:
-                                        positionData?.duration ?? Duration.zero,
-                                    position:
-                                        positionData?.position ?? Duration.zero,
-                                    bufferedPosition:
-                                        positionData?.bufferedPosition ??
-                                            Duration.zero,
-                                    onChangeEnd: widget.player.seek,
-                                  );
-                                },
-                              )),
+                            //     return PlayerSeekBar(
+                            //       trackWidth: windowsWidth.value,
+                            //       duration:
+                            //           positionData?.duration ?? Duration.zero,
+                            //       position:
+                            //           positionData?.position ?? Duration.zero,
+                            //       bufferedPosition:
+                            //           positionData?.bufferedPosition ??
+                            //               Duration.zero,
+                            //       onChangeEnd: widget.player.seek,
+                            //     );
+                            //   },
+                            // ),
+                          ),
                           SizedBox(
                             height: 5,
                           ),

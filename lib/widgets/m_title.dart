@@ -15,7 +15,7 @@ class MTitle extends StatelessWidget {
   MTitle({
     Key? key,
     required this.title,
-    this.level = 1,
+    this.level = 4,
   }) : super(key: key);
 
   @override

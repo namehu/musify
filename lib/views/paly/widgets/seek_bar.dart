@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
 
 class PlayerSeekBar extends StatefulWidget {
@@ -42,7 +41,6 @@ class PlayerSeekBarState extends State<PlayerSeekBar> {
 
   @override
   Widget build(BuildContext context) {
-    print('slidePadding#slidePadding$slidePadding');
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -91,7 +89,6 @@ class PlayerSeekBarState extends State<PlayerSeekBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                // 分秒格式
                 formatSongDuration(widget.position),
                 style: TextStyle(fontSize: 12),
               ),
@@ -108,26 +105,3 @@ class PlayerSeekBarState extends State<PlayerSeekBar> {
 
   //Duration get _remaining => widget.duration - widget.position;
 }
-
-class HiddenThumbComponentShape extends SliderComponentShape {
-  @override
-  Size getPreferredSize(bool isEnabled, bool isDiscrete) => Size.zero;
-
-  @override
-  void paint(
-    PaintingContext context,
-    Offset center, {
-    required Animation<double> activationAnimation,
-    required Animation<double> enableAnimation,
-    required bool isDiscrete,
-    required TextPainter labelPainter,
-    required RenderBox parentBox,
-    required SliderThemeData sliderTheme,
-    required TextDirection textDirection,
-    required double value,
-    required double textScaleFactor,
-    required Size sizeWithOverflow,
-  }) {}
-}
-
-T? ambiguate<T>(T? value) => value;

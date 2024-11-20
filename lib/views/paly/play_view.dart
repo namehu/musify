@@ -7,13 +7,13 @@ import 'package:musify/util/httpclient.dart';
 import 'package:musify/views/paly/widgets/lyric_reader.dart';
 import 'package:musify/views/paly/widgets/player_control_bar.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
+import 'package:musify/widgets/music/music_seek_bar.dart';
 import './widgets/seek_bar.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/views/paly/widgets/cover.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'package:musify/widgets/m_cover.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../generated/l10n.dart';
 import '../../models/notifierValue.dart';
 import 'play_controller.dart';
@@ -29,16 +29,7 @@ class PlayView extends GetView<PlayController> {
   final double _appBarHeight = 96;
 
   final double commonPadding = 30;
-  List<String> tabs = ["歌曲", "歌词"];
-
-  Stream<PositionData> get _positionDataStream {
-    return Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-        controller.player.positionStream,
-        controller.player.bufferedPositionStream,
-        controller.player.durationStream,
-        (position, bufferedPosition, duration) => PositionData(
-            position, bufferedPosition, duration ?? Duration.zero));
-  }
+  final List<String> tabs = ["歌曲", "歌词"];
 
   @override
   Widget build(BuildContext context) {
@@ -118,22 +109,7 @@ class PlayView extends GetView<PlayController> {
               // 进度条
               Container(
                 margin: EdgeInsets.only(top: 32),
-                child: StreamBuilder<PositionData>(
-                  stream: _positionDataStream,
-                  builder: (context, snapshot) {
-                    final positionData = snapshot.data;
-
-                    return PlayerSeekBar(
-                      padding: commonPadding,
-                      trackWidth: windowsWidth.value,
-                      duration: positionData?.duration ?? Duration.zero,
-                      position: positionData?.position ?? Duration.zero,
-                      bufferedPosition:
-                          positionData?.bufferedPosition ?? Duration.zero,
-                      onChangeEnd: controller.player.seek,
-                    );
-                  },
-                ),
+                child: MusicSeekBar(timeShow: true, padding: 30),
               ),
               Container(
                 margin: EdgeInsets.only(top: 48, bottom: 48),
@@ -165,7 +141,7 @@ class PlayView extends GetView<PlayController> {
           child: Container(
             alignment: Alignment.center,
             child: LyricReader(
-              positionDataStream: _positionDataStream,
+              positionDataStream: controller.positionDataStream,
               lyricUI: controller.lyricUI,
               onLyricUIChange: (ui) => controller.lyricUI = ui,
             ),

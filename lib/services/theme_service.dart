@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/styles/colors.dart';
+import 'package:musify/styles/size.dart';
 
 ThemeData getThemData() {
   return ThemeData(
@@ -72,7 +73,27 @@ class ThemeService extends GetxService {
       primaryColor: _primaryColor,
       colorScheme: _colorSchme.copyWith(primary: _primaryColor),
       primarySwatch: _primaryColor,
-      appBarTheme: AppBarTheme().copyWith(color: _primaryColor),
+      appBarTheme: AppBarTheme().copyWith(
+        iconTheme: IconThemeData(color: gray1),
+        color: _primaryColor,
+        titleTextStyle: TextStyle(color: gray1, fontSize: StyleSize.titleSize),
+        toolbarTextStyle: TextStyle(color: gray1),
+      ),
+      tabBarTheme: TabBarTheme(
+        labelColor: gray1,
+        unselectedLabelColor: ThemeService.color.textSecondColor,
+        indicatorColor: gray1,
+        indicator: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 2, color: gray1),
+          ),
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          iconColor: WidgetStateProperty.all(gray1),
+        ),
+      ),
     );
   }
 

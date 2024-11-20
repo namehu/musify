@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/models/notifierValue.dart';
+import 'package:musify/util/mycss.dart';
 import 'package:musify/widgets/music_bar/music_bar.dart';
 
 class MusicBarService extends GetxService {
@@ -17,7 +18,7 @@ class MusicBarService extends GetxService {
 
   static show({double? top, double? left}) {
     var context = navigatorKey.currentState?.context;
-    if (context == null) {
+    if (context == null || !isMobile) {
       return;
     }
 

@@ -2,6 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart' as rxDart;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -14,6 +15,8 @@ import 'package:musify/util/audioTools.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'package:musify/widgets/music_bar/play_list_modal.dart';
+
+import '../models/myModel.dart';
 
 class HideMusicBarEvent {
   // HideMusicBarEvent();
@@ -45,6 +48,18 @@ class AudioPlayerService extends GetxService {
 
   /// 当前歌曲歌词
   Rx<String> lyric = ''.obs;
+
+  /// 当前歌曲播放进度
+  Stream<PositionData> get positionDataStream {
+    return rxDart.Rx.combineLatest3<Duration, Duration, Duration?,
+        PositionData>(
+      player.positionStream,
+      player.bufferedPositionStream,
+      player.durationStream,
+      (position, bufferedPosition, duration) =>
+          PositionData(position, bufferedPosition, duration ?? Duration.zero),
+    );
+  }
 
   late Worker _playListWorker;
 

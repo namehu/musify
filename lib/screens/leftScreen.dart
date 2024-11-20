@@ -20,6 +20,8 @@ class LeftScreenState extends State<LeftScreen> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: drawerWidth,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       backgroundColor: ThemeService.color.secondBgColor,
       child: MediaQuery.removePadding(
           context: context,
@@ -143,32 +145,28 @@ class MyTextIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ServerInfo>(
-        valueListenable: serversInfo,
-        builder: ((context, _value, child) {
-          return InkWell(
-            onTap: _value.baseurl.isNotEmpty ? press : null,
-            child: Container(
-              padding: updownPadding,
-              child: Row(
-                children: [
-                  Icon(
-                    icon,
-                    size: 20,
-                    color: _value.baseurl.isNotEmpty ? textGray : badgeDark,
-                  ),
-                  SizedBox(width: 15),
-                  Text(title,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: _value.baseurl.isNotEmpty
-                              ? textGray
-                              : badgeDark)),
-                  Spacer(),
-                ],
+    return InkWell(
+      onTap: press,
+      child: Container(
+        padding: updownPadding,
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: ThemeService.color.textColor,
+            ),
+            SizedBox(width: 15),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                color: ThemeService.color.textColor,
               ),
             ),
-          );
-        }));
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -126,101 +126,96 @@ class _PlayerControBarState extends State<PlayerControBar> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (widget.isPlayScreen || !isMobile)
-          ValueListenableBuilder<LoopMode>(
-              valueListenable: playerLoopModeNotifier,
-              builder: (_, playerLoopMode, __) {
-                return ValueListenableBuilder<bool>(
-                    valueListenable: isShuffleModeEnabledNotifier,
-                    builder: (_, isShuffle, __) {
-                      int _action = 0; //0全部循环；1单曲循环；2随机循环
-                      String _msg = S.current.repeatall;
-                      Widget _icon =
-                          Icon(Icons.loop, color: textGray, size: 16);
+        ValueListenableBuilder<LoopMode>(
+            valueListenable: playerLoopModeNotifier,
+            builder: (_, playerLoopMode, __) {
+              return ValueListenableBuilder<bool>(
+                  valueListenable: isShuffleModeEnabledNotifier,
+                  builder: (_, isShuffle, __) {
+                    int _action = 0; //0全部循环；1单曲循环；2随机循环
+                    String _msg = S.current.repeatall;
+                    Widget _icon = Icon(Icons.loop, color: textGray, size: 16);
 
-                      if (playerLoopMode == LoopMode.all) {
-                        if (isShuffle) {
-                          _action = 0;
-                          _msg = S.current.shuffle;
-                          _icon =
-                              Icon(Icons.shuffle, color: badgeRed, size: 16);
-                        } else {
-                          _action = 1;
-                          _msg = S.current.repeatall;
-                          _icon = Icon(Icons.loop, color: textGray, size: 16);
-                        }
-                      } else if (playerLoopMode == LoopMode.one) {
-                        _action = 2;
-                        _msg = S.current.repeatone;
-                        _icon = Icon(Icons.loop, color: badgeRed, size: 16);
+                    if (playerLoopMode == LoopMode.all) {
+                      if (isShuffle) {
+                        _action = 0;
+                        _msg = S.current.shuffle;
+                        _icon = Icon(Icons.shuffle, color: badgeRed, size: 16);
+                      } else {
+                        _action = 1;
+                        _msg = S.current.repeatall;
+                        _icon = Icon(Icons.loop, color: textGray, size: 16);
                       }
-                      return Tooltip(
-                          message: _msg,
-                          child: IconButton(
-                            icon: _icon,
-                            onPressed: () {
-                              switch (_action) {
-                                case 0:
-                                  widget.player.setLoopMode(LoopMode.all);
-                                  widget.player.setShuffleModeEnabled(false);
-                                  isShuffleModeEnabledNotifier.value = false;
-                                  playerLoopModeNotifier.value = LoopMode.all;
-                                  MyToast.show(
-                                      context: context,
-                                      message: S.current.repeatall);
-                                  break;
-                                case 1:
-                                  widget.player.setLoopMode(LoopMode.one);
-                                  widget.player.setShuffleModeEnabled(false);
-                                  isShuffleModeEnabledNotifier.value = false;
-                                  playerLoopModeNotifier.value = LoopMode.one;
-                                  MyToast.show(
-                                      context: context,
-                                      message: S.current.repeatone);
-                                  break;
-                                case 2:
-                                  widget.player.setLoopMode(LoopMode.all);
-                                  widget.player.setShuffleModeEnabled(true);
-                                  isShuffleModeEnabledNotifier.value = true;
-                                  playerLoopModeNotifier.value = LoopMode.all;
-                                  MyToast.show(
-                                      context: context,
-                                      message: S.current.shuffle);
-                                  break;
-                                default:
-                              }
-                            },
-                          ));
-                    });
-              }),
-        if (widget.isPlayScreen || !isMobile)
-          ValueListenableBuilder<bool>(
-              valueListenable: isFirstSongNotifier,
-              builder: (_, isFirst, __) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.skip_previous,
-                    color: isFirst ? badgeDark : textGray,
-                  ),
-                  onPressed: () {
-                    // ignore: unnecessary_statements
-                    (isFirst) ? null : widget.player.seekToPrevious();
-                  },
-                );
-              }),
-        if (!isMobile)
-          IconButton(
-            icon: const Icon(
-              Icons.fast_rewind,
-              color: textGray,
-            ),
-            onPressed: () {
-              if (widget.player.position.inSeconds - 15 > 0) {
-                widget.player.seek(
-                    Duration(seconds: widget.player.position.inSeconds - 15));
-              }
-            },
+                    } else if (playerLoopMode == LoopMode.one) {
+                      _action = 2;
+                      _msg = S.current.repeatone;
+                      _icon = Icon(Icons.loop, color: badgeRed, size: 16);
+                    }
+                    return Tooltip(
+                        message: _msg,
+                        child: IconButton(
+                          icon: _icon,
+                          onPressed: () {
+                            switch (_action) {
+                              case 0:
+                                widget.player.setLoopMode(LoopMode.all);
+                                widget.player.setShuffleModeEnabled(false);
+                                isShuffleModeEnabledNotifier.value = false;
+                                playerLoopModeNotifier.value = LoopMode.all;
+                                MyToast.show(
+                                    context: context,
+                                    message: S.current.repeatall);
+                                break;
+                              case 1:
+                                widget.player.setLoopMode(LoopMode.one);
+                                widget.player.setShuffleModeEnabled(false);
+                                isShuffleModeEnabledNotifier.value = false;
+                                playerLoopModeNotifier.value = LoopMode.one;
+                                MyToast.show(
+                                    context: context,
+                                    message: S.current.repeatone);
+                                break;
+                              case 2:
+                                widget.player.setLoopMode(LoopMode.all);
+                                widget.player.setShuffleModeEnabled(true);
+                                isShuffleModeEnabledNotifier.value = true;
+                                playerLoopModeNotifier.value = LoopMode.all;
+                                MyToast.show(
+                                    context: context,
+                                    message: S.current.shuffle);
+                                break;
+                              default:
+                            }
+                          },
+                        ));
+                  });
+            }),
+        ValueListenableBuilder<bool>(
+            valueListenable: isFirstSongNotifier,
+            builder: (_, isFirst, __) {
+              return IconButton(
+                icon: Icon(
+                  Icons.skip_previous,
+                  color: isFirst ? badgeDark : textGray,
+                ),
+                onPressed: () {
+                  // ignore: unnecessary_statements
+                  (isFirst) ? null : widget.player.seekToPrevious();
+                },
+              );
+            }),
+        IconButton(
+          icon: const Icon(
+            Icons.fast_rewind,
+            color: textGray,
           ),
+          onPressed: () {
+            if (widget.player.position.inSeconds - 15 > 0) {
+              widget.player.seek(
+                  Duration(seconds: widget.player.position.inSeconds - 15));
+            }
+          },
+        ),
         StreamBuilder<PlayerState>(
           stream: widget.player.playerStateStream,
           builder: (context, snapshot) {
@@ -266,99 +261,95 @@ class _PlayerControBarState extends State<PlayerControBar> {
             }
           },
         ),
-        if (isMobile && !widget.isPlayScreen)
-          ValueListenableBuilder<List>(
-              valueListenable: activeList,
-              builder: (context, _activeList, child) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.playlist_play,
-                    color: (_activeList.length > 0) ? textGray : badgeDark,
-                    size: 30.0,
-                  ),
-                  onPressed: (_activeList.length > 0)
-                      ? () {
-                          if (isactivePlay) {
-                            Overlay.of(context).insert(activePlaylistOverlay);
-                            setState(() {
-                              isactivePlay = false;
-                            });
-                          } else {
-                            if (activePlaylistOverlay.mounted) {
-                              activePlaylistOverlay.remove();
-                            }
-                            setState(() {
-                              isactivePlay = true;
-                            });
+        ValueListenableBuilder<List>(
+            valueListenable: activeList,
+            builder: (context, _activeList, child) {
+              return IconButton(
+                icon: Icon(
+                  Icons.playlist_play,
+                  color: (_activeList.length > 0) ? textGray : badgeDark,
+                  size: 30.0,
+                ),
+                onPressed: (_activeList.length > 0)
+                    ? () {
+                        if (isactivePlay) {
+                          Overlay.of(context).insert(activePlaylistOverlay);
+                          setState(() {
+                            isactivePlay = false;
+                          });
+                        } else {
+                          if (activePlaylistOverlay.mounted) {
+                            activePlaylistOverlay.remove();
                           }
+                          setState(() {
+                            isactivePlay = true;
+                          });
                         }
-                      : null,
-                );
-              }),
-        if (!isMobile)
-          IconButton(
-            icon: const Icon(
-              Icons.fast_forward,
-              color: textGray,
-            ),
-            onPressed: () {
-              widget.player.seek(
-                  Duration(seconds: widget.player.position.inSeconds + 15));
-            },
+                      }
+                    : null,
+              );
+            }),
+        IconButton(
+          icon: const Icon(
+            Icons.fast_forward,
+            color: textGray,
           ),
-        if (widget.isPlayScreen || !isMobile)
-          ValueListenableBuilder<bool>(
-              valueListenable: isLastSongNotifier,
-              builder: (_, isLast, __) {
-                return IconButton(
-                  icon: Icon(
-                    Icons.skip_next,
-                    color: isLast ? badgeDark : textGray,
-                  ),
-                  onPressed: () {
-                    // ignore: unnecessary_statements
-                    (isLast) ? null : widget.player.seekToNext();
-                  },
-                );
-              }),
-        if (widget.isPlayScreen || !isMobile)
-          ValueListenableBuilder<Map>(
-              valueListenable: activeSong,
-              builder: (context, _song, child) {
-                return (_song.isNotEmpty && _song["starred"])
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.favorite,
-                          color: badgeRed,
-                          size: 16,
-                        ),
-                        onPressed: () async {
-                          Favorite _favorite =
-                              Favorite(id: _song["value"], type: 'song');
-                          await delStarred(_favorite);
+          onPressed: () {
+            widget.player
+                .seek(Duration(seconds: widget.player.position.inSeconds + 15));
+          },
+        ),
+        ValueListenableBuilder<bool>(
+            valueListenable: isLastSongNotifier,
+            builder: (_, isLast, __) {
+              return IconButton(
+                icon: Icon(
+                  Icons.skip_next,
+                  color: isLast ? badgeDark : textGray,
+                ),
+                onPressed: () {
+                  // ignore: unnecessary_statements
+                  (isLast) ? null : widget.player.seekToNext();
+                },
+              );
+            }),
+        ValueListenableBuilder<Map>(
+            valueListenable: activeSong,
+            builder: (context, _song, child) {
+              return (_song.isNotEmpty && _song["starred"])
+                  ? IconButton(
+                      icon: Icon(
+                        Icons.favorite,
+                        color: badgeRed,
+                        size: 16,
+                      ),
+                      onPressed: () async {
+                        Favorite _favorite =
+                            Favorite(id: _song["value"], type: 'song');
+                        await delStarred(_favorite);
 
-                          setState(() {
-                            activeSong.value["starred"] = false;
-                          });
-                        },
-                      )
-                    : IconButton(
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: textGray,
-                          size: 16,
-                        ),
-                        onPressed: () async {
-                          Favorite _favorite =
-                              Favorite(id: _song["value"], type: 'song');
-                          await addStarred(_favorite);
+                        setState(() {
+                          activeSong.value["starred"] = false;
+                        });
+                      },
+                    )
+                  : IconButton(
+                      icon: Icon(
+                        Icons.favorite_border,
+                        color: textGray,
+                        size: 16,
+                      ),
+                      onPressed: () async {
+                        Favorite _favorite =
+                            Favorite(id: _song["value"], type: 'song');
+                        await addStarred(_favorite);
 
-                          setState(() {
-                            activeSong.value["starred"] = true;
-                          });
-                        },
-                      );
-              })
+                        setState(() {
+                          activeSong.value["starred"] = true;
+                        });
+                      },
+                    );
+            })
       ],
     );
   }

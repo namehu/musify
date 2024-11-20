@@ -7,6 +7,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/screens/bottomScreen.dart';
+import 'package:musify/screens/leftScreen.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/music_bar_service.dart';
@@ -43,6 +45,9 @@ void main() async {
       await windowManager.show();
       await windowManager.focus();
     });
+
+    // windowManager.addListener(MWindowListener());
+
     isMobile = false;
   } else {
     isMobile = true;
@@ -96,12 +101,29 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: S.delegate.supportedLocales,
           theme: ThemeService.theme,
-          // theme: themeLight,
-          // darkTheme: themeDark,
-          // themeMode: ThemeService.mode.value,
-          // home: MainScreen(),
-          getPages: AppPages.pages,
+          getPages: isMobile ? AppPages.pages : AppPages.pagesPC,
           initialRoute: Routes.HOME,
+          transitionDuration: isMobile ? null : Duration(milliseconds: 0),
+          builder: (context, child) {
+            if (isMobile) {
+              return child ?? Container();
+            }
+            return Scaffold(
+              body: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        LeftScreen(),
+                        Expanded(child: child ?? Container()),
+                      ],
+                    ),
+                  ),
+                  BottomScreen(),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

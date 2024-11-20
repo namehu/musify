@@ -26,7 +26,6 @@ class SettingView extends GetView<SettingController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(title: Text(controller.title)),
-        // backgroundColor: StyleDarkColor.bgColor,
         body: Center(
           child: Container(
             padding: EdgeInsets.all(StyleSize.space),
@@ -51,12 +50,13 @@ class SettingView extends GetView<SettingController> {
                 // server config card
                 SliverToBoxAdapter(
                   child: Container(
-                    margin: EdgeInsets.only(top: 15, bottom: 10),
+                    margin: EdgeInsets.only(
+                        top: StyleSize.spaceLarge, bottom: StyleSize.space),
                     child: Flex(
                       direction: Axis.horizontal,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MTitle(title: S.current.server, level: 4),
+                        MTitle(title: S.current.server),
                         MButton(
                           size: SizeEnum.samll,
                           onTap: () {
@@ -117,12 +117,13 @@ class SettingView extends GetView<SettingController> {
                 ),
                 SliverToBoxAdapter(
                   child: Container(
-                    margin: EdgeInsets.only(top: 15, bottom: 10),
+                    margin: EdgeInsets.only(
+                        top: StyleSize.spaceLarge, bottom: StyleSize.space),
                     child: Flex(
                       direction: Axis.horizontal,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MTitle(title: '系统配置', level: 4),
+                        MTitle(title: '系统配置'),
                       ],
                     ),
                   ),

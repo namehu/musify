@@ -14,6 +14,12 @@ const gray11 = Color.fromRGBO(31, 31, 31, 1);
 const gray12 = Color.fromRGBO(20, 20, 20, 1);
 const gray13 = Color.fromRGBO(0, 0, 0, 1);
 
+const normalTitleColor = Color.fromRGBO(0, 0, 0, 0.88);
+const darkTitleColor = Color.fromRGBO(255, 255, 255, 0.85);
+
+const Color normalTextColor = Color.fromRGBO(0, 0, 0, 0.88);
+const Color darkTextColor = Color.fromRGBO(255, 255, 255, 0.85);
+
 const dialogBackgroundColor = Color.fromARGB(255, 52, 53, 54);
 
 const primaryColor = MaterialColor(
@@ -55,16 +61,16 @@ typedef ColorMapType = ({
 });
 
 ColorMapType normalColorMap = (
-  titleColor: Color.fromRGBO(0, 0, 0, 0.88),
+  titleColor: normalTitleColor,
   primaryColor: primaryColor,
-  textColor: Color.fromRGBO(0, 0, 0, 0.88),
+  textColor: normalTextColor,
   textSecondColor: Color.fromRGBO(0, 0, 0, 0.65),
   textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
   textDisabledColor: Color.fromRGBO(0, 0, 0, 0.25),
   borderColor: Color.fromRGBO(217, 217, 217, 1),
   dividerColor: Color.fromRGBO(5, 5, 5, 0.06),
-  bgColor: gray3,
-  secondBgColor: gray11,
+  bgColor: gray2,
+  secondBgColor: gray1,
   dialogBackgroundColor: dialogBackgroundColor,
   cardColor: Colors.white,
   iconColor: gray2,
@@ -75,9 +81,9 @@ ColorMapType normalColorMap = (
 );
 
 ColorMapType darkColorMap = (
-  titleColor: Color.fromRGBO(255, 255, 255, 0.85),
+  titleColor: darkTitleColor,
   primaryColor: primaryColor,
-  textColor: Color.fromRGBO(255, 255, 255, 0.85),
+  textColor: darkTextColor,
   textSecondColor: Color.fromRGBO(255, 255, 255, 0.65),
   textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
   textDisabledColor: Color.fromRGBO(255, 255, 255, 0.25),

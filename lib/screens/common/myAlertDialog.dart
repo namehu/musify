@@ -17,9 +17,13 @@ showMyAlertDialog(BuildContext context, String title, String content) {
           borderRadius: StyleProperty.borderRadius,
         ),
         title: Text(title),
-        titleTextStyle: StyleProperty.normalText,
+        titleTextStyle: TextStyle(
+          color: ThemeService.color.textColor,
+        ),
         content: Text(content),
-        contentTextStyle: StyleProperty.normalText,
+        contentTextStyle: TextStyle(
+          color: ThemeService.color.textColor,
+        ),
         actions: <Widget>[
           MyTextButton(
             title: S.of(context).confrim,

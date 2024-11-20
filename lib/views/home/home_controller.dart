@@ -22,10 +22,10 @@ class HomeController extends GetxController {
   void onReady() {
     super.onReady();
 
+    MusicBarService.show();
+
     if (!hasServer) {
       Get.toNamed(Routes.LOGIN);
-    } else {
-      MusicBarService.show();
     }
   }
 }
