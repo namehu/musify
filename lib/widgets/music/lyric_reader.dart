@@ -12,14 +12,10 @@ typedef Change = void Function(MUINetease ui);
 
 class LyricReader extends StatefulWidget {
   final Stream<PositionData> positionDataStream;
-  final MUINetease lyricUI;
-  final Change onLyricUIChange;
 
   const LyricReader({
     super.key,
     required this.positionDataStream,
-    required this.lyricUI,
-    required this.onLyricUIChange,
   });
 
   @override
@@ -45,13 +41,13 @@ class _LyricReaderState extends State<LyricReader> {
               padding: EdgeInsets.symmetric(horizontal: 40),
               model: _model,
               position: position,
-              lyricUi: widget.lyricUI,
+              lyricUi: audioPlayerService.lyricUI,
               playing: true,
               // size: Size(windowsWidth.value, windowsHeight.value - 385),
               emptyBuilder: () => Center(
                 child: Text(
                   S.current.no + S.current.lyric,
-                  style: widget.lyricUI.getOtherMainTextStyle(),
+                  style: audioPlayerService.lyricUI.getOtherMainTextStyle(),
                 ),
               ),
               selectLineBuilder: (progress, confirm) {
@@ -61,8 +57,8 @@ class _LyricReaderState extends State<LyricReader> {
                         onPressed: () {
                           confirm.call();
                           player.seek(Duration(milliseconds: progress));
-                          widget.onLyricUIChange(
-                              MUINetease.clone(widget.lyricUI));
+                          audioPlayerService.lyricUI =
+                              MUINetease.clone(audioPlayerService.lyricUI);
                         },
                         icon: Icon(
                           Icons.play_arrow,

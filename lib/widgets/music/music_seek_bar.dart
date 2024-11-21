@@ -8,16 +8,14 @@ import 'package:musify/util/util.dart';
 
 class MusicSeekBar extends StatefulWidget {
   final bool? timeShow;
-  final double? dotSize;
-  final double? padding;
+  final double? dotRaidus;
   final ValueChanged<Duration>? onChanged;
   final ValueChanged<Duration>? onChangeEnd;
 
   const MusicSeekBar({
     Key? key,
-    this.dotSize = 15,
+    this.dotRaidus = 15,
     this.timeShow = false,
-    this.padding = 15,
     this.onChanged,
     this.onChangeEnd,
   }) : super(key: key);
@@ -31,7 +29,11 @@ class MusicSeekBarState extends State<MusicSeekBar> {
   final audioPlayerService = Get.find<AudioPlayerService>();
   double? _dragValue;
 
-  get slidePadding => widget.padding! - widget.dotSize!;
+  // get slidePadding => widget.padding! - widget.dotSize!;
+
+  double get _innerTrachHeight => min<double>(5.0, widget.dotRaidus!);
+
+  double get _thumbSize => max(_innerTrachHeight, min(10, widget.dotRaidus!));
 
   @override
   void didChangeDependencies() {
@@ -53,7 +55,7 @@ class MusicSeekBarState extends State<MusicSeekBar> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.only(left: slidePadding, right: slidePadding),
+              // padding: EdgeInsets.only(left: slidePadding, right: slidePadding),
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   activeTrackColor: ThemeService.color.primaryColor,
@@ -62,9 +64,11 @@ class MusicSeekBarState extends State<MusicSeekBar> {
                   overlayColor:
                       ThemeService.color.primaryColor.withOpacity(0.3),
                   overlayShape:
-                      RoundSliderOverlayShape(overlayRadius: widget.dotSize!),
-                  trackHeight: 5.0,
-                  thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
+                      RoundSliderOverlayShape(overlayRadius: widget.dotRaidus!),
+                  trackHeight: _innerTrachHeight,
+                  thumbShape: RoundSliderThumbShape(
+                    enabledThumbRadius: _thumbSize,
+                  ),
                 ),
                 child: Container(
                   // width: widget.trackWidth,
@@ -99,7 +103,7 @@ class MusicSeekBarState extends State<MusicSeekBar> {
             if (widget.timeShow!)
               Container(
                 padding: EdgeInsets.only(
-                    left: widget.padding!, right: widget.padding!),
+                    left: widget.dotRaidus!, right: widget.dotRaidus!),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

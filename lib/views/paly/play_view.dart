@@ -1,14 +1,11 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Rx;
-import 'package:musify/models/myModel.dart';
-import 'package:musify/util/httpclient.dart';
-import 'package:musify/views/paly/widgets/lyric_reader.dart';
+import 'package:musify/styles/colors.dart';
+import 'package:musify/widgets/music/lyric_reader.dart';
 import 'package:musify/views/paly/widgets/player_control_bar.dart';
-import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/music/music_seek_bar.dart';
-import './widgets/seek_bar.dart';
+import 'package:musify/widgets/music/operation_icons.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/views/paly/widgets/cover.dart';
@@ -88,10 +85,11 @@ class PlayView extends GetView<PlayController> {
   Widget _buildBackendCover() {
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
-      child: ValueListenableBuilder<Map>(
-        valueListenable: activeSong,
-        builder: ((context, value, child) =>
-            MCover(url: value.isNotEmpty ? value["url"] : '')),
+      child: Obx(
+        () {
+          var song = controller.audioPlayerService.currentSong.value;
+          return MCover(url: song.id.isNotEmpty ? song.coverUrl : '');
+        },
       ),
     );
   }
@@ -109,7 +107,8 @@ class PlayView extends GetView<PlayController> {
               // 进度条
               Container(
                 margin: EdgeInsets.only(top: 32),
-                child: MusicSeekBar(timeShow: true, padding: 30),
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: MusicSeekBar(timeShow: true),
               ),
               Container(
                 margin: EdgeInsets.only(top: 48, bottom: 48),
@@ -142,8 +141,6 @@ class PlayView extends GetView<PlayController> {
             alignment: Alignment.center,
             child: LyricReader(
               positionDataStream: controller.positionDataStream,
-              lyricUI: controller.lyricUI,
-              onLyricUIChange: (ui) => controller.lyricUI = ui,
             ),
           ),
         ));
@@ -177,10 +174,18 @@ class PlayView extends GetView<PlayController> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: gray1,
+                      ),
                     ),
-                    InkWell(onTap: () {}, child: Icon(Icons.more_vert))
+                    InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.more_vert,
+                          color: ThemeService.color.iconColor,
+                        ))
                   ],
                 ),
               ),
@@ -193,34 +198,9 @@ class PlayView extends GetView<PlayController> {
                       (value.isEmpty) ? S.current.unknown : value["artist"],
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: gray1),
                     ),
-                    ValueListenableBuilder<Map>(
-                      valueListenable: activeSong,
-                      builder: (context, _song, child) {
-                        var value = (_song.isNotEmpty && _song["starred"])
-                            ? true
-                            : false;
-
-                        return MStarToogle(
-                            value: value,
-                            size: 24,
-                            onChange: (val) async {
-                              if (_song.isNotEmpty) {
-                                Favorite _favorite =
-                                    Favorite(id: _song["value"], type: 'song');
-
-                                value
-                                    ? await delStarred(_favorite)
-                                    : await addStarred(_favorite);
-
-                                // activeSong.value["starred"] = !value;
-                                activeSong.value = Map.from(
-                                  activeSong.value..addAll({"starred": !value}),
-                                );
-                              }
-                            });
-                      },
-                    )
+                    PlayStarIcon(),
                   ],
                 ),
               ),

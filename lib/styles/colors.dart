@@ -73,7 +73,7 @@ ColorMapType normalColorMap = (
   secondBgColor: gray1,
   dialogBackgroundColor: dialogBackgroundColor,
   cardColor: Colors.white,
-  iconColor: gray2,
+  iconColor: gray6,
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),
   secondaryButtonColor: Color.fromRGBO(94, 32, 237, 1),
   musicBarColor: Colors.black,

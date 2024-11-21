@@ -70,12 +70,6 @@ void main() async {
   await Get.putAsync(() => ServerService().init());
   await Get.putAsync(() => AudioPlayerService().init());
 
-  final AudioPlayer _player = AudioPlayerService.player;
-  //监听器
-  //register listener
-  audioCurrentIndexStream(_player);
-  audioActiveSongListener(_player);
-
   runApp(MyApp());
 }
 

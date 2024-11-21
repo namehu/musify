@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/services/theme_service.dart';
-import '../../util/mycss.dart';
+import 'package:musify/styles/colors.dart';
 
 /// custom Toast
 class MToast {
+  // 显示弹窗
   static void show(
     String message, {
     int duration = 1000,
@@ -28,10 +29,10 @@ class MToast {
                   padding: EdgeInsets.all(10),
                   child: Text(
                     message,
-                    style: TextStyle(color: ThemeService.color.textColor),
+                    style: TextStyle(color: gray3),
                   ),
                 ),
-                color: badgeDark,
+                color: ThemeService.color.dialogBackgroundColor,
               ),
             ));
       },

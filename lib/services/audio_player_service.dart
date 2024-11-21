@@ -2,6 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
+import 'package:musify/util/MUINetease.dart';
 import 'package:rxdart/rxdart.dart' as rxDart;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -48,6 +49,7 @@ class AudioPlayerService extends GetxService {
 
   /// 当前歌曲歌词
   Rx<String> lyric = ''.obs;
+  MUINetease lyricUI = MUINetease(highlight: true);
 
   /// 当前歌曲播放进度
   Stream<PositionData> get positionDataStream {
@@ -83,6 +85,27 @@ class AudioPlayerService extends GetxService {
         // player.setShuffleModeEnabled(false);
         // player.setLoopMode(LoopMode.all);
         _setAudioSource(songs);
+      }
+    });
+
+    player.currentIndexStream.listen((event) async {
+      if (player.sequenceState == null) return;
+      // 更新当前歌曲
+      final currentItem = player.sequenceState!.currentSource;
+      final playlist = player.sequenceState!.effectiveSequence;
+      if (currentItem == null) {
+        //更新上下首歌曲
+        if (playlist.isEmpty) {
+          isFirstSongNotifier.value = true;
+          isLastSongNotifier.value = true;
+        }
+      } else {
+        isFirstSongNotifier.value = playlist.first == currentItem;
+        isLastSongNotifier.value = playlist.last == currentItem;
+
+        MediaItem _tag = currentItem.tag;
+        scrobble(_tag.id, false);
+        await getSongDetail(_tag.id);
       }
     });
 

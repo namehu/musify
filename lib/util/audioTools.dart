@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/models/lyrics.dart';
-import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import '../generated/l10n.dart';
 import '../models/notifierValue.dart';
@@ -53,84 +50,6 @@ setSongLyric(String id, [String? text]) async {
   } else {
     activeLyric.value = "";
   }
-}
-
-void audioCurrentIndexStream(AudioPlayer _player) {
-  _player.currentIndexStream.listen((event) async {
-    if (_player.sequenceState == null) return;
-    // 更新当前歌曲
-    final currentItem = _player.sequenceState!.currentSource;
-    final playlist = _player.sequenceState!.effectiveSequence;
-    if (currentItem == null) {
-      //更新上下首歌曲
-      if (playlist.isEmpty) {
-        isFirstSongNotifier.value = true;
-        isLastSongNotifier.value = true;
-      }
-    } else {
-      isFirstSongNotifier.value = playlist.first == currentItem;
-      isLastSongNotifier.value = playlist.last == currentItem;
-
-      MediaItem _tag = currentItem.tag;
-      scrobble(_tag.id, false);
-      await getSongDetail(_tag.id);
-    }
-  });
-}
-
-void audioActiveSongListener(AudioPlayer _player) {
-//   activeList.addListener(() {
-//     if (activeSongValue.value != "1") {
-// //新加列表的时候关闭乱序，避免出错
-//       _player.setShuffleModeEnabled(false);
-//       _player.setLoopMode(LoopMode.all);
-//       isShuffleModeEnabledNotifier.value = false;
-//       playerLoopModeNotifier.value = LoopMode.all;
-//       setAudioSource(_player);
-//     }
-//   });
-}
-
-Future<void> setAudioSource(AudioPlayer _player) async {
-  if (_player.sequenceState != null) {
-    _player.sequenceState!.effectiveSequence.clear();
-  }
-
-  List<AudioSource> children = [];
-  List _songs = activeList.value;
-  for (var element in _songs) {
-    Songs _song = element;
-    if (_song.suffix != "ape") {
-      children.add(
-        AudioSource.uri(
-          Uri.parse(_song.stream),
-          tag: MediaItem(
-              id: _song.id,
-              album: _song.album,
-              artist: _song.artist,
-              genre: _song.genre,
-              title: _song.title,
-              duration: Duration(milliseconds: _song.duration.toInt()),
-              artUri: Uri.parse(getCoverArt(_song.id))),
-        ),
-      );
-    }
-  }
-
-  final playlist = ConcatenatingAudioSource(
-    useLazyPreparation: true,
-    shuffleOrder: DefaultShuffleOrder(),
-    children: children,
-  );
-
-  await _player.setAudioSource(playlist,
-      initialIndex: activeIndex.value, initialPosition: Duration.zero);
-
-  _player.play();
-  final currentItem = _player.sequenceState!.currentSource;
-  MediaItem _tag = currentItem?.tag;
-
-  await getSongDetail(_tag.id);
 }
 
 //新增播放列表
