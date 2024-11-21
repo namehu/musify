@@ -71,7 +71,7 @@ ColorMapType normalColorMap = (
   dividerColor: Color.fromRGBO(5, 5, 5, 0.06),
   bgColor: gray2,
   secondBgColor: gray1,
-  dialogBackgroundColor: dialogBackgroundColor,
+  dialogBackgroundColor: gray1,
   cardColor: Colors.white,
   iconColor: gray6,
   primaryButtonColor: Color.fromRGBO(234, 21, 57, 1),

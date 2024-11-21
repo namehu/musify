@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'home_controller.dart';
 import 'package:musify/services/audio_player_service.dart';
@@ -31,6 +32,7 @@ class HomeView extends GetView<HomeController> {
                 child: TabBar(
                   dividerHeight: 0,
                   labelPadding: EdgeInsets.only(bottom: 5),
+                  unselectedLabelColor: gray1,
                   tabs: [
                     Icon(Icons.search),
                     Icon(Icons.music_note),

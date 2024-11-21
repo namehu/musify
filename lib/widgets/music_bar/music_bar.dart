@@ -5,6 +5,7 @@ import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/music_bar/icon_play_list.dart';
 import '../../../models/notifierValue.dart';
@@ -25,7 +26,7 @@ class _MusicBarState extends State<MusicBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.transparent,
+      // color: Colors.transparent,
       padding: EdgeInsets.only(left: 32, right: 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,6 +37,12 @@ class _MusicBarState extends State<MusicBar> {
             decoration: BoxDecoration(
               color: ThemeService.color.dialogBackgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(30)),
+              boxShadow: [
+                BoxShadow(
+                  color: gray7,
+                  blurRadius: 2,
+                ),
+              ],
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

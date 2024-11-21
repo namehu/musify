@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/util/MUINetease.dart';
 import 'package:musify/util/util.dart';
 
@@ -43,7 +43,6 @@ class _LyricReaderState extends State<LyricReader> {
               position: position,
               lyricUi: audioPlayerService.lyricUI,
               playing: true,
-              // size: Size(windowsWidth.value, windowsHeight.value - 385),
               emptyBuilder: () => Center(
                 child: Text(
                   S.current.no + S.current.lyric,
@@ -62,19 +61,17 @@ class _LyricReaderState extends State<LyricReader> {
                         },
                         icon: Icon(
                           Icons.play_arrow,
-                          color: ThemeService.color.textColor,
+                          color: gray3,
                         )),
                     Expanded(
                       child: Container(
-                        decoration:
-                            BoxDecoration(color: ThemeService.color.textColor),
+                        decoration: const BoxDecoration(color: gray3),
                         height: 1,
-                        width: double.infinity,
                       ),
                     ),
                     Text(
                       formatDurationMilliseconds(progress),
-                      style: TextStyle(color: ThemeService.color.textColor),
+                      style: TextStyle(color: gray3),
                     )
                   ],
                 );
