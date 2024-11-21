@@ -68,7 +68,7 @@ ColorMapType normalColorMap = (
   textPrimaryColor: Color.fromRGBO(234, 21, 57, 1),
   textDisabledColor: Color.fromRGBO(0, 0, 0, 0.25),
   borderColor: Color.fromRGBO(217, 217, 217, 1),
-  dividerColor: Color.fromRGBO(5, 5, 5, 0.06),
+  dividerColor: gray4,
   bgColor: gray2,
   secondBgColor: gray1,
   dialogBackgroundColor: gray1,

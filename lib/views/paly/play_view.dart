@@ -8,11 +8,9 @@ import 'package:musify/widgets/music/music_seek_bar.dart';
 import 'package:musify/widgets/music/operation_icons.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
-import 'package:musify/views/paly/widgets/cover.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'package:musify/widgets/m_cover.dart';
 import '../../generated/l10n.dart';
-import '../../models/notifierValue.dart';
 import 'play_controller.dart';
 
 class PlayBinding implements Bindings {
@@ -155,59 +153,60 @@ class PlayView extends GetView<PlayController> {
   }
 
   Widget _buildHeader() {
-    return ValueListenableBuilder<Map>(
-      valueListenable: activeSong,
-      builder: ((context, value, child) {
-        return Container(
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PlayCoverWidget(url: value.isNotEmpty ? value["url"] : ''),
-              Container(
-                margin: EdgeInsets.only(
-                    top: StyleSize.space, bottom: StyleSize.spaceSmall),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      (value.isEmpty) ? S.current.unknown : value["title"],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: gray1,
-                      ),
+    return Obx(() {
+      var value = controller.audioPlayerService.currentSong.value;
+      return Container(
+        child: Column(
+          children: [
+            Container(
+              width: 320,
+              height: 320,
+              child: MCover(url: value.coverUrl, radius: 4),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                  top: StyleSize.space, bottom: StyleSize.spaceSmall),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    (value.title.isEmpty) ? S.current.unknown : value.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: gray1,
                     ),
-                    InkWell(
-                        onTap: () {},
-                        child: Icon(
-                          Icons.more_vert,
-                          color: ThemeService.color.iconColor,
-                        ))
-                  ],
-                ),
+                  ),
+                  InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.more_vert,
+                        color: ThemeService.color.iconColor,
+                      ))
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      (value.isEmpty) ? S.current.unknown : value["artist"],
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: gray1),
-                    ),
-                    PlayStarIcon(),
-                  ],
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    (value.artist.isEmpty) ? S.current.unknown : value.artist,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: gray1),
+                  ),
+                  PlayStarIcon(),
+                ],
               ),
-            ],
-          ),
-        );
-      }),
-    );
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

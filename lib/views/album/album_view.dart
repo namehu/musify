@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/constant.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
@@ -15,8 +14,9 @@ import 'package:musify/util/util.dart';
 import 'package:musify/views/album/album_controller.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_button.dart';
+import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:musify/widgets/m_text.dart';
 
 class AlbumBinding implements Bindings {
   @override
@@ -58,96 +58,64 @@ class AlbumView extends GetView<AlbumController> {
           Container(
             height: 136,
             width: 136,
-            margin: EdgeInsets.only(right: 15),
+            // margin: EdgeInsets.only(right: 15),
             child: Obx(
-              () => (controller.album.coverUrl != '')
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: controller.album.coverUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : Container(),
+              () => MCover(
+                url: controller.album.coverUrl,
+                radius: 4,
+              ),
             ),
           ),
           // 右侧区域
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Text(
-                    controller.album.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: titleText2,
+            child: Container(
+              height: 132,
+              padding: EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      controller.album.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: StyleSize.titleSize),
+                    ),
                   ),
-                ),
-                _buildTopUser(),
-                Obx(
-                  () => controller.album.genre != ""
-                      ? Container(
-                          width: _toprightwidth,
-                          child: Row(
-                            children: [
-                              MyTextButton(
-                                press: () {
-                                  indexValue.value = 6;
-                                },
-                                title: S.current.genres,
-                              ),
-                              SizedBox(width: 5),
-                              MyTextButton(
-                                press: () {
-                                  activeID.value = controller.album.genre;
-                                  indexValue.value = 4;
-                                },
-                                title: controller.album.genre,
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(),
-                ),
-                Obx(
-                  () => controller.album.year != 0
-                      ? Container(
-                          width: _toprightwidth,
-                          child: Text(
-                            S.current.year +
+                  _buildTopUser(),
+                  Obx(
+                    () => controller.album.year != 0
+                        ? MText(
+                            text: S.current.year +
                                 ": " +
                                 controller.album.year.toString(),
                             style: nomalText,
-                          ),
-                        )
-                      : Container(),
-                ),
-                Obx(
-                  () => Container(
-                    width: _toprightwidth,
-                    child: Text(
-                      S.current.song +
-                          ": " +
-                          controller.album.songCount.toString(),
-                      style: nomalText,
+                          )
+                        : Container(),
+                  ),
+                  Obx(
+                    () => Container(
+                      child: MText(
+                        text: S.current.song +
+                            ": " +
+                            controller.album.songCount.toString(),
+                        type: MTextTypeEnum.secondary,
+                      ),
                     ),
                   ),
-                ),
-                Obx(
-                  () => Container(
-                    width: _toprightwidth,
-                    child: Text(
-                      S.current.playCount +
-                          ": " +
-                          controller.album.playCount.toString(),
-                      style: nomalText,
+                  Obx(
+                    () => Container(
+                      child: MText(
+                        text: S.current.playCount +
+                            ": " +
+                            controller.album.playCount.toString(),
+                        type: MTextTypeEnum.secondary,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )
         ],
@@ -193,12 +161,13 @@ class AlbumView extends GetView<AlbumController> {
               maxWidth: _toprightwidth,
             ),
             child: Obx(
-              () => MyTextButton(
-                press: () {
+              () => MText(
+                onTap: () {
                   activeID.value = controller.album.artistId;
                   indexValue.value = 9;
                 },
-                title: controller.album.artist,
+                text: controller.album.artist,
+                type: MTextTypeEnum.secondary,
               ),
             ),
           ),
@@ -208,6 +177,7 @@ class AlbumView extends GetView<AlbumController> {
             width: 25,
             child: MStarToogle(
               value: controller.staralbum.value,
+              size: 16,
               onChange: (val) async {
                 var _favorite = Favorite(id: activeID.value, type: 'album');
                 controller.staralbum.value

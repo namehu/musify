@@ -53,7 +53,7 @@ class _PlayListModalState extends State<PlayListModal> {
               border: Border(
                 bottom: BorderSide(
                   width: 1,
-                  color: ThemeService.color.borderColor,
+                  color: ThemeService.color.dividerColor,
                 ),
               ),
             ),
@@ -72,7 +72,7 @@ class _PlayListModalState extends State<PlayListModal> {
                   ),
                 ),
                 SizedBox(
-                  width: 100,
+                  // width: 100,
                   child: Obx(() {
                     var playMode = audioPlayerService.playMode.value;
 
@@ -95,21 +95,24 @@ class _PlayListModalState extends State<PlayListModal> {
 
                     return GestureDetector(
                       onTap: () => audioPlayerService.tooglePlayMode(),
-                      child: Chip(
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        avatar: Icon(
-                          iconData,
-                          size: 12,
-                          color: ThemeService.color.textSecondColor,
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Icon(
+                              iconData,
+                              size: 12,
+                              color: ThemeService.color.textSecondColor,
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              label,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: ThemeService.color.textSecondColor,
+                              ),
+                            )
+                          ],
                         ),
-                        label: Text(label),
-                        labelStyle: TextStyle(
-                          fontSize: 12,
-                          color: ThemeService.color.textSecondColor,
-                        ),
-                        labelPadding: EdgeInsets.all(0),
-                        side: BorderSide(width: 0, color: Colors.transparent),
-                        backgroundColor: ThemeService.color.musicBarColor,
                         //
                       ),
                     );
@@ -129,7 +132,7 @@ class _PlayListModalState extends State<PlayListModal> {
                     itemCount: audioPlayerService.playSongs.length,
                     separatorBuilder: (c, i) => Divider(
                       height: 1,
-                      color: ThemeService.color.borderColor,
+                      color: ThemeService.color.dividerColor,
                     ),
                     itemBuilder: (context, index) {
                       var item = audioPlayerService.playSongs[index];

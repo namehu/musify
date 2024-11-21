@@ -52,46 +52,44 @@ class HomeView extends GetView<HomeController> {
   }
 
   _buildTabView() {
-    return Expanded(
-      child: OrientationBuilder(
-        builder: (context, orientation) {
-          if (isMobile && orientation == Orientation.landscape) {
-            if (windowsWidth.value < windowsHeight.value) {
-              double _tem = windowsWidth.value;
-              windowsWidth.value = windowsHeight.value;
-              windowsHeight.value = _tem;
-            }
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        if (isMobile && orientation == Orientation.landscape) {
+          if (windowsWidth.value < windowsHeight.value) {
+            double _tem = windowsWidth.value;
+            windowsWidth.value = windowsHeight.value;
+            windowsHeight.value = _tem;
           }
-          if (isMobile && orientation == Orientation.portrait) {
-            if (windowsWidth.value > windowsHeight.value) {
-              double _tem = windowsWidth.value;
-              windowsWidth.value = windowsHeight.value;
-              windowsHeight.value = _tem;
-            }
+        }
+        if (isMobile && orientation == Orientation.portrait) {
+          if (windowsWidth.value > windowsHeight.value) {
+            double _tem = windowsWidth.value;
+            windowsWidth.value = windowsHeight.value;
+            windowsHeight.value = _tem;
           }
-          return TabBarView(children: [
-            Text('1111'),
-            KeepAliveWrapper(
-              child: Container(
-                width: windowsWidth.value,
-                child: Obx(
-                  () {
-                    var isNotEmpty =
-                        serverService.serverInfo.value.baseurl.isNotEmpty;
-                    return isNotEmpty
-                        ? Container(
-                            child: ValueListenableBuilder<int>(
-                                valueListenable: indexValue,
-                                builder: ((context, value, child) =>
-                                    Roter(roter: value, player: player))))
-                        : Container();
-                  },
-                ),
+        }
+        return TabBarView(children: [
+          Text('1111'),
+          KeepAliveWrapper(
+            child: Container(
+              width: windowsWidth.value,
+              child: Obx(
+                () {
+                  var isNotEmpty =
+                      serverService.serverInfo.value.baseurl.isNotEmpty;
+                  return isNotEmpty
+                      ? Container(
+                          child: ValueListenableBuilder<int>(
+                              valueListenable: indexValue,
+                              builder: ((context, value, child) =>
+                                  Roter(roter: value, player: player))))
+                      : Container();
+                },
               ),
             ),
-          ]);
-        },
-      ),
+          ),
+        ]);
+      },
     );
   }
 }

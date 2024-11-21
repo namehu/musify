@@ -10,7 +10,7 @@ class MStarToogle extends StatelessWidget {
   const MStarToogle({
     super.key,
     required this.value,
-    this.size = 16,
+    this.size = 24,
     this.disabled = false,
     this.onChange,
   });
