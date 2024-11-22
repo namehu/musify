@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musify/models/songs.dart';
 import '../../generated/l10n.dart';
-import '../../models/notifierValue.dart';
 import '../../util/dbProvider.dart';
 import '../../models/myModel.dart';
 import '../../util/util.dart';

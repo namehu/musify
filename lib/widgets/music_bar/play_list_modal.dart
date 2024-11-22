@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
 import 'package:musify/enums/play_mode_enum.dart';
+import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
@@ -63,7 +63,7 @@ class _PlayListModalState extends State<PlayListModal> {
                 Expanded(
                   child: Obx(
                     () => Text(
-                      '播放列表' +
+                      S.current.playlist +
                           '(' +
                           audioPlayerService.playSongs.length.toString() +
                           ')',
@@ -81,15 +81,15 @@ class _PlayListModalState extends State<PlayListModal> {
 
                     switch (playMode) {
                       case PlayModeEnum.loop:
-                        label = '列表循环';
+                        label = S.current.repeatall;
                         iconData = Icons.loop;
                         break;
                       case PlayModeEnum.single:
-                        label = '单曲循环';
+                        label = S.current.repeatone;
                         iconData = Icons.repeat_one;
                         break;
                       case PlayModeEnum.shuffle:
-                        label = '随机播放';
+                        label = S.current.shuffle;
                         iconData = Icons.shuffle;
                     }
 

@@ -25,7 +25,7 @@ class SettingView extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: AppBar(title: Text(controller.title)),
+        appBar: AppBar(title: Text(S.current.settings)),
         body: Center(
           child: Container(
             padding: EdgeInsets.all(StyleSize.space),
@@ -62,7 +62,7 @@ class SettingView extends GetView<SettingController> {
                           onTap: () {
                             Get.toNamed(Routes.CHANGE_SERVER);
                           },
-                          title: '修改服务器',
+                          title: S.current.change + S.current.server,
                         )
                       ],
                     ),
@@ -123,7 +123,7 @@ class SettingView extends GetView<SettingController> {
                       direction: Axis.horizontal,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MTitle(title: '系统配置'),
+                        MTitle(title: S.current.systemSettings),
                       ],
                     ),
                   ),
@@ -162,7 +162,7 @@ class SettingView extends GetView<SettingController> {
                       ),
                       _listItem(
                         icon: Icons.museum,
-                        title: '主题',
+                        title: S.current.theme,
                         value: Obx(
                           () => Flex(
                             direction: Axis.horizontal,

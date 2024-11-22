@@ -260,6 +260,26 @@ class S {
     );
   }
 
+  /// `SystemSettings`
+  String get systemSettings {
+    return Intl.message(
+      'SystemSettings',
+      name: 'systemSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `change`
+  String get change {
+    return Intl.message(
+      'change',
+      name: 'change',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Scan `
   String get scan {
     return Intl.message(
@@ -270,11 +290,61 @@ class S {
     );
   }
 
+  /// `Type`
+  String get type {
+    return Intl.message(
+      'Type',
+      name: 'type',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Server `
   String get server {
     return Intl.message(
       'Server ',
       name: 'server',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Server List`
+  String get serverList {
+    return Intl.message(
+      'Server List',
+      name: 'serverList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Server`
+  String get serverAdd {
+    return Intl.message(
+      'Add Server',
+      name: 'serverAdd',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Set Server`
+  String get serverSet {
+    return Intl.message(
+      'Set Server',
+      name: 'serverSet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eidit Server`
+  String get serverEdit {
+    return Intl.message(
+      'Eidit Server',
+      name: 'serverEdit',
       desc: '',
       args: [],
     );
@@ -340,11 +410,41 @@ class S {
     );
   }
 
+  /// `Theme`
+  String get theme {
+    return Intl.message(
+      'Theme',
+      name: 'theme',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Index`
   String get index {
     return Intl.message(
       'Index',
       name: 'index',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play`
+  String get playAll {
+    return Intl.message(
+      'Play',
+      name: 'playAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shuffle`
+  String get playShuffle {
+    return Intl.message(
+      'Shuffle',
+      name: 'playShuffle',
       desc: '',
       args: [],
     );
@@ -380,11 +480,31 @@ class S {
     );
   }
 
-  /// `Search `
+  /// `Search`
   String get search {
     return Intl.message(
-      'Search ',
+      'Search',
       name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message(
+      'Logout',
+      name: 'logout',
       desc: '',
       args: [],
     );
@@ -395,6 +515,16 @@ class S {
     return Intl.message(
       'Add ',
       name: 'add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modify`
+  String get modify {
+    return Intl.message(
+      'Modify',
+      name: 'modify',
       desc: '',
       args: [],
     );
@@ -879,6 +1009,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Alerady Reached Bottom`
+  String get reachBottom {
+    return Intl.message(
+      'Alerady Reached Bottom',
+      name: 'reachBottom',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -888,17 +1028,14 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
       Locale.fromSubtags(languageCode: 'zh'),
-      Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
       Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
     ];
   }
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
-
   @override
   Future<S> load(Locale locale) => S.load(locale);
-
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:musify/enums/serve_type_enum.dart';
+import 'package:musify/generated/l10n.dart';
 import 'package:musify/services/global_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'login_controller.dart';
 
 class LoginViewBinding implements Bindings {
@@ -29,7 +31,9 @@ class LoginView extends GetView<LoginController> {
           automaticallyImplyLeading: controller.editId != null,
           centerTitle: true,
           backgroundColor: Colors.transparent,
-          title: Text(controller.editId != null ? '编辑服务器' : '设置服务器'),
+          title: Text(controller.editId != null
+              ? S.current.serverEdit
+              : S.current.serverSet),
         ),
         body: SingleChildScrollView(
             child: Center(
@@ -53,12 +57,18 @@ class LoginView extends GetView<LoginController> {
                     Expanded(
                       child: Obx(
                         () => DropdownButton(
-                          hint: Text('选择服务器类型'),
+                          hint: Text(
+                            S.current.server + S.current.type,
+                            style: TextStyle(
+                              color: gray1,
+                            ),
+                          ),
                           isExpanded: true,
                           underline: Divider(
                             height: 1,
-                            color: Colors.white,
+                            color: gray1,
                           ),
+                          style: TextStyle(color: gray1),
                           value: controller.serverType.value,
                           onChanged: (va) {
                             controller.serverType.value = va!;
@@ -75,31 +85,19 @@ class LoginView extends GetView<LoginController> {
                   ],
                 ),
                 SizedBox(height: 40),
-                TextField(
+                _buildInput(
                   controller: controller.servercontroller,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(),
-                    ),
-                    labelText: '服务器地址',
-                  ),
+                  labelText: S.current.serverURL,
                 ),
                 SizedBox(height: 40),
-                TextField(
+                _buildInput(
                   controller: controller.usernamecontroller,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: '用户名',
-                  ),
+                  labelText: S.current.username,
                 ),
                 SizedBox(height: 40),
-                TextField(
+                _buildInput(
                   controller: controller.passwordcontroller,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: '密码',
-                  ),
+                  labelText: S.current.password,
                 ),
                 SizedBox(height: 40),
                 Flex(
@@ -134,7 +132,9 @@ class LoginView extends GetView<LoginController> {
                                   ),
                                 ),
                               Text(
-                                controller.editId != null ? '修改' : '登录',
+                                controller.editId != null
+                                    ? S.current.modify
+                                    : S.current.login,
                                 style: TextStyle(color: Colors.white),
                               ),
                             ],
@@ -148,6 +148,23 @@ class LoginView extends GetView<LoginController> {
             ),
           ),
         )),
+      ),
+    );
+  }
+
+  Widget _buildInput({
+    String? labelText,
+    TextEditingController? controller,
+  }) {
+    return TextField(
+      controller: controller,
+      style: TextStyle(color: gray1),
+      decoration: InputDecoration(
+        labelStyle: TextStyle(color: gray1),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: gray1),
+        ),
+        labelText: labelText,
       ),
     );
   }

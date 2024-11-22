@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/generated/l10n.dart';
 import 'package:musify/services/global_service.dart';
 import 'package:musify/views/changeServer/change_server_controller.dart';
 import 'package:musify/widgets/m_button.dart';
@@ -18,7 +19,7 @@ class ChangeServerView extends GetView<ChangeServerViewController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('服务器列表'),
+        title: Text(S.current.serverList),
       ),
       body: Center(
         child: Container(
@@ -56,7 +57,7 @@ class ChangeServerView extends GetView<ChangeServerViewController> {
         padding: EdgeInsets.all(8),
         child: Center(
           child: MButton(
-            title: '新增服务器',
+            title: S.current.serverAdd,
             width: Platform.isWindows ? GloabalService.contentMaxWidth : null,
             onTap: () {
               controller.handleTap();

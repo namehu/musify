@@ -131,14 +131,14 @@ class AlbumView extends GetView<AlbumController> {
           Expanded(
               child: MButton(
             icon: Icons.play_arrow,
-            title: '全部播放',
+            title: S.current.playAll,
             onTap: () => controller.handlePlay(),
           )),
           SizedBox(width: 10),
           Expanded(
             child: MButton(
               icon: Icons.shuffle,
-              title: '随机播放',
+              title: S.current.playShuffle,
               type: ButtonType.secondary,
               onTap: () => controller.handlePlay(PlayModeEnum.shuffle),
             ),

@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:musify/api/index.dart';
@@ -12,7 +9,6 @@ import 'package:musify/routes/pages.dart';
 import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/util/dbProvider.dart';
-import 'package:musify/util/util.dart';
 
 class LoginController extends GetxController {
   var serverService = Get.find<ServerService>();

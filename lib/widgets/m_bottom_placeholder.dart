@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musify/constant.dart';
+import 'package:musify/generated/l10n.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
@@ -27,7 +28,7 @@ class MBottomPlaceholder extends StatelessWidget {
               margin: EdgeInsets.only(
                   left: StyleSize.spaceSmall, right: StyleSize.spaceSmall),
               child: Text(
-                '已经到底啦~',
+                S.current.reachBottom,
                 style: TextStyle(color: ThemeService.color.textSecondColor),
               ),
             ),

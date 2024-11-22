@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musify/constant.dart';
-import 'package:musify/util/mycss.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../models/myModel.dart';

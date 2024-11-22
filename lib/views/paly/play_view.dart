@@ -24,13 +24,12 @@ class PlayView extends GetView<PlayController> {
   final double _appBarHeight = 96;
 
   final double commonPadding = 30;
-  final List<String> tabs = ["歌曲", "歌词"];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: tabs.length,
+      length: controller.tabs.length,
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: _buildTabTitle(),
@@ -71,7 +70,8 @@ class PlayView extends GetView<PlayController> {
                 ),
               ),
               // dividerColor: ThemeService.color.primaryColor,
-              tabs: tabs.map((e) => Tab(text: e, height: 32)).toList(),
+              tabs:
+                  controller.tabs.map((e) => Tab(text: e, height: 32)).toList(),
             ),
           ),
         ),
@@ -124,7 +124,7 @@ class PlayView extends GetView<PlayController> {
   Widget _buildTabBarView() {
     List<Widget> children = [];
 
-    for (var i = 0; i < tabs.length; i++) {
+    for (var i = 0; i < controller.tabs.length; i++) {
       if (i == 0) {
         children.add(KeepAliveWrapper(
             child: Column(

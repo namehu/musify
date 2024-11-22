@@ -116,7 +116,7 @@ class LeftScreenState extends State<LeftScreen> {
                             press: () {
                               Get.toNamed(Routes.SETTING);
                             },
-                            title: '设置',
+                            title: S.current.settings,
                             icon: Icons.settings,
                           )
                         ],

@@ -18,8 +18,6 @@ class SettingController extends GetxController {
   final lanMenuItems = <DropdownMenuItem<String>>[].obs;
   final themeMenuItems = <DropdownMenuItem<String>>[].obs;
 
-  get title => selectedSort.value == 'en' ? "setting" : '设置';
-
   Worker? _codeWork;
 
   @override
@@ -49,9 +47,6 @@ class SettingController extends GetxController {
           value: "en", child: Text(S.current.english, style: nomalText)),
       DropdownMenuItem(
           value: "zh", child: Text(S.current.chinese, style: nomalText)),
-      DropdownMenuItem(
-          value: "zh_Hans",
-          child: Text(S.current.simplified, style: nomalText)),
       DropdownMenuItem(
           value: "zh_Hant",
           child: Text(S.current.traditional, style: nomalText))
