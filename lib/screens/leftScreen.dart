@@ -56,15 +56,15 @@ class LeftScreenState extends State<LeftScreen> {
                           SizedBox(height: isMobile ? 40 : 0),
                           MyTextIconButton(
                               press: () {
-                                indexValue.value = 0;
                                 if (isMobile) Navigator.pop(context);
+                                Get.toNamed(Routes.HOME);
                               },
                               title: S.current.index,
                               icon: Icons.home),
                           MyTextIconButton(
                               press: () {
-                                indexValue.value = 2;
                                 if (isMobile) Navigator.pop(context);
+                                Get.toNamed(Routes.PLAY_LIST);
                               },
                               title: S.current.playlist,
                               icon: Icons.queue_music),

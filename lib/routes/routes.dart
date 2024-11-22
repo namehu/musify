@@ -9,4 +9,5 @@ abstract class Routes {
   static const ALBUM_LIST = '/album_list';
   static const ALBUM = '/album';
   static const PLAY = '/play';
+  static const PLAY_LIST = '/play_list';
 }

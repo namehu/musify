@@ -4,7 +4,9 @@ import 'package:musify/views/album/album_view.dart';
 import 'package:musify/views/album_list/album_list_view.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
 import 'package:musify/views/login/login_view.dart';
-import 'package:musify/views/paly/play_view.dart';
+import 'package:musify/views/play/play_view.dart';
+import 'package:musify/views/play_list/play_list_binding.dart';
+import 'package:musify/views/play_list/play_list_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
 
 import '../views/home/home_view.dart';
@@ -57,6 +59,12 @@ abstract class AppPages {
       binding: PlayBinding(),
       middlewares: [MusicBarMiddleware()],
     ),
+    GetPage(
+      name: Routes.PLAY_LIST,
+      page: () => PlayListView(),
+      binding: PlayListBinding(),
+      middlewares: [MusicBarMiddleware()],
+    ),
   ];
 
   static final pagesPC = [
@@ -100,6 +108,12 @@ abstract class AppPages {
       name: Routes.PLAY,
       page: () => PlayView(),
       binding: PlayBinding(),
+      middlewares: [MusicBarMiddleware()],
+    ),
+    GetPage(
+      name: Routes.PLAY_LIST,
+      page: () => PlayListView(),
+      binding: PlayListBinding(),
       middlewares: [MusicBarMiddleware()],
     ),
   ];

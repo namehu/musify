@@ -3,11 +3,12 @@ import 'package:get/get.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/models/lyrics.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/widgets/m_toast.dart';
 import '../generated/l10n.dart';
 import '../models/notifierValue.dart';
 import 'httpClient.dart';
 import 'mycss.dart';
-import '../screens/common/myTextButton.dart';
 
 getSongDetail(String id) async {
   try {
@@ -42,8 +43,10 @@ getSongDetail(String id) async {
 }
 
 //新增播放列表
-Future<int> newPlaylistDialog(
-    BuildContext context, TextEditingController controller) async {
+Future<int> newPlaylistDialog(BuildContext context) async {
+  TextEditingController controller = TextEditingController();
+  var hitText = S.current.pleaseInput + S.current.playlist + S.current.name;
+
   var addresult = await showDialog(
       context: context,
       barrierDismissible: false,
@@ -57,7 +60,7 @@ Future<int> newPlaylistDialog(
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: badgeDark,
+                color: ThemeService.color.dialogBackgroundColor,
               ),
               child: Center(
                 child: Column(
@@ -65,60 +68,51 @@ Future<int> newPlaylistDialog(
                   children: [
                     Container(
                       padding: allPadding,
-                      child: Text(
-                        S.current.create + S.current.playlist,
-                        style: nomalText,
-                      ),
+                      child: Text(S.current.create + S.current.playlist),
                     ),
                     Container(
-                        width: 200,
-                        height: 35,
-                        margin: EdgeInsets.all(5),
-                        child: TextField(
-                          controller: controller,
-                          style: nomalText,
-                          cursorColor: textGray,
-                          onSubmitted: (value) {},
-                          decoration: InputDecoration(
-                              hintText: S.current.pleaseInput +
-                                  S.current.playlist +
-                                  S.current.name,
-                              labelStyle: nomalText,
-                              border: InputBorder.none,
-                              hintStyle: nomalText,
-                              filled: true,
-                              fillColor: badgeDark,
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              prefixIcon: Icon(
-                                Icons.edit_note,
-                                color: textGray,
-                                size: 14,
-                              )),
-                        )),
+                      width: 200,
+                      height: 35,
+                      margin: EdgeInsets.all(5),
+                      child: TextFormField(
+                        controller: controller,
+                        decoration: InputDecoration(
+                          hintText: hitText,
+                          labelStyle: nomalText,
+                          border: InputBorder.none,
+                          hintStyle: nomalText,
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          prefixIcon: Icon(
+                            Icons.edit_note,
+                            color: ThemeService.color.iconColor,
+                            size: 14,
+                          ),
+                        ),
+                      ),
+                    ),
                     Container(
                       padding: allPadding,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          MyTextButton(
-                            press: () async {
-                              Navigator.of(context).pop(3);
+                          InkWell(
+                            onTap: () async {
+                              Navigator.of(context).pop(0);
                             },
-                            title: S.current.cancel,
+                            child: Text(S.current.cancel),
                           ),
-                          MyTextButton(
-                            press: () async {
+                          InkWell(
+                            onTap: () async {
                               if (controller.text.isNotEmpty) {
                                 var _response =
                                     await createPlaylist(controller.text, "");
@@ -129,10 +123,12 @@ Future<int> newPlaylistDialog(
                                   Navigator.of(context).pop(1);
                                 }
                               } else {
-                                Navigator.of(context).pop(2);
+                                MToast.show(S.current.pleaseInput +
+                                    S.current.playlist +
+                                    S.current.name);
                               }
                             },
-                            title: S.current.create,
+                            child: Text(S.current.create),
                           )
                         ],
                       ),

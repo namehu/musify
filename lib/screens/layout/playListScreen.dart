@@ -192,8 +192,7 @@ class _PlayListScreenState extends State<PlayListScreen> {
                 ]),
                 MyTextButton(
                   press: () async {
-                    await newPlaylistDialog(context, inputController)
-                        .then((value) {
+                    await newPlaylistDialog(context).then((value) {
                       _getPlaylist();
                       switch (value) {
                         case 1:

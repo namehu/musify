@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Rx;
 import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/music/lyric_reader.dart';
-import 'package:musify/views/paly/widgets/player_control_bar.dart';
+import 'package:musify/views/play/widgets/player_control_bar.dart';
 import 'package:musify/widgets/music/music_seek_bar.dart';
 import 'package:musify/widgets/music/operation_icons.dart';
 import 'package:musify/services/theme_service.dart';
