@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/global_service.dart';
 import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/util/mycss.dart';
 
@@ -47,6 +48,24 @@ class MusicBarMiddleware extends GetMiddleware {
       } else {
         MusicBarService.hide();
       }
+    }
+  }
+}
+
+class PCloginMiddleware extends GetMiddleware {
+  @override
+  RouteSettings? redirect(String? route) {
+    if (GetPlatform.isDesktop) {
+      GloabalService.hidePCLayout(true);
+    }
+
+    return null;
+  }
+
+  @override
+  onPageDispose() {
+    if (GetPlatform.isDesktop) {
+      GloabalService.hidePCLayout(false);
     }
   }
 }

@@ -100,18 +100,32 @@ class MyApp extends StatelessWidget {
             if (isMobile) {
               return child ?? Container();
             }
+
+            var route = ModalRoute.of(context);
+
+            if (route != null) {
+              print(route.settings.name);
+            }
             return Scaffold(
               body: Column(
                 children: [
                   Expanded(
                     child: Row(
                       children: [
-                        LeftScreen(),
+                        Obx(
+                          () => GloabalService.hidePCLayout.value
+                              ? Container()
+                              : LeftScreen(),
+                        ),
                         Expanded(child: child ?? Container()),
                       ],
                     ),
                   ),
-                  BottomScreen(),
+                  Obx(
+                    () => GloabalService.hidePCLayout.value
+                        ? Container()
+                        : BottomScreen(),
+                  ),
                 ],
               ),
             );

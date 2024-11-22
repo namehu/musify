@@ -58,7 +58,7 @@ abstract class AppPages {
     name: Routes.LOGIN,
     page: () => LoginView(),
     binding: LoginViewBinding(),
-    middlewares: [MusicBarMiddleware()],
+    middlewares: [MusicBarMiddleware(), PCloginMiddleware()],
   );
 
   static final _changeServer = GetPage(
