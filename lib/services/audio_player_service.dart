@@ -1,4 +1,5 @@
 import 'package:event_bus/event_bus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
@@ -128,6 +129,20 @@ class AudioPlayerService extends GetxService {
       isDismissible: false,
       builder: (BuildContext _contenxt) => PlayListModal(),
     );
+  }
+
+  /// 将歌曲列表添加进播放列表并播放指定歌曲歌单
+  /// [_song] 歌曲对象
+  /// [index] 歌曲索引
+  /// [songs] 歌曲列表
+  palySongList(Songs _song, int index, List<Songs> songs) {
+    if (listEquals(playSongs.value, songs)) {
+      player.seek(Duration.zero, index: index);
+    } else {
+      activeIndex.value = index; //当前歌曲队列
+      activeSongValue.value = _song.id;
+      playSongs.value = songs; //歌曲所在专辑歌曲List
+    }
   }
 
   /// 切换播放模式

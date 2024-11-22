@@ -9,6 +9,7 @@ enum MTextTypeEnum {
 class MText extends StatelessWidget {
   final String? text;
   final int? maxLines;
+  final TextAlign? textAlign;
   final TextStyle? style;
   final MTextTypeEnum? type;
   final GestureTapCallback? onTap;
@@ -16,8 +17,9 @@ class MText extends StatelessWidget {
   const MText({
     super.key,
     this.text = '',
-    this.type = MTextTypeEnum.primary,
     this.maxLines,
+    this.textAlign = TextAlign.start,
+    this.type = MTextTypeEnum.primary,
     this.style,
     this.onTap,
   });
@@ -41,6 +43,7 @@ class MText extends StatelessWidget {
       child: Text(
         text!,
         maxLines: maxLines,
+        textAlign: textAlign,
         overflow: TextOverflow.ellipsis,
         style: _textStyle,
       ),

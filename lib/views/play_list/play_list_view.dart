@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
-import 'package:musify/services/theme_service.dart';
+import 'package:musify/models/notifierValue.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
+import 'package:musify/widgets/m_table_list.dart';
 
 import 'play_list_controller.dart';
 
@@ -60,6 +62,7 @@ class PlayListView extends GetView<PlayListController> {
             itemBuilder: (BuildContext context, int index) {
               Playlist _tem = controller.playlistsList[index];
 
+              // TODO: pc端没有滑动操作
               return Dismissible(
                 // Key
                 key: Key(_tem.id),
@@ -77,6 +80,7 @@ class PlayListView extends GetView<PlayListController> {
                 onDismissed: isMobile
                     ? (direction) async {
                         if (direction == DismissDirection.endToStart) {
+                          // TODO: 删除确认做一下
                           // controller.handleSwipeDelPlayList(_tem.id);
                         }
                       }
@@ -90,7 +94,8 @@ class PlayListView extends GetView<PlayListController> {
                 child: ListTile(
                   title: GestureDetector(
                     onTap: () async {
-                      // activeID.value = _tem.id;
+                      activeID.value = _tem.id;
+                      Get.toNamed(Routes.PLAY_LIST_DETAIL);
                       // indexValue.value = 12;
                     },
                     onSecondaryTapDown: (details) {
@@ -110,63 +115,28 @@ class PlayListView extends GetView<PlayListController> {
     );
   }
 
-  // S.current.udpateDate
   _buildHead() {
-    return Container(
-      height: 50,
-      padding: EdgeInsets.only(left: 24, right: 24),
-      decoration: BoxDecoration(
-          border: Border(
-        bottom: BorderSide(color: ThemeService.color.borderColor, width: 0.5),
-      )),
-      child: Row(
-        children: [
-          Expanded(child: Text(S.current.name)),
-          Container(
-            width: 100,
-            child: Text(S.current.song),
-          ),
-          Container(
-            width: 100,
-            child: Text(S.current.dration),
-          ),
-          if (!isMobile)
-            Container(
-              width: 100,
-              child: Text(S.current.createuser),
-            ),
-          if (!isMobile)
-            Container(
-              width: 100,
-              child: Text(S.current.udpateDate),
-            ),
-        ],
-      ),
+    return MTableList(
+      isHead: true,
+      data: [
+        MColumn(flex: 1, text: S.current.name),
+        MColumn(text: (S.current.song)),
+        MColumn(text: (S.current.dration)),
+        MColumn(text: (S.current.createuser), show: !isMobile),
+        MColumn(text: (S.current.udpateDate), show: !isMobile),
+      ],
+      divider: true,
     );
   }
 
   _buildRow(Playlist data) {
-    return Row(
-      children: [
-        Expanded(child: Text(data.name)),
-        Container(
-          width: 100,
-          child: Text(data.songCount.toString()),
-        ),
-        Container(
-          width: 100,
-          child: Text(formatDuration(data.duration)),
-        ),
-        if (!isMobile)
-          Container(
-            width: 100,
-            child: Text(data.owner),
-          ),
-        if (!isMobile)
-          Container(
-            width: 100,
-            child: Text(timeISOtoString(data.changed)),
-          ),
+    return MTableList(
+      data: [
+        MColumn(flex: 1, text: data.name),
+        MColumn(text: (data.songCount.toString())),
+        MColumn(text: (formatDuration(data.duration))),
+        MColumn(text: (data.owner), show: !isMobile),
+        MColumn(text: (timeISOtoString(data.changed)), show: !isMobile),
       ],
     );
   }

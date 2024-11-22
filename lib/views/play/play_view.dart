@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Rx;
 import 'package:musify/styles/colors.dart';
+import 'package:musify/widgets/m_text.dart';
 import 'package:musify/widgets/music/lyric_reader.dart';
 import 'package:musify/views/play/widgets/player_control_bar.dart';
 import 'package:musify/widgets/music/music_seek_bar.dart';
@@ -169,15 +170,17 @@ class PlayView extends GetView<PlayController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    (value.title.isEmpty) ? S.current.unknown : value.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: gray1,
+                  Expanded(
+                    child: MText(
+                      text: (value.title.isEmpty)
+                          ? S.current.unknown
+                          : value.title,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: gray1,
+                      ),
                     ),
                   ),
                   InkWell(

@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "net": MessageLookupByLibrary.simpleMessage("Net "),
         "no": MessageLookupByLibrary.simpleMessage("No "),
         "noContent": MessageLookupByLibrary.simpleMessage("No Contents"),
+        "noSong": MessageLookupByLibrary.simpleMessage("No Song"),
         "notive": MessageLookupByLibrary.simpleMessage("Notive"),
         "other": MessageLookupByLibrary.simpleMessage("Other "),
         "password": MessageLookupByLibrary.simpleMessage("Password"),

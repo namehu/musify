@@ -68,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "net": MessageLookupByLibrary.simpleMessage("雲端"),
         "no": MessageLookupByLibrary.simpleMessage("沒有"),
         "noContent": MessageLookupByLibrary.simpleMessage("請填寫內容"),
+        "noSong": MessageLookupByLibrary.simpleMessage("沒有歌曲"),
         "notive": MessageLookupByLibrary.simpleMessage("提示"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),
         "password": MessageLookupByLibrary.simpleMessage("密碼"),

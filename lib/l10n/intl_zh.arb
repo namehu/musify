@@ -95,5 +95,6 @@
     "download": "下载",
     "directory": "文件夹",
     "photoLibrary": "相册",
-    "reachBottom": "已经到底了~"
+    "reachBottom": "已经到底了~",
+    "noSong": "没有歌曲"
 }
