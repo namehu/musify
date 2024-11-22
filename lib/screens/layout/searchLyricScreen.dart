@@ -329,9 +329,9 @@ class _SearchLyricScreenState extends State<SearchLyricScreen>
                           SongsAndLyric(lyric: _lyric, songId: _song.id);
                       await DbProvider.instance
                           .addSongsAndLyricTable(_songsAndLyric);
-                      if (_song.id == activeSong.value["value"]) {
-                        activeLyric.value = _lyric;
-                      }
+                      // if (_song.id == activeSong.value["value"]) {
+                      //   activeLyric.value = _lyric;
+                      // }
                     }
                   }
                   showMyAlertDialog(context, S.current.success,

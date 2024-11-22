@@ -8,7 +8,6 @@ import '../models/notifierValue.dart';
 import 'httpClient.dart';
 import 'mycss.dart';
 import '../screens/common/myTextButton.dart';
-import 'dbProvider.dart';
 
 getSongDetail(String id) async {
   try {
@@ -39,16 +38,6 @@ getSongDetail(String id) async {
     return _song;
   } catch (e) {
     print(e);
-  }
-}
-
-setSongLyric(String id, [String? text]) async {
-  //获取歌词
-  final _lyrictem = await DbProvider.instance.getLyricById(id);
-  if (_lyrictem != null && _lyrictem!.isNotEmpty) {
-    activeLyric.value = _lyrictem;
-  } else {
-    activeLyric.value = "";
   }
 }
 

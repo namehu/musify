@@ -95,13 +95,13 @@ class AudioPlayerService extends GetxService {
       final playlist = player.sequenceState!.effectiveSequence;
       if (currentItem == null) {
         //更新上下首歌曲
-        if (playlist.isEmpty) {
-          isFirstSongNotifier.value = true;
-          isLastSongNotifier.value = true;
-        }
+        // if (playlist.isEmpty) {
+        //   isFirstSongNotifier.value = true;
+        //   isLastSongNotifier.value = true;
+        // }
       } else {
-        isFirstSongNotifier.value = playlist.first == currentItem;
-        isLastSongNotifier.value = playlist.last == currentItem;
+        // isFirstSongNotifier.value = playlist.first == currentItem;
+        // isLastSongNotifier.value = playlist.last == currentItem;
 
         MediaItem _tag = currentItem.tag;
         scrobble(_tag.id, false);

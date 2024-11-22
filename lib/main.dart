@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
@@ -20,7 +19,6 @@ import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
 import 'generated/l10n.dart';
 import 'services/global_service.dart';
-import 'util/audioTools.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
