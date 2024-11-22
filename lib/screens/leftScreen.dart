@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/enums/tab_type_enmu.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/global_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
+import 'package:musify/styles/size.dart';
 import '../generated/l10n.dart';
-import '../models/myModel.dart';
 import '../models/notifierValue.dart';
 import '../util/mycss.dart';
 
@@ -48,81 +51,91 @@ class LeftScreenState extends State<LeftScreen> {
                   ),
                 ),
                 Expanded(
-                  child: ValueListenableBuilder<ServerInfo>(
-                    valueListenable: serversInfo,
-                    builder: (context, _value, child) {
-                      return Column(
-                        children: [
-                          SizedBox(height: isMobile ? 40 : 0),
-                          MyTextIconButton(
-                              press: () {
-                                if (isMobile) Navigator.pop(context);
-                                Get.toNamed(Routes.HOME);
-                              },
-                              title: S.current.index,
-                              icon: Icons.home),
-                          MyTextIconButton(
-                              press: () {
-                                if (isMobile) Navigator.pop(context);
-                                Get.toNamed(Routes.PLAY_LIST);
-                              },
-                              title: S.current.playlist,
-                              icon: Icons.queue_music),
-                          MyTextIconButton(
-                              press: () {
-                                indexValue.value = 3;
-                                if (isMobile) Navigator.pop(context);
-                              },
-                              title: S.current.favorite,
-                              icon: Icons.favorite),
-                          MyTextIconButton(
-                              press: () {
-                                activeID.value = "1";
-                                indexValue.value = 4;
-                                if (isMobile) Navigator.pop(context);
-                              },
-                              title: S.current.album,
-                              icon: Icons.album),
-                          MyTextIconButton(
-                              press: () {
-                                indexValue.value = 5;
-                                if (isMobile) Navigator.pop(context);
-                              },
-                              title: S.current.artist,
-                              icon: Icons.people_alt),
-                          MyTextIconButton(
-                              press: () {
-                                indexValue.value = 6;
-                                if (isMobile) Navigator.pop(context);
-                              },
-                              title: S.current.genres,
-                              icon: Icons.public),
-                          MyTextIconButton(
-                              press: () {
-                                indexValue.value = 15;
-                                if (isMobile) Navigator.pop(context);
-                              },
-                              title: S.current.share,
-                              icon: Icons.share),
-                          if (_value.neteaseapi.isNotEmpty)
-                            MyTextIconButton(
-                                press: () {
-                                  indexValue.value = 7;
-                                  if (isMobile) Navigator.pop(context);
-                                },
-                                title: S.current.search + S.current.lyric,
-                                icon: Icons.public),
-                          MyTextIconButton(
+                  child: Obx(() {
+                    var _value = GloabalService.tabType;
+                    return Column(
+                      children: [
+                        SizedBox(height: isMobile ? 40 : 0),
+                        MyTextIconButton(
+                            active: _value == TabTypeEnmu.home,
                             press: () {
-                              Get.toNamed(Routes.SETTING);
+                              _value(TabTypeEnmu.home);
+                              if (isMobile) Navigator.pop(context);
+                              Get.toNamed(Routes.HOME);
                             },
-                            title: S.current.settings,
-                            icon: Icons.settings,
-                          )
-                        ],
-                      );
-                    },
-                  ),
+                            title: S.current.index,
+                            icon: Icons.home),
+                        MyTextIconButton(
+                            active: _value == TabTypeEnmu.playList,
+                            press: () {
+                              _value(TabTypeEnmu.playList);
+                              if (isMobile) Navigator.pop(context);
+                              Get.toNamed(Routes.PLAY_LIST);
+                            },
+                            title: S.current.playlist,
+                            icon: Icons.queue_music),
+                        MyTextIconButton(
+                            active: indexValue.value == 3,
+                            press: () {
+                              indexValue.value = 3;
+                              if (isMobile) Navigator.pop(context);
+                            },
+                            title: S.current.favorite,
+                            icon: Icons.favorite),
+                        MyTextIconButton(
+                            active: indexValue.value == 4,
+                            press: () {
+                              activeID.value = "1";
+                              indexValue.value = 4;
+                              if (isMobile) Navigator.pop(context);
+                            },
+                            title: S.current.album,
+                            icon: Icons.album),
+                        MyTextIconButton(
+                            active: indexValue.value == 5,
+                            press: () {
+                              indexValue.value = 5;
+                              if (isMobile) Navigator.pop(context);
+                            },
+                            title: S.current.artist,
+                            icon: Icons.people_alt),
+                        MyTextIconButton(
+                            active: indexValue.value == 6,
+                            press: () {
+                              indexValue.value = 6;
+                              if (isMobile) Navigator.pop(context);
+                            },
+                            title: S.current.genres,
+                            icon: Icons.public),
+                        MyTextIconButton(
+                            active: indexValue.value == 15,
+                            press: () {
+                              indexValue.value = 15;
+                              if (isMobile) Navigator.pop(context);
+                            },
+                            title: S.current.share,
+                            icon: Icons.share),
+                        // if (_value.neteaseapi.isNotEmpty)
+                        //   MyTextIconButton(
+                        //       active: indexValue.value == 7,
+                        //       press: () {
+                        //         indexValue.value = 7;
+                        //         if (isMobile) Navigator.pop(context);
+                        //       },
+                        //       title: S.current.search + S.current.lyric,
+                        //       icon: Icons.public),
+                        MyTextIconButton(
+                          active: indexValue.value == 8,
+                          press: () {
+                            indexValue.value = 8;
+                            Get.toNamed(Routes.SETTING);
+                          },
+                          title: S.current.settings,
+                          icon: Icons.settings,
+                        )
+                      ],
+                    );
+                  }),
                 ),
               ],
             ),
@@ -137,10 +150,12 @@ class MyTextIconButton extends StatelessWidget {
     required this.title,
     required this.icon,
     required this.press,
+    required this.active,
   }) : super(key: key);
 
   final String title;
   final IconData icon;
+  final bool active;
   final VoidCallback press;
 
   @override
@@ -148,9 +163,19 @@ class MyTextIconButton extends StatelessWidget {
     return InkWell(
       onTap: press,
       child: Container(
-        padding: updownPadding,
+        padding: EdgeInsets.symmetric(vertical: StyleSize.space),
+        color: (active && GetPlatform.isDesktop) ? gray4 : null,
         child: Row(
           children: [
+            if (GetPlatform.isDesktop)
+              Container(
+                width: 3,
+                height: 16,
+                color: active
+                    ? ThemeService.color.primaryColor
+                    : Colors.transparent,
+                margin: EdgeInsets.only(right: StyleSize.spaceSmall),
+              ),
             Icon(
               icon,
               size: 20,

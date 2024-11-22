@@ -1,7 +1,12 @@
 import 'package:get/get.dart';
+import 'package:musify/enums/tab_type_enmu.dart';
 
 class GloabalService extends GetxService {
+  /// 是否隐藏PC布局
   static final hidePCLayout = false.obs;
+
+  /// 桌面端侧边tab激活类型
+  static final tabType = TabTypeEnmu.home.obs;
 
   void restartApp() {
     Get.forceAppUpdate();
