@@ -9,13 +9,21 @@ import '../../models/notifierValue.dart';
 import '../../util/mycss.dart';
 import '../../screens/leftScreen.dart';
 import './widgets/roter.dart';
+import 'widgets/app_bar.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeViewBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.put<HomeController>(HomeController());
+  }
+}
+
+class HomeView extends GetResponsiveView<HomeController> {
   final serverService = Get.find<ServerService>();
   final player = AudioPlayerService.player;
 
   @override
-  Widget build(BuildContext context) {
+  Widget phone() {
     final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
     return DefaultTabController(
       initialIndex: 1,
@@ -41,12 +49,46 @@ class HomeView extends GetView<HomeController> {
               )
             ],
           ),
-          actions: [
-            SizedBox(width: 56),
-          ],
+          actions: [SizedBox(width: 56)],
         ),
         drawer: LeftScreen(),
         body: _buildTabView(),
+      ),
+    );
+  }
+
+  @override
+  Widget desktop() {
+    final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
+
+    windowsWidth.value = MediaQuery.of(screen.context).size.width;
+    windowsHeight.value = MediaQuery.of(screen.context).size.height;
+    return Scaffold(
+      key: myLeftStateKey,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: HomeAppBar(),
+      ),
+      body: Row(
+        children: [
+          Container(
+            width: windowsWidth.value - drawerWidth,
+            child: Obx(
+              () {
+                var isNotEmpty =
+                    serverService.serverInfo.value.baseurl.isNotEmpty;
+                return isNotEmpty
+                    ? Container(
+                        child: ValueListenableBuilder<int>(
+                            valueListenable: indexValue,
+                            builder: ((context, value, child) =>
+                                Roter(roter: value, player: player))))
+                    : Container();
+              },
+            ),
+          )
+        ],
       ),
     );
   }

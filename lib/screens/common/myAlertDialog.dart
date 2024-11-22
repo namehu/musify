@@ -25,9 +25,9 @@ showMyAlertDialog(BuildContext context, String title, String content) {
           color: ThemeService.color.textColor,
         ),
         actions: <Widget>[
-          MyTextButton(
-            title: S.of(context).confrim,
-            press: () {
+          InkWell(
+            child: Text(S.current.confrim),
+            onTap: () {
               Navigator.of(context).pop();
             },
           )

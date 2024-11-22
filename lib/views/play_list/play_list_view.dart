@@ -10,11 +10,19 @@ import 'package:musify/widgets/m_table_list.dart';
 
 import 'play_list_controller.dart';
 
+class PlayListBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => PlayListController());
+  }
+}
+
 class PlayListView extends GetView<PlayListController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: isMobile,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,

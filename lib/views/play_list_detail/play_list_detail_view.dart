@@ -11,6 +11,13 @@ import 'package:musify/widgets/m_text.dart';
 import '../../generated/l10n.dart';
 import 'play_list_detail_controller.dart';
 
+class PlayListDetailBinding implements Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => PlayListDetailController());
+  }
+}
+
 class PlayListDetailView extends GetView<PlayListDetailController> {
   final player = AudioPlayerService.player;
 

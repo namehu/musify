@@ -6,15 +6,8 @@ import 'package:musify/views/changeServer/change_server_view.dart';
 import 'package:musify/views/login/login_view.dart';
 import 'package:musify/views/play/play_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
-
 import '../views/home/home_view.dart';
-import '../views/home/home_view_pc.dart';
-import '../views/home/home_view_binding.dart';
-
-import 'package:musify/views/play_list/play_list_binding.dart';
 import 'package:musify/views/play_list/play_list_view.dart';
-
-import '../views/play_list_detail/play_list_detail_binding.dart';
 import '../views/play_list_detail/play_list_detail_view.dart';
 
 part 'routes.dart';
@@ -24,23 +17,6 @@ abstract class AppPages {
     GetPage(
       name: Routes.HOME,
       page: () => HomeView(),
-      binding: HomeViewBinding(),
-      middlewares: [MusicBarMiddleware()],
-    ),
-    _loginPage,
-    _changeServer,
-    _setting,
-    _albumList,
-    _album,
-    _play,
-    _playList,
-    _playListDetail,
-  ];
-
-  static final pagesPC = [
-    GetPage(
-      name: Routes.HOME,
-      page: () => HomeViewPC(),
       binding: HomeViewBinding(),
       middlewares: [MusicBarMiddleware()],
     ),

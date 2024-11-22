@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
           ],
           supportedLocales: S.delegate.supportedLocales,
           theme: ThemeService.theme,
-          getPages: isMobile ? AppPages.pages : AppPages.pagesPC,
+          getPages: AppPages.pages,
           initialRoute: Routes.HOME,
           transitionDuration: isMobile ? null : Duration(milliseconds: 0),
           builder: (context, child) {
@@ -101,11 +101,6 @@ class MyApp extends StatelessWidget {
               return child ?? Container();
             }
 
-            var route = ModalRoute.of(context);
-
-            if (route != null) {
-              print(route.settings.name);
-            }
             return Scaffold(
               body: Column(
                 children: [
