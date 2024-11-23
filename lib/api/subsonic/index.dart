@@ -2,13 +2,36 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
-import 'package:musify/api/index.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/util/util.dart';
 import '../../util/mycss.dart';
+import '../../util/request/mock_inter.dart';
 import '../types.dart';
+
+Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
+    (Response response, ResponseInterceptorHandler handler) {
+  // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+
+  print('------------requset---------');
+  var _query = response.requestOptions.queryParameters.entries.map((element) {
+    return (element.key + '=' + element.value.toString());
+  }).join('&');
+  var _fullUrl = response.requestOptions.baseUrl + response.requestOptions.path;
+  if (_query.isNotEmpty) _fullUrl += '?' + _query;
+  print(_fullUrl);
+  if (response.requestOptions.data != null) {
+    print(jsonEncode(response.requestOptions.data));
+  }
+  print('------------requset---------');
+
+  var _subsonic = checkResponse(response);
+  if (_subsonic == null) return null;
+
+  response.data = _subsonic;
+  return handler.next(response);
+};
 
 Interceptor subsonicInterceptor = InterceptorsWrapper(
   onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
@@ -32,19 +55,18 @@ Interceptor subsonicInterceptor = InterceptorsWrapper(
 
     return handler.next(options);
   },
-  onResponse: (Response response, ResponseInterceptorHandler handler) {
-    // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-    var _subsonic = checkResponse(response);
-    if (_subsonic == null) return null;
-
-    response.data = _subsonic;
-    return handler.next(response);
-  },
+  onResponse: onResponse,
   onError: (DioException error, ErrorInterceptorHandler handler) {
     // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+    print('------------reuqest subsonic error---------');
+    print(error.message);
     return handler.next(error);
   },
 );
+
+Dio _dio = Dio(BaseOptions(responseType: ResponseType.json))
+  ..interceptors.add(subsonicInterceptor)
+  ..interceptors.add(MyMockInterceptor());
 
 checkResponse(Response<dynamic> response) {
   if (response.statusCode == 200) {
@@ -71,11 +93,7 @@ getServerInfo(String path) {
 }
 
 MusicApi subsonicApi = (
-  authenticate: (
-    String baseUrl,
-    String username,
-    String password,
-  ) async {
+  authenticate: (String baseUrl, String username, String password) async {
     Map<String, dynamic> res = {};
 
     try {
@@ -103,24 +121,23 @@ MusicApi subsonicApi = (
     }
     return res;
   },
+  getAlbum: (String id) async {
+    var _response = await _dio.get('getAlbum', queryParameters: {'id': id});
+    if (_response.data == null) return null;
+    return _response.data['album'];
+  },
   getSong: (String id) async {
-    try {
-      var _response =
-          await MRequest.dio.get('getSong', queryParameters: {'id': id});
-      if (_response.data == null) return null;
+    var _response = await _dio.get('getSong', queryParameters: {'id': id});
+    if (_response.data == null) return null;
 
-      Map<String, dynamic> _song = _response.data['song'];
+    Map<String, dynamic> _song = _response.data['song'];
 
-      String _stream = getServerInfo("stream");
-      String _url = getCoverArt(_song["id"], size: 800);
-      _song["stream"] = _stream + '&id=' + _song["id"];
-      _song["coverUrl"] = _url;
+    String _stream = getServerInfo("stream");
+    String _url = getCoverArt(_song["id"], size: 800);
+    _song["stream"] = _stream + '&id=' + _song["id"];
+    _song["coverUrl"] = _url;
 
-      Songs songs = Songs.fromJson(_song);
-      return songs;
-    } catch (e) {
-      print(e);
-    }
-    return null;
+    Songs songs = Songs.fromJson(_song);
+    return songs;
   },
 );

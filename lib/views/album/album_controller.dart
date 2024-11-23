@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musify/api/index.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
@@ -33,7 +34,7 @@ class AlbumController extends GetxController {
 
   //
   _getAlbum(String albumId) async {
-    final _albumtem = await getAlbum(albumId);
+    final _albumtem = await MRequest.api.getAlbum(albumId);
     if (_albumtem == null || _albumtem.length <= 0) {
       return;
     }

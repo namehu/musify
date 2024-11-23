@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
-import 'package:musify/api/index.dart';
+import 'package:musify/api/subsonic/index.dart' hide getServerInfo;
 import 'package:musify/models/navidrome/nd_song.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
@@ -8,36 +9,56 @@ import 'package:musify/services/server_service.dart';
 import 'package:musify/util/dbProvider.dart';
 
 import '../../util/httpClient.dart';
+import '../../util/request/mock_inter.dart';
 import '../types.dart';
 
+Function(RequestOptions, RequestInterceptorHandler) onRequest =
+    (RequestOptions options, RequestInterceptorHandler handler) {
+  // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
+  // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+
+  options.baseUrl = serversInfo.value.baseurl;
+
+  // 添加rest api路径
+  options.path = '/api/' + options.path;
+
+  Map<String, dynamic> _query = {};
+
+  options.queryParameters = options.queryParameters ?? {};
+  options.queryParameters.addAll(_query);
+
+  // 携带token
+  var _ndCredential = serversInfo.value.ndCredential;
+  if (_ndCredential.isNotEmpty) {
+    options.headers['x-nd-authorization'] = 'Bearer $_ndCredential';
+  }
+
+  return handler.next(options);
+};
+
+Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
+    (Response response, ResponseInterceptorHandler handler) {
+  // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+  response.data = checkResponse(response);
+
+  print('------------requset---------');
+  var _query = response.requestOptions.queryParameters.entries.map((element) {
+    return (element.key + '=' + element.value.toString());
+  }).join('&');
+  var _fullUrl = response.requestOptions.baseUrl + response.requestOptions.path;
+  if (_query.isNotEmpty) _fullUrl += '?' + _query;
+  print(_fullUrl);
+  if (response.requestOptions.data != null) {
+    print(jsonEncode(response.requestOptions.data));
+  }
+  print('------------requset---------');
+
+  return handler.next(response);
+};
+
 Interceptor navidromeInterceptor = InterceptorsWrapper(
-  onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-    // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
-    // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-
-    options.baseUrl = serversInfo.value.baseurl;
-
-    // 添加rest api路径
-    options.path = '/api/' + options.path;
-
-    Map<String, dynamic> _query = {};
-
-    options.queryParameters = options.queryParameters ?? {};
-    options.queryParameters.addAll(_query);
-
-    // 携带token
-    var _ndCredential = serversInfo.value.ndCredential;
-    if (_ndCredential.isNotEmpty) {
-      options.headers['x-nd-authorization'] = 'Bearer $_ndCredential';
-    }
-
-    return handler.next(options);
-  },
-  onResponse: (Response response, ResponseInterceptorHandler handler) {
-    // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-    response.data = checkResponse(response);
-    return handler.next(response);
-  },
+  onRequest: onRequest,
+  onResponse: onResponse,
   onError: (DioException error, ErrorInterceptorHandler handler) async {
     // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
 
@@ -74,9 +95,16 @@ Interceptor navidromeInterceptor = InterceptorsWrapper(
       return handler.resolve(response);
     }
 
+    print('------------reuqest navidrome error---------');
+    print(error.message);
+
     return handler.next(error);
   },
 );
+
+Dio _dio = Dio(BaseOptions(responseType: ResponseType.json))
+  ..interceptors.add(navidromeInterceptor)
+  ..interceptors.add(MyMockInterceptor());
 
 checkResponse(Response<dynamic> response) {
   if (response.statusCode == 200) {
@@ -90,11 +118,7 @@ checkResponse(Response<dynamic> response) {
 }
 
 MusicApi navidromeApi = (
-  authenticate: (
-    String baseUrl,
-    String username,
-    String password,
-  ) async {
+  authenticate: (String baseUrl, String username, String password) async {
     Map<String, dynamic> res = {};
 
     try {
@@ -116,6 +140,7 @@ MusicApi navidromeApi = (
     }
     return res;
   },
+  getAlbum: subsonicApi.getAlbum,
   getSong: (String id) async {
     var queryParameters = {
       '_end': 15,
@@ -126,8 +151,7 @@ MusicApi navidromeApi = (
     };
 
     try {
-      var _response =
-          await MRequest.dio.get('song', queryParameters: queryParameters);
+      var _response = await _dio.get('song', queryParameters: queryParameters);
       var data = _response.data;
       if (data != null) {
         var _song = data[0];

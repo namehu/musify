@@ -312,22 +312,6 @@ getArtist(String _id) async {
   }
 }
 
-getAlbum(String _id) async {
-  var (_sql, queryParameters) = getServerInfo2("getAlbum");
-  queryParameters.addAll({'id': _id});
-
-  try {
-    var _response = await Dio().get(_sql, queryParameters: queryParameters);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    Map _album = _subsonic['album'];
-    return _album;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 //count no 50
 getTopSongs(String _name) async {
   String _sql = await getServerInfo("getTopSongs");
