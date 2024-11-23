@@ -1,3 +1,4 @@
+import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
 
 typedef MusicApi = ({
@@ -7,4 +8,7 @@ typedef MusicApi = ({
 
   /// 查询歌曲详情
   Future<Songs?> Function(String id) getSong,
+
+  /// 查询播放列表
+  // Future<List<Playlist>> Function() getPlaylists,
 });

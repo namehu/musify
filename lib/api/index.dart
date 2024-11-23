@@ -11,7 +11,10 @@ class MRequest {
 
   static Dio get dio {
     if (_dio == null) {
-      _dio = Dio();
+      var option = BaseOptions(
+        responseType: ResponseType.json,
+      );
+      _dio = Dio(option);
       dio.interceptors.add(subsonicInterceptor);
 
       dio.interceptors.add(MyMockInterceptor()); // 添加mock拦截器

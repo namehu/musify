@@ -53,7 +53,7 @@ getServerInfo(String _api) {
 }
 
 (String, Map<String, dynamic>) getServerInfo2(String path) {
-  String requestPath = '/rest/$path';
+  String requestPath = serversInfo.value.baseurl + '/rest/$path';
   return (
     requestPath,
     {
@@ -317,8 +317,7 @@ getAlbum(String _id) async {
   queryParameters.addAll({'id': _id});
 
   try {
-    var _response =
-        await MRequest.dio.get(_sql, queryParameters: queryParameters);
+    var _response = await Dio().get(_sql, queryParameters: queryParameters);
     var _subsonic = checkResponse(_response);
     if (_subsonic == null) return null;
     Map _album = _subsonic['album'];

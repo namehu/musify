@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/styles/colors.dart';
+import 'package:musify/views/home/widgets/home_tab_view.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'home_controller.dart';
 import 'package:musify/services/audio_player_service.dart';
@@ -96,14 +97,14 @@ class HomeView extends GetResponsiveView<HomeController> {
   _buildTabView() {
     return OrientationBuilder(
       builder: (context, orientation) {
-        if (isMobile && orientation == Orientation.landscape) {
+        if (orientation == Orientation.landscape) {
           if (windowsWidth.value < windowsHeight.value) {
             double _tem = windowsWidth.value;
             windowsWidth.value = windowsHeight.value;
             windowsHeight.value = _tem;
           }
         }
-        if (isMobile && orientation == Orientation.portrait) {
+        if (orientation == Orientation.portrait) {
           if (windowsWidth.value > windowsHeight.value) {
             double _tem = windowsWidth.value;
             windowsWidth.value = windowsHeight.value;
@@ -111,10 +112,8 @@ class HomeView extends GetResponsiveView<HomeController> {
           }
         }
         return TabBarView(children: [
-          Text('1111'),
           KeepAliveWrapper(
             child: Container(
-              width: windowsWidth.value,
               child: Obx(
                 () {
                   var isNotEmpty =
@@ -129,6 +128,9 @@ class HomeView extends GetResponsiveView<HomeController> {
                 },
               ),
             ),
+          ),
+          KeepAliveWrapper(
+            child: HomeTabView(),
           ),
         ]);
       },

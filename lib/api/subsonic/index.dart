@@ -14,14 +14,30 @@ Interceptor subsonicInterceptor = InterceptorsWrapper(
   onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
     // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
     // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-
     options.baseUrl = serversInfo.value.baseurl;
-    options.responseType = ResponseType.json;
+    // 添加rest api路径
+    options.path = '/rest/' + options.path;
+
+    Map<String, dynamic> _query = {
+      'v': '0.0.1',
+      'c': 'musify',
+      'f': 'json',
+      'u': serversInfo.value.username,
+      's': serversInfo.value.salt,
+      't': serversInfo.value.hash
+    };
+
+    options.queryParameters = options.queryParameters ?? {};
+    options.queryParameters.addAll(_query);
 
     return handler.next(options);
   },
   onResponse: (Response response, ResponseInterceptorHandler handler) {
     // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+    var _subsonic = checkResponse(response);
+    if (_subsonic == null) return null;
+
+    response.data = _subsonic;
     return handler.next(response);
   },
   onError: (DioException error, ErrorInterceptorHandler handler) {
@@ -30,10 +46,10 @@ Interceptor subsonicInterceptor = InterceptorsWrapper(
   },
 );
 
-checkResponse(Response<dynamic> _response) {
-  if (_response.statusCode == 200) {
-    if (_response.data['subsonic-response'] != null) {
-      Map _subsonic = _response.data['subsonic-response'];
+checkResponse(Response<dynamic> response) {
+  if (response.statusCode == 200) {
+    if (response.data['subsonic-response'] != null) {
+      Map _subsonic = response.data['subsonic-response'];
       String _status = _subsonic['status'];
       if (_status == 'ok') {
         return _subsonic;
@@ -52,23 +68,6 @@ getServerInfo(String path) {
       '&t=' +
       serversInfo.value.hash;
   return _request;
-}
-
-(String path, Map<String, dynamic> query) getRequestParams(String path,
-    {Map<String, dynamic>? query}) {
-  String requestPath = '/rest/$path';
-  Map<String, dynamic> _query = {
-    'v': '0.0.1',
-    'c': 'musify',
-    'f': 'json',
-    'u': serversInfo.value.username,
-    's': serversInfo.value.salt,
-    't': serversInfo.value.hash
-  };
-  if (query != null) {
-    _query.addAll(query);
-  }
-  return (requestPath, _query);
 }
 
 MusicApi subsonicApi = (
@@ -105,16 +104,12 @@ MusicApi subsonicApi = (
     return res;
   },
   getSong: (String id) async {
-    print('11111');
-    var (path, queryParameters) =
-        await getRequestParams("getSong", query: {'id': id});
-
     try {
       var _response =
-          await MRequest.dio.get(path, queryParameters: queryParameters);
-      var _subsonic = checkResponse(_response);
-      if (_subsonic == null) return null;
-      Map<String, dynamic> _song = _subsonic['song'];
+          await MRequest.dio.get('getSong', queryParameters: {'id': id});
+      if (_response.data == null) return null;
+
+      Map<String, dynamic> _song = _response.data['song'];
 
       String _stream = getServerInfo("stream");
       String _url = getCoverArt(_song["id"], size: 800);

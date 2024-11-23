@@ -10,7 +10,6 @@ import '../../../screens/layout/playListScreen.dart';
 import '../../../screens/layout/playlistDetailScreen.dart';
 import '../../../screens/layout/searchLyricScreen.dart';
 import '../../../screens/layout/searchScreen.dart';
-import '../../../screens/layout/shareListScreen.dart';
 import 'indexScreen.dart';
 
 class Roter extends StatelessWidget {
@@ -41,7 +40,6 @@ class Roter extends StatelessWidget {
             return GenresScreen();
           case 7: //搜索歌词
             return SearchLyricScreen();
-          case 8: //专辑详情
           case 9: //艺人详情
             return ArtistDetailScreen(player: player);
           case 10: //搜索
@@ -50,8 +48,6 @@ class Roter extends StatelessWidget {
             return PlaylistDetailScreen(player: player);
           case 13: //艺人专辑
             return ArtistAlbumScreen();
-          case 15: //分享列表
-            return ShareListScreen();
 
           default:
             return IndexScreen();

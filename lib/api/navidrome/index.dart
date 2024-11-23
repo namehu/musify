@@ -16,8 +16,16 @@ Interceptor navidromeInterceptor = InterceptorsWrapper(
     // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
 
     options.baseUrl = serversInfo.value.baseurl;
-    options.responseType = ResponseType.json;
 
+    // 添加rest api路径
+    options.path = '/api/' + options.path;
+
+    Map<String, dynamic> _query = {};
+
+    options.queryParameters = options.queryParameters ?? {};
+    options.queryParameters.addAll(_query);
+
+    // 携带token
     var _ndCredential = serversInfo.value.ndCredential;
     if (_ndCredential.isNotEmpty) {
       options.headers['x-nd-authorization'] = 'Bearer $_ndCredential';
@@ -27,6 +35,7 @@ Interceptor navidromeInterceptor = InterceptorsWrapper(
   },
   onResponse: (Response response, ResponseInterceptorHandler handler) {
     // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+    response.data = checkResponse(response);
     return handler.next(response);
   },
   onError: (DioException error, ErrorInterceptorHandler handler) async {
@@ -68,23 +77,6 @@ Interceptor navidromeInterceptor = InterceptorsWrapper(
     return handler.next(error);
   },
 );
-
-(String path, Map<String, dynamic> query) getRequestParams(String path,
-    {Map<String, dynamic>? query}) {
-  String requestPath = '/api/$path';
-  Map<String, dynamic> _query = {
-    'v': '0.0.1',
-    'c': 'musify',
-    'f': 'json',
-    'u': serversInfo.value.username,
-    's': serversInfo.value.salt,
-    't': serversInfo.value.hash
-  };
-  if (query != null) {
-    _query.addAll(query);
-  }
-  return (requestPath, _query);
-}
 
 checkResponse(Response<dynamic> response) {
   if (response.statusCode == 200) {
@@ -135,8 +127,8 @@ MusicApi navidromeApi = (
 
     try {
       var _response =
-          await MRequest.dio.get('/api/song', queryParameters: queryParameters);
-      var data = checkResponse(_response);
+          await MRequest.dio.get('song', queryParameters: queryParameters);
+      var data = _response.data;
       if (data != null) {
         var _song = data[0];
         String _stream = getServerInfo("stream");

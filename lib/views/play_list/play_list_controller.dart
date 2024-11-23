@@ -6,7 +6,6 @@ import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/util/audioTools.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_toast.dart';
-import 'package:path/path.dart';
 
 class PlayListController extends GetxController {
   var playlistsList = <Playlist>[].obs;
