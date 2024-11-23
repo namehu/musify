@@ -12,6 +12,7 @@ import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
 import 'package:musify/views/album/album_controller.dart';
+import 'package:musify/widgets/common/m_list_head.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_button.dart';
 import 'package:musify/widgets/m_cover.dart';
@@ -48,78 +49,45 @@ class AlbumView extends GetView<AlbumController> {
   }
 
   Widget _buildTopWidget() {
-    return Container(
-      margin: EdgeInsets.only(top: StyleSize.space),
-      padding: leftrightPadding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // 封面
-          Container(
-            height: 136,
-            width: 136,
-            // margin: EdgeInsets.only(right: 15),
-            child: Obx(
-              () => MCover(
-                url: controller.album.coverUrl,
-                radius: 4,
-              ),
+    return MListHead(
+      cover: Obx(
+        () => MCover(
+          url: controller.album.coverUrl,
+          radius: 4,
+        ),
+      ),
+      title: controller.album.title,
+      subWidgets: [
+        _buildTopUser(),
+        Obx(
+          () => controller.album.year != 0
+              ? MText(
+                  text:
+                      S.current.year + ": " + controller.album.year.toString(),
+                  style: nomalText,
+                )
+              : Container(),
+        ),
+        Obx(
+          () => Container(
+            child: MText(
+              text:
+                  S.current.song + ": " + controller.album.songCount.toString(),
+              type: MTextTypeEnum.secondary,
             ),
           ),
-          // 右侧区域
-          Expanded(
-            child: Container(
-              height: 132,
-              padding: EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                      controller.album.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: StyleSize.titleSize),
-                    ),
-                  ),
-                  _buildTopUser(),
-                  Obx(
-                    () => controller.album.year != 0
-                        ? MText(
-                            text: S.current.year +
-                                ": " +
-                                controller.album.year.toString(),
-                            style: nomalText,
-                          )
-                        : Container(),
-                  ),
-                  Obx(
-                    () => Container(
-                      child: MText(
-                        text: S.current.song +
-                            ": " +
-                            controller.album.songCount.toString(),
-                        type: MTextTypeEnum.secondary,
-                      ),
-                    ),
-                  ),
-                  Obx(
-                    () => Container(
-                      child: MText(
-                        text: S.current.playCount +
-                            ": " +
-                            controller.album.playCount.toString(),
-                        type: MTextTypeEnum.secondary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+        ),
+        Obx(
+          () => Container(
+            child: MText(
+              text: S.current.playCount +
+                  ": " +
+                  controller.album.playCount.toString(),
+              type: MTextTypeEnum.secondary,
             ),
-          )
-        ],
-      ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -173,7 +141,6 @@ class AlbumView extends GetView<AlbumController> {
           ),
           // 收藏按钮
           Container(
-            height: 20,
             width: 25,
             child: MStarToogle(
               value: controller.staralbum.value,
@@ -225,21 +192,15 @@ class AlbumView extends GetView<AlbumController> {
                 formatDuration(_song.duration),
                 _song.id
               ];
-              return ListTile(
-                title: InkWell(
-                  onTap: () => controller.handleSongClick(_song, index),
-                  child: ValueListenableBuilder<Map>(
-                    valueListenable: activeSong,
-                    builder: ((context, value, child) {
-                      return Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: _songlistView(
-                          _title,
-                          value.isNotEmpty && value["value"] == _song.id,
-                          index,
-                        ),
-                      );
-                    }),
+              return InkWell(
+                onTap: () => controller.handleSongClick(_song, index),
+                child: ListTile(
+                  title: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: _songlistView(
+                      _title,
+                      index,
+                    ),
                   ),
                 ),
               );
@@ -250,24 +211,28 @@ class AlbumView extends GetView<AlbumController> {
 
   List<Widget> _songlistView(
     List<String> _title,
-    bool active,
     int _index,
   ) {
+    var _id = _title[2];
     return _title.asMap().keys.map((i) {
       if (i == 0) {
         return Expanded(
           flex: 1,
-          child: Text(
-            _title[i],
-            textDirection: (i == 0) ? TextDirection.ltr : TextDirection.rtl,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: active
-                  ? ThemeService.color.textPrimaryColor
-                  : ThemeService.color.textColor,
-            ),
-          ),
+          child: Obx(() {
+            var active =
+                controller.audioPlayerService.currentSong.value.id == _id;
+            return Text(
+              _title[i],
+              textDirection: (i == 0) ? TextDirection.ltr : TextDirection.rtl,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: active
+                    ? ThemeService.color.textPrimaryColor
+                    : ThemeService.color.textColor,
+              ),
+            );
+          }),
         );
       } else if (i == _title.length - 1) {
         return InkWell(

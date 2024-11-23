@@ -44,6 +44,7 @@ class MTableList extends StatelessWidget {
           MText(
             text: item.text!,
             maxLines: 1,
+            style: isHead! ? TextStyle(fontWeight: FontWeight.bold) : null,
           );
 
       if (item.show!) {
@@ -63,7 +64,7 @@ class MTableList extends StatelessWidget {
 
     return Container(
       height: height!,
-      padding: isHead! ? EdgeInsets.only(left: 24, right: 24) : null,
+      padding: EdgeInsets.symmetric(horizontal: 24),
       decoration: divider!
           ? BoxDecoration(
               border: Border(

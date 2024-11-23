@@ -17,7 +17,7 @@ class PlayListBinding implements Bindings {
   }
 }
 
-class PlayListView extends GetView<PlayListController> {
+class PlayListView extends GetResponsiveView<PlayListController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,56 +70,57 @@ class PlayListView extends GetView<PlayListController> {
             itemBuilder: (BuildContext context, int index) {
               Playlist _tem = controller.playlistsList[index];
 
-              // TODO: pc端没有滑动操作
-              return Dismissible(
-                // Key
-                key: Key(_tem.id),
-                confirmDismiss: (direction) {
-                  bool _result = false;
-                  if (direction == DismissDirection.endToStart && isMobile) {
-                    // 从右向左  也就是删除
-                    _result = true;
-                  } else if (direction == DismissDirection.startToEnd) {
-                    //从左向右
-                    _result = false;
-                  }
-                  return Future<bool>.value(_result);
-                },
-                onDismissed: isMobile
-                    ? (direction) async {
+              return screen == ScreenType.Phone
+                  ? Dismissible(
+                      key: Key(_tem.id),
+                      confirmDismiss: (direction) {
+                        bool _result = false;
+                        if (direction == DismissDirection.endToStart &&
+                            isMobile) {
+                          // 从右向左  也就是删除
+                          _result = true;
+                        } else if (direction == DismissDirection.startToEnd) {
+                          //从左向右
+                          _result = false;
+                        }
+                        return Future<bool>.value(_result);
+                      },
+                      onDismissed: (direction) async {
                         if (direction == DismissDirection.endToStart) {
                           // TODO: 删除确认做一下
                           // controller.handleSwipeDelPlayList(_tem.id);
                         }
-                      }
-                    : null,
-                background: Container(
-                  color: Colors.red,
-                  child: ListTile(
-                    trailing: Icon(Icons.delete, color: Colors.white),
-                  ),
-                ),
-                child: ListTile(
-                  title: GestureDetector(
-                    onTap: () async {
-                      activeID.value = _tem.id;
-                      Get.toNamed(Routes.PLAY_LIST_DETAIL);
-                      // indexValue.value = 12;
-                    },
-                    onSecondaryTapDown: (details) {
-                      controller.handleSecondaryTapDel(
-                        context,
-                        details.globalPosition.dx,
-                        details.globalPosition.dy,
-                        _tem.id,
-                      );
-                    },
-                    child: _buildRow(_tem),
-                  ),
-                ),
-              );
+                      },
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.only(right: 24),
+                        color: Colors.red,
+                        child: Icon(Icons.delete, color: Colors.white),
+                      ),
+                      child: _buidListItem(context, _tem),
+                    )
+                  : _buidListItem(context, _tem);
             },
           )),
+    );
+  }
+
+  _buidListItem(BuildContext context, Playlist _tem) {
+    return InkWell(
+      onTap: () async {
+        activeID.value = _tem.id;
+        Get.toNamed(Routes.PLAY_LIST_DETAIL);
+        // indexValue.value = 12;
+      },
+      onSecondaryTapDown: (details) {
+        controller.handleSecondaryTapDel(
+          context,
+          details.globalPosition.dx,
+          details.globalPosition.dy,
+          _tem.id,
+        );
+      },
+      child: _buildRow(_tem),
     );
   }
 
