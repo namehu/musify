@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musify/models/play_list.dart';
 import 'package:musify/screens/common/myTextButton.dart';
 import '../../generated/l10n.dart';
-import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
 import '../../util/httpClient.dart';
 import '../../util/util.dart';

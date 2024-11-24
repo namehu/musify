@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/api/index.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/myModel.dart';
+import 'package:musify/models/play_list.dart';
 import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/util/audioTools.dart';
 import 'package:musify/util/httpClient.dart';
@@ -20,18 +21,8 @@ class PlayListController extends GetxController {
   }
 
   _getPlaylist() async {
-    final _playlists = await getPlaylists();
-
-    playlistsList.clear();
-
-    if (_playlists != null && _playlists.length > 0) {
-      for (var element in _playlists) {
-        String _url = getCoverArt(element['id']);
-        element["imageUrl"] = _url;
-        Playlist _playlist = Playlist.fromJson(element);
-        playlistsList.add(_playlist);
-      }
-    }
+    final _playlists = await MRequest.api.getPlaylists();
+    playlistsList.value = _playlists;
   }
 
   addPlayList() async {

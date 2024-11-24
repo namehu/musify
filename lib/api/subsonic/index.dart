@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:musify/models/notifierValue.dart';
+import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/util/util.dart';
@@ -139,5 +140,19 @@ MusicApi subsonicApi = (
 
     Songs songs = Songs.fromJson(_song);
     return songs;
+  },
+  getPlaylists: () async {
+    var data = <Playlist>[];
+    var _response = await _dio.get('getPlaylists');
+    Map _playlists = _response.data['playlists'];
+    List _playlist = _playlists['playlist'];
+
+    for (var element in _playlist) {
+      String _url = getCoverArt(element['id']);
+      element["imageUrl"] = _url;
+      Playlist _playlist = Playlist.fromJson(element);
+      data.add(_playlist);
+    }
+    return data;
   },
 );

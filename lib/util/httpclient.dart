@@ -223,6 +223,7 @@ getPlaylistbyId(String _id) async {
   }
 }
 
+@Deprecated('plaese use Api request')
 getPlaylists() async {
   String _sql = await getServerInfo("getPlaylists");
   try {

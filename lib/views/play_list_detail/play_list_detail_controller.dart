@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
+import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/util/httpClient.dart';
