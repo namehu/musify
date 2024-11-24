@@ -1029,6 +1029,16 @@ class S {
       args: [],
     );
   }
+
+  /// `全部歌曲`
+  String get allSong {
+    return Intl.message(
+      '全部歌曲',
+      name: 'allSong',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

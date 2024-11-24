@@ -108,9 +108,7 @@ class PlayListView extends GetResponsiveView<PlayListController> {
   _buidListItem(BuildContext context, Playlist _tem) {
     return InkWell(
       onTap: () async {
-        activeID.value = _tem.id;
-        Get.toNamed(Routes.PLAY_LIST_DETAIL);
-        // indexValue.value = 12;
+        Get.toNamed(Routes.PLAY_LIST_DETAIL, arguments: {'id': _tem.id});
       },
       onSecondaryTapDown: (details) {
         controller.handleSecondaryTapDel(

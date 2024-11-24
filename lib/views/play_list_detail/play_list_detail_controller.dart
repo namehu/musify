@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
@@ -20,7 +19,11 @@ class PlayListDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _getSongs(activeID.value);
+
+    var id = Get.arguments?['id'] ?? null;
+    if (id != null) {
+      _getSongs(id);
+    }
   }
 
   _getSongs(String _playlistId) async {

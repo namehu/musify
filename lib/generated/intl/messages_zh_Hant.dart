@@ -24,6 +24,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("添加"),
         "album": MessageLookupByLibrary.simpleMessage("專輯"),
+        "allSong": MessageLookupByLibrary.simpleMessage("全部歌曲"),
         "appName": MessageLookupByLibrary.simpleMessage("Musify"),
         "appearance": MessageLookupByLibrary.simpleMessage("外觀"),
         "artist": MessageLookupByLibrary.simpleMessage("藝人"),

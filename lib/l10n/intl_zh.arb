@@ -96,5 +96,6 @@
     "directory": "文件夹",
     "photoLibrary": "相册",
     "reachBottom": "已经到底了~",
-    "noSong": "没有歌曲"
+    "noSong": "没有歌曲",
+    "allSong": "全部歌曲",
 }

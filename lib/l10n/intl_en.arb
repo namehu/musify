@@ -96,5 +96,6 @@
     "directory": "directory",
     "photoLibrary": "PhotoLibrary",
     "reachBottom": "Alerady Reached Bottom",
-    "noSong": "No Song"
+    "noSong": "No Song",
+    "allSong": "全部歌曲"
 }

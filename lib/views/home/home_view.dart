@@ -130,7 +130,9 @@ class HomeView extends GetResponsiveView<HomeController> {
             ),
           ),
           KeepAliveWrapper(
-            child: HomeTabView(),
+            child: HomeTabView(
+              controller: controller,
+            ),
           ),
         ]);
       },

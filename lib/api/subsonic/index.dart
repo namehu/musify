@@ -14,6 +14,8 @@ import '../types.dart';
 Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
     (Response response, ResponseInterceptorHandler handler) {
   // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
+  var _subsonic = checkResponse(response);
+  response.data = _subsonic;
 
   print('------------requset---------');
   var _query = response.requestOptions.queryParameters.entries.map((element) {
@@ -25,12 +27,10 @@ Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
   if (response.requestOptions.data != null) {
     print(jsonEncode(response.requestOptions.data));
   }
+  print(jsonEncode(response.data));
+
   print('------------requset---------');
 
-  var _subsonic = checkResponse(response);
-  if (_subsonic == null) return null;
-
-  response.data = _subsonic;
   return handler.next(response);
 };
 
