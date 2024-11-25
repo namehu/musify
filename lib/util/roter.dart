@@ -4,7 +4,6 @@ import '../screens/layout/albumScreen.dart';
 import '../screens/layout/artistAlbumScreen.dart';
 import '../screens/layout/artistDetailScreen.dart';
 import '../screens/layout/artistsScreen.dart';
-import '../screens/layout/favoriteScreen.dart';
 import '../screens/layout/genresScreen.dart';
 import '../screens/layout/indexScreen.dart';
 import '../screens/layout/playListScreen.dart';
@@ -32,7 +31,6 @@ class Roter extends StatelessWidget {
           case 2: //播放列表
             return PlayListScreen();
           case 3: //收藏
-            return FavoriteScreen(player: player);
           case 4: //专辑
             return AlbumScreen();
           case 5: //歌手
