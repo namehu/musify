@@ -41,6 +41,9 @@ class LeftScreenState extends State<LeftScreen> {
       case TabTypeEnmu.album:
         Get.toNamed(Routes.ALBUM_LIST);
         break;
+      case TabTypeEnmu.genres:
+        Get.toNamed(Routes.GENRE);
+        break;
       default:
     }
   }
@@ -115,13 +118,11 @@ class LeftScreenState extends State<LeftScreen> {
                             press: () => handleClick(TabTypeEnmu.artist),
                           ),
                         MyTextIconButton(
-                            active: indexValue.value == 6,
-                            press: () {
-                              indexValue.value = 6;
-                              if (isMobile) Navigator.pop(context);
-                            },
-                            title: S.current.genres,
-                            icon: Icons.public),
+                          icon: Icons.public,
+                          title: S.current.genres,
+                          active: _value == TabTypeEnmu.genres,
+                          press: () => handleClick(TabTypeEnmu.genres),
+                        ),
                         MyTextIconButton(
                             active: indexValue.value == 15,
                             press: () {

@@ -5,6 +5,7 @@ import 'package:musify/views/album_list/album_list_view.dart';
 import 'package:musify/views/artists/artists_view.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
 import 'package:musify/views/favorites/favorites_view.dart';
+import 'package:musify/views/genre/genre_view.dart';
 import 'package:musify/views/login/login_view.dart';
 import 'package:musify/views/play/play_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
@@ -42,6 +43,12 @@ abstract class AppPages {
       name: Routes.ARTIST_DETAIL,
       page: () => ArtistDetailView(),
       binding: ArtistDetailBinding(),
+      middlewares: [MusicBarMiddleware()],
+    ),
+    GetPage(
+      name: Routes.GENRE,
+      page: () => GenreView(),
+      binding: GenreBinding(),
       middlewares: [MusicBarMiddleware()],
     ),
   ];

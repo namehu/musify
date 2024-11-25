@@ -14,4 +14,5 @@ abstract class Routes {
   static const FAVORITE = '/favorite';
   static const ARTISTS = '/artists';
   static const ARTIST_DETAIL = '/artist_detail';
+  static const GENRE = '/genre';
 }

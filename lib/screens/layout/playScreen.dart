@@ -69,7 +69,7 @@ class _PlayScreenState extends State<PlayScreen> {
                         height: 10,
                         child: MusicSeekBar(dotRaidus: 5),
                       ),
-                      Container(height: 60, child: PlayerControBar()),
+                      Container(height: 80, child: PlayerControBar()),
                     ],
                   ),
                 ),

@@ -10,6 +10,8 @@ import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_table_list.dart';
 import 'package:musify/widgets/m_toast.dart';
 
+import '../../util/mycss.dart';
+
 class ArtistsViewBinding implements Bindings {
   @override
   void dependencies() {
@@ -21,7 +23,10 @@ class ArtistsView extends GetView<ArtistsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.current.artist)),
+      appBar: AppBar(
+        automaticallyImplyLeading: isMobile,
+        title: Text(S.current.artist),
+      ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(

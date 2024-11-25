@@ -26,7 +26,7 @@ class _BottomScreenState extends State<BottomScreen>
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: bottomHeight,
+        // height: bottomHeight,
         color: ThemeService.color.bgColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,61 +35,64 @@ class _BottomScreenState extends State<BottomScreen>
             // 进度条
             MusicSeekBar(dotRaidus: 5),
             // 歌曲区域
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Obx(
-                    () {
-                      var _song = audioPlayerService.currentSong.value;
-                      return Row(
-                        children: [
-                          InkWell(
-                              onTap: () async {
-                                //正在播放的弹窗入口
+            Container(
+              height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Obx(
+                      () {
+                        var _song = audioPlayerService.currentSong.value;
+                        return Row(
+                          children: [
+                            InkWell(
+                                onTap: () async {
+                                  //正在播放的弹窗入口
 
-                                await showMaterialModalBottomSheet(
-                                  context: context,
-                                  isDismissible: false,
-                                  builder: (BuildContext _contenxt) =>
-                                      PlayScreen(),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(left: 10, right: 10),
-                                height: bottomImageWidthAndHeight,
-                                width: bottomImageWidthAndHeight,
-                                child: MCover(
-                                    url: _song.coverUrl,
-                                    size: bottomImageWidthAndHeight),
-                              )),
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                // if (_song.isNotEmpty) {
-                                //   activeID.value = _song["albumId"];
-                                //   indexValue.value = 8;
-                                // }
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildOverflowTitle(_song.title),
-                                  _buildOverflowTitle(_song.artist),
-                                  _buildOverflowTitle(_song.album),
-                                ],
+                                  await showMaterialModalBottomSheet(
+                                    context: context,
+                                    isDismissible: false,
+                                    builder: (BuildContext _contenxt) =>
+                                        PlayScreen(),
+                                  );
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(left: 10, right: 10),
+                                  height: bottomImageWidthAndHeight,
+                                  width: bottomImageWidthAndHeight,
+                                  child: MCover(
+                                      url: _song.coverUrl,
+                                      size: bottomImageWidthAndHeight),
+                                )),
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  // if (_song.isNotEmpty) {
+                                  //   activeID.value = _song["albumId"];
+                                  //   indexValue.value = 8;
+                                  // }
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    _buildOverflowTitle(_song.title),
+                                    _buildOverflowTitle(_song.artist),
+                                    _buildOverflowTitle(_song.album),
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      );
-                    },
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Expanded(flex: 2, child: PlayerControBar()),
-                Expanded(flex: 1, child: PlayerVolumeBar(player))
-              ],
-            )
+                  Expanded(flex: 2, child: PlayerControBar()),
+                  Expanded(flex: 1, child: PlayerVolumeBar(player))
+                ],
+              ),
+            ),
           ],
         ));
   }
