@@ -7,7 +7,6 @@ import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/screens/common/myTextButton.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/styles/size.dart';
 import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';

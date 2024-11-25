@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/util/mycss.dart';

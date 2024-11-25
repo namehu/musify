@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/services/theme_service.dart';
 
 class HomeAppBar extends StatefulWidget {
