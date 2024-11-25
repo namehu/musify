@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
@@ -7,12 +6,6 @@ import 'package:musify/util/httpclient.dart';
 import '../../generated/l10n.dart';
 
 class FavoritesController extends GetxController {
-  RxList<Tab> myTabs = <Tab>[
-    Tab(text: S.current.song),
-    Tab(text: S.current.album),
-    Tab(text: S.current.artist)
-  ].obs;
-
   var songs = <Songs>[].obs;
   var songsFav = <bool>[].obs;
 

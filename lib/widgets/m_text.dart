@@ -32,7 +32,6 @@ class MText extends StatelessWidget {
             : ThemeService.color.textSecondColor);
 
     _style = _style.copyWith(color: _color);
-    print('$_color     ${_style.color}');
     return _style;
   }
 

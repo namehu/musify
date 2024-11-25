@@ -28,12 +28,12 @@ class SongTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _buildHead(),
-        ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.vertical,
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(
+          child: _buildHead(),
+        ),
+        SliverList.builder(
           itemCount: songs.length,
           itemBuilder: (ctx, index) {
             var data = songs[index];

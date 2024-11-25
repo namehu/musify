@@ -149,7 +149,9 @@ class HomeTabView extends StatelessWidget {
           }),
           _summaryItem(Icons.download, S.current.download, () {}),
           _summaryItem(Icons.album, S.current.album, () {}),
-          _summaryItem(Icons.person, S.current.artist, () {}),
+          _summaryItem(Icons.person, S.current.artist, () {
+            Get.toNamed(Routes.ARTISTS);
+          }),
           _summaryItem(Icons.folder, S.current.directory, () {}),
         ],
       ),

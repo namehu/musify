@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/size.dart';
 import 'package:musify/widgets/m_text.dart';
 
 class MColumn {
@@ -65,7 +66,7 @@ class MTableList extends StatelessWidget {
 
     return Container(
       height: height!,
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: EdgeInsets.symmetric(horizontal: StyleSize.space),
       decoration: divider!
           ? BoxDecoration(
               border: Border(

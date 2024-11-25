@@ -35,6 +35,9 @@ class LeftScreenState extends State<LeftScreen> {
       case TabTypeEnmu.favorite:
         Get.toNamed(Routes.FAVORITE);
         break;
+      case TabTypeEnmu.artist:
+        Get.toNamed(Routes.ARTISTS);
+        break;
       default:
     }
   }
@@ -87,29 +90,30 @@ class LeftScreenState extends State<LeftScreen> {
                           active: _value == TabTypeEnmu.playList,
                           press: () => handleClick(TabTypeEnmu.playList),
                         ),
+                        if (!isMobile)
+                          MyTextIconButton(
+                            icon: Icons.favorite,
+                            title: S.current.favorite,
+                            active: _value == TabTypeEnmu.favorite,
+                            press: () => handleClick(TabTypeEnmu.favorite),
+                          ),
                         MyTextIconButton(
-                          icon: Icons.favorite,
-                          title: S.current.favorite,
-                          active: _value == TabTypeEnmu.favorite,
-                          press: () => handleClick(TabTypeEnmu.favorite),
+                          active: indexValue.value == 4,
+                          press: () {
+                            activeID.value = "1";
+                            indexValue.value = 4;
+                            if (isMobile) Navigator.pop(context);
+                          },
+                          title: S.current.album,
+                          icon: Icons.album,
                         ),
-                        MyTextIconButton(
-                            active: indexValue.value == 4,
-                            press: () {
-                              activeID.value = "1";
-                              indexValue.value = 4;
-                              if (isMobile) Navigator.pop(context);
-                            },
-                            title: S.current.album,
-                            icon: Icons.album),
-                        MyTextIconButton(
-                            active: indexValue.value == 5,
-                            press: () {
-                              indexValue.value = 5;
-                              if (isMobile) Navigator.pop(context);
-                            },
+                        if (!isMobile)
+                          MyTextIconButton(
+                            icon: Icons.people_alt,
                             title: S.current.artist,
-                            icon: Icons.people_alt),
+                            active: _value == TabTypeEnmu.artist,
+                            press: () => handleClick(TabTypeEnmu.artist),
+                          ),
                         MyTextIconButton(
                             active: indexValue.value == 6,
                             press: () {

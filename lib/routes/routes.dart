@@ -12,4 +12,6 @@ abstract class Routes {
   static const PLAY_LIST = '/play_list';
   static const PLAY_LIST_DETAIL = '/play_list_detail';
   static const FAVORITE = '/favorite';
+  static const ARTISTS = '/artists';
+  static const ARTIST_DETAIL = '/artist_detail';
 }
