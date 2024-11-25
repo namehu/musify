@@ -55,6 +55,7 @@ class MTableList extends StatelessWidget {
           ));
         } else {
           children.add(Container(
+            alignment: Alignment.centerLeft,
             width: item.width!,
             child: _child,
           ));

@@ -9,8 +9,10 @@ import 'package:musify/routes/pages.dart';
 import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/util/dbProvider.dart';
+import 'package:musify/views/home/home_controller.dart';
 
 class LoginController extends GetxController {
+  var homeController = Get.find<HomeController>();
   var serverService = Get.find<ServerService>();
 
   get serversInfo => serverService.serverInfo;
@@ -95,6 +97,8 @@ class LoginController extends GetxController {
           await DbProvider.instance.addServerInfo(_serverInfo);
           serverService.updateCurrentServerInfo(_serverInfo);
           indexValue.value = 0;
+
+          homeController.onFinishLogin();
           Get.offNamed(Routes.HOME);
         }
       } catch (e) {}

@@ -20,6 +20,25 @@ class LeftScreen extends StatefulWidget {
 }
 
 class LeftScreenState extends State<LeftScreen> {
+  // 处理点击事件
+  handleClick(TabTypeEnmu type) {
+    GloabalService.tabType(type);
+    if (isMobile) Navigator.pop(context);
+
+    switch (type) {
+      case TabTypeEnmu.home:
+        Get.toNamed(Routes.HOME);
+        break;
+      case TabTypeEnmu.playList:
+        Get.toNamed(Routes.PLAY_LIST);
+        break;
+      case TabTypeEnmu.favorite:
+        Get.toNamed(Routes.FAVORITE);
+        break;
+      default:
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -57,31 +76,23 @@ class LeftScreenState extends State<LeftScreen> {
                       children: [
                         SizedBox(height: isMobile ? 40 : 0),
                         MyTextIconButton(
-                            active: _value == TabTypeEnmu.home,
-                            press: () {
-                              _value(TabTypeEnmu.home);
-                              if (isMobile) Navigator.pop(context);
-                              Get.toNamed(Routes.HOME);
-                            },
-                            title: S.current.index,
-                            icon: Icons.home),
+                          icon: Icons.home,
+                          title: S.current.index,
+                          active: _value == TabTypeEnmu.home,
+                          press: () => handleClick(TabTypeEnmu.home),
+                        ),
                         MyTextIconButton(
-                            active: _value == TabTypeEnmu.playList,
-                            press: () {
-                              _value(TabTypeEnmu.playList);
-                              if (isMobile) Navigator.pop(context);
-                              Get.toNamed(Routes.PLAY_LIST);
-                            },
-                            title: S.current.playlist,
-                            icon: Icons.queue_music),
+                          icon: Icons.queue_music,
+                          title: S.current.playlist,
+                          active: _value == TabTypeEnmu.playList,
+                          press: () => handleClick(TabTypeEnmu.playList),
+                        ),
                         MyTextIconButton(
-                            active: indexValue.value == 3,
-                            press: () {
-                              indexValue.value = 3;
-                              if (isMobile) Navigator.pop(context);
-                            },
-                            title: S.current.favorite,
-                            icon: Icons.favorite),
+                          icon: Icons.favorite,
+                          title: S.current.favorite,
+                          active: _value == TabTypeEnmu.favorite,
+                          press: () => handleClick(TabTypeEnmu.favorite),
+                        ),
                         MyTextIconButton(
                             active: indexValue.value == 4,
                             press: () {

@@ -141,12 +141,16 @@ class HomeTabView extends StatelessWidget {
         crossAxisCount: 3,
         childAspectRatio: 1,
         children: [
-          _summaryItem(Icons.library_music, S.current.allSong),
-          _summaryItem(Icons.favorite, S.current.favorite),
-          _summaryItem(Icons.download, S.current.download),
-          _summaryItem(Icons.album, S.current.album),
-          _summaryItem(Icons.person, S.current.artist),
-          _summaryItem(Icons.folder, S.current.directory),
+          _summaryItem(Icons.library_music, S.current.allSong, () {
+            // Get.toNamed(Routes.FAVORITE);
+          }),
+          _summaryItem(Icons.favorite, S.current.favorite, () {
+            Get.toNamed(Routes.FAVORITE);
+          }),
+          _summaryItem(Icons.download, S.current.download, () {}),
+          _summaryItem(Icons.album, S.current.album, () {}),
+          _summaryItem(Icons.person, S.current.artist, () {}),
+          _summaryItem(Icons.folder, S.current.directory, () {}),
         ],
       ),
     );
@@ -155,9 +159,10 @@ class HomeTabView extends StatelessWidget {
   Widget _summaryItem(
     IconData icon,
     String title,
+    void Function() onClick,
   ) {
     return InkWell(
-      onTap: () {},
+      onTap: onClick,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

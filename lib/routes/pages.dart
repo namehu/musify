@@ -3,6 +3,7 @@ import 'package:musify/routes/middlewares.dart';
 import 'package:musify/views/album/album_view.dart';
 import 'package:musify/views/album_list/album_list_view.dart';
 import 'package:musify/views/changeServer/change_server_view.dart';
+import 'package:musify/views/favorites/favorites_view.dart';
 import 'package:musify/views/login/login_view.dart';
 import 'package:musify/views/play/play_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
@@ -28,6 +29,7 @@ abstract class AppPages {
     _play,
     _playList,
     _playListDetail,
+    _favorite,
   ];
 
   static final _loginPage = GetPage(
@@ -83,6 +85,13 @@ abstract class AppPages {
     name: Routes.PLAY_LIST_DETAIL,
     page: () => PlayListDetailView(),
     binding: PlayListDetailBinding(),
+    middlewares: [MusicBarMiddleware()],
+  );
+
+  static final _favorite = GetPage(
+    name: Routes.FAVORITE,
+    page: () => FavoritesView(),
+    binding: FavoritesViewBinding(),
     middlewares: [MusicBarMiddleware()],
   );
 }

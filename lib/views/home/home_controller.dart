@@ -5,6 +5,7 @@ import 'package:musify/routes/pages.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/server_service.dart';
+import 'package:musify/util/mycss.dart';
 
 class HomeController extends GetxController {
   final serverService = Get.find<ServerService>();
@@ -31,6 +32,12 @@ class HomeController extends GetxController {
     if (!hasServer) {
       Get.toNamed(Routes.LOGIN);
     } else {
+      onFinishLogin();
+    }
+  }
+
+  onFinishLogin() {
+    if (isMobile) {
       _getPlaylists();
     }
   }
