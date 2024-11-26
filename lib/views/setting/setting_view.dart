@@ -8,6 +8,7 @@ import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/views/setting/setting_controller.dart';
+import 'package:musify/widgets/m_appbar.dart';
 import 'package:musify/widgets/m_button.dart';
 import 'package:musify/widgets/m_title.dart';
 
@@ -19,13 +20,13 @@ class SettingBinding implements Bindings {
 }
 
 class SettingView extends GetView<SettingController> {
-  var gloabalService = Get.find<GloabalService>();
+  final gloabalService = Get.find<GloabalService>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: AppBar(title: Text(S.current.settings)),
+        appBar: MAppbar(title: Text(S.current.settings)),
         body: Center(
           child: Container(
             padding: EdgeInsets.all(StyleSize.space),

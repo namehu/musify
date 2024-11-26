@@ -67,10 +67,6 @@ class HomeView extends GetResponsiveView<HomeController> {
     return Scaffold(
       key: myLeftStateKey,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: HomeAppBar(),
-      ),
       body: Row(
         children: [
           Container(
@@ -122,9 +118,7 @@ class HomeView extends GetResponsiveView<HomeController> {
             ),
           ),
           KeepAliveWrapper(
-            child: HomeTabView(
-              controller: controller,
-            ),
+            child: HomeTabView(controller: controller),
           ),
         ]);
       },

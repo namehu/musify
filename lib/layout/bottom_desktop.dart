@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -60,9 +61,13 @@ class _BottomDesktopState extends State<BottomDesktop>
                                   margin: EdgeInsets.only(left: 10, right: 10),
                                   height: bottomImageWidthAndHeight,
                                   width: bottomImageWidthAndHeight,
-                                  child: MCover(
-                                      url: _song.coverUrl,
-                                      size: bottomImageWidthAndHeight),
+                                  child: _song.coverUrl.isEmpty
+                                      ? SvgPicture.asset(
+                                          'assets/images/icon_music.svg',
+                                          semanticsLabel: 'Acme Logo')
+                                      : MCover(
+                                          url: _song.coverUrl,
+                                          size: bottomImageWidthAndHeight),
                                 )),
                             Expanded(
                               child: InkWell(

@@ -1,5 +1,24 @@
 import 'package:flutter/material.dart';
 
+MaterialColor createMaterialColor(Color color) {
+  List strengths = <double>[.05];
+  Map<int, Color> swatch = <int, Color>{};
+  final int r = color.red, g = color.green, b = color.blue;
+  for (int i = 1; i < 10; i++) {
+    strengths.add(0.1 * i);
+  }
+  strengths.forEach((strength) {
+    final double ds = 0.5 - strength;
+    swatch[(strength * 1000).round()] = Color.fromRGBO(
+      r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+      g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+      b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+      1,
+    );
+  });
+  return MaterialColor(color.value, swatch);
+}
+
 const gray1 = Color.fromRGBO(255, 255, 255, 1);
 const gray2 = Color.fromRGBO(250, 250, 250, 1);
 const gray3 = Color.fromRGBO(245, 245, 245, 1);
@@ -22,21 +41,22 @@ const Color darkTextColor = Color.fromRGBO(255, 255, 255, 0.85);
 
 const dialogBackgroundColor = Color.fromARGB(255, 52, 53, 54);
 
-const primaryColor = MaterialColor(
-  -1436359,
-  const <int, Color>{
-    50: const Color(-1436359),
-    100: const Color(-1436359),
-    200: const Color(-1436359),
-    300: const Color(-1436359),
-    400: const Color(-1436359),
-    500: const Color(-1436359),
-    600: const Color(-1436359),
-    700: const Color(-1436359),
-    800: const Color(-1436359),
-    900: const Color(-1436359),
-  },
-);
+var primaryColor = createMaterialColor(Color.fromARGB(255, 240, 87, 91));
+// const primaryColor = MaterialColor(
+//   -1436359,
+//   const <int, Color>{
+//     50: const Color(-1436359),
+//     100: const Color(-1436359),
+//     200: const Color(-1436359),
+//     300: const Color(-1436359),
+//     400: const Color(-1436359),
+//     500: const Color(-1436359),
+//     600: const Color(-1436359),
+//     700: const Color(-1436359),
+//     800: const Color(-1436359),
+//     900: const Color(-1436359),
+//   },
+// );
 
 typedef ColorMapType = ({
   Color titleColor, // 标题文本
@@ -69,8 +89,8 @@ ColorMapType normalColorMap = (
   textDisabledColor: Color.fromRGBO(0, 0, 0, 0.25),
   borderColor: gray6,
   dividerColor: gray7,
-  bgColor: gray2,
-  secondBgColor: gray1,
+  bgColor: gray1,
+  secondBgColor: gray2,
   dialogBackgroundColor: gray1,
   cardColor: Colors.white,
   iconColor: gray6,

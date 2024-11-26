@@ -8,7 +8,7 @@ final bool isClient =
 final String version = "v0.0.1";
 
 //appbar高度
-const double appBarHeight = 40;
+const double appBarHeight = 56;
 //侧拉栏宽度
 final double drawerWidth = isClient ? 240 : 150;
 //安全高度

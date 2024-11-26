@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:musify/util/mycss.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../styles/colors.dart';
+import '../util/mycss.dart';
 
 /// cover Image
 class MCover extends StatelessWidget {
@@ -31,22 +33,22 @@ class MCover extends StatelessWidget {
 
   _buildChild() {
     return (url.isEmpty)
-        ? Image.asset(
-            mylogoAsset,
-            width: size,
-            height: size,
-          )
+        ? Image.asset(mylogoAsset, width: size, height: size)
         : CachedNetworkImage(
             imageUrl: url,
             width: size,
             height: size,
             fit: BoxFit.cover,
             placeholder: (context, url) {
-              return AnimatedSwitcher(
-                child: Image.asset(mylogoAsset),
-                duration: const Duration(milliseconds: imageMilli),
+              return LoadingAnimationWidget.staggeredDotsWave(
+                color: gray6,
+                size: 40,
               );
             },
+            errorWidget: (ctx, s, ss) => Image.asset(
+                'assets/images/icon_album.png',
+                width: size,
+                height: size),
           );
   }
 }

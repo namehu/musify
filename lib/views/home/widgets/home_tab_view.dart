@@ -13,10 +13,9 @@ import '../../../routes/pages.dart';
 
 class HomeTabView extends StatelessWidget {
   final HomeController controller;
+  final TextEditingController _searchController = TextEditingController();
+
   HomeTabView({super.key, required this.controller});
-
-  TextEditingController _searchController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,7 +36,13 @@ class HomeTabView extends StatelessWidget {
             child: SizedBox(height: StyleSize.space),
           ),
           SliverToBoxAdapter(
-            child: MTitle(title: S.current.playlist),
+            child: MTitle(
+              title: S.current.playlist,
+              actions: [S.current.more],
+              onActionsTap: (index) {
+                Get.toNamed(Routes.PLAY_LIST);
+              },
+            ),
           ),
           SliverToBoxAdapter(
             child: Container(

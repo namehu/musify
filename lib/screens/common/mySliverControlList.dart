@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/widgets/m_cover.dart';
 
 import '../../models/myModel.dart';
 import '../../models/notifierValue.dart';
@@ -59,20 +59,7 @@ class MySliverControlList extends StatelessWidget {
                   children: [
                     Container(
                       constraints: BoxConstraints(maxHeight: _rightHeight - 67),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: CachedNetworkImage(
-                          imageUrl: _tem.coverUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) {
-                            return AnimatedSwitcher(
-                              child: Image.asset(mylogoAsset),
-                              duration:
-                                  const Duration(milliseconds: imageMilli),
-                            );
-                          },
-                        ),
-                      ),
+                      child: MCover(url: _tem.coverUrl),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 5, bottom: 5),
