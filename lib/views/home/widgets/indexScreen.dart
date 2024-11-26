@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:musify/api/index.dart';
+import 'package:musify/enums/album_list_type_enum.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../models/myModel.dart';
-import '../../../../util/httpClient.dart';
 import '../../../screens/common/mySliverControlBar.dart';
 import '../../../screens/common/mySliverControlList.dart';
 
@@ -22,45 +23,37 @@ class _IndexScreenState extends State<IndexScreen> {
   List<Albums>? _mostalbums;
   List<Albums>? _recentalbums;
 
-  _getAlbuoms(String _api) async {
-    final _albumsList = await getAlbumList(_api, "", 0, 10);
-    List<Albums> _list = [];
-    if (_albumsList != null && _albumsList.length > 0) {
-      for (var _element in _albumsList) {
-        String _url = getCoverArt(_element["id"]);
-        _element["coverUrl"] = _url;
-        Albums _album = Albums.fromJson(_element);
-        _list.add(_album);
-      }
-      if (mounted) {
-        setState(() {
-          switch (_api) {
-            case "random":
-              _randomalbums = _list;
-              break;
-            case "frequent":
-              _mostalbums = _list;
-              break;
-            case "newest":
-              _lastalbums = _list;
-              break;
-            case "recent":
-              _recentalbums = _list;
-              break;
-            default:
-          }
-        });
-      }
+  _getAlbuoms(AlbumListTypeEnum type) async {
+    List<Albums> _list =
+        await MRequest.api.getAlbumList(pageNum: 1, pageSize: 10, type: type);
+    if (_list.isNotEmpty && mounted) {
+      setState(() {
+        switch (type) {
+          case AlbumListTypeEnum.random:
+            _randomalbums = _list;
+            break;
+          case AlbumListTypeEnum.frequent:
+            _mostalbums = _list;
+            break;
+          case AlbumListTypeEnum.newest:
+            _lastalbums = _list;
+            break;
+          case AlbumListTypeEnum.recent:
+            _recentalbums = _list;
+            break;
+          default:
+        }
+      });
     }
   }
 
   @override
   initState() {
     super.initState();
-    _getAlbuoms("random");
-    _getAlbuoms("frequent");
-    _getAlbuoms("newest");
-    _getAlbuoms("recent");
+    _getAlbuoms(AlbumListTypeEnum.random);
+    _getAlbuoms(AlbumListTypeEnum.frequent);
+    _getAlbuoms(AlbumListTypeEnum.newest);
+    _getAlbuoms(AlbumListTypeEnum.recent);
   }
 
   @override

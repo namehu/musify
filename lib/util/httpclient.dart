@@ -66,38 +66,6 @@ getServerInfo(String _api) {
   );
 }
 
-//type:random/newest/highest/frequent/recent/
-//subsonic 1.8.0 alphabeticalByName/alphabeticalByArtist/starred
-//size 10 if no
-//offset 0
-//byGenre  need genre
-//byYear  fromYear  toYear
-getAlbumList(String _type, String _by, int _offset, int _size) async {
-  String _sql = getServerInfo("getAlbumList2") +
-      '&offset=' +
-      _offset.toString() +
-      '&size=' +
-      _size.toString();
-  switch (_type) {
-    case "byGenre":
-      _sql += '&type=' + _type + '&genre=' + _by;
-      break;
-    default:
-      _sql += '&type=' + _type;
-  }
-  try {
-    var _response = await Dio().get(_sql);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    Map _albumList = _subsonic['albumList2'];
-    List _albums = _albumList['album'];
-    return _albums;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 getRandomSongs() async {
   String _sql = getServerInfo("getRandomSongs");
   try {
