@@ -4,7 +4,6 @@ import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/util/httpclient.dart';
 import 'package:musify/views/favorites/favorites_controller.dart';
-import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_table_list.dart';
 import 'package:musify/widgets/m_toast.dart';

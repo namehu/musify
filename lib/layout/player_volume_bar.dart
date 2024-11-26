@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
-import '../../../util/mycss.dart';
+import '../util/mycss.dart';
 
 class PlayerVolumeBar extends StatefulWidget {
   final AudioPlayer player;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/services/theme_service.dart';
 
 class HomeAppBar extends StatefulWidget {
@@ -63,6 +65,9 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 ),
               ),
             ),
+            onTap: () {
+              Get.toNamed(Routes.SEARCH);
+            },
             onSubmitted: (val) {
               if (_searchController.text != "") {
                 // activeID.value = _searchController.text;

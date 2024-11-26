@@ -8,6 +8,7 @@ import 'package:musify/views/favorites/favorites_view.dart';
 import 'package:musify/views/genre/genre_view.dart';
 import 'package:musify/views/login/login_view.dart';
 import 'package:musify/views/play/play_view.dart';
+import 'package:musify/views/search/search_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
 import '../views/artist_detail/artist_detail_view.dart';
 import '../views/home/home_view.dart';
@@ -49,6 +50,12 @@ abstract class AppPages {
       name: Routes.GENRE,
       page: () => GenreView(),
       binding: GenreBinding(),
+      middlewares: [MusicBarMiddleware()],
+    ),
+    GetPage(
+      name: Routes.SEARCH,
+      page: () => SearchView(),
+      binding: SearchViewBinding(),
       middlewares: [MusicBarMiddleware()],
     ),
   ];

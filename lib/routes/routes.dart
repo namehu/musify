@@ -15,4 +15,5 @@ abstract class Routes {
   static const ARTISTS = '/artists';
   static const ARTIST_DETAIL = '/artist_detail';
   static const GENRE = '/genre';
+  static const SEARCH = '/search';
 }

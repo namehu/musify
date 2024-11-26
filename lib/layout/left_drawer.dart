@@ -10,16 +10,16 @@ import '../generated/l10n.dart';
 import '../models/notifierValue.dart';
 import '../util/mycss.dart';
 
-class LeftScreen extends StatefulWidget {
-  const LeftScreen({
+class LeftDrawer extends StatefulWidget {
+  const LeftDrawer({
     Key? key,
   }) : super(key: key);
 
   @override
-  LeftScreenState createState() => LeftScreenState();
+  LeftDrawerState createState() => LeftDrawerState();
 }
 
-class LeftScreenState extends State<LeftScreen> {
+class LeftDrawerState extends State<LeftDrawer> {
   // 处理点击事件
   handleClick(TabTypeEnmu type) {
     GloabalService.tabType(type);

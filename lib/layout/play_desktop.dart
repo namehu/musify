@@ -7,18 +7,18 @@ import 'package:musify/styles/size.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/music/lyric_reader.dart';
 import 'package:musify/widgets/music/music_seek_bar.dart';
-import '../../generated/l10n.dart';
-import '../../models/notifierValue.dart';
-import '../../util/mycss.dart';
-import '../components/myAudio/playerControBar.dart';
+import '../generated/l10n.dart';
+import '../models/notifierValue.dart';
+import '../util/mycss.dart';
+import 'player_contro_bar.dart';
 
-class PlayScreen extends StatefulWidget {
-  const PlayScreen({Key? key}) : super(key: key);
+class PlayDesktop extends StatefulWidget {
+  const PlayDesktop({Key? key}) : super(key: key);
   @override
-  _PlayScreenState createState() => _PlayScreenState();
+  _PlayDesktopState createState() => _PlayDesktopState();
 }
 
-class _PlayScreenState extends State<PlayScreen> {
+class _PlayDesktopState extends State<PlayDesktop> {
   final audioPlayerService = Get.find<AudioPlayerService>();
   final player = AudioPlayerService.player;
 

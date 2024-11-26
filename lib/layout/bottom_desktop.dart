@@ -2,23 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:musify/constant.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_cover.dart';
 import '../util/mycss.dart';
 import '../widgets/music/music_seek_bar.dart';
-import 'components/myAudio/playerControBar.dart';
-import 'components/myAudio/playerVolumeBar.dart';
-import 'layout/playScreen.dart';
+import 'player_contro_bar.dart';
+import 'player_volume_bar.dart';
+import 'play_desktop.dart';
 
-class BottomScreen extends StatefulWidget {
-  const BottomScreen({Key? key}) : super(key: key);
+class BottomDesktop extends StatefulWidget {
+  const BottomDesktop({Key? key}) : super(key: key);
   @override
-  _BottomScreenState createState() => _BottomScreenState();
+  _BottomDesktopState createState() => _BottomDesktopState();
 }
 
-class _BottomScreenState extends State<BottomScreen>
+class _BottomDesktopState extends State<BottomDesktop>
     with TickerProviderStateMixin {
   final AudioPlayer player = AudioPlayerService.player;
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
@@ -54,7 +53,7 @@ class _BottomScreenState extends State<BottomScreen>
                                     context: context,
                                     isDismissible: false,
                                     builder: (BuildContext _contenxt) =>
-                                        PlayScreen(),
+                                        PlayDesktop(),
                                   );
                                 },
                                 child: Container(

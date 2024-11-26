@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
-import 'package:musify/screens/bottomScreen.dart';
-import 'package:musify/screens/leftScreen.dart';
+import 'package:musify/layout/bottom_desktop.dart';
+import 'package:musify/layout/left_drawer.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/music_bar_service.dart';
@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
                         Obx(
                           () => GloabalService.hidePCLayout.value
                               ? Container()
-                              : LeftScreen(),
+                              : LeftDrawer(),
                         ),
                         Expanded(child: child ?? Container()),
                       ],
@@ -119,7 +119,7 @@ class MyApp extends StatelessWidget {
                   Obx(
                     () => GloabalService.hidePCLayout.value
                         ? Container()
-                        : BottomScreen(),
+                        : BottomDesktop(),
                   ),
                 ],
               ),

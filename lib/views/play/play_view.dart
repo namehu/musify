@@ -21,13 +21,12 @@ class PlayBinding implements Bindings {
   }
 }
 
-class PlayView extends GetView<PlayController> {
+class PlayView extends GetResponsiveView<PlayController> {
   final double _appBarHeight = 96;
-
   final double commonPadding = 30;
 
   @override
-  Widget build(BuildContext context) {
+  Widget phone() {
     return DefaultTabController(
       initialIndex: 0,
       length: controller.tabs.length,

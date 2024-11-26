@@ -9,6 +9,7 @@ import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/m_table_list.dart';
 import 'package:musify/widgets/m_text.dart';
 import '../../generated/l10n.dart';
+import '../../widgets/common/m_song_table.dart';
 import 'play_list_detail_controller.dart';
 
 class PlayListDetailBinding implements Bindings {
@@ -29,7 +30,7 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
             child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(child: _buildHead()),
-            SliverToBoxAdapter(child: _buildTableTitle()),
+            SliverToBoxAdapter(child: MSongTableHead()),
             Obx(
               () => controller.songslist.isEmpty
                   ? SliverToBoxAdapter(
@@ -73,25 +74,6 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
     );
   }
 
-  _buildTableTitle() {
-    return MTableList(
-      isHead: true,
-      data: [
-        MColumn(flex: 1, text: S.current.song),
-        MColumn(
-          text: (S.current.album),
-          width: 150,
-          show: !isMobile,
-        ),
-        MColumn(text: (S.current.artist)),
-        MColumn(text: (S.current.dration)),
-        MColumn(text: (S.current.bitRange), show: !isMobile),
-        MColumn(text: (S.current.playCount), show: !isMobile),
-      ],
-      divider: true,
-    );
-  }
-
   _buildTableItem(int index) {
     Songs _song = controller.songslist[index];
     return screen == ScreenType.Phone
@@ -132,31 +114,13 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
   }
 
   _buildItem(Songs _song, int index) {
-    return InkWell(
-      onTap: () async {
+    return MSongTableRow(
+      song: _song,
+      index: index,
+      onTap: () {
         controller.audioPlayerService
             .palySongList(_song, index, controller.songslist);
       },
-      child: MTableList(
-        data: [
-          MColumn(flex: 1, text: (_song.title)),
-          MColumn(
-            text: _song.album,
-            width: 150,
-            show: !isMobile,
-          ),
-          MColumn(text: (_song.artist)),
-          MColumn(text: (formatDuration(_song.duration))),
-          MColumn(
-            text: (_song.suffix + "(" + _song.bitRate.toString() + ")"),
-            show: !isMobile,
-          ),
-          MColumn(
-            text: (_song.playCount.toString()),
-            show: !isMobile,
-          ),
-        ],
-      ),
     );
   }
 }
