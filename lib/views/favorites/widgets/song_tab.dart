@@ -52,7 +52,7 @@ class SongTab extends StatelessWidget {
         MColumn(text: (S.current.album)),
         MColumn(text: (S.current.artist)),
         MColumn(text: (S.current.bitRange), show: !isMobile),
-        MColumn(text: (S.current.dration), show: !isMobile),
+        MColumn(text: (S.current.duration), show: !isMobile),
         MColumn(text: (S.current.playCount), show: !isMobile),
         MColumn(
           text: S.current.favorite,

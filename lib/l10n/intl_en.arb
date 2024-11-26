@@ -11,7 +11,7 @@
     "album": "Album",
     "song": "Song ",
     "year": "Year",
-    "dration": "Dration",
+    "duration": "Duration",
     "playCount": "Play Count",
     "bitRange": "Bit Range",
     "refresh": "Refresh...",

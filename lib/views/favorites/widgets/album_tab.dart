@@ -48,7 +48,7 @@ class AlbumTab extends StatelessWidget {
         MColumn(flex: 1, text: S.current.song),
         MColumn(text: (S.current.artist)),
         MColumn(text: (S.current.song)),
-        MColumn(text: (S.current.dration), show: !isMobile),
+        MColumn(text: (S.current.duration), show: !isMobile),
         MColumn(text: (S.current.playCount), show: !isMobile),
         MColumn(
           text: S.current.favorite,

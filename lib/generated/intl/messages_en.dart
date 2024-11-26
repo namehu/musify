@@ -41,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "directory": MessageLookupByLibrary.simpleMessage("directory"),
         "disConnect": MessageLookupByLibrary.simpleMessage("Disconnect"),
         "download": MessageLookupByLibrary.simpleMessage("download "),
-        "dration": MessageLookupByLibrary.simpleMessage("Dration"),
+        "duration": MessageLookupByLibrary.simpleMessage("Duration"),
         "enforceRefresh":
             MessageLookupByLibrary.simpleMessage("Enforce Refresh"),
         "english": MessageLookupByLibrary.simpleMessage("English"),

@@ -11,7 +11,7 @@
     "album": "专辑",
     "song": "歌曲",
     "year": "年度",
-    "dration": "时长",
+    "duration": "时长",
     "playCount": "播放",
     "bitRange": "比特率",
     "refresh": "刷新...",
@@ -97,5 +97,5 @@
     "photoLibrary": "相册",
     "reachBottom": "已经到底了~",
     "noSong": "没有歌曲",
-    "allSong": "全部歌曲",
+    "allSong": "全部歌曲"
 }

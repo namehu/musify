@@ -21,7 +21,7 @@ class MSongTableHead extends StatelessWidget {
           show: !isMobile,
         ),
         MColumn(text: (S.current.artist)),
-        MColumn(text: (S.current.dration)),
+        MColumn(text: (S.current.duration)),
         MColumn(text: (S.current.bitRange), show: !isMobile),
         MColumn(text: (S.current.playCount), show: !isMobile),
       ],

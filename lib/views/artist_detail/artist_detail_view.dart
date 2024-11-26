@@ -156,7 +156,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
             ],
           ),
           MText(
-            text: S.current.dration +
+            text: S.current.duration +
                 ": " +
                 formatDuration(controller.duration.value),
           ),
@@ -189,7 +189,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
       data: [
         MColumn(flex: 1, text: S.current.song),
         MColumn(text: S.current.album),
-        MColumn(text: S.current.dration),
+        MColumn(text: S.current.duration),
         MColumn(text: S.current.bitRange, show: !isMobile),
         MColumn(text: S.current.playCount, show: !isMobile),
         MColumn(text: S.current.favorite, width: 50),

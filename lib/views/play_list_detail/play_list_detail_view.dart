@@ -58,7 +58,7 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
             maxLines: 1,
           ),
           MText(
-            text: S.current.dration +
+            text: S.current.duration +
                 ": " +
                 formatDuration(controller.duration.value),
             maxLines: 1,

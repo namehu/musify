@@ -170,11 +170,11 @@ class S {
     );
   }
 
-  /// `Dration`
-  String get dration {
+  /// `Duration`
+  String get duration {
     return Intl.message(
-      'Dration',
-      name: 'dration',
+      'Duration',
+      name: 'duration',
       desc: '',
       args: [],
     );

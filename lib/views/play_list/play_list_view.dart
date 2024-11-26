@@ -127,7 +127,7 @@ class PlayListView extends GetResponsiveView<PlayListController> {
       data: [
         MColumn(flex: 1, text: S.current.name),
         MColumn(text: (S.current.song)),
-        MColumn(text: (S.current.dration)),
+        MColumn(text: (S.current.duration)),
         MColumn(text: (S.current.createuser), show: !isMobile),
         MColumn(text: (S.current.udpateDate), show: !isMobile),
       ],
