@@ -72,10 +72,7 @@ class _BottomDesktopState extends State<BottomDesktop>
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  // if (_song.isNotEmpty) {
-                                  //   activeID.value = _song["albumId"];
-                                  //   indexValue.value = 8;
-                                  // }
+                                  // TODO: 跳转到歌曲详情页
                                 },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

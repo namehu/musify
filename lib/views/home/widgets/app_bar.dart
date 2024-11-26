@@ -68,13 +68,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
             onTap: () {
               Get.toNamed(Routes.SEARCH);
             },
-            onSubmitted: (val) {
-              if (_searchController.text != "") {
-                // activeID.value = _searchController.text;
-                // indexValue.value = 10;
-              }
-              //  _getSongsbyName();
-            },
           ),
         ),
       ],

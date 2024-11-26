@@ -130,8 +130,7 @@ class AlbumView extends GetView<AlbumController> {
             child: Obx(
               () => MText(
                 onTap: () {
-                  activeID.value = controller.album.artistId;
-                  indexValue.value = 9;
+                  // TODO: 调整至歌手页面
                 },
                 text: controller.album.artist,
                 type: MTextTypeEnum.secondary,
@@ -165,8 +164,9 @@ class AlbumView extends GetView<AlbumController> {
         padding: EdgeInsets.only(left: 5),
         child: MyTextButton(
             press: () {
-              activeID.value = _title[i];
-              indexValue.value = 4;
+              // TODO: 点击处理
+              // activeID.value = _title[i];
+              // indexValue.value = 4;
             },
             title: _title[i]),
       ));

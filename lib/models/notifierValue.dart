@@ -4,9 +4,6 @@ import 'package:musify/enums/serve_type_enum.dart';
 
 import 'myModel.dart';
 
-//左侧按钮更改右侧的监控器，默认起始页为首页 0
-ValueNotifier<int> indexValue = ValueNotifier<int>(0);
-
 //监听当前歌曲
 ValueNotifier<String> activeSongValue = ValueNotifier<String>("1");
 
@@ -25,15 +22,6 @@ ValueNotifier<ServerInfo> serversInfo = ValueNotifier<ServerInfo>(ServerInfo(
 
 //监听当前资源ID 艺人/专辑/歌曲都是它
 ValueNotifier<String> activeID = ValueNotifier<String>("1");
-
-//监听当前播放列表
-ValueNotifier<List> activeList = ValueNotifier<List>([]);
-
-//监听当前歌曲序列
-ValueNotifier<int> activeIndex = ValueNotifier<int>(0);
-
-//监听当前歌曲
-ValueNotifier<Map> activeSong = ValueNotifier<Map>(Map());
 
 ValueNotifier<double> windowsWidth = ValueNotifier<double>(
     PlatformDispatcher.instance.views.first.physicalSize.width /

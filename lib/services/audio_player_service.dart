@@ -34,6 +34,18 @@ class AudioPlayerService extends GetxService {
 
   /// 播放列表中歌曲
   RxList<Songs> playSongs = <Songs>[].obs;
+
+  /// 当前播放歌曲
+  Rx<Songs> currentSong = Songs.fromInitial().obs;
+
+  /// 当前播放歌曲索引
+  RxInt currentSongIndex = 0.obs;
+
+  /// 当前歌曲歌词
+  Rx<String> lyric = ''.obs;
+
+  MUINetease lyricUI = MUINetease(highlight: true);
+
   // 初始化播放列表
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(
     useLazyPreparation: true,
@@ -44,13 +56,6 @@ class AudioPlayerService extends GetxService {
   Rx<PlayModeEnum> playMode = PlayModeEnum.loop.obs;
   bool _shuffleModeEnabled = false;
   LoopMode _loopMode = LoopMode.all;
-
-  /// 当前播放歌曲
-  Rx<Songs> currentSong = Songs.fromInitial().obs;
-
-  /// 当前歌曲歌词
-  Rx<String> lyric = ''.obs;
-  MUINetease lyricUI = MUINetease(highlight: true);
 
   /// 当前歌曲播放进度
   Stream<PositionData> get positionDataStream {
@@ -139,7 +144,6 @@ class AudioPlayerService extends GetxService {
     if (listEquals(playSongs.value, songs)) {
       player.seek(Duration.zero, index: index);
     } else {
-      activeIndex.value = index; //当前歌曲队列
       activeSongValue.value = _song.id;
       playSongs.value = songs; //歌曲所在专辑歌曲List
     }
@@ -219,7 +223,7 @@ class AudioPlayerService extends GetxService {
 
     await player.setAudioSource(
       playlist,
-      initialIndex: activeIndex.value,
+      initialIndex: currentSongIndex.value,
       initialPosition: Duration.zero,
     );
 

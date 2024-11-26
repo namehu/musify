@@ -51,8 +51,6 @@ class MySliverControlList extends StatelessWidget {
             child: InkWell(
                 onTap: () {
                   activeID.value = _tem.id;
-                  // indexValue.value = 8;
-
                   Get.toNamed(Routes.ALBUM, arguments: {'id': _tem.id});
                 },
                 child: Column(

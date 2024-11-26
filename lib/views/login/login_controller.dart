@@ -96,7 +96,6 @@ class LoginController extends GetxController {
         } else {
           await DbProvider.instance.addServerInfo(_serverInfo);
           serverService.updateCurrentServerInfo(_serverInfo);
-          indexValue.value = 0;
 
           homeController.onFinishLogin();
           Get.offNamed(Routes.HOME);

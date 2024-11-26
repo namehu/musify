@@ -6,7 +6,6 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_toast.dart';
 import '../generated/l10n.dart';
-import '../models/notifierValue.dart';
 import 'httpClient.dart';
 import 'mycss.dart';
 
@@ -16,18 +15,6 @@ getSongDetail(String id) async {
     if (_song == null) {
       return null;
     }
-
-    //拼装当前歌曲
-    Map _activeSong = new Map();
-    _activeSong["value"] = _song.id;
-    _activeSong["artist"] = _song.artist;
-    _activeSong["url"] = _song.coverUrl;
-    _activeSong["title"] = _song.title;
-    _activeSong["album"] = _song.album;
-    _activeSong["albumId"] = _song.albumId;
-    _activeSong["starred"] = _song.starred;
-
-    activeSong.value = _activeSong;
 
     var audioPlayerService = Get.find<AudioPlayerService>();
     audioPlayerService.currentSong.value = _song;
