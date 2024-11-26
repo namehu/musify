@@ -1,24 +1,29 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:musify/api/index.dart';
+import 'package:musify/enums/album_list_type_enum.dart';
 import 'package:musify/models/myModel.dart';
-
 import '../../generated/l10n.dart';
-import '../../util/httpClient.dart';
 
 class AlbumListController extends GetxController {
   static const _pageSize = 100;
   RxList<Albums> albums = <Albums>[].obs;
 
-  RxString selectOrder = 'random'.obs;
-  List<DropdownMenuItem<String>> sortOrder = [];
+  var selectOrder = AlbumListTypeEnum.recent.obs;
+
+  var sortOrderList = [
+    [AlbumListTypeEnum.random, S.current.random], // 随机
+    [AlbumListTypeEnum.newest, S.current.last + S.current.add], // 最新
+    [AlbumListTypeEnum.recent, S.current.last + S.current.play], // 最近
+    [AlbumListTypeEnum.frequent, S.current.most + S.current.play], // 最多
+    [AlbumListTypeEnum.starred, S.current.most + S.current.favorite], // 收藏
+  ];
 
   final PagingController<int, Albums> pagingController =
       PagingController(firstPageKey: 0);
 
   @override
   void onInit() async {
-    _setSortOrder();
     super.onInit();
 
     pagingController.addPageRequestListener((pageKey) {
@@ -36,37 +41,12 @@ class AlbumListController extends GetxController {
     super.onClose();
   }
 
-  _setSortOrder() {
-    List<DropdownMenuItem<String>> _sortOrder = [];
-    var data = [
-      ['random', S.current.random], // 随机
-      ['newest', S.current.last + S.current.add], // 最新
-      ['recent', S.current.last + S.current.play], // 最近
-      ['frequent', S.current.most + S.current.play], // 最多
-      ['starred', S.current.most + S.current.favorite], // 收藏
-    ];
-    data.forEach((e) {
-      _sortOrder.add(DropdownMenuItem(value: e[0], child: Text(e[1])));
-    });
-    sortOrder = _sortOrder;
-  }
-
   _getAllAlbums(int pageKey) async {
-    var _albumsList =
-        await getAlbumList(selectOrder.value, "", pageKey, _pageSize);
+    var pageNum = ((pageKey / _pageSize) + 1).toInt();
+    List<Albums> _list = await MRequest.api.getAlbumList(
+        pageSize: _pageSize, pageNum: pageNum, type: selectOrder.value);
 
-    List<Albums> _list = [];
-    if (_albumsList != null && _albumsList.length > 0) {
-      for (var _element in _albumsList) {
-        String _url = getCoverArt(_element["id"]);
-        _element["coverUrl"] = _url;
-        Albums _album = Albums.fromJson(_element);
-
-        _list.add(_album);
-      }
-    }
-
-    final isLastPage = _albumsList.length < _pageSize;
+    final isLastPage = _list.length < _pageSize;
     if (isLastPage) {
       pagingController.appendLastPage(_list);
     } else {

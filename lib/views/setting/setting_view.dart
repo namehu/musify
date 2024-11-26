@@ -26,7 +26,7 @@ class SettingView extends GetView<SettingController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: MAppbar(title: Text(S.current.settings)),
+        appBar: MAppBar(title: Text(S.current.settings)),
         body: Center(
           child: Container(
             padding: EdgeInsets.all(StyleSize.space),

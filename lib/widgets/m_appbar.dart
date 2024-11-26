@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/util/mycss.dart';
 
-class MAppbar extends StatelessWidget implements PreferredSizeWidget {
+class MAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
+  final List<Widget>? actions;
 
-  MAppbar({super.key, this.title});
+  MAppBar({super.key, this.title, this.actions});
 
   @override
   Size get preferredSize => const Size.fromHeight(appBarHeight);
@@ -22,6 +23,7 @@ class MAppbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: title,
+      actions: actions,
     );
   }
 }

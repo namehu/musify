@@ -7,6 +7,9 @@ const String APP_NAME = 'Musify';
 //底部高度
 const double bottomHeight = 80;
 
+/// appbar 图标默认宽度
+const double appBarActionWith = 56;
+
 /// 全局key
 /// 用于全局overlay context获取
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

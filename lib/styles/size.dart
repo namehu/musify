@@ -10,6 +10,7 @@ class StyleSize {
   static const double space = 15; // 默认间距
   static const double spaceLarge = 25; // 大间距
 
+  static const double listItemSmallHeight = 32; // 列表项高度
   static const double listItemHeight = 50; // 列表项高度
 }
 

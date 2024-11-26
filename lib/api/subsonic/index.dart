@@ -2,11 +2,13 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:musify/enums/album_list_type_enum.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/util/util.dart';
+import '../../models/myModel.dart';
 import '../../util/mycss.dart';
 import '../../util/request/mock_inter.dart';
 import '../types.dart';
@@ -154,5 +156,31 @@ MusicApi subsonicApi = (
       data.add(_playlist);
     }
     return data;
+  },
+  getAlbumList: ({
+    int pageNum = 1,
+    int? pageSize = 10,
+    AlbumListTypeEnum? type = AlbumListTypeEnum.recent,
+  }) async {
+    var offset = (pageNum - 1) * pageSize!;
+    var _response = await _dio.get('getAlbumList2', queryParameters: {
+      "size": pageSize,
+      "offset": offset,
+      'type': type!.value
+    });
+
+    Map _albumList = _response.data['albumList2'];
+    List _albums = _albumList['album'] ?? [];
+
+    List<Albums> _list = [];
+    if (_albums.isNotEmpty) {
+      for (var _element in _albums) {
+        String _url = getCoverArt(_element["id"]);
+        _element["coverUrl"] = _url;
+        Albums _album = Albums.fromJson(_element);
+        _list.add(_album);
+      }
+    }
+    return _list;
   },
 );

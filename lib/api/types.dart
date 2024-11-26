@@ -1,5 +1,8 @@
+import 'package:musify/models/myModel.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
+
+import '../enums/album_list_type_enum.dart';
 
 typedef MusicApi = ({
   /// 登录校验
@@ -14,4 +17,11 @@ typedef MusicApi = ({
 
   /// 查询播放列表
   Future<List<Playlist>> Function() getPlaylists,
+
+  ///  获取专辑列表
+  Future<List<Albums>> Function({
+    int pageNum,
+    int? pageSize,
+    AlbumListTypeEnum? type,
+  }) getAlbumList,
 });
