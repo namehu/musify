@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/enums/album_list_type_enum.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/play_list.dart';
@@ -19,20 +20,8 @@ Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
   var _subsonic = checkResponse(response);
   response.data = _subsonic;
 
-  print('------------requset---------');
-  var _query = response.requestOptions.queryParameters.entries.map((element) {
-    return (element.key + '=' + element.value.toString());
-  }).join('&');
-  var _fullUrl = response.requestOptions.baseUrl + response.requestOptions.path;
-  if (_query.isNotEmpty) _fullUrl += '?' + _query;
-  print(_fullUrl);
-  if (response.requestOptions.data != null) {
-    print(jsonEncode(response.requestOptions.data));
-  }
-  print(jsonEncode(response.data));
-
-  print('------------requset---------');
-
+  // 打印接口输出
+  logResponse(response);
   return handler.next(response);
 };
 

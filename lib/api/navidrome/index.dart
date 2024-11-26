@@ -40,18 +40,8 @@ Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
     (Response response, ResponseInterceptorHandler handler) {
   // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
   response.data = checkResponse(response);
-
-  print('------------requset---------');
-  var _query = response.requestOptions.queryParameters.entries.map((element) {
-    return (element.key + '=' + element.value.toString());
-  }).join('&');
-  var _fullUrl = response.requestOptions.baseUrl + response.requestOptions.path;
-  if (_query.isNotEmpty) _fullUrl += '?' + _query;
-  print(_fullUrl);
-  if (response.requestOptions.data != null) {
-    print(jsonEncode(response.requestOptions.data));
-  }
-  print('------------requset---------');
+// 打印接口输出
+  logResponse(response);
 
   return handler.next(response);
 };

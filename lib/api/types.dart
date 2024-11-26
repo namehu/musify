@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 
+import '../constant.dart';
 import '../enums/album_list_type_enum.dart';
 
 typedef MusicApi = ({
@@ -25,3 +29,23 @@ typedef MusicApi = ({
     AlbumListTypeEnum? type,
   }) getAlbumList,
 });
+
+logResponse(Response response) {
+  // 打印接口输出
+  String logOutPut = '[request] ' +
+      response.requestOptions.baseUrl +
+      response.requestOptions.path;
+
+  var _query = response.requestOptions.queryParameters.entries.map((element) {
+    return (element.key + '=' + element.value.toString());
+  }).join('&');
+  if (_query.isNotEmpty) logOutPut += '?' + _query;
+
+  if (response.requestOptions.data != null) {
+    logOutPut += '\n\n[data] ' + jsonEncode(response.requestOptions.data);
+  }
+
+  logOutPut += '\n\n[response] ' + jsonEncode(response.data);
+
+  logger.i(logOutPut);
+}

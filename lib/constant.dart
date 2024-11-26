@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// app名称
@@ -16,3 +17,5 @@ GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 /// 全局唯一存储实例
 late SharedPreferences sharedPreferences;
+
+late Logger logger;

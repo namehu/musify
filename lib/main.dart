@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:logger/logger.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
@@ -25,6 +26,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   sharedPreferences = await SharedPreferences.getInstance();
+
+  logger = Logger(
+    printer: PrettyPrinter(
+      methodCount: 0,
+    ), // Use the PrettyPrinter to format and print log
+  );
 
   if (Platform.isWindows) {
     sqfliteFfiInit();
