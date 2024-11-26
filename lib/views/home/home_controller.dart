@@ -9,7 +9,6 @@ import 'package:musify/util/mycss.dart';
 
 class HomeController extends GetxController {
   final serverService = Get.find<ServerService>();
-
   final languageService = Get.find<LanguageService>();
 
   RxList<Playlist> playList = <Playlist>[].obs;

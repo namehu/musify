@@ -107,12 +107,12 @@ class HomeTabView extends StatelessWidget {
               controller: _searchController,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
-                // label: Text(''),
-                hintText: S.current.pleaseInput + S.current.search,
-                hintStyle: TextStyle(color: ThemeService.color.textSecondColor),
+                hintText: S.current.search,
+                hintStyle:
+                    TextStyle(color: ThemeService.color.textDisabledColor),
                 prefix: Icon(Icons.search),
                 filled: true,
-                fillColor: ThemeService.color.dividerColor,
+                fillColor: ThemeService.color.textDisabledColor,
                 contentPadding: EdgeInsets.all(0),
                 enabledBorder: OutlineInputBorder(
                   borderSide:
@@ -129,8 +129,9 @@ class HomeTabView extends StatelessWidget {
                   ),
                 ),
               ),
-              onTap: () {},
-              onSubmitted: (val) {},
+              onTap: () {
+                Get.toNamed(Routes.SEARCH);
+              },
             ),
           ),
         )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/views/home/widgets/home_tab_view.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
@@ -8,8 +9,6 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
 import '../../models/notifierValue.dart';
 import '../../util/mycss.dart';
-import '../../layout/left_drawer.dart';
-import 'widgets/app_bar.dart';
 import 'widgets/indexScreen.dart';
 
 class HomeViewBinding implements Bindings {
@@ -22,41 +21,6 @@ class HomeViewBinding implements Bindings {
 class HomeView extends GetResponsiveView<HomeController> {
   final serverService = Get.find<ServerService>();
   final player = AudioPlayerService.player;
-
-  @override
-  Widget phone() {
-    final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
-    return DefaultTabController(
-      initialIndex: 1,
-      length: 2,
-      child: Scaffold(
-        key: myLeftStateKey,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 200,
-                child: TabBar(
-                  dividerHeight: 0,
-                  labelPadding: EdgeInsets.only(bottom: 5),
-                  unselectedLabelColor: gray1,
-                  tabs: [
-                    Icon(Icons.search),
-                    Icon(Icons.music_note),
-                  ],
-                ),
-              )
-            ],
-          ),
-          actions: [SizedBox(width: 56)],
-        ),
-        drawer: LeftDrawer(),
-        body: _buildTabView(),
-      ),
-    );
-  }
 
   @override
   Widget desktop() {
@@ -86,6 +50,52 @@ class HomeView extends GetResponsiveView<HomeController> {
     );
   }
 
+  @override
+  Widget phone() {
+    List<Widget> tabs = [
+      Icon(Icons.search),
+      Icon(Icons.music_note),
+    ];
+    return DefaultTabController(
+      initialIndex: 1,
+      length: tabs.length,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          leading: Container(width: 56),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 150,
+                height: appBarHeight,
+                child: TabBar(
+                  dividerHeight: 0,
+                  labelPadding: EdgeInsets.only(bottom: 5),
+                  unselectedLabelColor: gray1,
+                  tabs: tabs,
+                ),
+              )
+            ],
+          ),
+          actions: [
+            Container(
+              width: 56,
+              child: IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.SETTING);
+                },
+                icon: Icon(Icons.settings),
+              ),
+            )
+          ],
+        ),
+        // drawer: LeftDrawer(),
+        body: _buildTabView(),
+      ),
+    );
+  }
+
   _buildTabView() {
     return OrientationBuilder(
       builder: (context, orientation) {
@@ -104,22 +114,8 @@ class HomeView extends GetResponsiveView<HomeController> {
           }
         }
         return TabBarView(children: [
-          KeepAliveWrapper(
-            child: Container(
-              child: Obx(
-                () {
-                  var isNotEmpty =
-                      serverService.serverInfo.value.baseurl.isNotEmpty;
-                  return isNotEmpty
-                      ? Container(child: IndexScreen())
-                      : Container();
-                },
-              ),
-            ),
-          ),
-          KeepAliveWrapper(
-            child: HomeTabView(controller: controller),
-          ),
+          KeepAliveWrapper(child: IndexScreen()),
+          KeepAliveWrapper(child: HomeTabView(controller: controller)),
         ]);
       },
     );
