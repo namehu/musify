@@ -17,8 +17,6 @@ class SongListController extends GetxController {
     pagingController.addPageRequestListener((pageKey) {
       _getSongs(pageKey);
     });
-
-    _getSongs(0);
   }
 
   @override

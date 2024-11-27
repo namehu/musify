@@ -26,12 +26,11 @@ class MText extends StatelessWidget {
 
   TextStyle get _textStyle {
     var _style = style ?? TextStyle();
-    var _color = _style.color ??
-        (type == MTextTypeEnum.primary
-            ? null
-            : ThemeService.color.textSecondColor);
+    var _color = type == MTextTypeEnum.primary
+        ? null
+        : ThemeService.color.textSecondColor;
 
-    _style = _style.copyWith(color: _color);
+    _style = _style.copyWith(color: _style.color ?? _color);
     return _style;
   }
 

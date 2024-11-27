@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
-import 'package:musify/api/subsonic/index.dart' hide getServerInfo;
+import 'package:musify/api/subsonic/index.dart';
 import 'package:musify/models/navidrome/nd_song.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';

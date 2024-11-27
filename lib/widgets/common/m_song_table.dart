@@ -8,6 +8,7 @@ import '../../models/songs.dart';
 import '../../util/mycss.dart';
 import '../../util/util.dart';
 import '../m_table_list.dart';
+import '../m_text.dart';
 
 class MSongTableHead extends StatelessWidget {
   const MSongTableHead({super.key});
@@ -37,6 +38,9 @@ class MSongTableRow extends StatelessWidget {
   final int index;
   final void Function()? onTap;
 
+  final double _coverSize = 48;
+  final double contentPadding = StyleSize.spaceSmall;
+
   MSongTableRow({
     super.key,
     required this.song,
@@ -58,36 +62,44 @@ class MSongTableRow extends StatelessWidget {
           data: [
             MColumn(
               flex: 1,
-              child: Container(
-                child: Row(
-                  children: [
-                    MCover(
-                      size: 48,
-                      url: song.coverUrl,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: StyleSize.spaceSmall,
-                        vertical: StyleSize.spaceSmall + 2,
+              child: LayoutBuilder(builder: (ctx, constraints) {
+                var _maxWidth =
+                    constraints.maxWidth - _coverSize - contentPadding * 2 - 5;
+                return Container(
+                  child: Row(
+                    children: [
+                      MCover(
+                        size: _coverSize,
+                        url: song.coverUrl,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(song.title),
-                          Text(
-                            song.artist,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: ThemeService.color.textSecondColor,
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: contentPadding,
+                          vertical: StyleSize.spaceSmall + 2,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              constraints: BoxConstraints(maxWidth: _maxWidth),
+                              child: MText(text: song.title, maxLines: 1),
                             ),
-                          ),
-                        ],
+                            MText(
+                              text: song.artist,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: ThemeService.color.textSecondColor,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
+                    ],
+                  ),
+                );
+              }),
             ),
             MColumn(
               text: song.album,

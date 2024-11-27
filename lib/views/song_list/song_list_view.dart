@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/util/mycss.dart';
+import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/widgets/common/m_media_bar.dart';
+import 'package:musify/widgets/common/m_song_table.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../styles/size.dart';
 import 'song_list_controller.dart';
@@ -19,7 +21,16 @@ class SongListView extends GetView<SongListController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.current.allSong)),
+      appBar: MMediaBar(
+        title: Text(S.current.allSong),
+        onPlayClick: () {
+          var list = controller.pagingController.itemList ?? [];
+          if (list.length > 500) {
+            list = list.sublist(0, 500);
+          }
+          Get.find<AudioPlayerService>().palySongList(list);
+        },
+      ),
       body: Column(
         children: [
           Container(
@@ -27,6 +38,7 @@ class SongListView extends GetView<SongListController> {
             padding: EdgeInsets.symmetric(horizontal: StyleSize.space),
             child: Text('111'),
           ),
+          MSongTableHead(),
           Expanded(
             child: CustomScrollView(
               slivers: [
@@ -36,7 +48,7 @@ class SongListView extends GetView<SongListController> {
                 PagedSliverList<int, Songs>(
                   pagingController: controller.pagingController,
                   builderDelegate: PagedChildBuilderDelegate(
-                    itemBuilder: (context, item, index) => _buildItem(item),
+                    itemBuilder: (context, item, index) => _buildItem(index),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -53,18 +65,16 @@ class SongListView extends GetView<SongListController> {
     );
   }
 
-  Widget _buildItem(Songs data) {
-    return InkWell(
+  _buildItem(int index) {
+    ;
+    Songs _song = controller.pagingController.itemList![index];
+    return MSongTableRow(
+      song: _song,
+      index: index,
       onTap: () {
-        // Get.toNamed(Routes.ALBUM, arguments: {'id': data.id});
+        Get.find<AudioPlayerService>()
+            .palySongList(controller.songs, index: index);
       },
-      child: Row(
-        children: [
-          Text(data.title),
-          SizedBox(height: 5),
-          Text(data.artist),
-        ],
-      ),
     );
   }
 }

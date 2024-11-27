@@ -13,7 +13,7 @@ class MColumn {
   MColumn({
     this.text = '',
     this.child,
-    this.width = 100,
+    this.width = 80,
     this.flex,
     this.show = true,
   });
@@ -50,16 +50,20 @@ class MTableList extends StatelessWidget {
 
       if (item.show!) {
         if (item.flex != null) {
-          children.add(Expanded(
-            flex: item.flex!,
-            child: _child,
-          ));
+          children.add(
+            Expanded(
+              flex: item.flex!,
+              child: _child,
+            ),
+          );
         } else {
-          children.add(Container(
-            alignment: Alignment.centerLeft,
-            width: item.width!,
-            child: _child,
-          ));
+          children.add(
+            Container(
+              alignment: Alignment.centerLeft,
+              width: item.width!,
+              child: _child,
+            ),
+          );
         }
       }
     }

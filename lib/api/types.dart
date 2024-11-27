@@ -55,7 +55,7 @@ logResponse(Response response) {
     logOutPut += '\n\n[data] ' + jsonEncode(response.requestOptions.data);
   }
 
-  logOutPut += '\n\n[response] ' + jsonEncode(response.data);
+  // logOutPut += '\n\n[response] ' + jsonEncode(response.data);
 
-  logger.d(logOutPut);
+  logger.i(logOutPut);
 }

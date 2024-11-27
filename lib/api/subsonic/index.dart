@@ -1,25 +1,26 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:musify/enums/album_list_type_enum.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/util/httpClient.dart';
+import 'package:musify/services/server_service.dart';
 import 'package:musify/util/util.dart';
 import '../../models/myModel.dart';
 import '../../util/mycss.dart';
 import '../../util/request/mock_inter.dart';
 import '../types.dart';
+import 'utils.dart';
 
 Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
     (Response response, ResponseInterceptorHandler handler) {
   // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-  var _subsonic = _checkResponse(response);
-  response.data = _subsonic;
+  response.data = _checkResponse(response);
 
   // 打印接口输出
   logResponse(response);
+
   return handler.next(response);
 };
 
@@ -27,20 +28,13 @@ Interceptor subsonicInterceptor = InterceptorsWrapper(
   onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
     // 如果你想完成请求并返回一些自定义数据，你可以使用 `handler.resolve(response)`。
     // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-    options.baseUrl = serversInfo.value.baseurl;
+    var serverService = Get.find<ServerService>();
+    options.baseUrl = serverService.serverInfo.value.baseurl;
     // 添加rest api路径
     options.path = '/rest/' + options.path;
 
-    Map<String, dynamic> _query = {
-      'v': '0.0.1',
-      'c': 'musify',
-      'f': 'json',
-      'u': serversInfo.value.username,
-      's': serversInfo.value.salt,
-      't': serversInfo.value.hash
-    };
-
     options.queryParameters = options.queryParameters ?? {};
+    var _query = joniAuthQuery();
     options.queryParameters.addAll(_query);
 
     return handler.next(options);
@@ -69,17 +63,6 @@ _checkResponse(Response<dynamic> response) {
     }
   }
   return null;
-}
-
-getServerInfo(String path) {
-  String _request = serversInfo.value.baseurl +
-      '/rest/$path?v=0.0.1&c=musify&f=json&u=' +
-      serversInfo.value.username +
-      '&s=' +
-      serversInfo.value.salt +
-      '&t=' +
-      serversInfo.value.hash;
-  return _request;
 }
 
 MusicApi subsonicApi = (
@@ -129,10 +112,9 @@ Future<Songs?> _getSong(String id) async {
 
   Map<String, dynamic> _song = _response.data['song'];
 
-  String _stream = getServerInfo("stream");
-  String _url = getCoverArt(_song["id"], size: 800);
-  _song["stream"] = _stream + '&id=' + _song["id"];
-  _song["coverUrl"] = _url;
+  String _stream = joinServerPath("stream", {'id': _song["id"]});
+  _song["stream"] = _stream;
+  _song["coverUrl"] = getCoverArt(_song["id"], size: 800);
 
   Songs songs = Songs.fromJson(_song);
   return songs;
@@ -145,8 +127,7 @@ Future<List<Playlist>> _getPlaylists() async {
   List _playlist = _playlists['playlist'];
 
   for (var element in _playlist) {
-    String _url = getCoverArt(element['id']);
-    element["imageUrl"] = _url;
+    element["imageUrl"] = getCoverArt(element['id']);
     Playlist _playlist = Playlist.fromJson(element);
     data.add(_playlist);
   }
@@ -160,18 +141,16 @@ Future<Playlist?> _getPlaylist(String id) async {
   var _playlisttem = _response.data['playlist'];
 
   if (_playlisttem != null) {
-    String _url = await getCoverArt(_playlisttem['id']);
-    _playlisttem["imageUrl"] = _url;
+    _playlisttem["imageUrl"] = getCoverArt(_playlisttem['id']);
     _playList = Playlist.fromJson(_playlisttem);
 
     List<Songs> _temsong = [];
 
     if (_playlisttem["entry"] != null && _playlisttem["entry"].length > 0) {
       for (var _element in _playlisttem["entry"]) {
-        String _stream = getServerInfo("stream");
-        String _url = getCoverArt(_element["id"]);
-        _element["stream"] = _stream + '&id=' + _element["id"];
-        _element["coverUrl"] = _url;
+        String _stream = joinServerPath("stream", {"id": _element["id"]});
+        _element["stream"] = _stream;
+        _element["coverUrl"] = getCoverArt(_element["id"]);
         Songs _song = Songs.fromJson(_element);
         _temsong.add(_song);
       }
@@ -201,8 +180,7 @@ Future<List<Albums>> _getAlbumList({
   List<Albums> _list = [];
   if (_albums.isNotEmpty) {
     for (var _element in _albums) {
-      String _url = getCoverArt(_element["id"]);
-      _element["coverUrl"] = _url;
+      _element["coverUrl"] = getCoverArt(_element["id"]);
       Albums _album = Albums.fromJson(_element);
       _list.add(_album);
     }
@@ -233,6 +211,7 @@ Future<List<Songs>> _getSongs({
   if (response.data != null && response.data['searchResult3'] != null) {
     List<dynamic> _songs = response.data['searchResult3']['song'] ?? [];
     _songs.forEach((el) {
+      el["coverUrl"] = getCoverArt(el["id"]);
       _list.add(Songs.fromJson(el));
     });
   }
