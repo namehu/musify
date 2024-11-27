@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:musify/api/subsonic/index.dart' hide getServerInfo;
@@ -161,6 +160,7 @@ MusicApi navidromeApi = (
     return null;
   },
   getPlaylists: subsonicApi.getPlaylists,
+  getPlaylist: subsonicApi.getPlaylist,
   getAlbumList: subsonicApi.getAlbumList,
   getSongs: subsonicApi.getSongs,
 );

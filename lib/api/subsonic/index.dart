@@ -118,6 +118,7 @@ MusicApi subsonicApi = (
   },
   getSong: _getSong,
   getPlaylists: _getPlaylists,
+  getPlaylist: _getPlaylist,
   getAlbumList: _getAlbumList,
   getSongs: _getSongs,
 );
@@ -152,6 +153,36 @@ Future<List<Playlist>> _getPlaylists() async {
   return data;
 }
 
+Future<Playlist?> _getPlaylist(String id) async {
+  Playlist? _playList = null;
+
+  var _response = await _dio.get('getPlaylist', queryParameters: {"id": id});
+  var _playlisttem = _response.data['playlist'];
+
+  if (_playlisttem != null) {
+    String _url = await getCoverArt(_playlisttem['id']);
+    _playlisttem["imageUrl"] = _url;
+    _playList = Playlist.fromJson(_playlisttem);
+
+    List<Songs> _temsong = [];
+
+    if (_playlisttem["entry"] != null && _playlisttem["entry"].length > 0) {
+      for (var _element in _playlisttem["entry"]) {
+        String _stream = getServerInfo("stream");
+        String _url = getCoverArt(_element["id"]);
+        _element["stream"] = _stream + '&id=' + _element["id"];
+        _element["coverUrl"] = _url;
+        Songs _song = Songs.fromJson(_element);
+        _temsong.add(_song);
+      }
+    }
+
+    _playList.songs = _temsong;
+  }
+
+  return _playList;
+}
+
 Future<List<Albums>> _getAlbumList({
   int pageNum = 1,
   int? pageSize = 10,
@@ -179,7 +210,7 @@ Future<List<Albums>> _getAlbumList({
   return _list;
 }
 
-Future<dynamic> _getSongs({
+Future<List<Songs>> _getSongs({
   int pageNum = 1,
   int? pageSize = 50,
   String? query = '',

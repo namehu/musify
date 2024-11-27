@@ -139,7 +139,7 @@ class SearchView extends GetView<SearchViewController> {
       index: index,
       onTap: () {
         controller.audioPlayerService
-            .palySongList(_song, index, controller.songs);
+            .palySongList(controller.songs, index: index);
       },
     );
   }

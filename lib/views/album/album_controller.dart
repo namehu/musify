@@ -90,6 +90,6 @@ class AlbumController extends GetxController {
 
   /// 点击歌曲播放
   handleSongClick(Songs _song, int index) {
-    audioPlayerService.palySongList(_song, index, songs);
+    audioPlayerService.palySongList(songs, index: index);
   }
 }

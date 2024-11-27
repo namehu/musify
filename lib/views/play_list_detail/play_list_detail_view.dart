@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
 import 'package:musify/widgets/common/m_list_head.dart';
 import 'package:musify/widgets/m_cover.dart';
-import 'package:musify/widgets/m_table_list.dart';
 import 'package:musify/widgets/m_text.dart';
 import '../../generated/l10n.dart';
+import '../../widgets/common/m_media_bar.dart';
 import '../../widgets/common/m_song_table.dart';
 import 'play_list_detail_controller.dart';
 
@@ -24,39 +23,52 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Obx(() => Text(controller.albumsname.value))),
+    return Obx(
+      () => Scaffold(
+        appBar: MMediaBar(
+          title: Text(controller.name.value),
+          count: controller.songsNum.value,
+          onPlayClick: () {
+            controller.audioPlayerService
+                .palySongList(controller.songslist, index: 0);
+          },
+        ),
         body: SafeArea(
-            child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(child: _buildHead()),
-            SliverToBoxAdapter(child: MSongTableHead()),
-            Obx(
-              () => controller.songslist.isEmpty
-                  ? SliverToBoxAdapter(
-                      child: Text(''),
-                    )
-                  : SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => _buildTableItem(index),
-                        childCount: controller.songslist.length,
-                      ),
-                    ),
+            child: Column(
+          children: [
+            _buildHead(),
+            MSongTableHead(),
+            Expanded(
+              flex: 1,
+              child: CustomScrollView(
+                slivers: [
+                  Obx(
+                    () => controller.songslist.isEmpty
+                        ? SliverToBoxAdapter(
+                            child: Text(''),
+                          )
+                        : SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => _buildItem(index),
+                              childCount: controller.songslist.length,
+                            ),
+                          ),
+                  )
+                ],
+              ),
             ),
           ],
-        )));
+        )),
+      ),
+    );
   }
 
   _buildHead() {
     return Obx(
       () => MListHead(
-        cover: MCover(url: controller.arturl.value),
-        title: controller.albumsname.value,
+        cover: MCover(url: controller.coverUrl.value),
+        title: controller.name.value,
         subWidgets: [
-          MText(
-            text: S.current.song + ": " + controller.songsnum.value.toString(),
-            maxLines: 1,
-          ),
           MText(
             text: S.current.duration +
                 ": " +
@@ -74,52 +86,14 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
     );
   }
 
-  _buildTableItem(int index) {
+  _buildItem(int index) {
     Songs _song = controller.songslist[index];
-    return screen == ScreenType.Phone
-        ? Dismissible(
-            key: Key(_song.id),
-            confirmDismiss: (direction) {
-              bool _result = false;
-              if (direction == DismissDirection.endToStart) {
-                // 从右向左  也就是删除
-                _result = true;
-              } else if (direction == DismissDirection.startToEnd) {
-                //从左向右
-                _result = false;
-              }
-              return Future<bool>.value(_result);
-            },
-            onDismissed: (direction) async {
-              if (direction == DismissDirection.endToStart) {
-                // await delSongfromPlaylist(activeID.value, index.toString());
-
-                // _getSongs(activeID.value);
-                // MyToast.show(
-                //     context: context,
-                //     message: S.current.delete + S.current.success);
-              } else if (direction == DismissDirection.startToEnd) {
-                //从左向右
-              }
-            },
-            background: Container(
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(right: 24),
-              color: Colors.red,
-              child: Icon(Icons.delete, color: Colors.white),
-            ),
-            child: _buildItem(_song, index),
-          )
-        : _buildItem(_song, index);
-  }
-
-  _buildItem(Songs _song, int index) {
     return MSongTableRow(
       song: _song,
       index: index,
       onTap: () {
         controller.audioPlayerService
-            .palySongList(_song, index, controller.songslist);
+            .palySongList(controller.songslist, index: index);
       },
     );
   }

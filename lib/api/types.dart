@@ -28,7 +28,12 @@ typedef MusicApi = ({
     int? pageSize,
     AlbumListTypeEnum? type,
   }) getAlbumList,
-  Future<dynamic> Function({
+
+  /// 获取专辑详情
+  Future<Playlist?> Function(String id) getPlaylist,
+
+  /// 查询歌曲列表
+  Future<List<Songs>> Function({
     int pageNum,
     int? pageSize,
     String? query,

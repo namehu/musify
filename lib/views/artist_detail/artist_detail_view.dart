@@ -140,7 +140,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
       () => MListHead(
         cover: MCover(
           url: controller.arturl.value,
-          radius: 4,
+          shape: MCoverShapeEnum.squareRound,
         ),
         title: controller.artilstname.value,
         subWidgets: [
@@ -201,7 +201,10 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
     var item = controller.topSongs[index];
     return InkWell(
       onTap: () {
-        audioPlayerService.palySongList(item, index, controller.topSongs.value);
+        audioPlayerService.palySongList(
+          controller.topSongs.value,
+          index: index,
+        );
       },
       child: MTableList(
         data: [

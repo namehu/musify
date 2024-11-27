@@ -13,4 +13,6 @@ enum TabTypeEnmu {
   genres,
   // 设置
   setting,
+  // 全部歌曲
+  allSong,
 }

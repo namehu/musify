@@ -12,6 +12,7 @@ class StyleSize {
 
   static const double listItemSmallHeight = 32; // 列表项高度
   static const double listItemHeight = 50; // 列表项高度
+  static const double listItemLargeHeight = 68; // 列表项高度
 }
 
 class StyleProperty {

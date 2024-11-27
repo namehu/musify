@@ -176,20 +176,6 @@ delSongfromPlaylist(String playlistId, String? index) async {
   }
 }
 
-getPlaylistbyId(String _id) async {
-  String _sql = await getServerInfo("getPlaylist");
-  try {
-    var _response = await Dio().get(_sql + "&id=" + _id);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    Map _playlist = _subsonic['playlist'];
-    return _playlist;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 @Deprecated('plaese use Api request')
 getPlaylists() async {
   String _sql = await getServerInfo("getPlaylists");

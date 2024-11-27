@@ -137,12 +137,27 @@ class AudioPlayerService extends GetxService {
   }
 
   /// 将歌曲列表添加进播放列表并播放指定歌曲歌单
-  /// [_song] 歌曲对象
+  /// [song] 歌曲对象
   /// [index] 歌曲索引
   /// [songs] 歌曲列表
-  palySongList(Songs _song, int index, List<Songs> songs) {
+  palySongList(
+    List<Songs> songs, {
+    Songs? song,
+    int? index = 0,
+  }) {
+    int _index = index!;
+    if (song != null) {
+      _index = songs.indexWhere((element) => element.id == song.id);
+
+      if (_index < 0) {
+        return MToast.show(S.current.noContent);
+      }
+    }
+
+    Songs _song = song ?? songs[_index];
+
     if (listEquals(playSongs.value, songs)) {
-      player.seek(Duration.zero, index: index);
+      player.seek(Duration.zero, index: _index);
     } else {
       activeSongValue.value = _song.id;
       playSongs.value = songs; //歌曲所在专辑歌曲List

@@ -61,8 +61,10 @@ class HomeTabView extends StatelessWidget {
                         // margin: EdgeInsets.symmetric(vertical: 5),
                         child: ListTile(
                           dense: true,
-                          onTap: () => Get.toNamed(Routes.PLAY_LIST_DETAIL,
-                              arguments: {'id': _item.id}),
+                          onTap: () => Get.toNamed(
+                            Routes.PLAY_LIST_DETAIL,
+                            arguments: {'id': _item.id},
+                          ),
                           contentPadding:
                               EdgeInsets.only(left: 0.0, right: 0.0),
                           leading: MCover(url: _item.imageUrl),

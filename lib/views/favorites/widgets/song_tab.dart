@@ -66,7 +66,7 @@ class SongTab extends StatelessWidget {
   _buildContent(Songs data, int index) {
     return InkWell(
       onTap: () {
-        audioPlayerService.palySongList(data, index, songs);
+        audioPlayerService.palySongList(songs, index: index);
       },
       child: MTableList(
         data: [

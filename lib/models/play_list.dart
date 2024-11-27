@@ -1,3 +1,5 @@
+import 'package:musify/models/songs.dart';
+
 class Playlist {
   late String id;
   late String name;
@@ -8,6 +10,7 @@ class Playlist {
   late String created;
   late String changed;
   late String imageUrl;
+  List<Songs>? songs;
 
   Playlist({
     required this.id,
@@ -19,6 +22,7 @@ class Playlist {
     required this.created,
     required this.changed,
     required this.imageUrl,
+    this.songs = const <Songs>[],
   });
 
   Playlist.fromJson(Map<String, dynamic> json) {
@@ -31,6 +35,7 @@ class Playlist {
     created = json['created'];
     changed = json['changed'];
     imageUrl = json['imageUrl'];
+    songs = <Songs>[];
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +49,7 @@ class Playlist {
     _data['created'] = this.created;
     _data['changed'] = this.changed;
     _data['imageUrl'] = this.imageUrl;
+    _data['songs'] = this.songs!.toList();
 
     return _data;
   }

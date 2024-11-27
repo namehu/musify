@@ -161,7 +161,10 @@ class PlayView extends GetResponsiveView<PlayController> {
             Container(
               width: 320,
               height: 320,
-              child: MCover(url: value.coverUrl, radius: 4),
+              child: MCover(
+                url: value.coverUrl,
+                shape: MCoverShapeEnum.squareRound,
+              ),
             ),
             Container(
               margin: EdgeInsets.only(

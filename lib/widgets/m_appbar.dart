@@ -23,6 +23,7 @@ class MAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: title,
+      titleSpacing: 0,
       actions: actions,
     );
   }

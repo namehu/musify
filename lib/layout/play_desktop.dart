@@ -93,7 +93,7 @@ class _PlayDesktopState extends State<PlayDesktop> {
               padding: EdgeInsets.all(StyleSize.spaceLarge),
               child: Column(
                 children: [
-                  Expanded(child: MCover(url: value.coverUrl, round: true)),
+                  Expanded(child: MCover(url: value.coverUrl)),
                   Container(
                     margin: EdgeInsets.only(
                         top: StyleSize.spaceLarge,

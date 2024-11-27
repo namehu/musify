@@ -50,10 +50,7 @@ class AlbumView extends GetView<AlbumController> {
   Widget _buildTopWidget() {
     return MListHead(
       cover: Obx(
-        () => MCover(
-          url: controller.album.coverUrl,
-          radius: 4,
-        ),
+        () => MCover(url: controller.album.coverUrl),
       ),
       title: controller.album.title,
       subWidgets: [
