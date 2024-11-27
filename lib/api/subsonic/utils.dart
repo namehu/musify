@@ -1,8 +1,15 @@
 import 'package:get/get.dart';
 import 'package:musify/services/server_service.dart';
 
-String getCoverArt(String _id, {int size = 350}) {
-  return joinServerPath('getCoverArt', {'size': size, 'id': _id});
+/// 获取封面url
+String getCoverArt(String id, {int size = 350}) {
+  return joinServerPath('getCoverArt', {'size': size, 'id': id});
+}
+
+/// 获取音乐播放流地址
+/// id: 音乐id
+String getSongStream(String id) {
+  return joinServerPath('stream', {'id': id});
 }
 
 String joinServerPath(String path, [Map<String, dynamic>? query]) {

@@ -66,14 +66,12 @@ class SongListView extends GetView<SongListController> {
   }
 
   _buildItem(int index) {
-    ;
-    Songs _song = controller.pagingController.itemList![index];
+    var _songs = controller.pagingController.itemList!;
     return MSongTableRow(
-      song: _song,
+      song: _songs[index],
       index: index,
       onTap: () {
-        Get.find<AudioPlayerService>()
-            .palySongList(controller.songs, index: index);
+        Get.find<AudioPlayerService>().palySongList(_songs, index: index);
       },
     );
   }

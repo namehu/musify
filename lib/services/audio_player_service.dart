@@ -160,7 +160,8 @@ class AudioPlayerService extends GetxService {
       player.seek(Duration.zero, index: _index);
     } else {
       activeSongValue.value = _song.id;
-      playSongs.value = songs; //歌曲所在专辑歌曲List
+      currentSongIndex(_index);
+      playSongs(songs); //歌曲所在专辑歌曲List
     }
   }
 

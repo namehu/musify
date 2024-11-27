@@ -112,8 +112,7 @@ Future<Songs?> _getSong(String id) async {
 
   Map<String, dynamic> _song = _response.data['song'];
 
-  String _stream = joinServerPath("stream", {'id': _song["id"]});
-  _song["stream"] = _stream;
+  _song["stream"] = getSongStream(_song["id"]);
   _song["coverUrl"] = getCoverArt(_song["id"], size: 800);
 
   Songs songs = Songs.fromJson(_song);
@@ -148,8 +147,7 @@ Future<Playlist?> _getPlaylist(String id) async {
 
     if (_playlisttem["entry"] != null && _playlisttem["entry"].length > 0) {
       for (var _element in _playlisttem["entry"]) {
-        String _stream = joinServerPath("stream", {"id": _element["id"]});
-        _element["stream"] = _stream;
+        _element["stream"] = getSongStream(_element["id"]);
         _element["coverUrl"] = getCoverArt(_element["id"]);
         Songs _song = Songs.fromJson(_element);
         _temsong.add(_song);
@@ -211,6 +209,7 @@ Future<List<Songs>> _getSongs({
   if (response.data != null && response.data['searchResult3'] != null) {
     List<dynamic> _songs = response.data['searchResult3']['song'] ?? [];
     _songs.forEach((el) {
+      el["stream"] = getSongStream(el["id"]);
       el["coverUrl"] = getCoverArt(el["id"]);
       _list.add(Songs.fromJson(el));
     });
