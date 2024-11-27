@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/api/index.dart';
-import 'package:musify/constant.dart';
 import 'package:musify/enums/tab_type_enmu.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/routes/pages.dart';
@@ -9,6 +8,8 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/global_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
+import 'package:musify/widgets/dialogs/play_list_dialog.dart';
+import 'package:musify/widgets/m_tag.dart';
 import 'package:musify/widgets/m_title.dart';
 import '../generated/l10n.dart';
 import '../util/mycss.dart';
@@ -79,8 +80,7 @@ class LeftDrawerState extends State<LeftDrawer> {
                     children: <Widget>[],
                   ),
                 ),
-                Expanded(
-                  flex: 1,
+                Container(
                   child: Obx(() {
                     var _value = GloabalService.tabType;
                     return Column(
@@ -146,7 +146,7 @@ class LeftDrawerState extends State<LeftDrawer> {
                   }),
                 ),
                 Divider(
-                  height: 1,
+                  height: StyleSize.spaceLarge,
                   color: ThemeService.color.dividerColor,
                 ),
                 Expanded(
@@ -162,7 +162,6 @@ class LeftDrawerState extends State<LeftDrawer> {
   _buidSettingRow() {
     return Container(
       height: appBarHeight,
-      // margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -190,21 +189,52 @@ class LeftDrawerState extends State<LeftDrawer> {
   }
 
   _buidPlayList() {
-    return Column(
-      children: [
-        MTitle(title: S.current.playlist),
-        Container(
-          height: 300,
-          child: ListView.builder(
-            itemBuilder: (ctx, index) {
-              var _data = palyList[index];
-              return PlayListItem(data: _data);
-            },
-            itemCount: palyList.length,
+    return LayoutBuilder(builder: (ctx, constraints) {
+      return Column(
+        children: [
+          Container(
+            height: 35,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(flex: 1, child: MTitle(title: S.current.playlist)),
+                MTag(
+                  child: Icon(
+                    Icons.add,
+                    size: 13,
+                  ),
+                  onTap: () {
+                    showPlayListDialog(
+                      title: '新增播放列表',
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: StyleSize.spaceSmall,
+                ),
+                MTag(
+                  child: Icon(
+                    Icons.list,
+                    size: 13,
+                  ),
+                )
+              ],
+            ),
           ),
-        )
-      ],
-    );
+          Container(
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight - 35),
+            child: ListView.builder(
+              itemBuilder: (ctx, index) {
+                var _data = palyList[index];
+                return PlayListItem(data: _data);
+              },
+              itemCount: palyList.length,
+            ),
+          )
+        ],
+      );
+    });
   }
 }
 

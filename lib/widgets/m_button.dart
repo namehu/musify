@@ -54,7 +54,9 @@ class MButton extends StatelessWidget {
         padding: padding,
         decoration: BoxDecoration(
           color: _color,
-          borderRadius: StyleProperty.borderRadius,
+          borderRadius: size == SizeEnum.samll
+              ? StyleProperty.smallBorderRadius
+              : StyleProperty.borderRadius,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

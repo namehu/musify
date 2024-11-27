@@ -4,6 +4,7 @@ class StyleSize {
   static const double headSize = 30;
   static const double titleSize = 20;
   static const double fontSize = 14;
+  static const double smallBorderRadius = 4;
   static const double borderRadius = 10;
 
   static const double spaceSmall = 10; // 默认间距
@@ -16,6 +17,10 @@ class StyleSize {
 }
 
 class StyleProperty {
+  static const smallBorderRadius = BorderRadius.all(
+    Radius.circular(StyleSize.smallBorderRadius),
+  );
+
   static const borderRadius = BorderRadius.all(
     Radius.circular(StyleSize.borderRadius),
   );
