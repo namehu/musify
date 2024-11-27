@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
-import 'package:musify/constant.dart';
 import 'package:musify/enums/album_list_type_enum.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/play_list.dart';
@@ -17,7 +15,7 @@ import '../types.dart';
 Function(Response<dynamic>, ResponseInterceptorHandler) onResponse =
     (Response response, ResponseInterceptorHandler handler) {
   // 如果你想终止请求并触发一个错误，你可以使用 `handler.reject(error)`。
-  var _subsonic = checkResponse(response);
+  var _subsonic = _checkResponse(response);
   response.data = _subsonic;
 
   // 打印接口输出
@@ -60,7 +58,7 @@ Dio _dio = Dio(BaseOptions(responseType: ResponseType.json))
   ..interceptors.add(subsonicInterceptor)
   ..interceptors.add(MyMockInterceptor());
 
-checkResponse(Response<dynamic> response) {
+_checkResponse(Response<dynamic> response) {
   if (response.statusCode == 200) {
     if (response.data['subsonic-response'] != null) {
       Map _subsonic = response.data['subsonic-response'];
@@ -96,7 +94,7 @@ MusicApi subsonicApi = (
             '&p=' +
             password,
       );
-      var _subsonic = checkResponse(_response);
+      var _subsonic = _checkResponse(_response);
       if (_subsonic != null) {
         final salt = generateRandomString();
         final _randomBytes = utf8.encode(password + salt);
@@ -118,58 +116,64 @@ MusicApi subsonicApi = (
     if (_response.data == null) return null;
     return _response.data['album'];
   },
-  getSong: (String id) async {
-    var _response = await _dio.get('getSong', queryParameters: {'id': id});
-    if (_response.data == null) return null;
-
-    Map<String, dynamic> _song = _response.data['song'];
-
-    String _stream = getServerInfo("stream");
-    String _url = getCoverArt(_song["id"], size: 800);
-    _song["stream"] = _stream + '&id=' + _song["id"];
-    _song["coverUrl"] = _url;
-
-    Songs songs = Songs.fromJson(_song);
-    return songs;
-  },
-  getPlaylists: () async {
-    var data = <Playlist>[];
-    var _response = await _dio.get('getPlaylists');
-    Map _playlists = _response.data['playlists'];
-    List _playlist = _playlists['playlist'];
-
-    for (var element in _playlist) {
-      String _url = getCoverArt(element['id']);
-      element["imageUrl"] = _url;
-      Playlist _playlist = Playlist.fromJson(element);
-      data.add(_playlist);
-    }
-    return data;
-  },
-  getAlbumList: ({
-    int pageNum = 1,
-    int? pageSize = 10,
-    AlbumListTypeEnum? type = AlbumListTypeEnum.recent,
-  }) async {
-    var offset = (pageNum - 1) * pageSize!;
-    var _response = await _dio.get('getAlbumList2', queryParameters: {
-      "size": pageSize,
-      "offset": offset,
-      'type': type!.value
-    });
-
-    Map _albumList = _response.data['albumList2'];
-    List _albums = _albumList['album'] ?? [];
-
-    List<Albums> _list = [];
-    if (_albums.isNotEmpty) {
-      for (var _element in _albums) {
-        String _url = getCoverArt(_element["id"]);
-        _element["coverUrl"] = _url;
-        Albums _album = Albums.fromJson(_element);
-        _list.add(_album);
-      }
-    }
-    return _list;
-  },
+  getSong: _getSong,
+  getPlaylists: _getPlaylists,
+  getAlbumList: _getAlbumList,
 );
+
+Future<Songs?> _getSong(String id) async {
+  var _response = await _dio.get('getSong', queryParameters: {'id': id});
+  if (_response.data == null) return null;
+
+  Map<String, dynamic> _song = _response.data['song'];
+
+  String _stream = getServerInfo("stream");
+  String _url = getCoverArt(_song["id"], size: 800);
+  _song["stream"] = _stream + '&id=' + _song["id"];
+  _song["coverUrl"] = _url;
+
+  Songs songs = Songs.fromJson(_song);
+  return songs;
+}
+
+Future<List<Playlist>> _getPlaylists() async {
+  var data = <Playlist>[];
+  var _response = await _dio.get('getPlaylists');
+  Map _playlists = _response.data['playlists'];
+  List _playlist = _playlists['playlist'];
+
+  for (var element in _playlist) {
+    String _url = getCoverArt(element['id']);
+    element["imageUrl"] = _url;
+    Playlist _playlist = Playlist.fromJson(element);
+    data.add(_playlist);
+  }
+  return data;
+}
+
+Future<List<Albums>> _getAlbumList({
+  int pageNum = 1,
+  int? pageSize = 10,
+  AlbumListTypeEnum? type = AlbumListTypeEnum.recent,
+}) async {
+  var offset = (pageNum - 1) * pageSize!;
+  var _response = await _dio.get('getAlbumList2', queryParameters: {
+    "size": pageSize,
+    "offset": offset,
+    'type': type!.value
+  });
+
+  Map _albumList = _response.data['albumList2'];
+  List _albums = _albumList['album'] ?? [];
+
+  List<Albums> _list = [];
+  if (_albums.isNotEmpty) {
+    for (var _element in _albums) {
+      String _url = getCoverArt(_element["id"]);
+      _element["coverUrl"] = _url;
+      Albums _album = Albums.fromJson(_element);
+      _list.add(_album);
+    }
+  }
+  return _list;
+}

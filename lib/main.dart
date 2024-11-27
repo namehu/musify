@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:logger/logger.dart';
 import 'package:musify/constant.dart';
+import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
 import 'package:musify/layout/left_drawer.dart';
@@ -103,6 +104,9 @@ class MyApp extends StatelessWidget {
           getPages: AppPages.pages,
           initialRoute: Routes.HOME,
           transitionDuration: isMobile ? null : Duration(milliseconds: 0),
+          routingCallback: (routing) {
+            toggleMusicBar(routing);
+          },
           builder: (context, child) {
             if (isMobile) {
               return child ?? Container();
