@@ -162,4 +162,5 @@ MusicApi navidromeApi = (
   },
   getPlaylists: subsonicApi.getPlaylists,
   getAlbumList: subsonicApi.getAlbumList,
+  getSongs: subsonicApi.getSongs,
 );

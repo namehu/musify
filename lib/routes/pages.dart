@@ -10,6 +10,7 @@ import 'package:musify/views/login/login_view.dart';
 import 'package:musify/views/play/play_view.dart';
 import 'package:musify/views/search/search_view.dart';
 import 'package:musify/views/setting/setting_view.dart';
+import 'package:musify/views/song_list/song_list_view.dart';
 import '../views/artist_detail/artist_detail_view.dart';
 import '../views/home/home_view.dart';
 import 'package:musify/views/play_list/play_list_view.dart';
@@ -23,7 +24,6 @@ abstract class AppPages {
       name: Routes.HOME,
       page: () => HomeView(),
       binding: HomeViewBinding(),
-      middlewares: [MusicBarMiddleware()],
     ),
     _loginPage,
     _changeServer,
@@ -38,25 +38,26 @@ abstract class AppPages {
       name: Routes.ARTISTS,
       page: () => ArtistsView(),
       binding: ArtistsViewBinding(),
-      middlewares: [MusicBarMiddleware()],
     ),
     GetPage(
       name: Routes.ARTIST_DETAIL,
       page: () => ArtistDetailView(),
       binding: ArtistDetailBinding(),
-      middlewares: [MusicBarMiddleware()],
     ),
     GetPage(
       name: Routes.GENRE,
       page: () => GenreView(),
       binding: GenreBinding(),
-      middlewares: [MusicBarMiddleware()],
     ),
     GetPage(
       name: Routes.SEARCH,
       page: () => SearchView(),
       binding: SearchViewBinding(),
-      middlewares: [MusicBarMiddleware()],
+    ),
+    GetPage(
+      name: Routes.SONG_LIST,
+      page: () => SongListView(),
+      binding: SongListBinding(),
     ),
   ];
 

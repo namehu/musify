@@ -28,6 +28,11 @@ typedef MusicApi = ({
     int? pageSize,
     AlbumListTypeEnum? type,
   }) getAlbumList,
+  Future<dynamic> Function({
+    int pageNum,
+    int? pageSize,
+    String? query,
+  }) getSongs,
 });
 
 logResponse(Response response) {

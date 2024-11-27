@@ -79,7 +79,7 @@ class HomeTabView extends StatelessWidget {
                             ],
                           ),
                           trailing: Icon(
-                            Icons.more_vert,
+                            Icons.keyboard_arrow_right,
                             color: ThemeService.color.iconColor,
                           ),
                         ),
@@ -148,7 +148,7 @@ class HomeTabView extends StatelessWidget {
         childAspectRatio: 1,
         children: [
           _summaryItem(Icons.library_music, S.current.allSong, () {
-            // Get.toNamed(Routes.FAVORITE);
+            Get.toNamed(Routes.SONG_LIST);
           }),
           _summaryItem(Icons.favorite, S.current.favorite, () {
             Get.toNamed(Routes.FAVORITE);

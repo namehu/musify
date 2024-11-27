@@ -119,6 +119,7 @@ MusicApi subsonicApi = (
   getSong: _getSong,
   getPlaylists: _getPlaylists,
   getAlbumList: _getAlbumList,
+  getSongs: _getSongs,
 );
 
 Future<Songs?> _getSong(String id) async {
@@ -175,5 +176,35 @@ Future<List<Albums>> _getAlbumList({
       _list.add(_album);
     }
   }
+  return _list;
+}
+
+Future<dynamic> _getSongs({
+  int pageNum = 1,
+  int? pageSize = 50,
+  String? query = '',
+}) async {
+  List<Songs> _list = [];
+
+  var response = await _dio.get(
+    'search3',
+    queryParameters: {
+      "query": query,
+      "artistCount": 0,
+      "artistOffset": 0,
+      "albumCount": 0,
+      "albumOffset": 0,
+      "songOffset": (pageNum - 1) * pageSize!,
+      "songCount": pageSize
+    },
+  );
+
+  if (response.data != null && response.data['searchResult3'] != null) {
+    List<dynamic> _songs = response.data['searchResult3']['song'] ?? [];
+    _songs.forEach((el) {
+      _list.add(Songs.fromJson(el));
+    });
+  }
+
   return _list;
 }
