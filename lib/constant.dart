@@ -3,6 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// app名称
+// ignore: constant_identifier_names
 const String APP_NAME = 'Musify';
 
 //底部高度

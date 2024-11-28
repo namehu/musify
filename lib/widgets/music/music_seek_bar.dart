@@ -13,12 +13,12 @@ class MusicSeekBar extends StatefulWidget {
   final ValueChanged<Duration>? onChangeEnd;
 
   const MusicSeekBar({
-    Key? key,
+    super.key,
     this.dotRaidus = 15,
     this.timeShow = false,
     this.onChanged,
     this.onChangeEnd,
-  }) : super(key: key);
+  });
 
   @override
   MusicSeekBarState createState() => MusicSeekBarState();
@@ -49,55 +49,47 @@ class MusicSeekBarState extends State<MusicSeekBar> {
 
         var duration = positionData?.duration ?? Duration.zero;
         var position = positionData?.position ?? Duration.zero;
-        var bufferedPosition = positionData?.bufferedPosition ?? Duration.zero;
+        // var bufferedPosition = positionData?.bufferedPosition ?? Duration.zero;
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              // padding: EdgeInsets.only(left: slidePadding, right: slidePadding),
-              child: SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  activeTrackColor: ThemeService.color.primaryColor,
-                  inactiveTrackColor: ThemeService.color.sliderBorderColor,
-                  thumbColor: ThemeService.color.primaryColor,
-                  overlayColor:
-                      ThemeService.color.primaryColor.withOpacity(0.3),
-                  overlayShape:
-                      RoundSliderOverlayShape(overlayRadius: widget.dotRaidus!),
-                  trackHeight: _innerTrachHeight,
-                  thumbShape: RoundSliderThumbShape(
-                    enabledThumbRadius: _thumbSize,
-                  ),
+            SliderTheme(
+              data: SliderTheme.of(context).copyWith(
+                activeTrackColor: ThemeService.color.primaryColor,
+                inactiveTrackColor: ThemeService.color.sliderBorderColor,
+                thumbColor: ThemeService.color.primaryColor,
+                overlayColor: ThemeService.color.primaryColor.withOpacity(0.3),
+                overlayShape:
+                    RoundSliderOverlayShape(overlayRadius: widget.dotRaidus!),
+                trackHeight: _innerTrachHeight,
+                thumbShape: RoundSliderThumbShape(
+                  enabledThumbRadius: _thumbSize,
                 ),
-                child: Container(
-                  // width: widget.trackWidth,
-                  child: Slider(
-                    min: 0.0,
-                    max: duration.inMilliseconds.toDouble(),
-                    value: min(
-                      _dragValue ?? position.inMilliseconds.toDouble(),
-                      duration.inMilliseconds.toDouble(),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _dragValue = value;
-                      });
-                      if (widget.onChanged != null) {
-                        widget
-                            .onChanged!(Duration(milliseconds: value.round()));
-                      }
-                    },
-                    onChangeEnd: (value) {
-                      var time = Duration(milliseconds: value.round());
-                      if (widget.onChangeEnd != null) {
-                        widget.onChangeEnd!(time);
-                      }
-                      player.seek(time);
-                      _dragValue = null;
-                    },
-                  ),
+              ),
+              child: Slider(
+                min: 0.0,
+                max: duration.inMilliseconds.toDouble(),
+                value: min(
+                  _dragValue ?? position.inMilliseconds.toDouble(),
+                  duration.inMilliseconds.toDouble(),
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    _dragValue = value;
+                  });
+                  if (widget.onChanged != null) {
+                    widget.onChanged!(Duration(milliseconds: value.round()));
+                  }
+                },
+                onChangeEnd: (value) {
+                  var time = Duration(milliseconds: value.round());
+                  if (widget.onChangeEnd != null) {
+                    widget.onChangeEnd!(time);
+                  }
+                  player.seek(time);
+                  _dragValue = null;
+                },
               ),
             ),
             if (widget.timeShow!)

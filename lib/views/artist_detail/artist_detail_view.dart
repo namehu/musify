@@ -31,7 +31,9 @@ class ArtistDetailBinding implements Bindings {
 }
 
 class ArtistDetailView extends GetView<ArtistDetailController> {
-  AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
+  final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
+
+  ArtistDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,32 +51,32 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
                   child: MTitle(title: S.current.song),
                 ),
               ),
-              if (controller.topSongs.length > 0)
+              if (controller.topSongs.isNotEmpty)
                 SliverToBoxAdapter(
                   child: _buidTopSongHead(),
                 ),
-              if (controller.topSongs.length > 0)
+              if (controller.topSongs.isNotEmpty)
                 SliverList.builder(
                   itemCount: controller.topSongs.length,
                   itemBuilder: (ctx, index) {
                     return _buidTopSong(index);
                   },
                 ),
-              if (controller.albums.length > 0)
+              if (controller.albums.isNotEmpty)
                 SliverToBoxAdapter(
                   child: MySliverControlBar(
                     title: S.current.album,
                     controller: controller.albumscontroller,
                   ),
                 ),
-              if (controller.albums.length > 0)
+              if (controller.albums.isNotEmpty)
                 SliverToBoxAdapter(
                   child: MySliverControlList(
                     controller: controller.albumscontroller,
                     albums: controller.albums,
                   ),
                 ),
-              if (controller.similarArtist.length > 0)
+              if (controller.similarArtist.isNotEmpty)
                 SliverToBoxAdapter(
                   child: MySliverControlBar(
                     title: S.current.artist,
@@ -82,7 +84,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
                   ),
                 ),
               SliverToBoxAdapter(
-                child: Container(
+                child: SizedBox(
                   height: 200,
                   child: Obx(
                     () => ListView.builder(
@@ -90,7 +92,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
                       controller: controller.similarArtistcontroller,
                       itemCount: controller.similarArtist.length,
                       itemBuilder: (ctx, index) {
-                        var _tem = controller.similarArtist[index];
+                        var artist = controller.similarArtist[index];
                         return Container(
                           padding: index == 0
                               ? leftrightPadding
@@ -99,19 +101,20 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
                             onTap: () {
                               Get.offNamed(
                                 Routes.ARTIST_DETAIL,
-                                arguments: {"id": _tem['id']},
+                                arguments: {"id": artist['id']},
                                 preventDuplicates: false,
                               );
                             },
                             child: Column(
                               children: [
-                                Expanded(child: MCover(url: _tem["coverUrl"])),
+                                Expanded(
+                                    child: MCover(url: artist["coverUrl"])),
                                 SizedBox(height: 5),
                                 Container(
                                   constraints:
                                       BoxConstraints(maxWidth: 200 - 67),
                                   child: Text(
-                                    _tem["name"],
+                                    artist["name"],
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -147,23 +150,20 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
           Row(
             children: [
               Text(
-                S.current.album + ": " + controller.albumsnum.value.toString(),
+                "${S.current.album}: ${controller.albumsnum.value}",
               ),
               SizedBox(width: 15),
               Text(
-                S.current.song + ": " + controller.songCount.value.toString(),
+                "${S.current.song}: ${controller.songCount.value}",
               )
             ],
           ),
           MText(
-            text: S.current.duration +
-                ": " +
-                formatDuration(controller.duration.value),
+            text:
+                "${S.current.duration}: ${formatDuration(controller.duration.value)}",
           ),
           MText(
-            text: S.current.playCount +
-                ": " +
-                controller.playCount.value.toString(),
+            text: "${S.current.playCount}: ${controller.playCount.value}",
           ),
         ],
       ),
@@ -220,12 +220,12 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
               () => MStarToogle(
                 value: controller.topSongsFav[index],
                 onChange: (value) async {
-                  Favorite _favorite = Favorite(id: item.id, type: 'song');
+                  Favorite favorite = Favorite(id: item.id, type: 'song');
                   if (value) {
-                    await addStarred(_favorite);
+                    await addStarred(favorite);
                     MToast.show(S.current.add + S.current.favorite);
                   } else {
-                    await delStarred(_favorite);
+                    await delStarred(favorite);
                     MToast.show(S.current.cancel + S.current.favorite);
                   }
 

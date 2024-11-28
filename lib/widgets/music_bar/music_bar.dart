@@ -7,7 +7,6 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/m_cover.dart';
-import 'package:musify/widgets/m_text.dart';
 import 'package:musify/widgets/music_bar/icon_play_list.dart';
 import '../../../util/mycss.dart';
 import 'icon_play_control.dart';

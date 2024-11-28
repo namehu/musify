@@ -4,7 +4,6 @@ import 'package:musify/api/index.dart';
 import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/services/server_service.dart';
@@ -17,9 +16,9 @@ class LoginController extends GetxController {
 
   get serversInfo => serverService.serverInfo;
 
-  final servercontroller = new TextEditingController();
-  final usernamecontroller = new TextEditingController();
-  final passwordcontroller = new TextEditingController();
+  final servercontroller = TextEditingController();
+  final usernamecontroller = TextEditingController();
+  final passwordcontroller = TextEditingController();
 
   final loading = false.obs;
   final serverType = (ServeTypeEnum.navidrome).obs;
@@ -69,13 +68,18 @@ class LoginController extends GetxController {
     try {
       // testServer(baseurl, username, password)
       res = await MRequest.api.authenticate(baseurl, username, password);
-    } catch (e) {}
+    } catch (e) {
+      ///
+    }
 
     if (res['username'] == null) {
       MRequest.resetApi();
+      // TODO: 这里警告处理一下
+      // ignore: use_build_context_synchronously
       showMyAlertDialog(context, S.current.notive, S.current.serverErr);
+      return;
     } else {
-      ServerInfo _serverInfo = ServerInfo(
+      ServerInfo serverInfo = ServerInfo(
         serverType: serverType.value.label,
         baseurl: baseurl,
         userId: res['userId'] ?? '',
@@ -90,17 +94,19 @@ class LoginController extends GetxController {
 
       try {
         if (editId != null) {
-          _serverInfo.id = editId!.value;
-          await DbProvider.instance.updateServerInfo(_serverInfo);
+          serverInfo.id = editId!.value;
+          await DbProvider.instance.updateServerInfo(serverInfo);
           Get.back();
         } else {
-          await DbProvider.instance.addServerInfo(_serverInfo);
-          serverService.updateCurrentServerInfo(_serverInfo);
+          await DbProvider.instance.addServerInfo(serverInfo);
+          serverService.updateCurrentServerInfo(serverInfo);
 
           homeController.onFinishLogin();
           Get.offNamed(Routes.HOME);
         }
-      } catch (e) {}
+      } catch (e) {
+        ///
+      }
     }
 
     loading.value = false;

@@ -13,9 +13,9 @@ import 'player_volume_bar.dart';
 import 'play_desktop.dart';
 
 class BottomDesktop extends StatefulWidget {
-  const BottomDesktop({Key? key}) : super(key: key);
+  const BottomDesktop({super.key});
   @override
-  _BottomDesktopState createState() => _BottomDesktopState();
+  State<BottomDesktop> createState() => _BottomDesktopState();
 }
 
 class _BottomDesktopState extends State<BottomDesktop>
@@ -35,7 +35,7 @@ class _BottomDesktopState extends State<BottomDesktop>
             // 进度条
             MusicSeekBar(dotRaidus: 5),
             // 歌曲区域
-            Container(
+            SizedBox(
               height: 80,
               child: Row(
                 children: [
@@ -43,7 +43,7 @@ class _BottomDesktopState extends State<BottomDesktop>
                     flex: 1,
                     child: Obx(
                       () {
-                        var _song = audioPlayerService.currentSong.value;
+                        var csong = audioPlayerService.currentSong.value;
                         return Row(
                           children: [
                             InkWell(
@@ -53,7 +53,7 @@ class _BottomDesktopState extends State<BottomDesktop>
                                   await showMaterialModalBottomSheet(
                                     context: context,
                                     isDismissible: false,
-                                    builder: (BuildContext _contenxt) =>
+                                    builder: (BuildContext ctx) =>
                                         PlayDesktop(),
                                   );
                                 },
@@ -61,12 +61,12 @@ class _BottomDesktopState extends State<BottomDesktop>
                                   margin: EdgeInsets.only(left: 10, right: 10),
                                   height: bottomImageWidthAndHeight,
                                   width: bottomImageWidthAndHeight,
-                                  child: _song.coverUrl.isEmpty
+                                  child: csong.coverUrl.isEmpty
                                       ? SvgPicture.asset(
                                           'assets/images/icon_music.svg',
                                           semanticsLabel: 'Acme Logo')
                                       : MCover(
-                                          url: _song.coverUrl,
+                                          url: csong.coverUrl,
                                           size: bottomImageWidthAndHeight),
                                 )),
                             Expanded(
@@ -77,9 +77,9 @@ class _BottomDesktopState extends State<BottomDesktop>
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _buildOverflowTitle(_song.title),
-                                    _buildOverflowTitle(_song.artist),
-                                    _buildOverflowTitle(_song.album),
+                                    _buildOverflowTitle(csong.title),
+                                    _buildOverflowTitle(csong.artist),
+                                    _buildOverflowTitle(csong.album),
                                   ],
                                 ),
                               ),

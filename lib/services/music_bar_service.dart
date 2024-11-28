@@ -40,7 +40,7 @@ class MusicBarService extends GetxService {
         );
       });
 
-      Overlay.of(context)?.insert(overlayEntry!);
+      Overlay.of(context).insert(overlayEntry!);
     }
   }
 
@@ -106,6 +106,7 @@ class _MusicBarWidgetState extends State<MusicBarWidget>
   @override
   void dispose() {
     _controller?.dispose();
+    _subscription.cancel();
     super.dispose();
   }
 
