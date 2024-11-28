@@ -15,9 +15,7 @@ import '../generated/l10n.dart';
 import '../util/mycss.dart';
 
 class LeftDrawer extends StatefulWidget {
-  const LeftDrawer({
-    Key? key,
-  }) : super(key: key);
+  const LeftDrawer({super.key});
 
   @override
   LeftDrawerState createState() => LeftDrawerState();
@@ -73,71 +71,69 @@ class LeftDrawerState extends State<LeftDrawer> {
                     children: <Widget>[],
                   ),
                 ),
-                Container(
-                  child: Obx(() {
-                    var _value = GloabalService.tabType;
-                    return Column(
-                      children: [
-                        SizedBox(height: isMobile ? 40 : 0),
-                        if (!isMobile) _buidSettingRow(),
+                Obx(() {
+                  var value = GloabalService.tabType.value;
+                  return Column(
+                    children: [
+                      SizedBox(height: isMobile ? 40 : 0),
+                      if (!isMobile) _buidSettingRow(),
+                      MyTextIconButton(
+                        icon: Icons.home_outlined,
+                        activeIcon: Icons.home,
+                        title: S.current.index,
+                        active: value == TabTypeEnmu.home,
+                        press: () => _handleClick(TabTypeEnmu.home),
+                      ),
+                      if (!isMobile)
                         MyTextIconButton(
-                          icon: Icons.home_outlined,
-                          activeIcon: Icons.home,
-                          title: S.current.index,
-                          active: _value == TabTypeEnmu.home,
-                          press: () => _handleClick(TabTypeEnmu.home),
+                          icon: Icons.music_note_outlined,
+                          activeIcon: Icons.music_note,
+                          title: S.current.song,
+                          active: value == TabTypeEnmu.allSong,
+                          press: () => _handleClick(TabTypeEnmu.allSong),
                         ),
-                        if (!isMobile)
-                          MyTextIconButton(
-                            icon: Icons.music_note_outlined,
-                            activeIcon: Icons.music_note,
-                            title: S.current.song,
-                            active: _value == TabTypeEnmu.allSong,
-                            press: () => _handleClick(TabTypeEnmu.allSong),
-                          ),
-                        if (!isMobile)
-                          MyTextIconButton(
-                            icon: Icons.favorite_outline,
-                            activeIcon: Icons.favorite,
-                            title: S.current.favorite,
-                            active: _value == TabTypeEnmu.favorite,
-                            press: () => _handleClick(TabTypeEnmu.favorite),
-                          ),
-                        if (!isMobile)
-                          MyTextIconButton(
-                            icon: Icons.album_outlined,
-                            activeIcon: Icons.album_rounded,
-                            title: S.current.album,
-                            active: _value == TabTypeEnmu.album,
-                            press: () => _handleClick(TabTypeEnmu.album),
-                          ),
-                        if (!isMobile)
-                          MyTextIconButton(
-                            icon: Icons.people_alt_outlined,
-                            activeIcon: Icons.people_alt_rounded,
-                            title: S.current.artist,
-                            active: _value == TabTypeEnmu.artist,
-                            press: () => _handleClick(TabTypeEnmu.artist),
-                          ),
+                      if (!isMobile)
                         MyTextIconButton(
-                          icon: Icons.style_outlined,
-                          activeIcon: Icons.style_rounded,
-                          title: S.current.genres,
-                          active: _value == TabTypeEnmu.genres,
-                          press: () => _handleClick(TabTypeEnmu.genres),
+                          icon: Icons.favorite_outline,
+                          activeIcon: Icons.favorite,
+                          title: S.current.favorite,
+                          active: value == TabTypeEnmu.favorite,
+                          press: () => _handleClick(TabTypeEnmu.favorite),
                         ),
-                        if (isMobile)
-                          MyTextIconButton(
-                            icon: Icons.settings_outlined,
-                            activeIcon: Icons.settings_rounded,
-                            title: S.current.settings,
-                            active: _value == TabTypeEnmu.setting,
-                            press: () => _handleClick(TabTypeEnmu.setting),
-                          )
-                      ],
-                    );
-                  }),
-                ),
+                      if (!isMobile)
+                        MyTextIconButton(
+                          icon: Icons.album_outlined,
+                          activeIcon: Icons.album_rounded,
+                          title: S.current.album,
+                          active: value == TabTypeEnmu.album,
+                          press: () => _handleClick(TabTypeEnmu.album),
+                        ),
+                      if (!isMobile)
+                        MyTextIconButton(
+                          icon: Icons.people_alt_outlined,
+                          activeIcon: Icons.people_alt_rounded,
+                          title: S.current.artist,
+                          active: value == TabTypeEnmu.artist,
+                          press: () => _handleClick(TabTypeEnmu.artist),
+                        ),
+                      MyTextIconButton(
+                        icon: Icons.style_outlined,
+                        activeIcon: Icons.style_rounded,
+                        title: S.current.genres,
+                        active: value == TabTypeEnmu.genres,
+                        press: () => _handleClick(TabTypeEnmu.genres),
+                      ),
+                      if (isMobile)
+                        MyTextIconButton(
+                          icon: Icons.settings_outlined,
+                          activeIcon: Icons.settings_rounded,
+                          title: S.current.settings,
+                          active: value == TabTypeEnmu.setting,
+                          press: () => _handleClick(TabTypeEnmu.setting),
+                        )
+                    ],
+                  );
+                }),
                 Divider(
                   height: StyleSize.spaceLarge,
                   color: ThemeService.color.dividerColor,
@@ -153,7 +149,7 @@ class LeftDrawerState extends State<LeftDrawer> {
   }
 
   _buidSettingRow() {
-    return Container(
+    return SizedBox(
       height: appBarHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,7 +181,7 @@ class LeftDrawerState extends State<LeftDrawer> {
     return LayoutBuilder(builder: (ctx, constraints) {
       return Column(
         children: [
-          Container(
+          SizedBox(
             height: 35,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,8 +224,8 @@ class LeftDrawerState extends State<LeftDrawer> {
 
                 return ListView.builder(
                   itemBuilder: (ctx, index) {
-                    var _data = playListService.playList.value[index];
-                    return PlayListItem(data: _data);
+                    var data = playListService.playList.value[index];
+                    return PlayListItem(data: data);
                   },
                   itemCount: playListService.playList.value.length,
                 );
@@ -257,12 +253,12 @@ class _PlayListItemState extends State<PlayListItem> {
   bool isHover = false;
 
   _haldePlay() async {
-    var _playList = await MRequest.api.getPlaylist(widget.data.id);
+    var playList = await MRequest.api.getPlaylist(widget.data.id);
 
-    if (_playList != null &&
-        _playList.songs != null &&
-        _playList.songs!.isNotEmpty) {
-      var songs = (_playList.songs ?? []);
+    if (playList != null &&
+        playList.songs != null &&
+        playList.songs!.isNotEmpty) {
+      var songs = (playList.songs ?? []);
 
       Get.find<AudioPlayerService>().palySongList(songs);
     }
@@ -281,61 +277,59 @@ class _PlayListItemState extends State<PlayListItem> {
           isHover = false;
         });
       },
-      child: Container(
-        child: InkWell(
-          onTap: () {
-            var _currentPath = Get.currentRoute;
+      child: InkWell(
+        onTap: () {
+          var currentPath = Get.currentRoute;
 
-            if (Get.routing?.args != null) {
-              _currentPath += Get.routing.args['id'];
-            }
+          if (Get.routing.args != null) {
+            currentPath += Get.routing.args['id'];
+          }
 
-            if ('${Routes.PLAY_LIST_DETAIL}${widget.data.id}' == _currentPath) {
-              return;
-            }
+          if ('${Routes.PLAY_LIST_DETAIL}${widget.data.id}' == currentPath) {
+            return;
+          }
 
-            if (Get.currentRoute == Routes.PLAY_LIST_DETAIL) {
-              Get.offNamed(
-                Routes.PLAY_LIST_DETAIL,
-                arguments: {'id': widget.data.id},
-                preventDuplicates: false,
-              );
-            } else {
-              Get.toNamed(
-                Routes.PLAY_LIST_DETAIL,
-                arguments: {'id': widget.data.id},
-                preventDuplicates: false,
-              );
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              vertical: StyleSize.spaceSmall,
-              horizontal: StyleSize.spaceSmall,
-            ),
-            child: Row(
-              children: [
-                Expanded(child: Text(widget.data.name)),
-                Visibility(
-                  visible: isHover,
-                  child: InkWell(
-                    onTap: () {
-                      _haldePlay();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: ThemeService.color.cardColor,
-                      ),
-                      child: Icon(
-                        Icons.play_arrow,
-                        size: 14,
-                      ),
+          if (Get.currentRoute == Routes.PLAY_LIST_DETAIL) {
+            Get.offNamed(
+              Routes.PLAY_LIST_DETAIL,
+              arguments: {'id': widget.data.id},
+              preventDuplicates: false,
+            );
+          } else {
+            Get.toNamed(
+              Routes.PLAY_LIST_DETAIL,
+              arguments: {'id': widget.data.id},
+              preventDuplicates: false,
+            );
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            vertical: StyleSize.spaceSmall,
+            horizontal: StyleSize.spaceSmall,
+          ),
+          child: Row(
+            children: [
+              Expanded(child: Text(widget.data.name)),
+              Visibility(
+                visible: isHover,
+                child: InkWell(
+                  onTap: () {
+                    _haldePlay();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: ThemeService.color.cardColor,
+                    ),
+                    child: Icon(
+                      Icons.play_arrow,
+                      size: 14,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -345,13 +339,13 @@ class _PlayListItemState extends State<PlayListItem> {
 
 class MyTextIconButton extends StatelessWidget {
   const MyTextIconButton({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.activeIcon,
     required this.press,
     required this.active,
-  }) : super(key: key);
+  });
 
   final String title;
   final IconData icon;

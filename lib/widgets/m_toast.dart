@@ -12,11 +12,11 @@ class MToast {
     int duration = 1000,
     BuildContext? context,
   }) {
-    var _ctx = context ?? Get.context;
+    var ctx = context ?? Get.context;
 
-    assert(_ctx != null);
+    assert(ctx != null);
 
-    OverlayEntry overlayEntry = new OverlayEntry(
+    OverlayEntry overlayEntry = OverlayEntry(
       builder: (context) {
         return Positioned(
             bottom: 95,
@@ -25,17 +25,17 @@ class MToast {
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
               child: Card(
+                color: ThemeService.color.dialogBackgroundColor,
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Text(message),
                 ),
-                color: ThemeService.color.dialogBackgroundColor,
               ),
             ));
       },
     );
 
-    Overlay.of(_ctx!).insert(overlayEntry);
+    Overlay.of(ctx!).insert(overlayEntry);
 
     Future.delayed(Duration(milliseconds: duration)).then((value) {
       overlayEntry.remove();

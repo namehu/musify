@@ -28,10 +28,9 @@ class _PlayListModalState extends State<PlayListModal> {
   }
 
   handleItemRemove(Songs song, int index) {
-    var _songs =
-        audioPlayerService.playSongs.value.map((item) => item).toList();
-    _songs.removeAt(index);
-    audioPlayerService.playSongs.value = _songs;
+    var songs = audioPlayerService.playSongs.value.map((item) => item).toList();
+    songs.removeAt(index);
+    audioPlayerService.playSongs.value = songs;
   }
 
   @override
@@ -63,10 +62,7 @@ class _PlayListModalState extends State<PlayListModal> {
                 Expanded(
                   child: Obx(
                     () => Text(
-                      S.current.playlist +
-                          '(' +
-                          audioPlayerService.playSongs.length.toString() +
-                          ')',
+                      '${S.current.playlist}(${audioPlayerService.playSongs.length})',
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -95,25 +91,22 @@ class _PlayListModalState extends State<PlayListModal> {
 
                     return GestureDetector(
                       onTap: () => audioPlayerService.tooglePlayMode(),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Icon(
-                              iconData,
-                              size: 12,
+                      child: Row(
+                        children: [
+                          Icon(
+                            iconData,
+                            size: 12,
+                            color: ThemeService.color.textSecondColor,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            label,
+                            style: TextStyle(
+                              fontSize: 12,
                               color: ThemeService.color.textSecondColor,
                             ),
-                            SizedBox(width: 5),
-                            Text(
-                              label,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: ThemeService.color.textSecondColor,
-                              ),
-                            )
-                          ],
-                        ),
-                        //
+                          )
+                        ],
                       ),
                     );
                   }),
@@ -152,7 +145,7 @@ class _PlayListModalState extends State<PlayListModal> {
                           ),
                         ),
                         title: Text(
-                          '${item.title}',
+                          item.title,
                           style: TextStyle(
                             color: isActive
                                 ? ThemeService.color.primaryColor
@@ -161,13 +154,11 @@ class _PlayListModalState extends State<PlayListModal> {
                         ),
                         trailing: isActive
                             ? null
-                            : Container(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    handleItemRemove(item, index);
-                                  },
-                                  child: Icon(Icons.close),
-                                ),
+                            : GestureDetector(
+                                onTap: () {
+                                  handleItemRemove(item, index);
+                                },
+                                child: Icon(Icons.close),
                               ),
                       );
                     },

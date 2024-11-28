@@ -15,21 +15,21 @@ class MTitle extends StatelessWidget {
   final List<dynamic>? actions;
   final void Function(int index)? onActionsTap;
 
-  MTitle({
-    Key? key,
+  const MTitle({
+    super.key,
     required this.title,
     this.level = 4,
     this.actions,
     this.onActionsTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    var _children = <Widget>[];
+    var children = <Widget>[];
 
     for (var i = 0; i < (actions ?? []).length; i++) {
       var element = actions![i];
-      _children.add(
+      children.add(
         GestureDetector(
           onTap: () {
             onActionsTap?.call(i);
@@ -51,17 +51,15 @@ class MTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: _sizeMap[level],
-              fontWeight: FontWeight.bold,
-            ),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: _sizeMap[level],
+            fontWeight: FontWeight.bold,
           ),
         ),
         Row(
-          children: _children,
+          children: children,
         ),
       ],
     );

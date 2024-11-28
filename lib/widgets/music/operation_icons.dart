@@ -246,11 +246,11 @@ class PlayStarIcon extends StatelessWidget {
         onChange: song.id.isNotEmpty
             ? (val) async {
                 if (song.id.isNotEmpty) {
-                  Favorite _favorite = Favorite(id: song.id, type: 'song');
+                  Favorite favorite = Favorite(id: song.id, type: 'song');
 
                   value
-                      ? await delStarred(_favorite)
-                      : await addStarred(_favorite);
+                      ? await delStarred(favorite)
+                      : await addStarred(favorite);
                   audioPlayerService.currentSong.update((song) {
                     song?.starred = !value;
                   });

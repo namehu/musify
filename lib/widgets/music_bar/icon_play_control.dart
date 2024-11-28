@@ -9,7 +9,7 @@ import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 class IconPlayControl extends StatefulWidget {
   final double size;
 
-  IconPlayControl({
+  const IconPlayControl({
     super.key,
     this.size = 40.0,
   });
@@ -51,7 +51,7 @@ class _IconPlayControlState extends State<IconPlayControl> {
       builder: (context, snapshot) {
         final playerState = snapshot.data;
 
-        return Container(
+        return SizedBox(
           width: 42,
           height: 42,
           child: Stack(

@@ -14,15 +14,15 @@ Future<dynamic> showPlayListDialog({
 }) {
   context ??= navigatorKey.currentState!.context;
   title ??= S.current.create + S.current.playlist;
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
-  String _playlistName = '';
+  String playlistName = '';
 
   handeSave() async {
-    var _state = _formKey.currentState!;
-    if (_state.validate()) {
-      _state.save();
-      await MRequest.api.createPlaylist(_playlistName);
+    var state = formKey.currentState!;
+    if (state.validate()) {
+      state.save();
+      await MRequest.api.createPlaylist(playlistName);
       MToast.success(S.current.create + S.current.playlist + S.current.success);
       Navigator.of(Get.overlayContext!, rootNavigator: true).pop(1);
     }
@@ -32,7 +32,7 @@ Future<dynamic> showPlayListDialog({
     MDialog(
       title: title,
       content: Form(
-        key: _formKey,
+        key: formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -72,7 +72,7 @@ Future<dynamic> showPlayListDialog({
                 return null;
               },
               onSaved: (newValue) {
-                _playlistName = newValue!;
+                playlistName = newValue!;
               },
             ),
           ],

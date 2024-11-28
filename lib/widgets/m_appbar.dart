@@ -6,7 +6,7 @@ class MAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? title;
   final List<Widget>? actions;
 
-  MAppBar({super.key, this.title, this.actions});
+  const MAppBar({super.key, this.title, this.actions});
 
   @override
   Size get preferredSize => const Size.fromHeight(appBarHeight);

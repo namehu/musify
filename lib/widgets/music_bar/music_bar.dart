@@ -48,78 +48,75 @@ class _MusicBarState extends State<MusicBar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  child: Row(
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          Get.toNamed(Routes.PLAY);
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(left: 5, right: 10),
-                          child: Obx(() {
-                            return MCover(
-                              url:
-                                  audioPlayerService.currentSong.value.coverUrl,
-                              size: bottomImageWidthAndHeight,
-                              radius: bottomImageWidthAndHeight / 2,
-                            );
-                          }),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(Routes.PLAY);
-                        },
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        Get.toNamed(Routes.PLAY);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 5, right: 10),
                         child: Obx(() {
-                          var _song = audioPlayerService.currentSong.value;
-                          if (_song.id.isEmpty) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(APP_NAME, style: nomalText),
-                              ],
-                            );
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                // TODO:这里宽度待优化
-                                constraints: BoxConstraints(maxWidth: 140),
-                                child: MText(
-                                  text: _song.title,
-                                  maxLines: 1,
-                                  style: nomalText,
-                                ),
-                              ),
-                              Container(
-                                // TODO:这里宽度待优化
-                                // constraints: BoxConstraints(
-                                //     maxWidth: windowsWidth.value - 180),
-                                child: Text(_song.artist,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: subText),
-                              ),
-                              Container(
-                                // TODO:这里宽度待优化
-                                // constraints: BoxConstraints(
-                                //     maxWidth: windowsWidth.value - 180),
-                                child: Text(
-                                  _song.album,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: subText,
-                                ),
-                              )
-                            ],
+                          return MCover(
+                            url: audioPlayerService.currentSong.value.coverUrl,
+                            size: bottomImageWidthAndHeight,
+                            radius: bottomImageWidthAndHeight / 2,
                           );
                         }),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(Routes.PLAY);
+                      },
+                      child: Obx(() {
+                        var _song = audioPlayerService.currentSong.value;
+                        if (_song.id.isEmpty) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(APP_NAME, style: nomalText),
+                            ],
+                          );
+                        }
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              // TODO:这里宽度待优化
+                              constraints: BoxConstraints(maxWidth: 140),
+                              child: MText(
+                                text: _song.title,
+                                maxLines: 1,
+                                style: nomalText,
+                              ),
+                            ),
+                            Container(
+                              // TODO:这里宽度待优化
+                              // constraints: BoxConstraints(
+                              //     maxWidth: windowsWidth.value - 180),
+                              child: Text(_song.artist,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: subText),
+                            ),
+                            Container(
+                              // TODO:这里宽度待优化
+                              // constraints: BoxConstraints(
+                              //     maxWidth: windowsWidth.value - 180),
+                              child: Text(
+                                _song.album,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: subText,
+                              ),
+                            )
+                          ],
+                        );
+                      }),
+                    )
+                  ],
                 ),
                 Container(
                   width: 110,

@@ -6,19 +6,21 @@ import 'package:musify/services/theme_service.dart';
 class IconPlayList extends StatelessWidget {
   final audioPlayerService = Get.find<AudioPlayerService>();
 
+  IconPlayList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => IconButton(
         icon: Icon(
           Icons.playlist_play,
-          color: (audioPlayerService.playSongs.length > 0)
+          color: (audioPlayerService.playSongs.isNotEmpty)
               ? ThemeService.color.textSecondColor
               : ThemeService.color.textDisabledColor,
           size: 30.0,
         ),
         onPressed: () {
-          if (audioPlayerService.playSongs.length > 0) {
+          if (audioPlayerService.playSongs.isNotEmpty) {
             AudioPlayerService.showPlayList();
           }
         },

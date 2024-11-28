@@ -29,7 +29,7 @@ class _LyricReaderState extends State<LyricReader> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var _model = audioPlayerService.lyricModel;
+      var model = audioPlayerService.lyricModel;
 
       return StreamBuilder<PositionData>(
           stream: widget.positionDataStream,
@@ -39,7 +39,7 @@ class _LyricReaderState extends State<LyricReader> {
 
             return LyricsReader(
               padding: EdgeInsets.symmetric(horizontal: 40),
-              model: _model,
+              model: model,
               position: position,
               lyricUi: audioPlayerService.lyricUI,
               playing: true,

@@ -28,11 +28,11 @@ class MCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return this.shape! == MCoverShapeEnum.round
+    return shape! == MCoverShapeEnum.round
         ? ClipOval(
             child: _buildChild(),
           )
-        : this.shape! == MCoverShapeEnum.rect
+        : shape! == MCoverShapeEnum.rect
             ? ClipRRect(
                 child: _buildChild(),
               )

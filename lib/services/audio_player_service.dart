@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
 import 'package:musify/util/MUINetease.dart';
-import 'package:rxdart/rxdart.dart' as rxDart;
+import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -24,10 +24,8 @@ class HideMusicBarEvent {
   // HideMusicBarEvent();
 }
 
-/**
- * 播放器服务
- * 提供全局的播放器实例
- */
+/// 播放器服务
+/// 提供全局的播放器实例
 class AudioPlayerService extends GetxService {
   static late AudioPlayer player;
   static final hideMusicEventBus = EventBus();
@@ -59,7 +57,7 @@ class AudioPlayerService extends GetxService {
 
   /// 当前歌曲播放进度
   Stream<PositionData> get positionDataStream {
-    return rxDart.Rx.combineLatest3<Duration, Duration, Duration?,
+    return rx_dart.Rx.combineLatest3<Duration, Duration, Duration?,
         PositionData>(
       player.positionStream,
       player.bufferedPositionStream,
@@ -98,7 +96,7 @@ class AudioPlayerService extends GetxService {
       if (player.sequenceState == null) return;
       // 更新当前歌曲
       final currentItem = player.sequenceState!.currentSource;
-      final playlist = player.sequenceState!.effectiveSequence;
+      // final playlist = player.sequenceState!.effectiveSequence;
       if (currentItem == null) {
         //更新上下首歌曲
         // if (playlist.isEmpty) {

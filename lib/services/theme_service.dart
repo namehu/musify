@@ -34,11 +34,11 @@ class ThemeService extends GetxService {
 
   /// 设置主题模式
   static Future setThemeMode(int key) async {
-    var _themeMode =
+    var themeMode =
         modeMap.entries.firstWhere(((element) => element.key == key));
-    mode.value = _themeMode.value;
+    mode.value = themeMode.value;
 
-    return await sharedPreferences.setInt(_modeKey, _themeMode.key);
+    return await sharedPreferences.setInt(_modeKey, themeMode.key);
   }
 
   /// 获取主题模式
@@ -50,32 +50,32 @@ class ThemeService extends GetxService {
 
   /// 获取当前主题
   static get theme {
-    var _primaryColor = ThemeService.color.primaryColor;
+    var primaryColor = ThemeService.color.primaryColor;
 
     if (ThemeService.mode.value == ThemeMode.dark) {
-      var _colorSchme = ColorScheme.dark();
+      var colorSchme = ColorScheme.dark();
       return ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: ThemeService.color.bgColor,
-        primaryColor: _primaryColor,
-        colorScheme: _colorSchme.copyWith(primary: _primaryColor),
-        primarySwatch: _primaryColor,
+        primaryColor: primaryColor,
+        colorScheme: colorSchme.copyWith(primary: primaryColor),
+        primarySwatch: primaryColor,
         appBarTheme: AppBarTheme().copyWith(color: ThemeService.color.bgColor),
       );
     }
 
-    var _colorSchme = ColorScheme.light();
+    var colorSchme = ColorScheme.light();
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       scaffoldBackgroundColor: ThemeService.color.bgColor,
-      primaryColor: _primaryColor,
-      colorScheme: _colorSchme.copyWith(primary: _primaryColor),
-      primarySwatch: _primaryColor,
+      primaryColor: primaryColor,
+      colorScheme: colorSchme.copyWith(primary: primaryColor),
+      primarySwatch: primaryColor,
       appBarTheme: AppBarTheme().copyWith(
         iconTheme: IconThemeData(color: gray1),
-        color: _primaryColor,
+        color: primaryColor,
         titleTextStyle: TextStyle(color: gray1, fontSize: StyleSize.titleSize),
         toolbarTextStyle: TextStyle(color: gray1),
       ),

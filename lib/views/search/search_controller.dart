@@ -11,13 +11,9 @@ import '../../models/songs.dart';
 
 class SearchViewController extends GetxController {
   final audioPlayerService = Get.find<AudioPlayerService>();
-  final searchController = new TextEditingController();
+  final searchController = TextEditingController();
   ScrollController albumscontroller = ScrollController();
   ScrollController artistcontroller = ScrollController();
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onClose() {
@@ -29,55 +25,55 @@ class SearchViewController extends GetxController {
   RxList<Artists> artists = <Artists>[].obs;
 
   search() async {
-    String _title1 = searchController.text.trim();
-    String _title2 = converToTraditional(_title1);
-    if (_title1 == '') {
+    String title1 = searchController.text.trim();
+    String title2 = converToTraditional(title1);
+    if (title1 == '') {
       MToast.show(S.current.noContent);
       return;
     }
 
-    List<Songs> _listSong = [];
-    List<Albums> _listAlbums = [];
-    List<Artists> _listArtists = [];
+    List<Songs> listSong = [];
+    List<Albums> listAlbums = [];
+    List<Artists> listArtists = [];
 
-    final _searchData = await search3(_title1);
-    final _searchDat2 = await search3(_title2);
+    final searchData = await search3(title1);
+    final searchDat2 = await search3(title2);
 
     List<dynamic> resSong = _mergeAndDeduplicate(
-        _searchData["song"] ?? [], _searchDat2["song"] ?? []);
+        searchData["song"] ?? [], searchDat2["song"] ?? []);
 
-    for (var _element in resSong) {
-      String _stream = getServerInfo("stream");
-      String _url = getCoverArt(_element["id"]);
-      _element["stream"] = _stream + '&id=' + _element["id"];
-      _element["coverUrl"] = _url;
-      Songs _tem = Songs.fromJson(_element);
-      _listSong.add(_tem);
+    for (var element in resSong) {
+      String stream = getServerInfo("stream");
+      String url = getCoverArt(element["id"]);
+      element["stream"] = '$stream&id=' + element["id"];
+      element["coverUrl"] = url;
+      Songs tem = Songs.fromJson(element);
+      listSong.add(tem);
     }
 
     List<dynamic> resAlbum = _mergeAndDeduplicate(
-        _searchData["album"] ?? [], _searchDat2["album"] ?? []);
+        searchData["album"] ?? [], searchDat2["album"] ?? []);
 
     for (var _element in resAlbum) {
-      String _url = getCoverArt(_element["id"]);
-      _element["coverUrl"] = _url;
-      Albums _tem = Albums.fromJson(_element);
-      _listAlbums.add(_tem);
+      String url = getCoverArt(_element["id"]);
+      _element["coverUrl"] = url;
+      Albums tem = Albums.fromJson(_element);
+      listAlbums.add(tem);
     }
 
     List<dynamic> resArtist = _mergeAndDeduplicate(
-        _searchData["artist"] ?? [], _searchDat2["artist"] ?? []);
+        searchData["artist"] ?? [], searchDat2["artist"] ?? []);
 
     for (var _element in resArtist) {
-      String _url = getCoverArt(_element["id"]);
-      _element["artistImageUrl"] = _url;
-      Artists _tem = Artists.fromJson(_element);
-      _listArtists.add(_tem);
+      String url = getCoverArt(_element["id"]);
+      _element["artistImageUrl"] = url;
+      Artists tem = Artists.fromJson(_element);
+      listArtists.add(tem);
     }
 
-    songs(_listSong);
-    albums(_listAlbums);
-    artists(_listArtists);
+    songs(listSong);
+    albums(listAlbums);
+    artists(listArtists);
   }
 
   List<dynamic> _mergeAndDeduplicate(List<dynamic> list1, List<dynamic> list2) {

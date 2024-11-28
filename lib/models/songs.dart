@@ -38,21 +38,21 @@ class Songs {
   });
 
   Songs.fromJson(Map<String, dynamic> json) {
-    id = json['id'] == null ? "" : json['id'];
-    title = json['title'] == null ? "" : json['title'];
-    album = json['album'] == null ? "" : json['album'];
-    artist = json['artist'] == null ? "" : json['artist'];
-    genre = json['genre'] == null ? "0" : json['genre'];
-    albumId = json['albumId'] == null ? "" : json['albumId'];
-    duration = json['duration'] == null ? 0 : json['duration'];
-    bitRate = json['bitRate'] == null ? 0 : json['bitRate'];
-    suffix = json['suffix'] == null ? "" : json['suffix'];
-    path = json['path'] == null ? "" : json['path'];
-    playCount = json['playCount'] == null ? 0 : json['playCount'];
-    created = json['created'] == null ? "" : json['created'];
-    stream = json['stream'] == null ? "" : json['stream'];
-    coverUrl = json['coverUrl'] == null ? "" : json['coverUrl'];
-    lyrics = json['lyrics'] == null ? "" : json['lyrics'];
+    id = json['id'] ?? "";
+    title = json['title'] ?? "";
+    album = json['album'] ?? "";
+    artist = json['artist'] ?? "";
+    genre = json['genre'] ?? "0";
+    albumId = json['albumId'] ?? "";
+    duration = json['duration'] ?? 0;
+    bitRate = json['bitRate'] ?? 0;
+    suffix = json['suffix'] ?? "";
+    path = json['path'] ?? "";
+    playCount = json['playCount'] ?? 0;
+    created = json['created'] ?? "";
+    stream = json['stream'] ?? "";
+    coverUrl = json['coverUrl'] ?? "";
+    lyrics = json['lyrics'] ?? "";
 
     if (json['starred'] == null) {
       starred = false;
@@ -64,24 +64,24 @@ class Songs {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = new Map<String, dynamic>();
-    _data['id'] = this.id;
-    _data['title'] = this.title;
-    _data['album'] = this.album;
-    _data['artist'] = this.artist;
-    _data['genre'] = this.genre;
-    _data['albumId'] = this.albumId;
-    _data['duration'] = this.duration;
-    _data['bitRate'] = this.bitRate;
-    _data['suffix'] = this.suffix;
-    _data['path'] = this.path;
-    _data['playCount'] = this.playCount;
-    _data['created'] = this.created;
-    _data['stream'] = this.stream;
-    _data['coverUrl'] = this.coverUrl;
-    _data['lyrics'] = this.lyrics;
-    _data['starred'] = this.starred;
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['album'] = album;
+    data['artist'] = artist;
+    data['genre'] = genre;
+    data['albumId'] = albumId;
+    data['duration'] = duration;
+    data['bitRate'] = bitRate;
+    data['suffix'] = suffix;
+    data['path'] = path;
+    data['playCount'] = playCount;
+    data['created'] = created;
+    data['stream'] = stream;
+    data['coverUrl'] = coverUrl;
+    data['lyrics'] = lyrics;
+    data['starred'] = starred;
+    return data;
   }
 
   Songs.fromNdSong(NdSong ndsong) {
