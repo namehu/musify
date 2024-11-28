@@ -36,93 +36,93 @@ class ArtistDetailController extends GetxController {
   }
 
   _getArtist(String artistId) async {
-    final _artist = await getArtist(artistId);
+    final artist = await getArtist(artistId);
 
-    var _playCount = 0;
-    var _duration = 0;
-    var _songs = 0;
+    var pCount = 0;
+    var pduration = 0;
+    var songsCount = 0;
 
-    if (_artist != null) {
-      List<Albums> _list = [];
-      if (_artist != null && _artist.length > 0) {
-        _getTopSongs(_artist["name"]);
-        for (var _element in _artist["album"]) {
-          String _url = getCoverArt(_element["id"]);
-          _element["coverUrl"] = _url;
-          Albums _album = Albums.fromJson(_element);
-          _list.add(_album);
-          _playCount += _album.playCount;
-          _duration += _album.duration;
-          _songs += _album.songCount;
+    if (artist != null) {
+      List<Albums> list = [];
+      if (artist != null && artist.length > 0) {
+        _getTopSongs(artist["name"]);
+        for (var element in artist["album"]) {
+          String url = getCoverArt(element["id"]);
+          element["coverUrl"] = url;
+          Albums album = Albums.fromJson(element);
+          list.add(album);
+          pCount += album.playCount;
+          pduration += album.duration;
+          songsCount += album.songCount;
         }
       }
 
-      if (_artist["starred"] != null) {
+      if (artist["starred"] != null) {
         star.value = true;
       } else {
         star.value = false;
       }
 
-      playCount(_playCount);
-      duration(_duration);
-      songCount(_songs);
+      playCount(pCount);
+      duration(pduration);
+      songCount(songsCount);
 
-      albums(_list);
-      albumsnum.value = _artist["albumCount"];
-      artilstname.value = _artist["name"];
-      arturl.value = getCoverArt(_artist["id"]);
+      albums(list);
+      albumsnum.value = artist["albumCount"];
+      artilstname.value = artist["name"];
+      arturl.value = getCoverArt(artist["id"]);
     }
   }
 
-  _getTopSongs(String _artilstname) async {
-    final _albumtem = await getTopSongs(_artilstname);
-    if (_albumtem != null && _albumtem["song"] != null) {
-      final _songsList = _albumtem["song"];
-      List<Songs> _songtem = [];
-      List<bool> _startem = [];
-      for (var _element in _songsList) {
-        String _stream = getServerInfo("stream");
-        String _url = getCoverArt(_element["id"]);
-        _element["stream"] = _stream + '&id=' + _element["id"];
-        _element["coverUrl"] = _url;
-        if (_element["starred"] != null) {
-          _startem.add(true);
+  _getTopSongs(String artilstname) async {
+    final albumtem = await getTopSongs(artilstname);
+    if (albumtem != null && albumtem["song"] != null) {
+      final songsList = albumtem["song"];
+      List<Songs> songtem = [];
+      List<bool> startem = [];
+      for (var element in songsList) {
+        String stream = getServerInfo("stream");
+        String url = getCoverArt(element["id"]);
+        element["stream"] = '$stream&id=${element["id"]}';
+        element["coverUrl"] = url;
+        if (element["starred"] != null) {
+          startem.add(true);
         } else {
-          _startem.add(false);
+          startem.add(false);
         }
-        Songs _song = Songs.fromJson(_element);
-        _songtem.add(_song);
+        Songs song = Songs.fromJson(element);
+        songtem.add(song);
       }
 
-      topSongs(_songtem);
-      topSongsFav(_startem);
+      topSongs(songtem);
+      topSongsFav(startem);
     }
   }
 
-  _getArtistInfo2(String _artistId) async {
-    final _artist = await getArtistInfo2(_artistId);
-    if (_artist != null) {
-      if (_artist["biography"] != null) {
-        String _tem = _artist["biography"];
-        while (_tem.contains("<a") && _tem.contains("a>")) {
-          String _sub1 = "";
-          String _sub2 = "";
-          _sub1 = _tem.substring(0, _tem.indexOf("<a"));
-          _sub2 = _tem.substring(_tem.indexOf("a>") + 2, _tem.length);
-          _tem = _sub1 + _sub2;
+  _getArtistInfo2(String artistId) async {
+    final artist = await getArtistInfo2(artistId);
+    if (artist != null) {
+      if (artist["biography"] != null) {
+        String tem = artist["biography"];
+        while (tem.contains("<a") && tem.contains("a>")) {
+          String sub1 = "";
+          String sub2 = "";
+          sub1 = tem.substring(0, tem.indexOf("<a"));
+          sub2 = tem.substring(tem.indexOf("a>") + 2, tem.length);
+          tem = sub1 + sub2;
         }
 
-        biography.value = _tem;
+        biography.value = tem;
       }
 
-      if (_artist["similarArtist"] != null &&
-          _artist["similarArtist"].length > 0) {
-        List _similarList = [];
-        for (var _element in _artist["similarArtist"]) {
-          _element["coverUrl"] = getCoverArt(_element["id"]);
-          _similarList.add(_element);
+      if (artist["similarArtist"] != null &&
+          artist["similarArtist"].length > 0) {
+        List similarList = [];
+        for (var element in artist["similarArtist"]) {
+          element["coverUrl"] = getCoverArt(element["id"]);
+          similarList.add(element);
         }
-        similarArtist.value = _similarList;
+        similarArtist.value = similarList;
       }
     }
   }

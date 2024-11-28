@@ -8,27 +8,27 @@ class ArtistsController extends GetxController {
   int artistsnum = 0;
 
   _getArtists() async {
-    final _artistsList = await getArtists();
-    if (_artistsList != null) {
-      List<Artists> _list = [];
-      List<bool> _startem = [];
-      for (var _element in _artistsList["index"]) {
-        var _temp = _element["artist"];
-        for (var element in _temp) {
-          String _url = getCoverArt(element["id"]);
-          element["artistImageUrl"] = _url;
+    final artistsList = await getArtists();
+    if (artistsList != null) {
+      List<Artists> list = [];
+      List<bool> startem = [];
+      for (var element in artistsList["index"]) {
+        var temp = element["artist"];
+        for (var element in temp) {
+          String url = getCoverArt(element["id"]);
+          element["artistImageUrl"] = url;
           if (element["starred"] != null) {
-            _startem.add(true);
+            startem.add(true);
           } else {
-            _startem.add(false);
+            startem.add(false);
           }
-          Artists _artist = Artists.fromJson(element);
-          _list.add(_artist);
+          Artists artist = Artists.fromJson(element);
+          list.add(artist);
         }
       }
 
-      artists(_list);
-      star(_startem);
+      artists(list);
+      star(startem);
     }
   }
 

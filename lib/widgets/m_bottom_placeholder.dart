@@ -10,9 +10,8 @@ class MBottomPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: isMobile ? bottomHeight : 0),
-      child: SizedBox(
+    return Column(children: [
+      SizedBox(
         height: 48,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -42,6 +41,9 @@ class MBottomPlaceholder extends StatelessWidget {
           ],
         ),
       ),
-    );
+      SizedBox(
+        height: isMobile ? bottomHeight : 0,
+      )
+    ]);
   }
 }

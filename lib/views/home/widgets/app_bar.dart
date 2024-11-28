@@ -12,7 +12,7 @@ class HomeAppBar extends StatefulWidget {
 }
 
 class _HomeAppBarState extends State<HomeAppBar> {
-  final _searchController = new TextEditingController();
+  final _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
   Widget _search() {
     return Row(
       children: [
-        Container(
+        SizedBox(
           width: 300,
           height: 36,
           child: TextField(

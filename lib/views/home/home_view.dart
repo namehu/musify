@@ -9,7 +9,7 @@ import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
 import '../../models/notifierValue.dart';
 import '../../util/mycss.dart';
-import 'widgets/indexScreen.dart';
+import 'widgets/home_view_pc.dart';
 
 class HomeViewBinding implements Bindings {
   @override
@@ -22,6 +22,8 @@ class HomeView extends GetResponsiveView<HomeController> {
   final serverService = Get.find<ServerService>();
   final player = AudioPlayerService.player;
 
+  HomeView({super.key});
+
   @override
   Widget desktop() {
     final GlobalKey<ScaffoldState> myLeftStateKey = GlobalKey<ScaffoldState>();
@@ -33,15 +35,13 @@ class HomeView extends GetResponsiveView<HomeController> {
       resizeToAvoidBottomInset: false,
       body: Row(
         children: [
-          Container(
+          SizedBox(
             width: windowsWidth.value - drawerWidth,
             child: Obx(
               () {
                 var isNotEmpty =
                     serverService.serverInfo.value.baseurl.isNotEmpty;
-                return isNotEmpty
-                    ? Container(child: IndexScreen())
-                    : Container();
+                return isNotEmpty ? IndexScreen() : Container();
               },
             ),
           )
@@ -66,7 +66,7 @@ class HomeView extends GetResponsiveView<HomeController> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 width: 150,
                 height: appBarHeight,
                 child: TabBar(
@@ -79,13 +79,16 @@ class HomeView extends GetResponsiveView<HomeController> {
             ],
           ),
           actions: [
-            Container(
+            SizedBox(
               width: 56,
               child: IconButton(
                 onPressed: () {
                   Get.toNamed(Routes.SETTING);
                 },
-                icon: Icon(Icons.settings),
+                icon: Icon(
+                  Icons.settings,
+                  size: 20,
+                ),
               ),
             )
           ],
@@ -101,16 +104,16 @@ class HomeView extends GetResponsiveView<HomeController> {
       builder: (context, orientation) {
         if (orientation == Orientation.landscape) {
           if (windowsWidth.value < windowsHeight.value) {
-            double _tem = windowsWidth.value;
+            double tem = windowsWidth.value;
             windowsWidth.value = windowsHeight.value;
-            windowsHeight.value = _tem;
+            windowsHeight.value = tem;
           }
         }
         if (orientation == Orientation.portrait) {
           if (windowsWidth.value > windowsHeight.value) {
-            double _tem = windowsWidth.value;
+            double tem = windowsWidth.value;
             windowsWidth.value = windowsHeight.value;
-            windowsHeight.value = _tem;
+            windowsHeight.value = tem;
           }
         }
         return TabBarView(children: [

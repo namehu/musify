@@ -27,7 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "allSong": MessageLookupByLibrary.simpleMessage("全部歌曲"),
         "appName": MessageLookupByLibrary.simpleMessage("Musify"),
         "appearance": MessageLookupByLibrary.simpleMessage("外观"),
-        "artist": MessageLookupByLibrary.simpleMessage("艺人"),
+        "artist": MessageLookupByLibrary.simpleMessage("歌手"),
         "binding": MessageLookupByLibrary.simpleMessage("绑定"),
         "bitRange": MessageLookupByLibrary.simpleMessage("比特率"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),

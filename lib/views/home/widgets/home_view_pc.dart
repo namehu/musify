@@ -8,38 +8,39 @@ import '../../../screens/common/mySliverControlBar.dart';
 import '../../../screens/common/mySliverControlList.dart';
 
 class IndexScreen extends StatefulWidget {
-  const IndexScreen({Key? key}) : super(key: key);
+  const IndexScreen({super.key});
+
   @override
-  _IndexScreenState createState() => _IndexScreenState();
+  State<IndexScreen> createState() => _IndexScreenState();
 }
 
 class _IndexScreenState extends State<IndexScreen> {
-  ScrollController _recentAlbumscontroller = ScrollController();
-  ScrollController _lastAlbumcontroller = ScrollController();
-  ScrollController _randomAlbumcontroller = ScrollController();
-  ScrollController _mostAlbumscontroller = ScrollController();
+  final ScrollController _recentAlbumscontroller = ScrollController();
+  final ScrollController _lastAlbumcontroller = ScrollController();
+  final ScrollController _randomAlbumcontroller = ScrollController();
+  final ScrollController _mostAlbumscontroller = ScrollController();
   List<Albums>? _randomalbums;
   List<Albums>? _lastalbums;
   List<Albums>? _mostalbums;
   List<Albums>? _recentalbums;
 
   _getAlbuoms(AlbumListTypeEnum type) async {
-    List<Albums> _list =
+    List<Albums> list =
         await MRequest.api.getAlbumList(pageNum: 1, pageSize: 10, type: type);
-    if (_list.isNotEmpty && mounted) {
+    if (list.isNotEmpty && mounted) {
       setState(() {
         switch (type) {
           case AlbumListTypeEnum.random:
-            _randomalbums = _list;
+            _randomalbums = list;
             break;
           case AlbumListTypeEnum.frequent:
-            _mostalbums = _list;
+            _mostalbums = list;
             break;
           case AlbumListTypeEnum.newest:
-            _lastalbums = _list;
+            _lastalbums = list;
             break;
           case AlbumListTypeEnum.recent:
-            _recentalbums = _list;
+            _recentalbums = list;
             break;
           default:
         }
@@ -69,43 +70,43 @@ class _IndexScreenState extends State<IndexScreen> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: <Widget>[
-        if (_randomalbums != null && _randomalbums!.length > 0)
+        if (_randomalbums != null && _randomalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlBar(
             title: S.current.random,
             controller: _randomAlbumcontroller,
           )),
-        if (_randomalbums != null && _randomalbums!.length > 0)
+        if (_randomalbums != null && _randomalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlList(
                   controller: _randomAlbumcontroller, albums: _randomalbums!)),
-        if (_mostalbums != null && _mostalbums!.length > 0)
+        if (_mostalbums != null && _mostalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlBar(
             title: S.current.play + S.current.most,
             controller: _mostAlbumscontroller,
           )),
-        if (_mostalbums != null && _mostalbums!.length > 0)
+        if (_mostalbums != null && _mostalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlList(
                   controller: _mostAlbumscontroller, albums: _mostalbums!)),
-        if (_recentalbums != null && _recentalbums!.length > 0)
+        if (_recentalbums != null && _recentalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlBar(
             title: S.current.last + S.current.play,
             controller: _recentAlbumscontroller,
           )),
-        if (_recentalbums != null && _recentalbums!.length > 0)
+        if (_recentalbums != null && _recentalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlList(
                   controller: _recentAlbumscontroller, albums: _recentalbums!)),
-        if (_lastalbums != null && _lastalbums!.length > 0)
+        if (_lastalbums != null && _lastalbums!.isNotEmpty)
           SliverToBoxAdapter(
               child: MySliverControlBar(
             title: S.current.last + S.current.add,
             controller: _lastAlbumcontroller,
           )),
-        if (_lastalbums != null && _lastalbums!.length > 0)
+        if (_lastalbums != null && _lastalbums!.isNotEmpty)
           SliverToBoxAdapter(
             child: MySliverControlList(
                 controller: _lastAlbumcontroller, albums: _lastalbums!),

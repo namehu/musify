@@ -42,21 +42,6 @@ const Color darkTextColor = Color.fromRGBO(255, 255, 255, 0.85);
 const dialogBackgroundColor = Color.fromARGB(255, 52, 53, 54);
 
 var primaryColor = createMaterialColor(Color.fromARGB(255, 240, 87, 91));
-// const primaryColor = MaterialColor(
-//   -1436359,
-//   const <int, Color>{
-//     50: const Color(-1436359),
-//     100: const Color(-1436359),
-//     200: const Color(-1436359),
-//     300: const Color(-1436359),
-//     400: const Color(-1436359),
-//     500: const Color(-1436359),
-//     600: const Color(-1436359),
-//     700: const Color(-1436359),
-//     800: const Color(-1436359),
-//     900: const Color(-1436359),
-//   },
-// );
 
 typedef ColorMapType = ({
   Color titleColor, // 标题文本
@@ -65,10 +50,14 @@ typedef ColorMapType = ({
   Color textSecondColor, // 二级文本
   Color textPrimaryColor, // 文本主色
   Color textDisabledColor, // 禁用字体
+
   Color borderColor, // 边框颜色
   Color dividerColor, // 分割线颜色
+
   Color bgColor, // 背景色
   Color secondBgColor, // 次级背景色
+  Color thirdBgColor, // 三级级背景色
+
   Color dialogBackgroundColor, // 弹窗给背景色
   Color cardColor, // 卡片背景颜色
   Color iconColor, // 图标颜色
@@ -91,6 +80,7 @@ ColorMapType normalColorMap = (
   dividerColor: gray5,
   bgColor: gray1,
   secondBgColor: gray2,
+  thirdBgColor: gray4,
   dialogBackgroundColor: gray1,
   cardColor: Colors.white,
   iconColor: gray7,
@@ -111,6 +101,7 @@ ColorMapType darkColorMap = (
   dividerColor: Color.fromRGBO(253, 253, 253, 0.12),
   bgColor: gray13,
   secondBgColor: gray11,
+  thirdBgColor: gray9,
   dialogBackgroundColor: dialogBackgroundColor,
   cardColor: gray9,
   iconColor: gray2,

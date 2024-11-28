@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/util/httpclient.dart';
-
 import '../../generated/l10n.dart';
 
 class FavoritesController extends GetxController {
@@ -16,26 +15,17 @@ class FavoritesController extends GetxController {
   var artistsFav = <bool>[].obs;
 
   String get songFavText {
-    return S.current.song +
-        '(' +
-        songsFav.value.where((it) => it).length.toString() +
-        ')';
+    return '${S.current.song}(${songsFav.value.where((it) => it).length})';
   }
 
   String get albumsFavCountText {
-    return S.current.album +
-        '(' +
-        albumsFav.value.where((it) => it).length.toString() +
-        ')';
+    return '${S.current.album}(${albumsFav.value.where((it) => it).length})';
   }
 
   String get artistsFavCountText {
-    var _str = S.current.artist;
-    _str = S.current.artist +
-        '(' +
-        artistsFav.value.where((it) => it).length.toString() +
-        ')';
-    return _str;
+    var str = S.current.artist;
+    str = '${S.current.artist}(${artistsFav.value.where((it) => it).length})';
+    return str;
   }
 
   @override
@@ -45,48 +35,48 @@ class FavoritesController extends GetxController {
   }
 
   _getFavorite() async {
-    final _favoriteList = await getStarred();
+    final favoriteList = await getStarred();
 
-    if (_favoriteList != null) {
-      var _songs = _favoriteList["song"];
-      var _albums = _favoriteList["album"];
-      var _artists = _favoriteList["artist"];
+    if (favoriteList != null) {
+      var songs = favoriteList["song"];
+      var albums = favoriteList["album"];
+      var artists = favoriteList["artist"];
 
-      List<Songs> _songs1 = [];
-      List<Albums> _albums1 = [];
-      List<Artists> _artists1 = [];
+      List<Songs> songs1 = [];
+      List<Albums> albums1 = [];
+      List<Artists> artists1 = [];
 
-      if (_songs != null && _songs.length > 0) {
-        for (var _song in _songs) {
-          String _stream = await getServerInfo("stream");
-          String _url = await getCoverArt(_song["id"]);
-          _song["stream"] = _stream + '&id=' + _song["id"];
-          _song["coverUrl"] = _url;
-          _songs1.add(Songs.fromJson(_song));
+      if (songs != null && songs.length > 0) {
+        for (var song in songs) {
+          String stream = await getServerInfo("stream");
+          String url = await getCoverArt(song["id"]);
+          song["stream"] = '$stream&id=${song["id"]}';
+          song["coverUrl"] = url;
+          songs1.add(Songs.fromJson(song));
           songsFav.add(true);
         }
       }
-      songs(_songs1);
+      songs(songs1);
 
-      if (_albums != null && _albums.length > 0) {
-        for (var _album in _albums) {
-          String _url = await getCoverArt(_album["id"]);
-          _album["coverUrl"] = _url;
-          _albums1.add(Albums.fromJson(_album));
+      if (albums != null && albums.length > 0) {
+        for (var album in albums) {
+          String url = await getCoverArt(album["id"]);
+          album["coverUrl"] = url;
+          albums1.add(Albums.fromJson(album));
           albumsFav.add(true);
         }
       }
-      albums(_albums1);
+      albums(albums1);
 
-      if (_artists != null && _artists.length > 0) {
-        for (var _artist in _artists) {
-          String _url = await getCoverArt(_artist["id"]);
-          _artist["artistImageUrl"] = _url;
-          _artists1.add(Artists.fromJson(_artist));
+      if (artists != null && artists.length > 0) {
+        for (var artist in artists) {
+          String url = await getCoverArt(artist["id"]);
+          artist["artistImageUrl"] = url;
+          artists1.add(Artists.fromJson(artist));
           artistsFav.add(true);
         }
       }
-      artists(_artists1);
+      artists(artists1);
     }
   }
 }

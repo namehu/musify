@@ -25,13 +25,13 @@ class MText extends StatelessWidget {
   });
 
   TextStyle get _textStyle {
-    var _style = style ?? TextStyle();
-    var _color = type == MTextTypeEnum.primary
+    var st = style ?? TextStyle();
+    var co = type == MTextTypeEnum.primary
         ? null
         : ThemeService.color.textSecondColor;
 
-    _style = _style.copyWith(color: _style.color ?? _color);
-    return _style;
+    st = st.copyWith(color: st.color ?? co);
+    return st;
   }
 
   @override
