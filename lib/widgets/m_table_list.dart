@@ -41,7 +41,7 @@ class MTableList extends StatelessWidget {
     for (var i = 0; i < data.length; i++) {
       var item = data[i];
 
-      Widget _child = item.child ??
+      Widget child = item.child ??
           MText(
             text: item.text!,
             maxLines: 1,
@@ -53,7 +53,7 @@ class MTableList extends StatelessWidget {
           children.add(
             Expanded(
               flex: item.flex!,
-              child: _child,
+              child: child,
             ),
           );
         } else {
@@ -61,7 +61,7 @@ class MTableList extends StatelessWidget {
             Container(
               alignment: Alignment.centerLeft,
               width: item.width!,
-              child: _child,
+              child: child,
             ),
           );
         }

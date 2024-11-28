@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:path/path.dart';
@@ -40,8 +42,8 @@ class DbProvider {
     );
   }
 
-  void _onCreate(Database _database, int _version) async {
-    await _database.execute('''
+  void _onCreate(Database database, int version) async {
+    await database.execute('''
               create table $ServerInfoTable (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 serverType TEXT NOT NULL,
@@ -57,7 +59,7 @@ class DbProvider {
               )
         ''');
 
-    await _database.execute('''
+    await database.execute('''
               create table $SongsAndLyricTable (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 lyric TEXT NOT NULL,
@@ -66,11 +68,11 @@ class DbProvider {
         ''');
   }
 
-  addServerInfo(ServerInfo _info) async {
+  addServerInfo(ServerInfo info) async {
     try {
       final db = await instance.db;
       Batch batch = db.batch();
-      batch.insert(ServerInfoTable, _info.toJson());
+      batch.insert(ServerInfoTable, info.toJson());
       var res = await batch.commit(noResult: true);
       return res;
     } catch (err) {
@@ -78,14 +80,14 @@ class DbProvider {
     }
   }
 
-  updateServerInfo(ServerInfo _info) async {
+  updateServerInfo(ServerInfo info) async {
     try {
       final db = await instance.db;
       var res = await db.update(
         ServerInfoTable,
-        _info.toJson(),
+        info.toJson(),
         where: 'id = ?',
-        whereArgs: [_info.id],
+        whereArgs: [info.id],
       );
       return res;
     } catch (err) {
@@ -125,7 +127,7 @@ class DbProvider {
     try {
       final db = await instance.db;
       var res = await db.query(ServerInfoTable);
-      if (res.length > 0) {
+      if (res.isNotEmpty) {
         lists = res.map((e) => ServerInfo.fromJson(e)).toList();
       }
     } catch (err) {
@@ -135,14 +137,14 @@ class DbProvider {
     return lists;
   }
 
-  addSongsAndLyricTable(SongsAndLyric _artists) async {
+  addSongsAndLyricTable(SongsAndLyric artists) async {
     try {
       final db = await instance.db;
       Batch batch = db.batch();
       batch.delete(SongsAndLyricTable,
-          where: "songId = ?", whereArgs: [_artists.songId]);
+          where: "songId = ?", whereArgs: [artists.songId]);
       await batch.commit(noResult: true);
-      batch.insert(SongsAndLyricTable, _artists.toJson());
+      batch.insert(SongsAndLyricTable, artists.toJson());
       var res = await batch.commit(noResult: true);
       return res;
     } catch (err) {
@@ -150,16 +152,16 @@ class DbProvider {
     }
   }
 
-  getLyricById(String _songId) async {
+  getLyricById(String songId) async {
     try {
       final db = await instance.db;
       var res = await db
-          .query(SongsAndLyricTable, where: "songId = ?", whereArgs: [_songId]);
-      if (res.length == 0) return null;
+          .query(SongsAndLyricTable, where: "songId = ?", whereArgs: [songId]);
+      if (res.isEmpty) return null;
       List<SongsAndLyric> lists =
           res.map((e) => SongsAndLyric.fromJson(e)).toList();
-      SongsAndLyric _result = lists[0];
-      return _result.lyric;
+      SongsAndLyric result = lists[0];
+      return result.lyric;
     } catch (err) {
       print('err is 👉 $err');
     }

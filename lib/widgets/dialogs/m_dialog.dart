@@ -16,7 +16,7 @@ class MDialog extends StatelessWidget {
   final void Function()? onOk;
   final void Function()? onClose;
 
-  MDialog({
+  const MDialog({
     super.key,
     this.width,
     this.title = '',
@@ -35,7 +35,7 @@ class MDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _width = this.width ?? (isMobile ? 320 : 480);
+    var width = this.width ?? (isMobile ? 320 : 480);
 
     return GestureDetector(
       onTap: () {
@@ -55,7 +55,7 @@ class MDialog extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: StyleProperty.borderRadius,
                   child: Container(
-                    width: _width,
+                    width: width,
                     constraints: BoxConstraints(
                       minHeight: 150,
                     ),

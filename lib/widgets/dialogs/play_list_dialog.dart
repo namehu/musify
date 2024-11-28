@@ -65,7 +65,7 @@ Future<dynamic> showPlayListDialog({
                 // border: InputBorder.none,
               ),
               validator: (value) {
-                RegExp reg = new RegExp(r'^.{2,12}$');
+                RegExp reg = RegExp(r'^.{2,12}$');
                 if (!reg.hasMatch(value!)) {
                   return '请输入歌单名称';
                 }

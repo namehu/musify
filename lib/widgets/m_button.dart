@@ -16,7 +16,7 @@ class MButton extends StatelessWidget {
   final double? width;
   final VoidCallback? onTap;
 
-  MButton({
+  const MButton({
     Key? key,
     required this.title,
     this.type = ButtonType.primary,

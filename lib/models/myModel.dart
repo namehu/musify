@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, unnecessary_this, prefer_collection_literals, unnecessary_new, no_leading_underscores_for_local_identifiers
+
 class PositionData {
   final Duration position;
   final Duration bufferedPosition;
@@ -213,10 +215,10 @@ class Albums {
     artistId = json['artistId'] ?? '';
     title = json['title'] ?? '';
     artist = json['artist'] ?? '';
-    genre = json['genre'] == null ? "" : json['genre'];
-    year = json['year'] == null ? 0 : json['year'];
-    duration = json['duration'] == null ? 0 : json['duration'];
-    playCount = json['playCount'] == null ? 0 : json['playCount'];
+    genre = json['genre'] ?? "";
+    year = json['year'] ?? 0;
+    duration = json['duration'] ?? 0;
+    playCount = json['playCount'] ?? 0;
     songCount = json['songCount'] ?? 0;
     created = json['created'] ?? '';
     coverUrl = json['coverUrl'] ?? '';

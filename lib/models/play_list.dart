@@ -39,18 +39,18 @@ class Playlist {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = new Map<String, dynamic>();
-    _data['id'] = this.id;
-    _data['name'] = this.name;
-    _data['songCount'] = this.songCount;
-    _data['duration'] = this.duration;
-    _data['public'] = this.public;
-    _data['owner'] = this.owner;
-    _data['created'] = this.created;
-    _data['changed'] = this.changed;
-    _data['imageUrl'] = this.imageUrl;
-    _data['songs'] = this.songs!.toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['songCount'] = songCount;
+    data['duration'] = duration;
+    data['public'] = public;
+    data['owner'] = owner;
+    data['created'] = created;
+    data['changed'] = changed;
+    data['imageUrl'] = imageUrl;
+    data['songs'] = songs!.toList();
 
-    return _data;
+    return data;
   }
 }

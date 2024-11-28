@@ -43,6 +43,7 @@ dependencies:
   popover: ^0.3.1
   logger: ^2.5.0
   rxdart: ^0.28.0
+  path_provider: ^2.1.5
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0
