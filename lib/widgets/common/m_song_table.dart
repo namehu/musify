@@ -57,6 +57,7 @@ class MSongTableRow extends StatelessWidget {
         }
       },
       child: Container(
+        color: ThemeService.color.secondBgColor,
         height: StyleSize.listItemLargeHeight,
         child: MTableList(
           data: [

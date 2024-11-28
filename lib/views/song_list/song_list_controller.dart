@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/services/audio_player_service.dart';
 
 class SongListController extends GetxController {
-  static const _pageSize = 100;
+  ScrollController scrollController = ScrollController();
+
+  static const _pageSize = 500;
   RxList<Songs> songs = <Songs>[].obs;
+  RxBool showTitle = false.obs;
 
   final PagingController<int, Songs> pagingController =
       PagingController(firstPageKey: 0);
@@ -17,6 +22,10 @@ class SongListController extends GetxController {
     pagingController.addPageRequestListener((pageKey) {
       _getSongs(pageKey);
     });
+
+    scrollController.addListener(() {
+      showTitle(scrollController.offset > 150);
+    });
   }
 
   @override
@@ -25,19 +34,23 @@ class SongListController extends GetxController {
     super.onClose();
   }
 
+  playSong([int? index = 0]) {
+    Get.find<AudioPlayerService>().palySongList(songs, index: index);
+  }
+
   _getSongs(int pageKey) async {
     var pageNum = ((pageKey / _pageSize) + 1).toInt();
-    List<Songs> _list = await MRequest.api.getSongs(
+    List<Songs> list = await MRequest.api.getSongs(
       pageSize: _pageSize,
       pageNum: pageNum,
     );
 
-    final isLastPage = _list.length < _pageSize;
+    final isLastPage = list.length >= _pageSize;
     if (isLastPage) {
-      pagingController.appendLastPage(_list);
+      pagingController.appendLastPage(list);
     } else {
-      final nextPageKey = pageKey + _list.length;
-      pagingController.appendPage(_list, nextPageKey);
+      final nextPageKey = pageKey + list.length;
+      pagingController.appendPage(list, nextPageKey);
     }
   }
 }

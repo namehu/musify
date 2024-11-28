@@ -17,7 +17,6 @@ import 'package:musify/util/audioTools.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'package:musify/widgets/music_bar/play_list_modal.dart';
-
 import '../models/myModel.dart';
 
 class HideMusicBarEvent {
@@ -107,9 +106,9 @@ class AudioPlayerService extends GetxService {
         // isFirstSongNotifier.value = playlist.first == currentItem;
         // isLastSongNotifier.value = playlist.last == currentItem;
 
-        MediaItem _tag = currentItem.tag;
-        scrobble(_tag.id, false);
-        await getSongDetail(_tag.id);
+        MediaItem mediaItem = currentItem.tag;
+        scrobble(mediaItem.id, false);
+        await getSongDetail(mediaItem.id);
       }
     });
 
@@ -130,7 +129,7 @@ class AudioPlayerService extends GetxService {
     await showMaterialModalBottomSheet(
       context: context,
       isDismissible: false,
-      builder: (BuildContext _contenxt) => PlayListModal(),
+      builder: (BuildContext ctx) => PlayListModal(),
     );
   }
 
@@ -143,22 +142,22 @@ class AudioPlayerService extends GetxService {
     Songs? song,
     int? index = 0,
   }) {
-    int _index = index!;
+    int idx = index!;
     if (song != null) {
-      _index = songs.indexWhere((element) => element.id == song.id);
+      idx = songs.indexWhere((element) => element.id == song.id);
 
-      if (_index < 0) {
+      if (idx < 0) {
         return MToast.show(S.current.noContent);
       }
     }
 
-    Songs _song = song ?? songs[_index];
+    Songs playSong = song ?? songs[idx];
 
     if (listEquals(playSongs.value, songs)) {
-      player.seek(Duration.zero, index: _index);
+      player.seek(Duration.zero, index: idx);
     } else {
-      activeSongValue.value = _song.id;
-      currentSongIndex(_index);
+      activeSongValue.value = playSong.id;
+      currentSongIndex(idx);
       playSongs(songs); //歌曲所在专辑歌曲List
     }
   }
@@ -212,20 +211,19 @@ class AudioPlayerService extends GetxService {
     }
 
     List<AudioSource> children = [];
-    for (var element in songs) {
-      Songs _song = element;
-      if (_song.suffix != "ape") {
+    for (var el in songs) {
+      if (el.suffix != "ape") {
         children.add(
           AudioSource.uri(
-            Uri.parse(_song.stream),
+            Uri.parse(el.stream),
             tag: MediaItem(
-              id: _song.id,
-              album: _song.album,
-              artist: _song.artist,
-              genre: _song.genre,
-              title: _song.title,
-              duration: Duration(milliseconds: _song.duration.toInt()),
-              artUri: Uri.parse(getCoverArt(_song.id)),
+              id: el.id,
+              album: el.album,
+              artist: el.artist,
+              genre: el.genre,
+              title: el.title,
+              duration: Duration(milliseconds: el.duration.toInt()),
+              artUri: Uri.parse(getCoverArt(el.id)),
             ),
           ),
         );
@@ -244,8 +242,8 @@ class AudioPlayerService extends GetxService {
     player.play();
 
     final currentItem = player.sequenceState!.currentSource;
-    MediaItem _tag = currentItem?.tag;
+    MediaItem mediaItem = currentItem?.tag;
 
-    await getSongDetail(_tag.id);
+    await getSongDetail(mediaItem.id);
   }
 }

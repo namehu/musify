@@ -11,6 +11,8 @@ class MCover extends StatelessWidget {
   final String url;
   final double? radius;
   final double? size;
+  final String? placeholderImage;
+  final Color? placeholderColor;
 
   @Deprecated('')
   final bool? round;
@@ -24,6 +26,8 @@ class MCover extends StatelessWidget {
     this.size,
     this.shape = MCoverShapeEnum.squareRound,
     this.round = false,
+    this.placeholderColor,
+    this.placeholderImage = mylogoAsset,
   });
 
   @override
@@ -43,24 +47,49 @@ class MCover extends StatelessWidget {
   }
 
   _buildChild() {
-    return (url.isEmpty)
-        ? Image.asset(mylogoAsset, width: size, height: size)
-        : CachedNetworkImage(
-            imageUrl: url,
-            width: size,
-            height: size,
-            fit: BoxFit.cover,
-            placeholder: (context, url) {
-              return LoadingAnimationWidget.staggeredDotsWave(
-                color: gray6,
-                size: 40,
-              );
-            },
-            errorWidget: (ctx, s, ss) => Image.asset(
-              'assets/images/icon_album.png',
-              width: size,
-              height: size,
-            ),
+    if (url.isNotEmpty) {
+      return CachedNetworkImage(
+        imageUrl: url,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        placeholder: (context, url) {
+          return LoadingAnimationWidget.threeArchedCircle(
+            color: gray5,
+            size: 32,
           );
+        },
+        errorWidget: (ctx, s, ss) => Image.asset(
+          'assets/images/icon_album.png',
+          width: size,
+          height: size,
+        ),
+      );
+    }
+
+    if (placeholderColor != null) {
+      return Container(
+        width: size,
+        height: size,
+        color: placeholderColor!,
+      );
+    }
+
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Center(
+        child: LoadingAnimationWidget.threeArchedCircle(
+          color: gray5,
+          size: 32,
+        ),
+      ),
+    );
+    // return Image.asset(
+    //   placeholderImage!,
+    //   width: size,
+    //   height: size,
+    //   fit: BoxFit.cover,
+    // );
   }
 }

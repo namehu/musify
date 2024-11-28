@@ -4,11 +4,15 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/common/m_media_bar.dart';
 import 'package:musify/widgets/common/m_song_table.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../styles/size.dart';
+import '../../widgets/sliver/sliver_header_delegate.dart';
 import 'song_list_controller.dart';
+import 'widgets/phone_bar.dart';
 
 class SongListBinding implements Bindings {
   @override
@@ -17,9 +21,64 @@ class SongListBinding implements Bindings {
   }
 }
 
-class SongListView extends GetView<SongListController> {
+class SongListView extends GetResponsiveView<SongListController> {
+  SongListView({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget phone() {
+    return Scaffold(
+      body: CustomScrollView(
+        controller: controller.scrollController,
+        slivers: [
+          SliverAppBar(
+            pinned: true, // 滑动到顶端时会固定住
+            expandedHeight: 200.0,
+            leading: InkWell(
+              onTap: () => Get.back(),
+              child: Icon(Icons.arrow_back_ios_outlined),
+            ),
+            title: Obx(() {
+              return controller.showTitle.value
+                  ? Text(S.current.allSong)
+                  : Container();
+            }),
+            flexibleSpace: ValueListenableBuilder(
+                valueListenable: controller.pagingController,
+                builder: (c, ctr, cc) {
+                  var list = ctr.itemList ?? [];
+                  var song = list.firstOrNull;
+
+                  return PhoneBar(
+                      title: S.current.allSong, cover: song?.coverUrl);
+                }),
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: SliverHeaderDelegate(
+              maxHeight: 48,
+              minHeight: 48,
+              child: _buildPhoneHeader(),
+            ),
+          ),
+          PagedSliverList<int, Songs>(
+            pagingController: controller.pagingController,
+            builderDelegate: PagedChildBuilderDelegate(
+              itemBuilder: (context, item, index) => _buildItem(item, index),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              margin: EdgeInsets.only(top: StyleSize.space),
+              child: MBottomPlaceholder(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget desktop() {
     return Scaffold(
       appBar: MMediaBar(
         title: Text(S.current.allSong),
@@ -48,7 +107,8 @@ class SongListView extends GetView<SongListController> {
                 PagedSliverList<int, Songs>(
                   pagingController: controller.pagingController,
                   builderDelegate: PagedChildBuilderDelegate(
-                    itemBuilder: (context, item, index) => _buildItem(index),
+                    itemBuilder: (context, item, index) =>
+                        _buildItem(item, index),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -65,13 +125,67 @@ class SongListView extends GetView<SongListController> {
     );
   }
 
-  _buildItem(int index) {
-    var _songs = controller.pagingController.itemList!;
+  // 构建 header
+  Widget _buildPhoneHeader() {
+    return Container(
+      color: gray1,
+      child: Align(
+        // alignment: Alignment(0, -2),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(50),
+            topRight: Radius.circular(StyleSize.borderRadius),
+          ),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(
+              horizontal: StyleSize.space,
+            ),
+            decoration: BoxDecoration(
+              color: ThemeService.color.secondBgColor,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: controller.playSong,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.play_circle,
+                        size: 36,
+                        color: ThemeService.color.primaryColor,
+                      ),
+                      SizedBox(width: StyleSize.spaceSmall),
+                      Text(S.current.playAll),
+                    ],
+                  ),
+                ),
+                SizedBox(width: StyleSize.space),
+                InkWell(
+                  onTap: () {
+                    // TODO: 实现歌单详情页
+                  },
+                  child: Icon(
+                    Icons.my_location,
+                    color: ThemeService.color.iconColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildItem(Songs songs, int index) {
+    // var songs = controller.pagingController.itemList!;
     return MSongTableRow(
-      song: _songs[index],
+      song: songs,
       index: index,
       onTap: () {
-        Get.find<AudioPlayerService>().palySongList(_songs, index: index);
+        controller.playSong();
       },
     );
   }

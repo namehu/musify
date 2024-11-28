@@ -45,7 +45,7 @@ class HomeTabView extends StatelessWidget {
                   width: StyleSize.spaceSmall,
                 ),
                 Icon(
-                  Icons.list,
+                  Icons.more_horiz,
                   color: ThemeService.color.textSecondColor,
                 ),
               ],
@@ -149,7 +149,7 @@ class HomeTabView extends StatelessWidget {
       constraints: BoxConstraints(maxHeight: 220),
       padding: EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-        color: ThemeService.color.thirdBgColor,
+        // color: ThemeService.color.secondBgColor,
         borderRadius: BorderRadius.all(
           Radius.circular(StyleSize.borderRadius),
         ),

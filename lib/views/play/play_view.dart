@@ -25,6 +25,8 @@ class PlayView extends GetResponsiveView<PlayController> {
   final double _appBarHeight = 96;
   final double commonPadding = 30;
 
+  PlayView({super.key});
+
   @override
   Widget phone() {
     return DefaultTabController(
@@ -57,7 +59,7 @@ class PlayView extends GetResponsiveView<PlayController> {
               Icons.keyboard_arrow_down,
             )),
         title: Center(
-          child: Container(
+          child: SizedBox(
             width: 190,
             child: TabBar(
               dividerHeight: 0,
@@ -155,62 +157,59 @@ class PlayView extends GetResponsiveView<PlayController> {
   Widget _buildHeader() {
     return Obx(() {
       var value = controller.audioPlayerService.currentSong.value;
-      return Container(
-        child: Column(
-          children: [
-            Container(
-              width: 320,
-              height: 320,
-              child: MCover(
-                url: value.coverUrl,
-                shape: MCoverShapeEnum.squareRound,
-              ),
+      return Column(
+        children: [
+          SizedBox(
+            width: 320,
+            height: 320,
+            child: MCover(
+              url: value.coverUrl,
+              shape: MCoverShapeEnum.squareRound,
             ),
-            Container(
-              margin: EdgeInsets.only(
-                  top: StyleSize.space, bottom: StyleSize.spaceSmall),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: MText(
-                      text: (value.title.isEmpty)
-                          ? S.current.unknown
-                          : value.title,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: gray1,
-                      ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+                top: StyleSize.space, bottom: StyleSize.spaceSmall),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: MText(
+                    text:
+                        (value.title.isEmpty) ? S.current.unknown : value.title,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: gray1,
                     ),
                   ),
-                  InkWell(
-                      onTap: () {},
-                      child: Icon(
-                        Icons.more_vert,
-                        color: ThemeService.color.iconColor,
-                      ))
-                ],
-              ),
+                ),
+                InkWell(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.more_vert,
+                      color: ThemeService.color.iconColor,
+                    ))
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    (value.artist.isEmpty) ? S.current.unknown : value.artist,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: gray1),
-                  ),
-                  PlayStarIcon(),
-                ],
-              ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  (value.artist.isEmpty) ? S.current.unknown : value.artist,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: gray1),
+                ),
+                PlayStarIcon(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       );
     });
   }
