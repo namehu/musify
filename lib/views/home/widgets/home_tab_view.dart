@@ -146,14 +146,47 @@ class HomeTabView extends StatelessWidget {
 
   Widget _summaryCard() {
     return Container(
-      constraints: BoxConstraints(maxHeight: 220),
-      padding: EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        // color: ThemeService.color.secondBgColor,
-        borderRadius: BorderRadius.all(
-          Radius.circular(StyleSize.borderRadius),
-        ),
+      padding: EdgeInsets.symmetric(vertical: StyleSize.space),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              _summaryItem(Icons.library_music, S.current.allSong, () {
+                Get.toNamed(Routes.SONG_LIST);
+              }),
+              _summaryItem(Icons.favorite, S.current.favorite, () {
+                Get.toNamed(Routes.FAVORITE);
+              }),
+              _summaryItem(Icons.download, S.current.download, () {
+                // TODO: not do
+                MToast.show('comming soon');
+              }),
+            ],
+          ),
+          SizedBox(height: StyleSize.spaceLarge),
+          Row(
+            children: [
+              _summaryItem(Icons.album, S.current.album, () {
+                Get.toNamed(Routes.ALBUM_LIST);
+              }),
+              _summaryItem(Icons.person, S.current.artist, () {
+                Get.toNamed(Routes.ARTISTS);
+              }),
+              _summaryItem(Icons.folder, S.current.directory, () {
+                // TODO: not do
+                MToast.show('comming soon');
+              }),
+            ],
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _summaryCard1() {
+    return Container(
+      // height: 200,
+      constraints: BoxConstraints(maxHeight: 220),
       child: GridView.count(
         crossAxisCount: 3,
         childAspectRatio: 1,
@@ -188,24 +221,27 @@ class HomeTabView extends StatelessWidget {
     String title,
     void Function() onClick,
   ) {
-    return InkWell(
-      onTap: onClick,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 32,
-            color: ThemeService.color.textColor,
-          ),
-          SizedBox(height: StyleSize.space),
-          Text(
-            title,
-            style: TextStyle(
-              color: ThemeService.color.textSecondColor,
+    return Expanded(
+      flex: 1,
+      child: InkWell(
+        onTap: onClick,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 32,
+              color: ThemeService.color.iconColor,
             ),
-          ),
-        ],
+            SizedBox(height: StyleSize.spaceSmall),
+            Text(
+              title,
+              style: TextStyle(
+                color: ThemeService.color.iconColor,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

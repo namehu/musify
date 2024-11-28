@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/widgets/m_cover.dart';
@@ -15,16 +14,14 @@ class PhoneBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var coverUrl = cover ?? '';
-
+    var width = MediaQuery.of(Get.context!).size.width;
     return FlexibleSpaceBar(
       background: Stack(
         children: [
           MCover(
-            size: MediaQuery.of(Get.context!).size.width,
-            radius: 0,
+            size: width,
             url: coverUrl,
             shape: MCoverShapeEnum.rect,
-            placeholderColor: ThemeService.color.primaryColor,
           ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
@@ -40,7 +37,11 @@ class PhoneBar extends StatelessWidget {
                     height: 120,
                     child: Row(
                       children: [
-                        MCover(url: coverUrl, size: 100),
+                        SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: MCover(url: coverUrl, size: 100),
+                        ),
                         SizedBox(
                           width: StyleSize.space,
                         ),

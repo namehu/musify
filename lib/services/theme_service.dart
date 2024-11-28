@@ -102,6 +102,13 @@ class ThemeService extends GetxService {
         ? darkColorMap
         : normalColorMap;
   }
+
+  static get subTextStyle {
+    return TextStyle(
+      fontSize: 12,
+      color: ThemeService.color.textSecondColor,
+    );
+  }
 }
 
 ///  useMaterial3: true,

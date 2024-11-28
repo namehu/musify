@@ -11,13 +11,18 @@ import '../m_table_list.dart';
 import '../m_text.dart';
 
 class MSongTableHead extends StatelessWidget {
-  const MSongTableHead({super.key});
+  final bool? showIndex;
+  const MSongTableHead({
+    super.key,
+    this.showIndex = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MTableList(
       isHead: true,
       data: [
+        MColumn(text: '#', width: 36, show: showIndex),
         MColumn(flex: 1, text: S.current.song),
         MColumn(
           text: (S.current.album),
@@ -36,6 +41,8 @@ class MSongTableHead extends StatelessWidget {
 class MSongTableRow extends StatelessWidget {
   final Songs song;
   final int index;
+  final bool? showIndex;
+  final bool? active;
   final void Function()? onTap;
 
   final double _coverSize = 48;
@@ -45,11 +52,15 @@ class MSongTableRow extends StatelessWidget {
     super.key,
     required this.song,
     required this.index,
+    this.showIndex = true,
+    this.active = false,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    var activeColor = Colors.red[400];
+    // var color = active! ? ThemeService.color.primaryColor : null;
     return InkWell(
       onTap: () async {
         if (onTap != null) {
@@ -62,43 +73,60 @@ class MSongTableRow extends StatelessWidget {
         child: MTableList(
           data: [
             MColumn(
+              child: active!
+                  ? Icon(Icons.music_note_outlined, color: activeColor)
+                  : Text(
+                      (index + 1).toString().padLeft(2, '0'),
+                      style: TextStyle(
+                        color: ThemeService.color.textSecondColor,
+                      ),
+                    ),
+              width: 36,
+              show: showIndex,
+            ),
+            MColumn(
               flex: 1,
               child: LayoutBuilder(builder: (ctx, constraints) {
-                var _maxWidth =
+                var maxWidth =
                     constraints.maxWidth - _coverSize - contentPadding * 2 - 5;
-                return Container(
-                  child: Row(
-                    children: [
-                      MCover(
-                        size: _coverSize,
-                        url: song.coverUrl,
+                return Row(
+                  children: [
+                    MCover(
+                      size: _coverSize,
+                      url: song.coverUrl,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: contentPadding,
+                        vertical: StyleSize.spaceSmall + 2,
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: contentPadding,
-                          vertical: StyleSize.spaceSmall + 2,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              constraints: BoxConstraints(maxWidth: _maxWidth),
-                              child: MText(text: song.title, maxLines: 1),
-                            ),
-                            MText(
-                              text: song.artist,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(maxWidth: maxWidth),
+                            child: MText(
+                              text: song.title,
                               maxLines: 1,
                               style: TextStyle(
-                                fontSize: 13,
-                                color: ThemeService.color.textSecondColor,
-                              ),
+                                  color: active! ? activeColor : null),
                             ),
-                          ],
-                        ),
+                          ),
+                          MText(
+                            text: song.artist,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: active!
+                                  ? activeColor
+                                  : ThemeService.color.textSecondColor,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               }),
             ),
@@ -107,9 +135,15 @@ class MSongTableRow extends StatelessWidget {
               width: 200,
               show: !isMobile,
             ),
-            MColumn(text: (formatDuration(song.duration))),
             MColumn(
-              text: (song.suffix + " / " + song.bitRate.toString() + 'k'),
+                child: Text(
+              formatDuration(song.duration),
+              style: TextStyle(
+                color: active! ? activeColor : null,
+              ),
+            )),
+            MColumn(
+              text: ("${song.suffix} / ${song.bitRate.toString()}k"),
               show: !isMobile,
             ),
             MColumn(

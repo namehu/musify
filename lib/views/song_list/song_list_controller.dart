@@ -6,10 +6,10 @@ import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 
 class SongListController extends GetxController {
+  AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
   ScrollController scrollController = ScrollController();
 
   static const _pageSize = 500;
-  RxList<Songs> songs = <Songs>[].obs;
   RxBool showTitle = false.obs;
 
   final PagingController<int, Songs> pagingController =
@@ -35,7 +35,8 @@ class SongListController extends GetxController {
   }
 
   playSong([int? index = 0]) {
-    Get.find<AudioPlayerService>().palySongList(songs, index: index);
+    var songs = pagingController.itemList ?? [];
+    audioPlayerService.palySongList(songs, index: index);
   }
 
   _getSongs(int pageKey) async {

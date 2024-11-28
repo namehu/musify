@@ -5,7 +5,6 @@ import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/common/m_media_bar.dart';
 import 'package:musify/widgets/common/m_song_table.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
@@ -49,7 +48,9 @@ class SongListView extends GetResponsiveView<SongListController> {
                   var song = list.firstOrNull;
 
                   return PhoneBar(
-                      title: S.current.allSong, cover: song?.coverUrl);
+                    title: S.current.allSong,
+                    cover: song?.coverUrl,
+                  );
                 }),
           ),
           SliverPersistentHeader(
@@ -57,13 +58,14 @@ class SongListView extends GetResponsiveView<SongListController> {
             delegate: SliverHeaderDelegate(
               maxHeight: 48,
               minHeight: 48,
-              child: _buildPhoneHeader(),
+              child: _buildPhoneOperationRow(),
             ),
           ),
           PagedSliverList<int, Songs>(
             pagingController: controller.pagingController,
             builderDelegate: PagedChildBuilderDelegate(
-              itemBuilder: (context, item, index) => _buildItem(item, index),
+              itemBuilder: (context, item, index) =>
+                  _buildSongList(item, index),
             ),
           ),
           SliverToBoxAdapter(
@@ -108,7 +110,7 @@ class SongListView extends GetResponsiveView<SongListController> {
                   pagingController: controller.pagingController,
                   builderDelegate: PagedChildBuilderDelegate(
                     itemBuilder: (context, item, index) =>
-                        _buildItem(item, index),
+                        _buildSongList(item, index),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -126,67 +128,60 @@ class SongListView extends GetResponsiveView<SongListController> {
   }
 
   // 构建 header
-  Widget _buildPhoneHeader() {
+  Widget _buildPhoneOperationRow() {
     return Container(
-      color: gray1,
-      child: Align(
-        // alignment: Alignment(0, -2),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(50),
-            topRight: Radius.circular(StyleSize.borderRadius),
-          ),
-          child: Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.symmetric(
-              horizontal: StyleSize.space,
-            ),
-            decoration: BoxDecoration(
-              color: ThemeService.color.secondBgColor,
-            ),
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.symmetric(
+        horizontal: StyleSize.space,
+      ),
+      decoration: BoxDecoration(
+        color: ThemeService.color.secondBgColor,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: () => controller.playSong(),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  onTap: controller.playSong,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.play_circle,
-                        size: 36,
-                        color: ThemeService.color.primaryColor,
-                      ),
-                      SizedBox(width: StyleSize.spaceSmall),
-                      Text(S.current.playAll),
-                    ],
-                  ),
+                Icon(
+                  Icons.play_circle,
+                  size: 36,
+                  color: ThemeService.color.primaryColor,
                 ),
-                SizedBox(width: StyleSize.space),
-                InkWell(
-                  onTap: () {
-                    // TODO: 实现歌单详情页
-                  },
-                  child: Icon(
-                    Icons.my_location,
-                    color: ThemeService.color.iconColor,
-                  ),
-                ),
+                SizedBox(width: StyleSize.spaceSmall),
+                Text(S.current.playAll),
               ],
             ),
           ),
-        ),
+          SizedBox(width: StyleSize.space),
+          InkWell(
+            onTap: () {
+              // TODO: 实现歌单详情页
+            },
+            child: Icon(
+              Icons.my_location,
+              color: ThemeService.color.iconColor,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  _buildItem(Songs songs, int index) {
-    // var songs = controller.pagingController.itemList!;
-    return MSongTableRow(
-      song: songs,
-      index: index,
-      onTap: () {
-        controller.playSong();
-      },
-    );
+  _buildSongList(Songs song, int index) {
+    return Obx(() {
+      var isActive =
+          controller.audioPlayerService.currentSong.value.id == song.id;
+      return MSongTableRow(
+        song: song,
+        index: index,
+        showIndex: true,
+        active: isActive,
+        onTap: () {
+          controller.playSong(index);
+        },
+      );
+    });
   }
 }

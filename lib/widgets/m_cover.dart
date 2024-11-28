@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:musify/services/theme_service.dart';
 import '../styles/colors.dart';
-import '../util/mycss.dart';
 
 enum MCoverShapeEnum { round, squareRound, rect }
 
@@ -11,8 +13,8 @@ class MCover extends StatelessWidget {
   final String url;
   final double? radius;
   final double? size;
-  final String? placeholderImage;
-  final Color? placeholderColor;
+  final bool? showDefaultPalceholder;
+  final Widget? placeholder;
 
   @Deprecated('')
   final bool? round;
@@ -26,8 +28,8 @@ class MCover extends StatelessWidget {
     this.size,
     this.shape = MCoverShapeEnum.squareRound,
     this.round = false,
-    this.placeholderColor,
-    this.placeholderImage = mylogoAsset,
+    this.showDefaultPalceholder = false,
+    this.placeholder,
   });
 
   @override
@@ -56,40 +58,32 @@ class MCover extends StatelessWidget {
         placeholder: (context, url) {
           return LoadingAnimationWidget.threeArchedCircle(
             color: gray5,
-            size: 32,
+            size: max(32, size != null ? size! : 32),
           );
         },
-        errorWidget: (ctx, s, ss) => Image.asset(
-          'assets/images/icon_album.png',
-          width: size,
-          height: size,
+        errorWidget: (ctx, s, ss) => Icon(
+          Icons.music_off,
+          color: ThemeService.color.textDisabledColor,
         ),
       );
     }
 
-    if (placeholderColor != null) {
-      return Container(
-        width: size,
-        height: size,
-        color: placeholderColor!,
-      );
+    if (placeholder != null) {
+      return placeholder!;
     }
 
-    return SizedBox(
-      width: size,
-      height: size,
-      child: Center(
-        child: LoadingAnimationWidget.threeArchedCircle(
-          color: gray5,
-          size: 32,
-        ),
-      ),
-    );
-    // return Image.asset(
-    //   placeholderImage!,
-    //   width: size,
-    //   height: size,
-    //   fit: BoxFit.cover,
-    // );
+    return showDefaultPalceholder!
+        ? SizedBox(
+            width: size,
+            height: size,
+            child: Center(
+              child: Icon(
+                Icons.music_note_outlined,
+                size: size != null ? size! / 2 : 14,
+                color: ThemeService.color.textSecondColor,
+              ),
+            ),
+          )
+        : null;
   }
 }
