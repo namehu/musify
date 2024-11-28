@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:musify/api/subsonic/index.dart';
@@ -19,17 +21,17 @@ Function(RequestOptions, RequestInterceptorHandler) onRequest =
   options.baseUrl = serversInfo.value.baseurl;
 
   // 添加rest api路径
-  options.path = '/api/' + options.path;
+  options.path = '/api/${options.path}';
 
-  Map<String, dynamic> _query = {};
+  Map<String, dynamic> query = {};
 
   options.queryParameters = options.queryParameters;
-  options.queryParameters.addAll(_query);
+  options.queryParameters.addAll(query);
 
   // 携带token
-  var _ndCredential = serversInfo.value.ndCredential;
-  if (_ndCredential.isNotEmpty) {
-    options.headers['x-nd-authorization'] = 'Bearer $_ndCredential';
+  var ndCredential = serversInfo.value.ndCredential;
+  if (ndCredential.isNotEmpty) {
+    options.headers['x-nd-authorization'] = 'Bearer $ndCredential';
   }
 
   return handler.next(options);
@@ -111,12 +113,12 @@ MusicApi navidromeApi = (
     Map<String, dynamic> res = {};
 
     try {
-      var _response = await Dio().post(baseUrl + '/auth/login', data: {
+      var response = await Dio().post('$baseUrl/auth/login', data: {
         'username': username,
         'password': password,
       });
 
-      var data = checkResponse(_response);
+      var data = checkResponse(response);
       if (data != null) {
         res['userId'] = data['id'];
         res['username'] = username;
@@ -140,18 +142,18 @@ MusicApi navidromeApi = (
     };
 
     try {
-      var _response = await _dio.get('song', queryParameters: queryParameters);
-      var data = _response.data;
+      var response = await _dio.get('song', queryParameters: queryParameters);
+      var data = response.data;
       if (data != null) {
-        var _song = data[0];
-        String _stream = getServerInfo("stream");
-        String _url = getCoverArt(_song["id"], size: 800);
+        var song = data[0];
+        String stream = getServerInfo("stream");
+        String url = getCoverArt(song["id"], size: 800);
 
-        NdSong ndSong = NdSong.fromJson(_song);
+        NdSong ndSong = NdSong.fromJson(song);
 
         Songs songs = Songs.fromNdSong(ndSong);
-        songs.coverUrl = _url;
-        songs.stream = _stream + '&id=' + _song["id"];
+        songs.coverUrl = url;
+        songs.stream = '$stream&id=${song["id"]}';
         return songs;
       }
     } catch (e) {

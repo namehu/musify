@@ -15,13 +15,13 @@ String getSongStream(String id) {
 String joinServerPath(String path, [Map<String, dynamic>? query]) {
   var serverService = Get.find<ServerService>();
 
-  var _query = joniAuthQuery(query: query, serverService: serverService);
+  var query0 = joniAuthQuery(query: query, serverService: serverService);
 
-  var _qs = _query.entries
+  var qs = query0.entries
       .map((element) => '${element.key}=${element.value}')
       .join('&');
 
-  return serverService.serverInfo.value.baseurl + '/rest/$path?$_qs';
+  return '${serverService.serverInfo.value.baseurl}/rest/$path?$qs';
 }
 
 Map<String, dynamic> joniAuthQuery({
@@ -33,7 +33,7 @@ Map<String, dynamic> joniAuthQuery({
   var s = serverService.serverInfo.value.salt;
   var t = serverService.serverInfo.value.hash;
 
-  Map<String, dynamic> _query = {
+  Map<String, dynamic> query0 = {
     'v': '0.0.1',
     'c': 'musify',
     'f': 'json',
@@ -43,8 +43,8 @@ Map<String, dynamic> joniAuthQuery({
   };
 
   if (query != null) {
-    _query.addAll(query);
+    query0.addAll(query);
   }
 
-  return _query;
+  return query0;
 }

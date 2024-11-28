@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/play_list.dart';
@@ -11,7 +10,7 @@ import '../enums/album_list_type_enum.dart';
 typedef MusicApi = ({
   /// 登录校验
   Future<Map<String, dynamic>> Function(
-      String _baseUrl, String _username, String _password) authenticate,
+      String baseUrl, String username, String password) authenticate,
 
   /// 查询专辑详情
   Future<dynamic> Function(String id) getAlbum,
@@ -46,17 +45,16 @@ typedef MusicApi = ({
 
 logResponse(Response response) {
   // 打印接口输出
-  String logOutPut = '[request] ' +
-      response.requestOptions.baseUrl +
-      response.requestOptions.path;
+  String logOutPut =
+      '[request] ${response.requestOptions.baseUrl}${response.requestOptions.path}';
 
-  var _query = response.requestOptions.queryParameters.entries.map((element) {
-    return (element.key + '=' + element.value.toString());
+  var query = response.requestOptions.queryParameters.entries.map((element) {
+    return ('${element.key}=${element.value}');
   }).join('&');
-  if (_query.isNotEmpty) logOutPut += '?' + _query;
+  if (query.isNotEmpty) logOutPut += '?$query';
 
   if (response.requestOptions.data != null) {
-    logOutPut += '\n\n[data] ' + jsonEncode(response.requestOptions.data);
+    logOutPut += '\n\n[data] ${jsonEncode(response.requestOptions.data)}';
   }
 
   // logOutPut += '\n\n[response] ' + jsonEncode(response.data);
