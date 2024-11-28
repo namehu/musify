@@ -470,6 +470,16 @@ class S {
     );
   }
 
+  /// `No Playlist Yet~`
+  String get noPlaylist {
+    return Intl.message(
+      'No Playlist Yet~',
+      name: 'noPlaylist',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Favorite`
   String get favorite {
     return Intl.message(

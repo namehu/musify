@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/api/index.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/play_list.dart';
-import 'package:musify/screens/common/myAlertDialog.dart';
-import 'package:musify/util/audioTools.dart';
+import 'package:musify/services/play_list_service.dart';
 import 'package:musify/util/httpClient.dart';
+import 'package:musify/widgets/dialogs/play_list_dialog.dart';
 import 'package:musify/widgets/m_toast.dart';
 
 class PlayListController extends GetxController {
-  var playlistsList = <Playlist>[].obs;
+  PlayListService playListService = Get.find<PlayListService>();
+
   final inputController = new TextEditingController();
+
+  RxList<Playlist> get playlistsList => playListService.playList;
 
   int get playlistnum => playlistsList.length;
 
@@ -21,34 +24,16 @@ class PlayListController extends GetxController {
   }
 
   _getPlaylist() async {
-    final _playlists = await MRequest.api.getPlaylists();
-    playlistsList.value = _playlists;
+    playListService.getPlayList();
   }
 
   addPlayList() async {
-    var context = Get.context!;
-    await newPlaylistDialog(context).then((value) {
-      _getPlaylist();
-      switch (value) {
-        case 1:
-          showMyAlertDialog(
-              context, S.current.notive, S.current.create + S.current.failure);
-          break;
-        case 2:
-          showMyAlertDialog(context, S.current.notive,
-              S.current.pleaseInput + S.current.playlist + S.current.name);
-          break;
-        case 3:
-          break;
-        default:
-      }
-    });
+    var res = await showPlayListDialog();
+    logger.i(res);
   }
 
   handleSwipeDelPlayList(String id) async {
-    await deletePlaylist(id);
-    _getPlaylist();
-    MToast.show(S.current.delete + S.current.success);
+    await playListService.deletePlayList(id);
   }
 
   handleSecondaryTapDel(

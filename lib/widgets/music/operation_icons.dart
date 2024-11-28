@@ -237,16 +237,16 @@ class PlayStarIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var _song = audioPlayerService.currentSong.value;
-      var value = _song.starred;
+      var song = audioPlayerService.currentSong.value;
+      var value = song.starred;
       return MStarToogle(
         value: value,
         size: 24,
-        disabled: _song.id.isEmpty,
-        onChange: _song.id.isNotEmpty
+        disabled: song.id.isEmpty,
+        onChange: song.id.isNotEmpty
             ? (val) async {
-                if (_song.id.isNotEmpty) {
-                  Favorite _favorite = Favorite(id: _song.id, type: 'song');
+                if (song.id.isNotEmpty) {
+                  Favorite _favorite = Favorite(id: song.id, type: 'song');
 
                   value
                       ? await delStarred(_favorite)

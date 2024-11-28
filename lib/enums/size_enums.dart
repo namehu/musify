@@ -21,7 +21,7 @@ extension ButtonPaddingSize on SizeEnum {
   double get paddingTop {
     switch (this) {
       case SizeEnum.samll:
-        return 4;
+        return 2;
       case SizeEnum.normal:
         return 14;
       case SizeEnum.large:

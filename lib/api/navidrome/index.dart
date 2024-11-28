@@ -23,7 +23,7 @@ Function(RequestOptions, RequestInterceptorHandler) onRequest =
 
   Map<String, dynamic> _query = {};
 
-  options.queryParameters = options.queryParameters ?? {};
+  options.queryParameters = options.queryParameters;
   options.queryParameters.addAll(_query);
 
   // 携带token
@@ -159,6 +159,8 @@ MusicApi navidromeApi = (
     }
     return null;
   },
+  createPlaylist: subsonicApi.createPlaylist,
+  deletePlaylist: subsonicApi.deletePlaylist,
   getPlaylists: subsonicApi.getPlaylists,
   getPlaylist: subsonicApi.getPlaylist,
   getAlbumList: subsonicApi.getAlbumList,

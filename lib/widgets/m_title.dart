@@ -12,45 +12,37 @@ final Map<int, double> _sizeMap = {
 class MTitle extends StatelessWidget {
   final String title;
   final int level;
-  final List<String>? actions;
+  final List<dynamic>? actions;
   final void Function(int index)? onActionsTap;
 
   MTitle({
     Key? key,
     required this.title,
     this.level = 4,
-    this.actions = const <String>[],
+    this.actions,
     this.onActionsTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var _children = <Widget>[
-      Container(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: _sizeMap[level],
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    ];
+    var _children = <Widget>[];
 
-    for (var i = 0; i < actions!.length; i++) {
+    for (var i = 0; i < (actions ?? []).length; i++) {
       var element = actions![i];
       _children.add(
         GestureDetector(
           onTap: () {
             onActionsTap?.call(i);
           },
-          child: Text(
-            element,
-            style: TextStyle(
-              color: ThemeService.color.textSecondColor,
-              fontSize: 13,
-            ),
-          ),
+          child: (element is String)
+              ? Text(
+                  element,
+                  style: TextStyle(
+                    color: ThemeService.color.textSecondColor,
+                    fontSize: 13,
+                  ),
+                )
+              : element,
         ),
       );
     }
@@ -58,7 +50,20 @@ class MTitle extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: _children,
+      children: [
+        Container(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: _sizeMap[level],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Row(
+          children: _children,
+        ),
+      ],
     );
   }
 }

@@ -1,17 +1,18 @@
 import 'package:get/get.dart';
-import 'package:musify/api/index.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/server_service.dart';
-import 'package:musify/util/mycss.dart';
+
+import '../../services/play_list_service.dart';
 
 class HomeController extends GetxController {
   final serverService = Get.find<ServerService>();
   final languageService = Get.find<LanguageService>();
+  PlayListService playListService = Get.find<PlayListService>();
 
-  RxList<Playlist> playList = <Playlist>[].obs;
+  RxList<Playlist> get playList => playListService.playList;
 
   get hasServer => serverService.serverInfo.value.baseurl.isNotEmpty;
 
@@ -36,12 +37,6 @@ class HomeController extends GetxController {
   }
 
   onFinishLogin() {
-    if (isMobile) {
-      _getPlaylists();
-    }
-  }
-
-  _getPlaylists() async {
-    playList.value = await MRequest.api.getPlaylists();
+    playListService.getPlayList();
   }
 }

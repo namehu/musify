@@ -19,6 +19,10 @@ typedef MusicApi = ({
   /// 查询歌曲详情
   Future<Songs?> Function(String id) getSong,
 
+  /// 创建播放列表
+  Future<dynamic> Function(String songId) createPlaylist,
+  Future<dynamic> Function(String id) deletePlaylist,
+
   /// 查询播放列表
   Future<List<Playlist>> Function() getPlaylists,
 

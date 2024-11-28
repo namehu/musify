@@ -207,19 +207,6 @@ getPlaylist(String _id) async {
   }
 }
 
-deletePlaylist(String _id) async {
-  String _sql = await getServerInfo("deletePlaylist");
-  try {
-    var _response = await Dio().get(_sql + "&id=" + _id);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    return _subsonic;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 getArtists() async {
   String _sql = await getServerInfo("getArtists");
   try {

@@ -69,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "net": MessageLookupByLibrary.simpleMessage("云端"),
         "no": MessageLookupByLibrary.simpleMessage("没有"),
         "noContent": MessageLookupByLibrary.simpleMessage("请填写内容"),
+        "noPlaylist": MessageLookupByLibrary.simpleMessage("没有播放列表~"),
         "noSong": MessageLookupByLibrary.simpleMessage("没有歌曲"),
         "notive": MessageLookupByLibrary.simpleMessage("提示"),
         "other": MessageLookupByLibrary.simpleMessage("其他"),

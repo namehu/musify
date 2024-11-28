@@ -35,14 +35,14 @@ class PlayListView extends GetResponsiveView<PlayListController> {
                 ),
               ),
             ),
-            Container(
-              child: IconButton(
-                onPressed: controller.addPlayList,
-                icon: Icon(
-                  Icons.add_circle,
-                ),
-              ),
-            )
+            // Container(
+            //   child: IconButton(
+            //     onPressed: controller.addPlayList,
+            //     icon: Icon(
+            //       Icons.add_circle,
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

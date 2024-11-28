@@ -41,6 +41,7 @@
     "playShuffle": "Shuffle",
     "playing": "Playing",
     "playlist": "Playlist ",
+    "noPlaylist": "No Playlist Yet~",
     "favorite": "Favorite",
     "search": "Search",
     "login": "Login",

@@ -41,6 +41,7 @@
     "playShuffle": "随机播放",
     "playing": "正在播放",
     "playlist": "播放列表",
+    "noPlaylist": "没有播放列表~",
     "favorite": "收藏",
     "search": "搜索",
     "login": "登录",

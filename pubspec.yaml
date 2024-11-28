@@ -47,6 +47,7 @@ dev_dependencies:
   dio_mock_interceptor: ^2.1.0
   build_runner: ^2.3.3
   json_serializable: ^6.8.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
   integration_test:

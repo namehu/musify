@@ -6,9 +6,9 @@ import 'package:musify/models/play_list.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/global_service.dart';
+import 'package:musify/services/play_list_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
-import 'package:musify/widgets/dialogs/play_list_dialog.dart';
 import 'package:musify/widgets/m_tag.dart';
 import 'package:musify/widgets/m_title.dart';
 import '../generated/l10n.dart';
@@ -24,12 +24,12 @@ class LeftDrawer extends StatefulWidget {
 }
 
 class LeftDrawerState extends State<LeftDrawer> {
+  PlayListService playListService = Get.find<PlayListService>();
   List<Playlist> palyList = [];
 
   @override
   void initState() {
     super.initState();
-    _getPlayList();
   }
 
   // 处理点击事件
@@ -51,13 +51,6 @@ class LeftDrawerState extends State<LeftDrawer> {
       if (isMobile) Navigator.pop(context);
       Get.toNamed(map[type]!);
     }
-  }
-
-  _getPlayList() async {
-    var res = await MRequest.api.getPlaylists();
-    setState(() {
-      palyList = res;
-    });
   }
 
   @override
@@ -205,9 +198,7 @@ class LeftDrawerState extends State<LeftDrawer> {
                     size: 13,
                   ),
                   onTap: () {
-                    showPlayListDialog(
-                      title: '新增播放列表',
-                    );
+                    playListService.addPlayList();
                   },
                 ),
                 SizedBox(
@@ -218,18 +209,31 @@ class LeftDrawerState extends State<LeftDrawer> {
                     Icons.list,
                     size: 13,
                   ),
+                  onTap: () {
+                    Get.toNamed(Routes.PLAY_LIST);
+                  },
                 )
               ],
             ),
           ),
           Container(
             constraints: BoxConstraints(maxHeight: constraints.maxHeight - 35),
-            child: ListView.builder(
-              itemBuilder: (ctx, index) {
-                var _data = palyList[index];
-                return PlayListItem(data: _data);
+            child: Obx(
+              () {
+                if (playListService.playList.isEmpty) {
+                  return Center(
+                    child: Text(S.current.noPlaylist),
+                  );
+                }
+
+                return ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    var _data = playListService.playList.value[index];
+                    return PlayListItem(data: _data);
+                  },
+                  itemCount: playListService.playList.value.length,
+                );
               },
-              itemCount: palyList.length,
             ),
           )
         ],

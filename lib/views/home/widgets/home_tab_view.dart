@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
@@ -38,9 +37,25 @@ class HomeTabView extends StatelessWidget {
           SliverToBoxAdapter(
             child: MTitle(
               title: S.current.playlist,
-              actions: [S.current.more],
+              actions: [
+                Icon(
+                  Icons.add,
+                  color: ThemeService.color.iconColor,
+                ),
+                SizedBox(
+                  width: StyleSize.spaceSmall,
+                ),
+                Icon(
+                  Icons.list,
+                  color: ThemeService.color.iconColor,
+                ),
+              ],
               onActionsTap: (index) {
-                Get.toNamed(Routes.PLAY_LIST);
+                if (index == 0) {
+                  controller.playListService.addPlayList();
+                } else {
+                  Get.toNamed(Routes.PLAY_LIST);
+                }
               },
             ),
           ),

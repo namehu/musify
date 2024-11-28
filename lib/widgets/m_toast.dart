@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:toastification/toastification.dart';
 
 /// custom Toast
 class MToast {
@@ -39,5 +40,20 @@ class MToast {
     Future.delayed(Duration(milliseconds: duration)).then((value) {
       overlayEntry.remove();
     });
+  }
+
+  static success(String title, [String? description]) {
+    toastification.show(
+      context: Get.context,
+      type: ToastificationType.success,
+      style: ToastificationStyle.flat,
+      title: Text(title),
+      description: description != null ? Text(description) : null,
+      alignment: Alignment.bottomCenter,
+      autoCloseDuration: const Duration(seconds: 2),
+      showProgressBar: false,
+      borderRadius: BorderRadius.circular(12.0),
+      closeButtonShowType: CloseButtonShowType.none,
+    );
   }
 }
