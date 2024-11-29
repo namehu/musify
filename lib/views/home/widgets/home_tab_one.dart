@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/util/mycss.dart';
 import 'package:musify/views/home/home_controller.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../../../generated/l10n.dart';
@@ -46,7 +46,7 @@ class _HomeTabOneState extends State<HomeTabOne> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (ctx, constraints) {
-      double itemHeight = min(250, constraints.maxWidth / 4);
+      double itemHeight = min(250, constraints.maxWidth / (isMobile ? 2.5 : 4));
 
       return Obx(
         () => CustomScrollView(

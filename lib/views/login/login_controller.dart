@@ -5,10 +5,11 @@ import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
-import 'package:musify/screens/common/myAlertDialog.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/util/dbProvider.dart';
 import 'package:musify/views/home/home_controller.dart';
+
+import '../../widgets/m_notification.dart';
 
 class LoginController extends GetxController {
   var homeController = Get.find<HomeController>();
@@ -58,7 +59,10 @@ class LoginController extends GetxController {
     }
 
     if (baseurl == "" || username == "" || password == "") {
-      return showMyAlertDialog(context, S.current.notive, S.current.noContent);
+      return MNotification.warning(
+        S.current.notive,
+        message: S.current.noContent,
+      );
     }
 
     loading.value = true;
@@ -66,7 +70,6 @@ class LoginController extends GetxController {
     Map<String, dynamic> res = {};
     MRequest.setApi(serverType.value);
     try {
-      // testServer(baseurl, username, password)
       res = await MRequest.api.authenticate(baseurl, username, password);
     } catch (e) {
       ///
@@ -74,10 +77,10 @@ class LoginController extends GetxController {
 
     if (res['username'] == null) {
       MRequest.resetApi();
-      // TODO: 这里警告处理一下
-      // ignore: use_build_context_synchronously
-      showMyAlertDialog(context, S.current.notive, S.current.serverErr);
-      return;
+      MNotification.error(
+        S.current.notive,
+        message: S.current.serverErr,
+      );
     } else {
       ServerInfo serverInfo = ServerInfo(
         serverType: serverType.value.label,
@@ -101,7 +104,7 @@ class LoginController extends GetxController {
           await DbProvider.instance.addServerInfo(serverInfo);
           serverService.updateCurrentServerInfo(serverInfo);
 
-          homeController.onFinishLogin();
+          homeController.initState();
           Get.offNamed(Routes.HOME);
         }
       } catch (e) {

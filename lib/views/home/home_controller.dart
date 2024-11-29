@@ -53,9 +53,19 @@ class HomeController extends GetxController
     if (!hasServer) {
       Get.toNamed(Routes.LOGIN);
       return;
+    } else {
+      initState();
     }
+  }
 
-    onFinishLogin();
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
+  }
+
+  initState() {
+    playListService.getPlayList();
 
     if (isMobile) {
       tabController.addListener(() {
@@ -66,16 +76,6 @@ class HomeController extends GetxController
     } else {
       getAllAlbums();
     }
-  }
-
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
-  }
-
-  onFinishLogin() {
-    playListService.getPlayList();
   }
 
   getAllAlbums() {

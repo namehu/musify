@@ -90,6 +90,7 @@ class LoginView extends GetView<LoginController> {
                 _buildInput(
                   controller: controller.servercontroller,
                   labelText: S.current.serverURL,
+                  hintText: 'https://127.0.0.1:3000',
                 ),
                 SizedBox(height: 40),
                 _buildInput(
@@ -100,6 +101,7 @@ class LoginView extends GetView<LoginController> {
                 _buildInput(
                   controller: controller.passwordcontroller,
                   labelText: S.current.password,
+                  password: true,
                 ),
                 SizedBox(height: 40),
                 Flex(
@@ -156,12 +158,19 @@ class LoginView extends GetView<LoginController> {
 
   Widget _buildInput({
     String? labelText,
+    String? hintText,
     TextEditingController? controller,
+    bool password = false,
   }) {
     return TextField(
+      obscureText: password,
+      enableSuggestions: !password,
+      autocorrect: !password,
       controller: controller,
       style: TextStyle(color: gray1),
       decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: TextStyle(color: gray1.withOpacity(0.3)),
         labelStyle: TextStyle(color: gray1),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: gray1),
