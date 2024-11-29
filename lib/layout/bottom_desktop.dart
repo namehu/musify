@@ -90,7 +90,7 @@ class _BottomDesktopState extends State<BottomDesktop>
                     ),
                   ),
                   Expanded(flex: 2, child: PlayerControBar()),
-                  Expanded(flex: 1, child: PlayerVolumeBar(player))
+                  Expanded(flex: 1, child: PlayerVolumeBar(player: player))
                 ],
               ),
             ),

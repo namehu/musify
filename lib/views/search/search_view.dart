@@ -20,6 +20,8 @@ class SearchViewBinding implements Bindings {
 }
 
 class SearchView extends GetView<SearchViewController> {
+  const SearchView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +67,7 @@ class SearchView extends GetView<SearchViewController> {
                     ),
                   if (controller.artists.isNotEmpty)
                     SliverToBoxAdapter(
-                      child: Container(
+                      child: SizedBox(
                         height: 200,
                         child: Obx(
                           () => ListView.builder(
@@ -123,13 +125,11 @@ class SearchView extends GetView<SearchViewController> {
   }
 
   _buildHeader() {
-    return Container(
-      child: TextField(
-        controller: controller.searchController,
-        onSubmitted: (value) {
-          controller.search();
-        },
-      ),
+    return TextField(
+      controller: controller.searchController,
+      onSubmitted: (value) {
+        controller.search();
+      },
     );
   }
 

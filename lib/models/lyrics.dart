@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:musify/constant.dart';
 import 'package:musify/util/util.dart';
 
 class Lyrics {
@@ -15,7 +16,7 @@ class Lyrics {
 
   // 从json中转换
   factory Lyrics.fromJson(Map<String, dynamic> json) => Lyrics(
-        lang: json['lang'] != null ? json['lang'] : "",
+        lang: json['lang'] ?? "",
         line: json['line'] == null
             ? []
             : (json['line'] as List)
@@ -29,17 +30,17 @@ class Lyrics {
       List<dynamic> jsonArr = jsonDecode(jsonString);
       return Lyrics.fromJson(jsonArr[0]);
     } catch (e) {
-      print('解析歌词失败');
+      logger.e('解析歌词失败');
     }
     return Lyrics(lang: '', line: []);
   }
 
 // 转换成json
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = new Map<String, dynamic>();
-    _data['lang'] = this.lang;
-    _data['line'] = this.line.map((e) => e.toJson());
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['lang'] = lang;
+    data['line'] = line.map((e) => e.toJson());
+    return data;
   }
 
   // 将start时间转换为[00:00.45] 格式
@@ -64,14 +65,14 @@ class LyricsLine {
   });
 
   LyricsLine.fromJson(Map<String, dynamic> json) {
-    start = json['start'] != null ? json['start'] : 0;
-    value = json['value'] != null ? json['value'] : "";
+    start = json['start'] ?? 0;
+    value = json['value'] ?? "";
   }
 
   toJson() {
-    final Map<String, dynamic> _data = new Map<String, dynamic>();
-    _data['start'] = this.start;
-    _data['value'] = this.value;
-    return _data;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['start'] = start;
+    data['value'] = value;
+    return data;
   }
 }

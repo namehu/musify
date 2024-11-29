@@ -7,9 +7,12 @@ import '../util/mycss.dart';
 class PlayerVolumeBar extends StatefulWidget {
   final AudioPlayer player;
 
-  const PlayerVolumeBar(this.player, {Key? key}) : super(key: key);
+  const PlayerVolumeBar({
+    super.key,
+    required this.player,
+  });
   @override
-  _PlayerVolumeBarState createState() => _PlayerVolumeBarState();
+  State<PlayerVolumeBar> createState() => _PlayerVolumeBarState();
 }
 
 class _PlayerVolumeBarState extends State<PlayerVolumeBar> {

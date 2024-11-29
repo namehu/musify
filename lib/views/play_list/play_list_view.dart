@@ -17,6 +17,8 @@ class PlayListBinding implements Bindings {
 }
 
 class PlayListView extends GetResponsiveView<PlayListController> {
+  PlayListView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +32,7 @@ class PlayListView extends GetResponsiveView<PlayListController> {
               () => Badge.count(
                 count: controller.playlistnum,
                 offset: Offset(20, 0),
-                child: Container(
-                  child: Text(S.current.playlist),
-                ),
+                child: Text(S.current.playlist),
               ),
             ),
             // Container(
@@ -69,6 +69,7 @@ class PlayListView extends GetResponsiveView<PlayListController> {
             itemBuilder: (BuildContext context, int index) {
               Playlist _tem = controller.playlistsList[index];
 
+              // ignore: unrelated_type_equality_checks
               return screen == ScreenType.Phone
                   ? Dismissible(
                       key: Key(_tem.id),

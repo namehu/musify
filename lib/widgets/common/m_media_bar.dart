@@ -48,8 +48,9 @@ class _MMediaBarState extends State<MMediaBar> {
       child: Icon(
         Icons.play_circle,
         size: 42,
-        color:
-            ThemeService.mode == ThemeMode.dark ? Colors.white : Colors.white,
+        color: ThemeService.mode.value == ThemeMode.dark
+            ? Colors.white
+            : Colors.white,
       ),
     );
   }
@@ -68,35 +69,3 @@ class _MMediaBarState extends State<MMediaBar> {
     );
   }
 }
-
-// class MMediaBar extends StatelessWidget {
-//   final Widget? title;
-//   const MMediaBar({super.key, this.title});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MAppBar(
-//       title: Row(
-//         children: [
-//           if (title != null) title!,
-//           _buildPlay(),
-//         ],
-//       ),
-//     );
-//   }
-
-//   _buildPlay() {
-//     return InkWell(
-//       onTap: () {},
-//       child: Icon(
-//         Icons.play_circle,
-//         size: 42,
-//         color:
-//             ThemeService.mode == ThemeMode.dark ? Colors.white : Colors.white,
-//       ),
-//     );
-//   }
-// }
-
-  // @override
-  // Size get preferredSize => Size.fromHeight(appBarHeight);

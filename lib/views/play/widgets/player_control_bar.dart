@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:musify/widgets/music/operation_icons.dart';
 
 class PlayerControlBar extends StatefulWidget {
-  const PlayerControlBar({Key? key}) : super(key: key);
+  const PlayerControlBar({super.key});
   @override
-  _PlayerControlBarState createState() => _PlayerControlBarState();
+  State<PlayerControlBar> createState() => _PlayerControlBarState();
 }
 
 class _PlayerControlBarState extends State<PlayerControlBar> {

@@ -13,9 +13,10 @@ import '../util/mycss.dart';
 import 'player_contro_bar.dart';
 
 class PlayDesktop extends StatefulWidget {
-  const PlayDesktop({Key? key}) : super(key: key);
+  const PlayDesktop({super.key});
+
   @override
-  _PlayDesktopState createState() => _PlayDesktopState();
+  State<PlayDesktop> createState() => _PlayDesktopState();
 }
 
 class _PlayDesktopState extends State<PlayDesktop> {
@@ -65,11 +66,11 @@ class _PlayDesktopState extends State<PlayDesktop> {
                   body: Column(
                     children: [
                       _buildHeader(),
-                      Container(
+                      SizedBox(
                         height: 10,
                         child: MusicSeekBar(dotRaidus: 5),
                       ),
-                      Container(height: 80, child: PlayerControBar()),
+                      SizedBox(height: 80, child: PlayerControBar()),
                     ],
                   ),
                 ),
@@ -101,24 +102,21 @@ class _PlayDesktopState extends State<PlayDesktop> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          child: Text(
-                              (value.title.isEmpty)
-                                  ? S.current.unknown
-                                  : value.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: titleText2),
-                        )
+                        Text(
+                            (value.title.isEmpty)
+                                ? S.current.unknown
+                                : value.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                            style: titleText2)
                       ],
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                          child: Text(
+                      Text(
                         (value.artist.isEmpty)
                             ? S.current.unknown
                             : value.artist,
@@ -126,7 +124,7 @@ class _PlayDesktopState extends State<PlayDesktop> {
                         overflow: TextOverflow.ellipsis,
                         style: nomalText,
                         textAlign: TextAlign.center,
-                      )),
+                      ),
                       Container(
                         margin: EdgeInsets.only(
                           left: StyleSize.space,
@@ -134,14 +132,13 @@ class _PlayDesktopState extends State<PlayDesktop> {
                         ),
                         child: Text('-'),
                       ),
-                      Container(
-                          child: Text(
+                      Text(
                         (value.album.isEmpty) ? S.current.unknown : value.album,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: nomalText,
                         textAlign: TextAlign.center,
-                      )),
+                      ),
                     ],
                   ),
                   SizedBox(height: StyleSize.space)

@@ -14,6 +14,8 @@ class GenreBinding implements Bindings {
 }
 
 class GenreView extends GetView<GenreController> {
+  const GenreView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

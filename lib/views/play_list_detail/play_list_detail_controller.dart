@@ -17,7 +17,7 @@ class PlayListDetailController extends GetxController {
   void onInit() {
     super.onInit();
 
-    var id = Get.arguments?['id'] ?? null;
+    var id = Get.arguments?['id'];
     if (id != null) {
       _getData(id);
     }

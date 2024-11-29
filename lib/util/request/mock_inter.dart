@@ -1,5 +1,3 @@
-library dio_mock_interceptor;
-
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -144,6 +142,7 @@ class MyMockInterceptor extends Interceptor {
       for (var entry in templates.entries) {
         Map<String, dynamic> template = entry.value;
         String tData = _templateData(template, exContext);
+        // ignore: prefer_interpolation_to_compose_strings
         RegExp regexpTemplate = RegExp(r'"\$\{templates\.' + entry.key + '}"');
         resData = resData.replaceAll(regexpTemplate, tData);
       }
@@ -174,7 +173,9 @@ class MyMockInterceptor extends Interceptor {
       var vValue = element.value;
       if (vValue is Iterable || vValue is Map) {
         resData = resData.replaceAll(
-            RegExp(r'"\$\{' + vKey + '\}"'), json.encode(vValue));
+            // ignore: prefer_interpolation_to_compose_strings
+            RegExp(r'"\$\{' + vKey + '}"'),
+            json.encode(vValue));
       }
     }
     return resData;

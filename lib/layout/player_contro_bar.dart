@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:musify/widgets/music/operation_icons.dart';
 
 class PlayerControBar extends StatefulWidget {
-  const PlayerControBar({Key? key}) : super(key: key);
+  const PlayerControBar({super.key});
   @override
-  _PlayerControBarState createState() => _PlayerControBarState();
+  State<PlayerControBar> createState() => _PlayerControBarState();
 }
 
 class _PlayerControBarState extends State<PlayerControBar> {

@@ -20,6 +20,8 @@ class ArtistsViewBinding implements Bindings {
 }
 
 class ArtistsView extends GetView<ArtistsController> {
+  const ArtistsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -22,6 +22,8 @@ class SettingBinding implements Bindings {
 class SettingView extends GetView<SettingController> {
   final gloabalService = Get.find<GloabalService>();
 
+  SettingView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -268,16 +270,10 @@ class SettingView extends GetView<SettingController> {
       );
     }
 
-    return Container(
+    return SizedBox(
       height: 48,
-
-      // padding: EdgeInsets.only(top: 15, left: 15),
-      // contentPadding: EdgeInsets.zero,
       child: Flex(
         direction: Axis.horizontal,
-
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: children,
       ),
     );
   }

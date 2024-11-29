@@ -47,7 +47,7 @@ class MListHead extends StatelessWidget {
             child: cover,
           ),
           Expanded(
-            child: Container(
+            child: SizedBox(
               height: 136,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

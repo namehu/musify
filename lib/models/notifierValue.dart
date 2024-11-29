@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:musify/enums/serve_type_enum.dart';

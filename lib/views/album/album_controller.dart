@@ -26,13 +26,12 @@ class AlbumController extends GetxController {
   void onInit() {
     super.onInit();
 
-    var id = Get.arguments?['id'] ?? null;
+    var id = Get.arguments?['id'];
     if (id != null) {
       _getAlbum(id);
     }
   }
 
-  //
   _getAlbum(String albumId) async {
     final _albumtem = await MRequest.api.getAlbum(albumId);
     if (_albumtem == null || _albumtem.length <= 0) {
@@ -54,7 +53,7 @@ class AlbumController extends GetxController {
       for (var _element in _songsList) {
         String _stream = getServerInfo("stream");
         String _url = await getCoverArt(_element["id"]);
-        _element["stream"] = _stream + '&id=' + _element["id"];
+        _element["stream"] = '$_stream&id=${_element["id"]}';
         _element["coverUrl"] = _url;
         if (_element["starred"] != null) {
           _startem.add(true);
@@ -76,7 +75,7 @@ class AlbumController extends GetxController {
 
   /// 处理播放
   handlePlay([PlayModeEnum? mode = PlayModeEnum.loop]) {
-    if (songs.length <= 0) {
+    if (songs.isEmpty) {
       MToast.show(S.current.noSong);
       return;
     }

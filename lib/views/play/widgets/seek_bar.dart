@@ -13,7 +13,7 @@ class PlayerSeekBar extends StatefulWidget {
   final ValueChanged<Duration>? onChangeEnd;
 
   const PlayerSeekBar({
-    Key? key,
+    super.key,
     required this.duration,
     required this.position,
     required this.bufferedPosition,
@@ -21,7 +21,7 @@ class PlayerSeekBar extends StatefulWidget {
     required this.padding,
     this.onChanged,
     this.onChangeEnd,
-  }) : super(key: key);
+  });
 
   @override
   PlayerSeekBarState createState() => PlayerSeekBarState();
@@ -56,7 +56,7 @@ class PlayerSeekBarState extends State<PlayerSeekBar> {
               trackHeight: 5.0,
               thumbShape: RoundSliderThumbShape(enabledThumbRadius: 10),
             ),
-            child: Container(
+            child: SizedBox(
               width: widget.trackWidth,
               child: Slider(
                 min: 0.0,

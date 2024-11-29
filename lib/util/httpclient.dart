@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers, prefer_interpolation_to_compose_strings
+
 import 'package:dio/dio.dart';
 import '../models/myModel.dart';
 import '../models/notifierValue.dart';

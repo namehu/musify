@@ -38,7 +38,7 @@ class LanguageService extends GetxService {
       await loadLanguage(code);
       await sharedPreferences.setString('languageCode', code);
     } catch (e) {
-      print('修改失败');
+      logger.e('修改失败');
     } finally {
       languageCode.value = code;
     }

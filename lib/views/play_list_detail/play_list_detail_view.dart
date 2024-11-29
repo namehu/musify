@@ -21,6 +21,8 @@ class PlayListDetailBinding implements Bindings {
 class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
   final player = AudioPlayerService.player;
 
+  PlayListDetailView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -70,15 +72,12 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
         title: controller.name.value,
         subWidgets: [
           MText(
-            text: S.current.duration +
-                ": " +
-                formatDuration(controller.duration.value),
+            text:
+                "${S.current.duration}: ${formatDuration(controller.duration.value)}",
             maxLines: 1,
           ),
           MText(
-            text: S.current.playCount +
-                ": " +
-                controller.playCount.value.toString(),
+            text: "${S.current.playCount}: ${controller.playCount.value}",
             maxLines: 1,
           ),
         ],

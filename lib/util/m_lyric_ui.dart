@@ -5,7 +5,7 @@ import 'package:musify/services/theme_service.dart';
 ///Sample Netease style
 ///should be extends LyricUI implementation your own UI.
 ///this property only for change UI,if not demand just only overwrite methods.
-class MUINetease extends LyricUI {
+class MLyricUI extends LyricUI {
   double defaultSize;
   double defaultExtSize;
   double otherMainSize;
@@ -17,7 +17,7 @@ class MUINetease extends LyricUI {
   bool highlight;
   HighlightDirection highlightDirection;
 
-  MUINetease(
+  MLyricUI(
       {this.defaultSize = 18,
       this.defaultExtSize = 14,
       this.otherMainSize = 16,
@@ -29,7 +29,7 @@ class MUINetease extends LyricUI {
       this.highlight = true,
       this.highlightDirection = HighlightDirection.LTR});
 
-  MUINetease.clone(MUINetease uiNetease)
+  MLyricUI.clone(MLyricUI uiNetease)
       : this(
           defaultSize: uiNetease.defaultSize,
           defaultExtSize: uiNetease.defaultExtSize,

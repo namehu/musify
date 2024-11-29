@@ -22,6 +22,8 @@ class AlbumListBinding implements Bindings {
 }
 
 class AlbumListView extends GetView<AlbumListController> {
+  const AlbumListView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,23 +51,21 @@ class AlbumListView extends GetView<AlbumListController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      child: DropdownButtonHideUnderline(
-                        child: Obx(
-                          () => DropdownButton<AlbumListTypeEnum>(
-                            value: controller.selectOrder.value,
-                            items: controller.sortOrderList
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e[0] as AlbumListTypeEnum,
-                                    child: Text(e[1] as String),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (value) {
-                              controller.selectOrder(value);
-                            },
-                          ),
+                    DropdownButtonHideUnderline(
+                      child: Obx(
+                        () => DropdownButton<AlbumListTypeEnum>(
+                          value: controller.selectOrder.value,
+                          items: controller.sortOrderList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e[0] as AlbumListTypeEnum,
+                                  child: Text(e[1] as String),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            controller.selectOrder(value);
+                          },
                         ),
                       ),
                     ),

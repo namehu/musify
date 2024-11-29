@@ -15,9 +15,9 @@ class ColorsUtil {
   }
 }
 
-String md5RandomString(String _password) {
+String md5RandomString(String password) {
   final randomNumber = Random().toString();
-  final randomBytes = utf8.encode(randomNumber + _password);
+  final randomBytes = utf8.encode(randomNumber + password);
   final randomString = md5.convert(randomBytes).toString();
   return randomString;
 }
@@ -59,53 +59,53 @@ String timeISOtoString(String time) {
 }
 
 String generateRandomString() {
-  final _random = Random();
-  const _availableChars =
+  final random = Random();
+  const availableChars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  final randomString = List.generate(6,
-          (index) => _availableChars[_random.nextInt(_availableChars.length)])
+  final randomString = List.generate(
+          6, (index) => availableChars[random.nextInt(availableChars.length)])
       .join();
 
   return randomString;
 }
 
-String formatDuration(int _duration) {
-  Duration _dura = Duration(seconds: _duration);
-  if (_dura.inHours != 0) {
-    String hours = _dura.inHours.toString().padLeft(0, '2');
-    String minutes = _dura.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = _dura.inSeconds.remainder(60).toString().padLeft(2, '0');
+String formatDuration(int duration) {
+  Duration dura = Duration(seconds: duration);
+  if (dura.inHours != 0) {
+    String hours = dura.inHours.toString().padLeft(0, '2');
+    String minutes = dura.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = dura.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "$hours:$minutes:$seconds";
   } else {
-    String minutes = _dura.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = _dura.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String minutes = dura.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = dura.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "$minutes:$seconds";
   }
 }
 
-String formatDurationMilliseconds(int _duration) {
-  Duration _dura = Duration(milliseconds: _duration);
-  if (_dura.inHours != 0) {
-    String hours = _dura.inHours.toString().padLeft(0, '2');
-    String minutes = _dura.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = _dura.inSeconds.remainder(60).toString().padLeft(2, '0');
+String formatDurationMilliseconds(int duration) {
+  Duration dura = Duration(milliseconds: duration);
+  if (dura.inHours != 0) {
+    String hours = dura.inHours.toString().padLeft(0, '2');
+    String minutes = dura.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = dura.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "$hours:$minutes:$seconds";
   } else {
-    String minutes = _dura.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = _dura.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String minutes = dura.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = dura.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "$minutes:$seconds";
   }
 }
 
-String formatSongDuration(Duration _tmp) {
-  if (_tmp.inHours != 0) {
-    String hours = _tmp.inHours.toString().padLeft(0, '2');
-    String minutes = _tmp.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = _tmp.inSeconds.remainder(60).toString().padLeft(2, '0');
+String formatSongDuration(Duration tmp) {
+  if (tmp.inHours != 0) {
+    String hours = tmp.inHours.toString().padLeft(0, '2');
+    String minutes = tmp.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = tmp.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "$hours:$minutes:$seconds";
   } else {
-    String minutes = _tmp.inMinutes.remainder(60).toString().padLeft(2, '0');
-    String seconds = _tmp.inSeconds.remainder(60).toString().padLeft(2, '0');
+    String minutes = tmp.inMinutes.remainder(60).toString().padLeft(2, '0');
+    String seconds = tmp.inSeconds.remainder(60).toString().padLeft(2, '0');
     return "$minutes:$seconds";
   }
 }
@@ -129,12 +129,12 @@ converToTraditional(String simplified) {
 
   String traditional = "";
   for (int i = 0; i <= simplified.length - 1; i++) {
-    String _temp = simplified[i];
-    int dddd = xx.indexOf(_temp);
+    String temp = simplified[i];
+    int dddd = xx.indexOf(temp);
     if (dddd > 0) {
       traditional += yy[dddd];
     } else {
-      traditional += _temp;
+      traditional += temp;
     }
   }
   return traditional;

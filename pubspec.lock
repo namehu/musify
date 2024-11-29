@@ -1159,7 +1159,7 @@ packages:
     source: hosted
     version: "3.3.0+3"
   template_expressions:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: template_expressions
       sha256: "7c8265983ad5354a7a7a21ed3f6ec5f4e294d2a9084d5fd2a3769a66b6fbcdee"

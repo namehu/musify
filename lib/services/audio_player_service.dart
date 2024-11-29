@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
-import 'package:musify/util/MUINetease.dart';
+import 'package:musify/util/m_lyric_ui.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -41,7 +41,7 @@ class AudioPlayerService extends GetxService {
   /// 当前歌曲歌词
   Rx<String> lyric = ''.obs;
 
-  MUINetease lyricUI = MUINetease(highlight: true);
+  MLyricUI lyricUI = MLyricUI(highlight: true);
 
   // 初始化播放列表
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(

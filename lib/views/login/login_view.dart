@@ -76,10 +76,12 @@ class LoginView extends GetView<LoginController> {
                             controller.serverType.value = va!;
                           },
                           items: ServeTypeEnum.values
-                              .map((e) => DropdownMenuItem(
-                                    child: Text(e.label),
-                                    value: e,
-                                  ))
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e.label),
+                                ),
+                              )
                               .toList(),
                         ),
                       ),

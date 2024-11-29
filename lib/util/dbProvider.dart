@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, file_names
 
 import 'dart:io';
 
@@ -114,7 +114,7 @@ class DbProvider {
     try {
       final db = await instance.db;
       var res = await db.query(ServerInfoTable);
-      if (res.length == 0) return null;
+      if (res.isEmpty) return null;
       List<ServerInfo> lists = res.map((e) => ServerInfo.fromJson(e)).toList();
       return lists[0];
     } catch (err) {

@@ -24,16 +24,16 @@ class MStarToogle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Icon(
-        value ? Icons.favorite : Icons.favorite_border_outlined,
-        color: color,
-        size: size,
-      ),
       onTap: disabled!
           ? null
           : () {
               if (onChange != null) onChange!(!value);
             },
+      child: Icon(
+        value ? Icons.favorite : Icons.favorite_border_outlined,
+        color: color,
+        size: size,
+      ),
     );
   }
 }

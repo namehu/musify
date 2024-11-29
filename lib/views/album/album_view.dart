@@ -5,7 +5,6 @@ import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/screens/common/myTextButton.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/mycss.dart';
@@ -29,6 +28,8 @@ class AlbumView extends GetView<AlbumController> {
   // 顶部区域
   final double _toprightwidth =
       windowsWidth.value - screenImageWidthAndHeight - 40 - 15;
+
+  AlbumView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -58,29 +59,21 @@ class AlbumView extends GetView<AlbumController> {
         Obx(
           () => controller.album.year != 0
               ? MText(
-                  text:
-                      S.current.year + ": " + controller.album.year.toString(),
+                  text: "${S.current.year}: ${controller.album.year}",
                   style: nomalText,
                 )
               : Container(),
         ),
         Obx(
-          () => Container(
-            child: MText(
-              text:
-                  S.current.song + ": " + controller.album.songCount.toString(),
-              type: MTextTypeEnum.secondary,
-            ),
+          () => MText(
+            text: "${S.current.song}: ${controller.album.songCount}",
+            type: MTextTypeEnum.secondary,
           ),
         ),
         Obx(
-          () => Container(
-            child: MText(
-              text: S.current.playCount +
-                  ": " +
-                  controller.album.playCount.toString(),
-              type: MTextTypeEnum.secondary,
-            ),
+          () => MText(
+            text: "${S.current.playCount}: ${controller.album.playCount}",
+            type: MTextTypeEnum.secondary,
           ),
         ),
       ],
@@ -114,61 +107,42 @@ class AlbumView extends GetView<AlbumController> {
 
   /// 歌手名称
   Widget _buildTopUser() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          // 歌手名
-          Container(
-            constraints: BoxConstraints(
-              maxWidth: _toprightwidth,
-            ),
-            child: Obx(
-              () => MText(
-                onTap: () {
-                  // TODO: 调整至歌手页面
-                },
-                text: controller.album.artist,
-                type: MTextTypeEnum.secondary,
-              ),
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // 歌手名
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: _toprightwidth,
           ),
-          // 收藏按钮
-          Container(
-            width: 25,
-            child: MStarToogle(
-              value: controller.staralbum.value,
-              size: 16,
-              onChange: (val) async {
-                var _favorite = Favorite(id: activeID.value, type: 'album');
-                controller.staralbum.value
-                    ? await delStarred(_favorite)
-                    : await addStarred(_favorite);
-                controller.staralbum.value = !controller.staralbum.value;
+          child: Obx(
+            () => MText(
+              onTap: () {
+                // TODO: 调整至歌手页面
               },
+              text: controller.album.artist,
+              type: MTextTypeEnum.secondary,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  List<Widget> mylistView(List<String> _title) {
-    List<Widget> _list = [];
-    for (var i = 0; i < _title.length; i++) {
-      _list.add(Container(
-        padding: EdgeInsets.only(left: 5),
-        child: MyTextButton(
-            press: () {
-              // TODO: 点击处理
-              // activeID.value = _title[i];
-              // indexValue.value = 4;
+        ),
+        // 收藏按钮
+        SizedBox(
+          width: 25,
+          child: MStarToogle(
+            value: controller.staralbum.value,
+            size: 16,
+            onChange: (val) async {
+              var _favorite = Favorite(id: activeID.value, type: 'album');
+              controller.staralbum.value
+                  ? await delStarred(_favorite)
+                  : await addStarred(_favorite);
+              controller.staralbum.value = !controller.staralbum.value;
             },
-            title: _title[i]),
-      ));
-    }
-    return _list;
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _songsBody(BuildContext _context) {
@@ -233,7 +207,7 @@ class AlbumView extends GetView<AlbumController> {
       } else if (i == _title.length - 1) {
         return InkWell(
           onTap: () {
-            print('还没做');
+            // TODO: 还没做
           },
           child: Icon(
             Icons.more_vert,

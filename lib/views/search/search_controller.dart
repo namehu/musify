@@ -45,7 +45,7 @@ class SearchViewController extends GetxController {
     for (var element in resSong) {
       String stream = getServerInfo("stream");
       String url = getCoverArt(element["id"]);
-      element["stream"] = '$stream&id=' + element["id"];
+      element["stream"] = '$stream&id=${element["id"]}';
       element["coverUrl"] = url;
       Songs tem = Songs.fromJson(element);
       listSong.add(tem);
@@ -78,7 +78,7 @@ class SearchViewController extends GetxController {
 
   List<dynamic> _mergeAndDeduplicate(List<dynamic> list1, List<dynamic> list2) {
     var mergedList = <dynamic>[];
-    var idSet = Set<String>();
+    var idSet = <String>{};
 
     void addItems(List<dynamic> list) {
       for (var item in list) {

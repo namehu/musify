@@ -5,10 +5,10 @@ import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/styles/colors.dart';
-import 'package:musify/util/MUINetease.dart';
+import 'package:musify/util/m_lyric_ui.dart';
 import 'package:musify/util/util.dart';
 
-typedef Change = void Function(MUINetease ui);
+typedef Change = void Function(MLyricUI ui);
 
 class LyricReader extends StatefulWidget {
   final Stream<PositionData> positionDataStream;
@@ -57,7 +57,7 @@ class _LyricReaderState extends State<LyricReader> {
                           confirm.call();
                           player.seek(Duration(milliseconds: progress));
                           audioPlayerService.lyricUI =
-                              MUINetease.clone(audioPlayerService.lyricUI);
+                              MLyricUI.clone(audioPlayerService.lyricUI);
                         },
                         icon: Icon(
                           Icons.play_arrow,

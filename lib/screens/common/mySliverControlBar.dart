@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';

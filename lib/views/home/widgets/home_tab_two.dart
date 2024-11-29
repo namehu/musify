@@ -183,39 +183,6 @@ class HomeTabTwo extends StatelessWidget {
     );
   }
 
-  Widget _summaryCard1() {
-    return Container(
-      // height: 200,
-      constraints: BoxConstraints(maxHeight: 220),
-      child: GridView.count(
-        crossAxisCount: 3,
-        childAspectRatio: 1,
-        children: [
-          _summaryItem(Icons.library_music, S.current.allSong, () {
-            Get.toNamed(Routes.SONG_LIST);
-          }),
-          _summaryItem(Icons.favorite, S.current.favorite, () {
-            Get.toNamed(Routes.FAVORITE);
-          }),
-          _summaryItem(Icons.download, S.current.download, () {
-            // TODO: not do
-            MToast.show('comming soon');
-          }),
-          _summaryItem(Icons.album, S.current.album, () {
-            Get.toNamed(Routes.ALBUM_LIST);
-          }),
-          _summaryItem(Icons.person, S.current.artist, () {
-            Get.toNamed(Routes.ARTISTS);
-          }),
-          _summaryItem(Icons.folder, S.current.directory, () {
-            // TODO: not do
-            MToast.show('comming soon');
-          }),
-        ],
-      ),
-    );
-  }
-
   Widget _summaryItem(
     IconData icon,
     String title,

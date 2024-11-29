@@ -17,7 +17,7 @@ class MButton extends StatelessWidget {
   final VoidCallback? onTap;
 
   const MButton({
-    Key? key,
+    super.key,
     required this.title,
     this.type = ButtonType.primary,
     this.size = SizeEnum.normal,
@@ -25,7 +25,7 @@ class MButton extends StatelessWidget {
     this.textColor = gray1,
     this.width,
     this.onTap,
-  }) : super(key: key);
+  });
 
   get padding => EdgeInsets.only(
         top: size!.paddingTop,

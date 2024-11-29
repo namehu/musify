@@ -15,6 +15,8 @@ class ChangeServerBinding implements Bindings {
 }
 
 class ChangeServerView extends GetView<ChangeServerViewController> {
+  const ChangeServerView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +35,14 @@ class ChangeServerView extends GetView<ChangeServerViewController> {
                 return ListTile(
                     onTap: () => controller.handleTap(item),
                     // minTileHeight: 48,
-                    leading: Container(
+                    leading: SizedBox(
                         height: 48,
                         child: Image.asset(
                           "assets/images/logo_navidrome.png",
                           height: 48,
                         )),
                     title: Text(
-                      '${item.baseurl}',
+                      item.baseurl,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
