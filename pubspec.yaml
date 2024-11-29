@@ -45,6 +45,7 @@ dependencies:
   rxdart: ^0.28.0
   path_provider: ^2.1.5
   template_expressions: ^3.3.0+2
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0

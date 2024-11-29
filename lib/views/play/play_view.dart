@@ -22,56 +22,36 @@ class PlayBinding implements Bindings {
 }
 
 class PlayView extends GetResponsiveView<PlayController> {
-  final double _appBarHeight = 96;
-  final double commonPadding = 30;
+  final double _commonPadding = 30;
 
   PlayView({super.key});
 
   @override
   Widget phone() {
-    return DefaultTabController(
-      initialIndex: 0,
-      length: controller.tabs.length,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: _buildTabTitle(),
-        body: Stack(
-          children: <Widget>[
-            _buildBackendCover(),
-            _buidMain(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  PreferredSizeWidget _buildTabTitle() {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(_appBarHeight),
-      child: AppBar(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         leading: IconButton(
             onPressed: () {
               Get.back();
             },
-            icon: Icon(
-              Icons.keyboard_arrow_down,
-            )),
+            icon: Icon(Icons.keyboard_arrow_down)),
         title: Center(
           child: SizedBox(
             width: 190,
             child: TabBar(
+              controller: controller.tabController,
               dividerHeight: 0,
               indicator: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
                     color: ThemeService.color.primaryColor,
-                    width: 4,
+                    width: 3,
                   ),
                 ),
               ),
-              // dividerColor: ThemeService.color.primaryColor,
               tabs:
                   controller.tabs.map((e) => Tab(text: e, height: 32)).toList(),
             ),
@@ -79,17 +59,20 @@ class PlayView extends GetResponsiveView<PlayController> {
         ),
         actions: [SizedBox(width: 24)],
       ),
-    );
-  }
-
-  Widget _buildBackendCover() {
-    return ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: Obx(
-        () {
-          var song = controller.audioPlayerService.currentSong.value;
-          return MCover(url: song.id.isNotEmpty ? song.coverUrl : '');
-        },
+      body: Stack(
+        children: [
+          // 背景图片
+          ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: Obx(
+              () {
+                var song = controller.audioPlayerService.currentSong.value;
+                return MCover(url: song.id.isNotEmpty ? song.coverUrl : '');
+              },
+            ),
+          ),
+          _buidMain(),
+        ],
       ),
     );
   }
@@ -99,21 +82,23 @@ class PlayView extends GetResponsiveView<PlayController> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: Container(
+          padding: EdgeInsets.only(top: 96),
           decoration: BoxDecoration(color: Colors.black.withOpacity(0.6)),
-          padding: EdgeInsets.only(top: _appBarHeight),
           child: Column(
             children: [
               _buildTabBarView(),
               // 进度条
               Container(
-                margin: EdgeInsets.only(top: 32),
+                margin: EdgeInsets.only(top: StyleSize.spaceLarge),
                 padding: EdgeInsets.only(left: 15, right: 15),
                 child: MusicSeekBar(timeShow: true),
               ),
               Container(
                 margin: EdgeInsets.only(top: 48, bottom: 48),
-                padding:
-                    EdgeInsets.only(left: commonPadding, right: commonPadding),
+                padding: EdgeInsets.only(
+                  left: _commonPadding,
+                  right: _commonPadding,
+                ),
                 child: PlayerControlBar(),
               ),
             ],
@@ -123,18 +108,13 @@ class PlayView extends GetResponsiveView<PlayController> {
     );
   }
 
+  // 顶部tabbar 区域
   Widget _buildTabBarView() {
     List<Widget> children = [];
 
     for (var i = 0; i < controller.tabs.length; i++) {
       if (i == 0) {
-        children.add(KeepAliveWrapper(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildHeader(),
-          ],
-        )));
+        children.add(KeepAliveWrapper(child: _buildHeader()));
       } else {
         children.add(KeepAliveWrapper(
           child: Container(
@@ -148,8 +128,15 @@ class PlayView extends GetResponsiveView<PlayController> {
     }
     return Expanded(
       child: Container(
-        padding: EdgeInsets.only(left: commonPadding, right: commonPadding),
-        child: TabBarView(children: children),
+        padding: EdgeInsets.only(
+          top: StyleSize.space,
+          left: _commonPadding,
+          right: _commonPadding,
+        ),
+        child: TabBarView(
+          controller: controller.tabController,
+          children: children,
+        ),
       ),
     );
   }
@@ -158,56 +145,85 @@ class PlayView extends GetResponsiveView<PlayController> {
     return Obx(() {
       var value = controller.audioPlayerService.currentSong.value;
       return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: 320,
             height: 320,
             child: MCover(
               url: value.coverUrl,
+              size: 320,
               shape: MCoverShapeEnum.squareRound,
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(
-                top: StyleSize.space, bottom: StyleSize.spaceSmall),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: MText(
-                    text:
-                        (value.title.isEmpty) ? S.current.unknown : value.title,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: gray1,
+          Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(
+                    top: StyleSize.space, bottom: StyleSize.spaceSmall),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: MText(
+                        text: (value.title.isEmpty)
+                            ? S.current.unknown
+                            : value.title,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: gray1,
+                        ),
+                      ),
                     ),
-                  ),
+                    PlayStarIcon(
+                      color: gray3,
+                    ),
+                    SizedBox(width: StyleSize.spaceSmall),
+                    InkWell(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.more_vert,
+                        color: gray3,
+                      ),
+                    ),
+                  ],
                 ),
-                InkWell(
-                    onTap: () {},
-                    child: Icon(
-                      Icons.more_vert,
-                      color: ThemeService.color.iconColor,
-                    ))
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom: StyleSize.spaceSmall),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  (value.artist.isEmpty) ? S.current.unknown : value.artist,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: gray1),
-                ),
-                PlayStarIcon(),
-              ],
-            ),
+              ),
+              LayoutBuilder(
+                builder: (ctx, constraints) {
+                  return Container(
+                    constraints: constraints,
+                    child: Row(
+                      children: [
+                        Container(
+                          constraints: BoxConstraints(
+                              maxWidth: constraints.maxWidth / 3),
+                          child: Text(
+                            (value.artist.isEmpty)
+                                ? S.current.unknown
+                                : value.artist,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: gray1),
+                          ),
+                        ),
+                        Container(
+                          constraints: BoxConstraints(
+                              maxWidth: constraints.maxWidth / 3 * 2),
+                          child: Text(
+                            ' - ${value.album.isEmpty ? S.current.unknown : value.album}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: gray1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       );

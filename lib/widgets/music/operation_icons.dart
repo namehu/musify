@@ -5,15 +5,22 @@ import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 
+const _iconColor = gray3;
+
 /// 播放模式切换按钮
 class PlayModeToggleIcon extends StatelessWidget {
-  PlayModeToggleIcon({super.key});
-
   final audioPlayerService = Get.find<AudioPlayerService>();
   final double iconSize = 24;
+  final Color? color;
+
+  PlayModeToggleIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class PlayModeToggleIcon extends StatelessWidget {
       var canClick = audioPlayerService.playSongs.isNotEmpty;
 
       Widget icon = playMode == PlayModeEnum.loop
-          ? Icon(Icons.loop, color: ThemeService.color.iconColor)
+          ? Icon(Icons.loop, color: color ?? _iconColor)
           : playMode == PlayModeEnum.single
               ? Icon(Icons.repeat_one, color: ThemeService.color.primaryColor)
               : Icon(Icons.shuffle, color: ThemeService.color.primaryColor);
@@ -42,9 +49,14 @@ class PlayModeToggleIcon extends StatelessWidget {
 
 /// 播放上一曲
 class PlayPreIcon extends StatelessWidget {
-  PlayPreIcon({super.key});
   final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final Color? color;
+
+  PlayPreIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +66,7 @@ class PlayPreIcon extends StatelessWidget {
         icon: Icon(
           Icons.skip_previous,
           color: canClick
-              ? ThemeService.color.iconColor
+              ? color ?? _iconColor
               : ThemeService.color.textDisabledColor,
         ),
         onPressed: canClick ? player.seekToPrevious : null,
@@ -65,9 +77,14 @@ class PlayPreIcon extends StatelessWidget {
 
 /// 下一曲
 class PlayNextIcon extends StatelessWidget {
-  PlayNextIcon({super.key});
   final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final Color? color;
+
+  PlayNextIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +95,7 @@ class PlayNextIcon extends StatelessWidget {
           icon: Icon(
             Icons.skip_next,
             color: canClick
-                ? ThemeService.color.iconColor
+                ? color ?? _iconColor
                 : ThemeService.color.textDisabledColor,
           ),
           onPressed: canClick ? player.seekToNext : null,
@@ -90,9 +107,15 @@ class PlayNextIcon extends StatelessWidget {
 
 /// 播放暂停按钮
 class PlayToggleIcon extends StatelessWidget {
-  final double? iconSize;
-  PlayToggleIcon({super.key, this.iconSize = 40});
   final player = AudioPlayerService.player;
+  final Color? color;
+  final double? iconSize;
+
+  PlayToggleIcon({
+    super.key,
+    this.iconSize = 40,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +140,7 @@ class PlayToggleIcon extends StatelessWidget {
             padding: EdgeInsets.all(0),
             icon: Icon(
               Icons.play_circle,
-              color: ThemeService.color.iconColor,
+              color: color ?? _iconColor,
             ),
             iconSize: iconSize,
             onPressed: player.play,
@@ -127,7 +150,7 @@ class PlayToggleIcon extends StatelessWidget {
             padding: EdgeInsets.all(0),
             icon: Icon(
               Icons.pause_circle_filled,
-              color: ThemeService.color.iconColor,
+              color: color ?? _iconColor,
             ),
             iconSize: iconSize,
             onPressed: player.pause,
@@ -150,9 +173,14 @@ class PlayToggleIcon extends StatelessWidget {
 
 /// 播放列表
 class PlayListIcon extends StatelessWidget {
-  PlayListIcon({super.key});
   final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final Color? color;
+
+  PlayListIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +189,7 @@ class PlayListIcon extends StatelessWidget {
         icon: Icon(
           Icons.playlist_play,
           color: audioPlayerService.playSongs.isNotEmpty
-              ? ThemeService.color.iconColor
+              ? color ?? _iconColor
               : ThemeService.color.textDisabledColor,
           size: 30.0,
         ),
@@ -178,8 +206,12 @@ class PlayListIcon extends StatelessWidget {
 class PlayFastRewindIcon extends StatelessWidget {
   final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final Color? color;
 
-  PlayFastRewindIcon({super.key});
+  PlayFastRewindIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +220,7 @@ class PlayFastRewindIcon extends StatelessWidget {
         icon: Icon(
           Icons.fast_rewind,
           color: audioPlayerService.playSongs.isNotEmpty
-              ? ThemeService.color.iconColor
+              ? (color ?? _iconColor)
               : ThemeService.color.textDisabledColor,
         ),
         onPressed: audioPlayerService.playSongs.isNotEmpty
@@ -207,8 +239,12 @@ class PlayFastRewindIcon extends StatelessWidget {
 class PlayFastForwardIcon extends StatelessWidget {
   final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final Color? color;
 
-  PlayFastForwardIcon({super.key});
+  PlayFastForwardIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -217,7 +253,7 @@ class PlayFastForwardIcon extends StatelessWidget {
         icon: Icon(
           Icons.fast_forward,
           color: audioPlayerService.playSongs.isNotEmpty
-              ? ThemeService.color.iconColor
+              ? (color ?? _iconColor)
               : ThemeService.color.textDisabledColor,
         ),
         onPressed: audioPlayerService.playSongs.isNotEmpty
@@ -230,9 +266,15 @@ class PlayFastForwardIcon extends StatelessWidget {
   }
 }
 
+// 收藏歌曲
 class PlayStarIcon extends StatelessWidget {
-  PlayStarIcon({super.key});
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final Color? color;
+
+  PlayStarIcon({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -242,6 +284,7 @@ class PlayStarIcon extends StatelessWidget {
       return MStarToogle(
         value: value,
         size: 24,
+        color: color,
         disabled: song.id.isEmpty,
         onChange: song.id.isNotEmpty
             ? (val) async {

@@ -1,59 +1,140 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:toastification/toastification.dart';
 
-/// custom Toast
 class MToast {
-  // 显示弹窗
-  static void show(
-    String message, {
-    int duration = 1000,
-    BuildContext? context,
-  }) {
-    var ctx = context ?? Get.context;
+  static ToastificationItem? toastificationInstance;
 
-    assert(ctx != null);
-
-    OverlayEntry overlayEntry = OverlayEntry(
-      builder: (context) {
-        return Positioned(
-            bottom: 95,
-            child: Container(
-              // color: Colors.transparent,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.center,
-              child: Card(
-                color: ThemeService.color.dialogBackgroundColor,
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(message),
-                ),
-              ),
-            ));
-      },
+  static var borderRadius = BorderRadius.circular(12.0);
+  static ToastificationAnimationBuilder animationBuilder = (
+    context,
+    animation,
+    alignment,
+    child,
+  ) {
+    return FadeTransition(
+      opacity: animation,
+      child: child,
     );
+  };
 
-    Overlay.of(ctx!).insert(overlayEntry);
+  static EdgeInsetsGeometry maring =
+      EdgeInsets.symmetric(horizontal: (Get.width - 10) / 2);
 
-    Future.delayed(Duration(milliseconds: duration)).then((value) {
-      overlayEntry.remove();
-    });
+  static error(
+    String title, {
+    String? message,
+    Widget? content,
+  }) {
+    return show(
+      title,
+      message: message,
+      content: content,
+      type: ToastificationType.error,
+    );
   }
 
-  static success(String title, [String? description]) {
-    toastification.show(
-      context: Get.context,
-      type: ToastificationType.success,
-      style: ToastificationStyle.flat,
-      title: Text(title),
-      description: description != null ? Text(description) : null,
-      alignment: Alignment.bottomCenter,
-      autoCloseDuration: const Duration(seconds: 2),
-      showProgressBar: false,
-      borderRadius: BorderRadius.circular(12.0),
-      closeButtonShowType: CloseButtonShowType.none,
+  static info(
+    String title, {
+    String? message,
+    Widget? content,
+  }) {
+    return show(
+      title,
+      message: message,
+      content: content,
+      type: ToastificationType.info,
     );
+  }
+
+  static warning(
+    String title, {
+    String? message,
+    Widget? content,
+  }) {
+    return show(
+      title,
+      message: message,
+      content: content,
+      type: ToastificationType.warning,
+    );
+  }
+
+  static success(
+    String title, {
+    String? message,
+    Widget? content,
+  }) {
+    return show(
+      title,
+      message: message,
+      content: content,
+      type: ToastificationType.success,
+    );
+  }
+
+  static show(
+    String title, {
+    String? message,
+    Widget? content,
+    ToastificationType? type = ToastificationType.info,
+  }) {
+    late Color primaryColor; // icon color
+    switch (type) {
+      case ToastificationType.success:
+        primaryColor = Colors.green;
+        break;
+      case ToastificationType.warning:
+        primaryColor = Colors.orange;
+        break;
+      case ToastificationType.error:
+        primaryColor = Colors.red;
+        break;
+      default:
+        primaryColor = Colors.blue;
+        break;
+    }
+
+    if (toastificationInstance != null) {
+      toastification.dismiss(toastificationInstance!);
+    }
+
+    var iconMargin = type! == ToastificationType.info ? 20 : 90;
+    var margin = (Get.width - (title.length * 20 + iconMargin)) / 2;
+
+    toastificationInstance = toastification.show(
+      context: Get.context,
+      type: type,
+      style: type! == ToastificationType.info
+          ? ToastificationStyle.simple
+          : ToastificationStyle.flat,
+      title: Center(child: Text(title)),
+      description: content ?? (message != null ? Text(message) : null),
+      alignment: Alignment(0, 0.6),
+      primaryColor: primaryColor,
+      foregroundColor: ThemeService.color.textColor,
+      backgroundColor: ThemeService.color.dialogBackgroundColor,
+      borderSide: BorderSide(
+        color: ThemeService.color.dialogBackgroundColor,
+      ),
+      borderRadius: borderRadius,
+      boxShadow: lowModeShadow,
+      closeButtonShowType: CloseButtonShowType.none,
+      autoCloseDuration: const Duration(seconds: 2),
+      animationBuilder: animationBuilder,
+      margin: EdgeInsets.symmetric(horizontal: margin),
+      showProgressBar: false,
+      callbacks: ToastificationCallbacks(
+        onAutoCompleteCompleted: (value) {
+          toastificationInstance = null;
+        },
+        onDismissed: (value) {
+          toastificationInstance = null;
+        },
+      ),
+    );
+
+    return toastificationInstance;
   }
 }
