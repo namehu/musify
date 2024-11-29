@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/api/index.dart';
+import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/util/httpclient.dart';
+// import 'package:musify/util/httpclient.dart';
 import 'package:musify/widgets/m_toast.dart';
 
 import '../../models/songs.dart';
@@ -51,8 +52,7 @@ class AlbumController extends GetxController {
       List<Songs> songtem = [];
       List<bool> startem = [];
       for (var elementAl in albumSongList) {
-        elementAl["stream"] =
-            '${getServerInfo("stream")}&id=${elementAl["id"]}';
+        elementAl["stream"] = getSongStream(elementAl["id"]);
         elementAl["coverUrl"] = getCoverArt(elementAl["id"]);
         if (elementAl["starred"] != null) {
           startem.add(true);

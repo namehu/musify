@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/util/httpclient.dart';
+import 'package:musify/util/httpclient.dart' hide getCoverArt;
+import '../../api/subsonic/utils.dart';
 import '../../generated/l10n.dart';
 
 class FavoritesController extends GetxController {
@@ -48,10 +49,8 @@ class FavoritesController extends GetxController {
 
       if (songList != null && songList.length > 0) {
         for (var song in songList) {
-          String stream = await getServerInfo("stream");
-          String url = await getCoverArt(song["id"]);
-          song["stream"] = '$stream&id=${song["id"]}';
-          song["coverUrl"] = url;
+          song["stream"] = getSongStream(song["id"]);
+          song["coverUrl"] = getCoverArt(song["id"]);
           songs1.add(Songs.fromJson(song));
           songsFav.add(true);
         }
@@ -60,8 +59,7 @@ class FavoritesController extends GetxController {
 
       if (albumsList != null && albumsList.length > 0) {
         for (var album in albumsList) {
-          String url = await getCoverArt(album["id"]);
-          album["coverUrl"] = url;
+          album["coverUrl"] = getCoverArt(album["id"]);
           albums1.add(Albums.fromJson(album));
           albumsFav.add(true);
         }
@@ -70,8 +68,7 @@ class FavoritesController extends GetxController {
 
       if (artistsList != null && artistsList.length > 0) {
         for (var artist in artistsList) {
-          String url = await getCoverArt(artist["id"]);
-          artist["artistImageUrl"] = url;
+          artist["artistImageUrl"] = getCoverArt(artist["id"]);
           artists1.add(Artists.fromJson(artist));
           artistsFav.add(true);
         }

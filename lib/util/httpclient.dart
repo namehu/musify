@@ -38,11 +38,11 @@ checkResponse(Response<dynamic> _response) {
 }
 
 getCoverArt(String _id, {int size = 350}) {
-  String _sql = getServerInfo("getCoverArt");
+  String _sql = _getServerInfo("getCoverArt");
   return _sql + '&size=$size' + '&id=' + _id;
 }
 
-getServerInfo(String _api) {
+_getServerInfo(String _api) {
   String _request = serversInfo.value.baseurl +
       '/rest/$_api?v=0.0.1&c=musify&f=json&u=' +
       serversInfo.value.username +
@@ -69,7 +69,7 @@ getServerInfo(String _api) {
 }
 
 getRandomSongs() async {
-  String _sql = getServerInfo("getRandomSongs");
+  String _sql = _getServerInfo("getRandomSongs");
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -85,7 +85,7 @@ getRandomSongs() async {
 /// 查询专辑信息
 /// Requires Last.fm and Spotify integration
 getAlbumInfo2(String _albumId) async {
-  String _sql = getServerInfo("getAlbumInfo2") + '&id=' + _albumId;
+  String _sql = _getServerInfo("getAlbumInfo2") + '&id=' + _albumId;
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -99,7 +99,7 @@ getAlbumInfo2(String _albumId) async {
 }
 
 search3(String _query) async {
-  String _sql = getServerInfo("search3") + '&query=' + _query;
+  String _sql = _getServerInfo("search3") + '&query=' + _query;
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -113,7 +113,7 @@ search3(String _query) async {
 }
 
 getGenres() async {
-  String _sql = getServerInfo("getGenres");
+  String _sql = _getServerInfo("getGenres");
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -129,7 +129,7 @@ getGenres() async {
 
 //playlistId Yes (if updating) || name Yes (if creating)
 createPlaylist(String _nameOrId, String _songId) async {
-  String _sql = await getServerInfo("createPlaylist");
+  String _sql = await _getServerInfo("createPlaylist");
   if (_songId == "") {
     _sql = _sql + '&name=' + _nameOrId;
   } else {
@@ -147,7 +147,7 @@ createPlaylist(String _nameOrId, String _songId) async {
 }
 
 updatePlaylist(String playlistId, String songIdToAdd) async {
-  String _sql = await getServerInfo("updatePlaylist");
+  String _sql = await _getServerInfo("updatePlaylist");
   _sql = _sql + '&playlistId=' + playlistId + '&songIdToAdd=' + songIdToAdd;
   try {
     var _response = await Dio().get(_sql);
@@ -161,7 +161,7 @@ updatePlaylist(String playlistId, String songIdToAdd) async {
 }
 
 delSongfromPlaylist(String playlistId, String? index) async {
-  String _sql = await getServerInfo("updatePlaylist");
+  String _sql = await _getServerInfo("updatePlaylist");
   _sql = _sql +
       '&playlistId=' +
       playlistId +
@@ -180,7 +180,7 @@ delSongfromPlaylist(String playlistId, String? index) async {
 
 @Deprecated('plaese use Api request')
 getPlaylists() async {
-  String _sql = await getServerInfo("getPlaylists");
+  String _sql = await _getServerInfo("getPlaylists");
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -195,7 +195,7 @@ getPlaylists() async {
 }
 
 getPlaylist(String _id) async {
-  String _sql = await getServerInfo("getPlaylist");
+  String _sql = await _getServerInfo("getPlaylist");
   try {
     var _response = await Dio().get(_sql + "&id=" + _id);
     var _subsonic = checkResponse(_response);
@@ -210,7 +210,7 @@ getPlaylist(String _id) async {
 }
 
 getArtists() async {
-  String _sql = await getServerInfo("getArtists");
+  String _sql = await _getServerInfo("getArtists");
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -224,7 +224,7 @@ getArtists() async {
 }
 
 getArtistInfo2(String _id) async {
-  String _sql = await getServerInfo("getArtistInfo2");
+  String _sql = await _getServerInfo("getArtistInfo2");
   try {
     var _response = await Dio().get(
       _sql + '&count=10' + '&id=' + _id,
@@ -240,7 +240,7 @@ getArtistInfo2(String _id) async {
 }
 
 getArtist(String _id) async {
-  String _sql = await getServerInfo("getArtist");
+  String _sql = await _getServerInfo("getArtist");
   try {
     var _response = await Dio().get(
       _sql + '&id=' + _id,
@@ -257,7 +257,7 @@ getArtist(String _id) async {
 
 //count no 50
 getTopSongs(String _name) async {
-  String _sql = await getServerInfo("getTopSongs");
+  String _sql = await _getServerInfo("getTopSongs");
   try {
     var _response = await Dio().get(
       _sql + '&artist=' + _name,
@@ -273,7 +273,7 @@ getTopSongs(String _name) async {
 }
 
 getSong(String _id) async {
-  String _sql = await getServerInfo("getSong");
+  String _sql = await _getServerInfo("getSong");
   try {
     var _response = await Dio().get(
       _sql + '&id=' + _id,
@@ -289,7 +289,7 @@ getSong(String _id) async {
 }
 
 addStarred(Favorite _starred) async {
-  String _sql = await getServerInfo("star");
+  String _sql = await _getServerInfo("star");
   switch (_starred.type) {
     case "song":
       _sql = _sql + '&id=' + _starred.id;
@@ -315,7 +315,7 @@ addStarred(Favorite _starred) async {
 }
 
 getStarred() async {
-  String _sql = await getServerInfo("getStarred2");
+  String _sql = await _getServerInfo("getStarred2");
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -329,7 +329,7 @@ getStarred() async {
 }
 
 createShare(String _id, {String description = ""}) async {
-  String _sql = await getServerInfo("createShare");
+  String _sql = await _getServerInfo("createShare");
   try {
     var _response =
         await Dio().get(_sql + "&id=" + _id + "&description=" + description);
@@ -347,7 +347,7 @@ createShare(String _id, {String description = ""}) async {
 }
 
 updateShare(String _id, {String description = ""}) async {
-  String _sql = await getServerInfo("updateShare");
+  String _sql = await _getServerInfo("updateShare");
   try {
     var _response =
         await Dio().get(_sql + "&id=" + _id + "&description=" + description);
@@ -361,7 +361,7 @@ updateShare(String _id, {String description = ""}) async {
 }
 
 deleteShare(String _id) async {
-  String _sql = await getServerInfo("deleteShare");
+  String _sql = await _getServerInfo("deleteShare");
   try {
     var _response = await Dio().get(_sql + "&id=" + _id);
     var _subsonic = checkResponse(_response);
@@ -374,7 +374,7 @@ deleteShare(String _id) async {
 }
 
 getShares() async {
-  String _sql = await getServerInfo("getShares");
+  String _sql = await _getServerInfo("getShares");
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
@@ -391,7 +391,7 @@ getShares() async {
 }
 
 delStarred(Favorite _starred) async {
-  String _sql = await getServerInfo("unstar");
+  String _sql = await _getServerInfo("unstar");
   switch (_starred.type) {
     case "song":
       _sql = _sql + '&id=' + _starred.id;
@@ -419,7 +419,7 @@ delStarred(Favorite _starred) async {
 scrobble(String _songId, bool _submission) async {
   String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
   String _sql =
-      await getServerInfo("scrobble") + '&time=$_timestamp' + '&id=' + _songId;
+      await _getServerInfo("scrobble") + '&time=$_timestamp' + '&id=' + _songId;
   try {
     var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
