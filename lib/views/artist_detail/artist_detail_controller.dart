@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/util/httpClient.dart';
+import 'package:musify/util/httpClient.dart' hide getCoverArt;
 
 class ArtistDetailController extends GetxController {
   ScrollController albumscontroller = ScrollController();
@@ -81,9 +82,8 @@ class ArtistDetailController extends GetxController {
       List<Songs> songtem = [];
       List<bool> startem = [];
       for (var element in songsList) {
-        String stream = getServerInfo("stream");
         String url = getCoverArt(element["id"]);
-        element["stream"] = '$stream&id=${element["id"]}';
+        element["stream"] = getSongStream(element["id"]);
         element["coverUrl"] = url;
         if (element["starred"] != null) {
           startem.add(true);

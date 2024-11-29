@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/util/httpClient.dart';
+import 'package:musify/util/httpClient.dart' hide getCoverArt;
 import 'package:musify/util/util.dart';
 import 'package:musify/widgets/m_toast.dart';
 
@@ -43,10 +44,8 @@ class SearchViewController extends GetxController {
         searchData["song"] ?? [], searchDat2["song"] ?? []);
 
     for (var element in resSong) {
-      String stream = getServerInfo("stream");
-      String url = getCoverArt(element["id"]);
-      element["stream"] = '$stream&id=${element["id"]}';
-      element["coverUrl"] = url;
+      element["stream"] = getSongStream(element["id"]);
+      element["coverUrl"] = getCoverArt(element["id"]);
       Songs tem = Songs.fromJson(element);
       listSong.add(tem);
     }
