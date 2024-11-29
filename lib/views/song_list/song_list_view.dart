@@ -94,18 +94,10 @@ class SongListView extends GetResponsiveView<SongListController> {
       ),
       body: Column(
         children: [
-          Container(
-            height: 48,
-            padding: EdgeInsets.symmetric(horizontal: StyleSize.space),
-            child: Text('111'),
-          ),
           MSongTableHead(),
           Expanded(
             child: CustomScrollView(
               slivers: [
-                SliverToBoxAdapter(
-                  child: SizedBox(height: StyleSize.space),
-                ),
                 PagedSliverList<int, Songs>(
                   pagingController: controller.pagingController,
                   builderDelegate: PagedChildBuilderDelegate(

@@ -38,16 +38,16 @@ class FavoritesController extends GetxController {
     final favoriteList = await getStarred();
 
     if (favoriteList != null) {
-      var songs = favoriteList["song"];
-      var albums = favoriteList["album"];
-      var artists = favoriteList["artist"];
+      var songList = favoriteList["song"];
+      var albumsList = favoriteList["album"];
+      var artistsList = favoriteList["artist"];
 
       List<Songs> songs1 = [];
       List<Albums> albums1 = [];
       List<Artists> artists1 = [];
 
-      if (songs != null && songs.length > 0) {
-        for (var song in songs) {
+      if (songList != null && songList.length > 0) {
+        for (var song in songList) {
           String stream = await getServerInfo("stream");
           String url = await getCoverArt(song["id"]);
           song["stream"] = '$stream&id=${song["id"]}';
@@ -58,8 +58,8 @@ class FavoritesController extends GetxController {
       }
       songs(songs1);
 
-      if (albums != null && albums.length > 0) {
-        for (var album in albums) {
+      if (albumsList != null && albumsList.length > 0) {
+        for (var album in albumsList) {
           String url = await getCoverArt(album["id"]);
           album["coverUrl"] = url;
           albums1.add(Albums.fromJson(album));
@@ -68,8 +68,8 @@ class FavoritesController extends GetxController {
       }
       albums(albums1);
 
-      if (artists != null && artists.length > 0) {
-        for (var artist in artists) {
+      if (artistsList != null && artistsList.length > 0) {
+        for (var artist in artistsList) {
           String url = await getCoverArt(artist["id"]);
           artist["artistImageUrl"] = url;
           artists1.add(Artists.fromJson(artist));
