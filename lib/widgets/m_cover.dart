@@ -57,8 +57,8 @@ class MCover extends StatelessWidget {
         fit: BoxFit.cover,
         placeholder: (context, url) {
           return LoadingAnimationWidget.threeArchedCircle(
-            color: gray5,
-            size: max(32, size != null ? size! : 32),
+            color: ThemeService.color.textSecondColor,
+            size: max(32, size != null ? size! / 3 : 32),
           );
         },
         errorWidget: (ctx, s, ss) => Icon(
@@ -79,7 +79,7 @@ class MCover extends StatelessWidget {
             child: Center(
               child: Icon(
                 Icons.music_note_outlined,
-                size: size != null ? size! / 2 : 14,
+                size: size != null ? (size! / 3) : 14,
                 color: ThemeService.color.textSecondColor,
               ),
             ),

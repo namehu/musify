@@ -24,4 +24,6 @@ class StyleProperty {
   static const borderRadius = BorderRadius.all(
     Radius.circular(StyleSize.borderRadius),
   );
+
+  static const allPadding = EdgeInsets.all(StyleSize.space);
 }

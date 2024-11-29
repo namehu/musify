@@ -59,6 +59,7 @@ class MTitle extends StatelessWidget {
           ),
         ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: children,
         ),
       ],

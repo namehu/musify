@@ -10,7 +10,7 @@ final String version = "v0.0.1";
 //appbar高度
 const double appBarHeight = 56;
 //侧拉栏宽度
-final double drawerWidth = isClient ? 240 : 150;
+final double drawerWidth = isClient ? 220 : 150;
 //安全高度
 const double topSafeheight = 40;
 //安全高度

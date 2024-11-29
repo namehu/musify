@@ -15,6 +15,8 @@ class FavoritesViewBinding implements Bindings {
 }
 
 class FavoritesView extends GetView<FavoritesController> {
+  const FavoritesView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FavoriteContent(controller: controller);
@@ -34,7 +36,8 @@ class FavoriteContent extends StatefulWidget {
 
 class _FavoriteContentState extends State<FavoriteContent>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController = TabController(length: 3, vsync: this);
+  late final TabController _tabController =
+      TabController(length: 3, vsync: this);
 
   @override
   initState() {
@@ -54,10 +57,7 @@ class _FavoriteContentState extends State<FavoriteContent>
         automaticallyImplyLeading: isMobile,
         title: Row(
           children: [
-            if (!isMobile)
-              Container(
-                child: Text(S.current.favorite),
-              ),
+            if (!isMobile) Text(S.current.favorite),
             Expanded(
               child: _tabHead(),
               flex: 3,

@@ -12,10 +12,10 @@ import 'package:musify/widgets/m_toast.dart';
 
 import '../../../routes/pages.dart';
 
-class HomeTabView extends StatelessWidget {
+class HomeTabTwo extends StatelessWidget {
   final HomeController controller;
 
-  const HomeTabView({super.key, required this.controller});
+  const HomeTabTwo({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

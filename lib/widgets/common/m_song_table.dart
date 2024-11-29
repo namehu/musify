@@ -19,21 +19,31 @@ class MSongTableHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MTableList(
-      isHead: true,
-      data: [
-        MColumn(text: '#', width: 36, show: showIndex),
-        MColumn(flex: 1, text: S.current.song),
-        MColumn(
-          text: (S.current.album),
-          width: 150,
-          show: !isMobile,
-        ),
-        MColumn(child: Icon(Icons.access_time_outlined, size: 14)),
-        MColumn(text: (S.current.bitRange), show: !isMobile),
-        MColumn(text: (S.current.playCount), show: !isMobile),
-      ],
-      divider: true,
+    return LayoutBuilder(
+      builder: (ctx, con) {
+        return MTableList(
+          isHead: true,
+          data: [
+            MColumn(text: '#', width: 36, show: showIndex),
+            MColumn(flex: 1, text: S.current.song),
+            MColumn(
+              text: (S.current.album),
+              width: 150,
+              show: !isMobile,
+            ),
+            MColumn(child: Icon(Icons.access_time_outlined, size: 14)),
+            MColumn(
+              text: S.current.bitRange,
+              show: !isMobile && con.maxWidth > 700,
+            ),
+            MColumn(
+              text: S.current.playCount,
+              show: !isMobile && con.maxWidth > 700,
+            ),
+          ],
+          divider: true,
+        );
+      },
     );
   }
 }
@@ -70,88 +80,92 @@ class MSongTableRow extends StatelessWidget {
       child: Container(
         color: ThemeService.color.secondBgColor,
         height: StyleSize.listItemLargeHeight,
-        child: MTableList(
-          data: [
-            MColumn(
-              child: active!
-                  ? Icon(Icons.music_note_outlined, color: activeColor)
-                  : Text(
-                      (index + 1).toString().padLeft(2, '0'),
-                      style: TextStyle(
-                        color: ThemeService.color.textSecondColor,
+        child: LayoutBuilder(builder: (ctx, con) {
+          return MTableList(
+            data: [
+              MColumn(
+                child: active!
+                    ? Icon(Icons.music_note_outlined, color: activeColor)
+                    : Text(
+                        (index + 1).toString().padLeft(2, '0'),
+                        style: TextStyle(
+                          color: ThemeService.color.textSecondColor,
+                        ),
                       ),
-                    ),
-              width: 36,
-              show: showIndex,
-            ),
-            MColumn(
-              flex: 1,
-              child: LayoutBuilder(builder: (ctx, constraints) {
-                var maxWidth =
-                    constraints.maxWidth - _coverSize - contentPadding * 2 - 5;
-                return Row(
-                  children: [
-                    MCover(
-                      size: _coverSize,
-                      url: song.coverUrl,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: contentPadding,
-                        vertical: StyleSize.spaceSmall + 2,
+                width: 36,
+                show: showIndex,
+              ),
+              MColumn(
+                flex: 1,
+                child: LayoutBuilder(builder: (ctx, constraints) {
+                  var maxWidth = constraints.maxWidth -
+                      _coverSize -
+                      contentPadding * 2 -
+                      5;
+                  return Row(
+                    children: [
+                      MCover(
+                        size: _coverSize,
+                        url: song.coverUrl,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            constraints: BoxConstraints(maxWidth: maxWidth),
-                            child: MText(
-                              text: song.title,
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: contentPadding,
+                          vertical: StyleSize.spaceSmall + 2,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              constraints: BoxConstraints(maxWidth: maxWidth),
+                              child: MText(
+                                text: song.title,
+                                maxLines: 1,
+                                style: TextStyle(
+                                    color: active! ? activeColor : null),
+                              ),
+                            ),
+                            MText(
+                              text: song.artist,
                               maxLines: 1,
                               style: TextStyle(
-                                  color: active! ? activeColor : null),
+                                fontSize: 13,
+                                color: active!
+                                    ? activeColor
+                                    : ThemeService.color.textSecondColor,
+                              ),
                             ),
-                          ),
-                          MText(
-                            text: song.artist,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: active!
-                                  ? activeColor
-                                  : ThemeService.color.textSecondColor,
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-            MColumn(
-              text: song.album,
-              width: 200,
-              show: !isMobile,
-            ),
-            MColumn(
-                child: Text(
-              formatDuration(song.duration),
-              style: TextStyle(
-                color: active! ? activeColor : null,
+                    ],
+                  );
+                }),
               ),
-            )),
-            MColumn(
-              text: ("${song.suffix} / ${song.bitRate.toString()}k"),
-              show: !isMobile,
-            ),
-            MColumn(
-              text: (song.playCount.toString()),
-              show: !isMobile,
-            ),
-          ],
-        ),
+              MColumn(
+                text: song.album,
+                width: 200,
+                show: !isMobile,
+              ),
+              MColumn(
+                  child: Text(
+                formatDuration(song.duration),
+                style: TextStyle(
+                  color: active! ? activeColor : null,
+                ),
+              )),
+              MColumn(
+                text: ("${song.suffix} / ${song.bitRate.toString()}k"),
+                show: !isMobile && con.maxWidth > 700,
+              ),
+              MColumn(
+                text: (song.playCount.toString()),
+                show: !isMobile && con.maxWidth > 700,
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

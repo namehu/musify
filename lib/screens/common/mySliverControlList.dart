@@ -9,81 +9,74 @@ import '../../models/notifierValue.dart';
 import '../../util/mycss.dart';
 
 class MySliverControlList extends StatelessWidget {
-  final controller;
+  final ScrollController controller;
   final List<Albums> albums;
+  final double? height;
 
-  const MySliverControlList(
-      {Key? key, required this.controller, required this.albums});
+  const MySliverControlList({
+    super.key,
+    required this.controller,
+    required this.albums,
+    this.height = 250,
+  });
 
   @override
   Widget build(BuildContext context) {
-    //做了个设定取出右边的宽度然后除以180，再向下取整作为多少列，这样保证图片在窗口变大变小的时候不会有太大变化
-    double _rightHeight = 0;
-    if (isMobile &&
-        MediaQuery.of(context).orientation == Orientation.portrait) {
-      _rightHeight =
-          (windowsHeight.value / 4 > 250) ? 250 : windowsHeight.value / 4;
-    } else if (isMobile &&
-        MediaQuery.of(context).orientation == Orientation.landscape) {
-      _rightHeight =
-          (windowsWidth.value / 4 > 250) ? 250 : windowsWidth.value / 4;
-    } else {
-      _rightHeight = ((windowsWidth.value - drawerWidth) / 4 > 250)
-          ? 250
-          : (windowsWidth.value - drawerWidth) / 4;
-    }
-    return Container(
-      height: _rightHeight,
+    var maxWidth = height! - 67;
+    return SizedBox(
+      height: height,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: albums.length,
         controller: controller,
         itemBuilder: (context, index) {
-          Albums _tem = albums[index];
+          Albums albumItem = albums[index];
 
-          String _title = _tem.title;
-          if (_tem.year != 0) {
-            _title = _tem.title + "(" + _tem.year.toString() + ")";
+          String atitle = albumItem.title;
+          if (albumItem.year != 0) {
+            atitle = "${albumItem.title}(${albumItem.year})";
           }
 
           return Container(
             padding: index == 0 ? leftrightPadding : EdgeInsets.only(right: 15),
             child: InkWell(
-                onTap: () {
-                  activeID.value = _tem.id;
-                  Get.toNamed(Routes.ALBUM, arguments: {'id': _tem.id});
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(maxHeight: _rightHeight - 67),
-                      child: MCover(url: _tem.coverUrl),
+              onTap: () {
+                activeID.value = albumItem.id;
+                Get.toNamed(Routes.ALBUM, arguments: {'id': albumItem.id});
+              },
+              child: Column(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxHeight: maxWidth),
+                    child: MCover(
+                      url: albumItem.coverUrl,
+                      size: maxWidth,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 5, bottom: 5),
-                      constraints: BoxConstraints(
-                        maxWidth: _rightHeight - 67,
-                      ),
-                      child: Text(
-                        _title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    constraints: BoxConstraints(maxWidth: maxWidth),
+                    child: Text(
+                      atitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Container(
+                    constraints: BoxConstraints(maxWidth: maxWidth),
+                    child: Text(
+                      albumItem.artist,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: ThemeService.color.textSecondColor,
+                        fontSize: 12,
                       ),
                     ),
-                    Container(
-                        constraints: BoxConstraints(
-                          maxWidth: _rightHeight - 67,
-                        ),
-                        child: Text(
-                          _tem.artist,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              color: ThemeService.color.textSecondColor,
-                              fontSize: 12),
-                        ))
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
           );
         },
       ),
