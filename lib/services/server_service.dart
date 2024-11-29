@@ -20,6 +20,11 @@ class ServerService extends GetxService {
     languageCode: '',
   ).obs;
 
+  ServeTypeEnum? get serverType {
+    var type = serverInfo.value.serverType;
+    return ServeTypeEnum.values.firstWhereOrNull((el) => el.label == type);
+  }
+
   Future<ServerService> init() async {
     final dbServerInfo = await DbProvider.instance.getServerInfo();
 

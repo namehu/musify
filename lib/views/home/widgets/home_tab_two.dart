@@ -1,12 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/views/home/home_controller.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_cover.dart';
+import 'package:musify/widgets/m_logo.dart';
 import 'package:musify/widgets/m_title.dart';
 import 'package:musify/widgets/m_toast.dart';
 
@@ -25,11 +27,9 @@ class HomeTabTwo extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: SizedBox(height: StyleSize.space)),
-          SliverToBoxAdapter(child: _search()),
-          SliverToBoxAdapter(
-            child: SizedBox(height: StyleSize.space),
-          ),
-          SliverToBoxAdapter(child: _summaryCard()),
+          SliverToBoxAdapter(child: _buildSearch()),
+          SliverToBoxAdapter(child: SizedBox(height: StyleSize.space)),
+          SliverToBoxAdapter(child: _buildSummaryCard()),
           SliverToBoxAdapter(
             child: SizedBox(height: StyleSize.space),
           ),
@@ -98,24 +98,30 @@ class HomeTabTwo extends StatelessWidget {
     );
   }
 
-  Widget _search() {
+  Widget _buildSearch() {
     var serachText =
         '${S.current.search}${S.current.song}、${S.current.artist}、${S.current.album}';
     return Row(
       children: [
         Expanded(
           child: SizedBox(
-            // margin: EdgeInsets.symmetric(horizontal: StyleSize.space),
-            // width: 300,
             height: 36,
             child: GestureDetector(
               onTap: () => Get.toNamed(Routes.SEARCH),
               child: Container(
                 decoration: BoxDecoration(
-                    color: ThemeService.color.thirdBgColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(36),
-                    )),
+                  color: ThemeService.color.secondBgColor,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(36),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: ThemeService.color.thirdBgColor,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -144,11 +150,76 @@ class HomeTabTwo extends StatelessWidget {
     );
   }
 
-  Widget _summaryCard() {
+  Widget _buildSummaryCard() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: StyleSize.space),
+      decoration: BoxDecoration(
+        color: ThemeService.color.cardColor,
+        borderRadius: BorderRadius.circular(StyleSize.borderRadius),
+        boxShadow: [
+          BoxShadow(
+            color: ThemeService.color.thirdBgColor,
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: StyleSize.space),
+            child: Row(
+              children: [
+                Obx(
+                  () => MLogo(
+                    size: 60,
+                    serverType: controller.serverService.serverType,
+                  ),
+                ),
+                SizedBox(width: StyleSize.space),
+                SizedBox(
+                  height: 60,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MTitle(
+                        title: controller.serverTypeString,
+                        level: 3,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.music_note,
+                            size: 13,
+                            color: ThemeService.color.textSecondColor,
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            S.current.unknown,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: ThemeService.color.textSecondColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: StyleSize.space),
+            child: Divider(
+              height: 1,
+              // thickness: 10,
+              endIndent: 15,
+              indent: 15,
+              color: ThemeService.color.dividerColor.withOpacity(0.5),
+            ),
+          ),
           Row(
             children: [
               _summaryItem(Icons.library_music, S.current.allSong, () {

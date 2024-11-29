@@ -146,16 +146,6 @@ class SongListView extends GetResponsiveView<SongListController> {
               ],
             ),
           ),
-          SizedBox(width: StyleSize.space),
-          InkWell(
-            onTap: () {
-              // TODO: 实现歌单详情页
-            },
-            child: Icon(
-              Icons.my_location,
-              color: ThemeService.color.iconColor,
-            ),
-          ),
         ],
       ),
     );

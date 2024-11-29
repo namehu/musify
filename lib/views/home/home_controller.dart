@@ -34,6 +34,8 @@ class HomeController extends GetxController
 
   get hasServer => serverService.serverInfo.value.baseurl.isNotEmpty;
 
+  String get serverTypeString => serverService.serverInfo.value.serverType;
+
   @override
   void onInit() {
     super.onInit();
