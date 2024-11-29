@@ -78,7 +78,7 @@ ColorMapType normalColorMap = (
   textDisabledColor: Color.fromRGBO(0, 0, 0, 0.25),
   borderColor: gray6,
   dividerColor: gray5,
-  bgColor: gray2,
+  bgColor: gray3,
   secondBgColor: gray1,
   thirdBgColor: gray4,
   dialogBackgroundColor: gray1,

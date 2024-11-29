@@ -11,6 +11,7 @@ import 'package:musify/views/setting/setting_controller.dart';
 import 'package:musify/widgets/m_appbar.dart';
 import 'package:musify/widgets/m_button.dart';
 import 'package:musify/widgets/m_title.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class SettingBinding implements Bindings {
   @override
@@ -26,171 +27,187 @@ class SettingView extends GetView<SettingController> {
 
   @override
   Widget build(BuildContext context) {
+    var themeIndex = int.parse(ThemeService.modekey) - 1;
+    themeIndex = themeIndex < 0 ? 0 : themeIndex;
     return Obx(
       () => Scaffold(
         appBar: MAppBar(title: Text(S.current.settings)),
-        body: Center(
-          child: Container(
-            padding: EdgeInsets.all(StyleSize.space),
-            constraints:
-                BoxConstraints(maxWidth: GloabalService.contentMaxWidth),
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Container(
-                    child: _card(
-                      child: _listItem(
-                        icon: Icons.museum,
-                        title: S.current.version,
-                        value: Text(
-                          version,
-                          textAlign: TextAlign.right,
-                        ),
+        body: Container(
+          padding: EdgeInsets.all(StyleSize.space),
+          // constraints:
+          //     BoxConstraints(maxWidth: GloabalService.contentMaxWidth),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Container(
+                  child: _card(
+                    child: _listItem(
+                      icon: Icons.museum,
+                      title: S.current.version,
+                      value: Text(
+                        version,
+                        textAlign: TextAlign.right,
                       ),
                     ),
                   ),
                 ),
-                // server config card
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        top: StyleSize.spaceLarge, bottom: StyleSize.space),
-                    child: Flex(
-                      direction: Axis.horizontal,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MTitle(title: S.current.server),
-                        MButton(
-                          size: SizeEnum.samll,
-                          onTap: () {
-                            Get.toNamed(Routes.CHANGE_SERVER);
-                          },
-                          title: S.current.change + S.current.server,
-                        )
-                      ],
-                    ),
+              ),
+              // server config card
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: EdgeInsets.only(
+                      top: StyleSize.spaceLarge, bottom: StyleSize.space),
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MTitle(title: S.current.server),
+                      MButton(
+                        size: SizeEnum.samll,
+                        onTap: () {
+                          Get.toNamed(Routes.CHANGE_SERVER);
+                        },
+                        title: S.current.change + S.current.server,
+                      )
+                    ],
                   ),
                 ),
-                SliverToBoxAdapter(
-                  child: _card(
-                    child: Column(
-                      children: [
-                        _listItem(
-                          icon: Icons.dns,
-                          title: S.current.serverURL,
-                          value: Text(
-                            controller.sever.baseurl,
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                        _listItem(
-                          icon: Icons.person,
-                          title: S.current.username,
-                          value: Text(
-                            controller.sever.username,
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                        _listItem(
-                          icon: Icons.password,
-                          title: S.current.password,
-                          value: Text(
-                            '********',
-                            textAlign: TextAlign.right,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 13,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    margin: EdgeInsets.only(
-                        top: StyleSize.spaceLarge, bottom: StyleSize.space),
-                    child: Flex(
-                      direction: Axis.horizontal,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MTitle(title: S.current.systemSettings),
-                      ],
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: _card(
-                      child: Column(
+              ),
+              SliverToBoxAdapter(
+                child: _card(
+                  child: Column(
                     children: [
                       _listItem(
-                        icon: Icons.museum,
-                        title: S.current.language,
-                        value: Obx(
-                          () => Flex(
-                            direction: Axis.horizontal,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DropdownButton(
-                                value: controller.selectedSort.value,
-                                items: controller.lanMenuItems,
-                                isDense: true,
-                                underline: Container(),
-                                onChanged: (value) async {
-                                  String va = value.toString();
-
-                                  await controller.languageService
-                                      .changeLanguage(va);
-
-                                  controller.selectedSort.value = va;
-
-                                  gloabalService.restartApp();
-                                },
-                              ),
-                            ],
+                        icon: Icons.dns,
+                        title: S.current.serverURL,
+                        value: Text(
+                          controller.sever.baseurl,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
                         ),
                       ),
                       _listItem(
-                        icon: Icons.museum,
-                        title: S.current.theme,
-                        value: Obx(
-                          () => Flex(
-                            direction: Axis.horizontal,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              DropdownButton(
-                                value: ThemeService.modekey,
-                                items: controller.themeMenuItems,
-                                isDense: true,
-                                underline: Container(),
-                                onChanged: (value) async {
-                                  var va = int.parse(value.toString());
-                                  await ThemeService.setThemeMode(va);
-                                  gloabalService.restartApp();
-                                },
-                              ),
-                            ],
+                        icon: Icons.person,
+                        title: S.current.username,
+                        value: Text(
+                          controller.sever.username,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                      _listItem(
+                        icon: Icons.password,
+                        title: S.current.password,
+                        value: Text(
+                          '********',
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontSize: 13,
                           ),
                         ),
                       ),
                     ],
-                  )),
+                  ),
                 ),
-              ],
-            ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: EdgeInsets.only(
+                      top: StyleSize.spaceLarge, bottom: StyleSize.space),
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MTitle(title: S.current.systemSettings),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: _card(
+                    child: Column(
+                  children: [
+                    _listItem(
+                      icon: Icons.museum,
+                      title: S.current.language,
+                      value: Obx(
+                        () => Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            DropdownButton(
+                              value: controller.selectedSort.value,
+                              items: controller.lanMenuItems,
+                              isDense: true,
+                              underline: Container(),
+                              onChanged: (value) async {
+                                String va = value.toString();
+
+                                await controller.languageService
+                                    .changeLanguage(va);
+
+                                controller.selectedSort.value = va;
+
+                                gloabalService.restartApp();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    _listItem(
+                      icon: Icons.museum,
+                      title: S.current.theme,
+                      value: Obx(
+                        () => Flex(
+                          direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ToggleSwitch(
+                              minWidth: 48.0,
+                              minHeight: 32.0,
+                              initialLabelIndex: themeIndex,
+                              cornerRadius: 20.0,
+                              activeFgColor: themeIndex == 0
+                                  ? Colors.white
+                                  : Colors.blue[700],
+                              inactiveBgColor: Colors.grey[600],
+                              totalSwitches: 2,
+                              icons: [
+                                Icons.light_mode,
+                                Icons.dark_mode,
+                              ],
+                              iconSize: 30.0,
+                              activeBgColors: [
+                                [Colors.yellow, Colors.orange],
+                                [Colors.black45, Colors.black26],
+                              ],
+                              animate: true,
+                              curve: Curves
+                                  .bounceInOut, // animate must be set to true when using custom curve
+                              onToggle: (index) async {
+                                await ThemeService.setThemeMode(index! + 1);
+                                gloabalService.restartApp();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+              ),
+            ],
           ),
         ),
       ),
@@ -230,7 +247,7 @@ class SettingView extends GetView<SettingController> {
       padding: EdgeInsets.only(left: 16, right: 16),
       decoration: BoxDecoration(
         color: ThemeService.color.cardColor,
-        borderRadius: StyleProperty.borderRadius,
+        borderRadius: StyleProperty.smallBorderRadius,
       ),
       child: Column(
         children: containerChild,
@@ -274,6 +291,7 @@ class SettingView extends GetView<SettingController> {
       height: 48,
       child: Flex(
         direction: Axis.horizontal,
+        children: children,
       ),
     );
   }
