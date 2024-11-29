@@ -56,7 +56,11 @@ class _MusicBarState extends State<MusicBar> {
                     child: Obx(() {
                       return MCover(
                         url: audioPlayerService.currentSong.value.coverUrl,
-                        size: bottomImageWidthAndHeight,
+                        imagePlaceholder: false,
+                        size: audioPlayerService
+                                .currentSong.value.coverUrl.isEmpty
+                            ? 0
+                            : bottomImageWidthAndHeight,
                         shape: MCoverShapeEnum.round,
                       );
                     }),
@@ -75,31 +79,30 @@ class _MusicBarState extends State<MusicBar> {
                               audioPlayerService.currentSong.value;
                           if (currentSong.id.isEmpty) {
                             return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  APP_NAME.toUpperCase(),
+                                  '享受好音乐~',
                                   style: ThemeService.subTextStyle,
                                 ),
                               ],
                             );
                           }
                           return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(currentSong.title, maxLines: 1),
+                              Text(
+                                currentSong.title,
+                                maxLines: 1,
+                                style: TextStyle(fontSize: 16),
+                              ),
                               Text(
                                 currentSong.artist,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: ThemeService.subTextStyle,
                               ),
-                              Text(
-                                currentSong.album,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: ThemeService.subTextStyle,
-                              )
                             ],
                           );
                         }),
