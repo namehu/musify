@@ -130,30 +130,6 @@ class Sharelist {
   }
 }
 
-class Genres {
-  late String value;
-  late int songCount;
-  late int albumCount;
-
-  Genres(
-      {required this.value, required this.songCount, required this.albumCount});
-
-  Genres.fromJson(Map<String, dynamic> json) {
-    value = json['value'];
-    songCount = json['songCount'];
-    albumCount = json['albumCount'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> _data = new Map<String, dynamic>();
-    _data['value'] = this.value;
-    _data['songCount'] = this.songCount;
-    _data['albumCount'] = this.albumCount;
-
-    return _data;
-  }
-}
-
 class Artists {
   late String id;
   late String name;

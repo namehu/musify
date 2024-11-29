@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/myModel.dart';
+import 'package:musify/models/genres.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/widgets/m_table_list.dart';
 import 'genre_controller.dart';

@@ -112,21 +112,6 @@ search3(String _query) async {
   }
 }
 
-getGenres() async {
-  String _sql = _getServerInfo("getGenres");
-  try {
-    var _response = await Dio().get(_sql);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    Map _genres = _subsonic['genres'];
-    List _genre = _genres["genre"];
-    return _genre;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 //playlistId Yes (if updating) || name Yes (if creating)
 createPlaylist(String _nameOrId, String _songId) async {
   String _sql = await _getServerInfo("createPlaylist");

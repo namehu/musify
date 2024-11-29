@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:musify/models/genres.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
@@ -41,6 +42,9 @@ typedef MusicApi = ({
     int? pageSize,
     String? query,
   }) getSongs,
+
+  /// 查询流派列表
+  Future<List<Genres>> Function() getGenres,
 });
 
 logResponse(Response response) {

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:musify/models/myModel.dart';
-import 'package:musify/util/httpClient.dart';
+import 'package:musify/api/index.dart';
+import 'package:musify/models/genres.dart';
 
 class GenreController extends GetxController {
   RxList<Genres> genres = <Genres>[].obs;
@@ -14,15 +14,7 @@ class GenreController extends GetxController {
   }
 
   _getGenres() async {
-    final genresListRes = await getGenres();
-
-    if (genresListRes != null) {
-      List<Genres> genreslist = [];
-      for (var element in genresListRes) {
-        Genres genresItem = Genres.fromJson(element);
-        genreslist.add(genresItem);
-      }
-      genres(genreslist);
-    }
+    final genresListRes = await MRequest.api.getGenres();
+    genres(genresListRes);
   }
 }

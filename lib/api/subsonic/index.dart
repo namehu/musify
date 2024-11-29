@@ -8,6 +8,7 @@ import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/util/util.dart';
+import '../../models/genres.dart';
 import '../../models/myModel.dart';
 import '../../util/mycss.dart';
 import '../../util/request/mock_inter.dart';
@@ -98,6 +99,7 @@ MusicApi subsonicApi = (
   getPlaylist: _getPlaylist,
   getAlbumList: _getAlbumList,
   getSongs: _getSongs,
+  getGenres: _getGenres,
 );
 
 Future<Songs?> _getSong(String id) async {
@@ -221,4 +223,20 @@ Future<List<Songs>> _getSongs({
   }
 
   return list;
+}
+
+Future<List<Genres>> _getGenres() async {
+  var response = await _dio.get('getGenres');
+
+  List<Genres> genresList = [];
+  if (response.data != null && response.data['genres'] != null) {
+    List genreData = response.data['genres']["genre"] ?? [];
+    if (genreData.isNotEmpty) {
+      for (var element in genreData) {
+        Genres genresItem = Genres.fromJson(element);
+        genresList.add(genresItem);
+      }
+    }
+  }
+  return genresList;
 }
