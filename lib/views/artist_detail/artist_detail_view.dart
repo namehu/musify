@@ -65,7 +65,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
               if (controller.albums.isNotEmpty)
                 SliverToBoxAdapter(
                   child: MySliverControlBar(
-                    title: S.current.album,
+                    title: "${S.current.album}(${controller.albums.length})",
                     controller: controller.albumscontroller,
                   ),
                 ),

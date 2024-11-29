@@ -27,8 +27,6 @@ class SettingView extends GetView<SettingController> {
 
   @override
   Widget build(BuildContext context) {
-    var themeIndex = int.parse(ThemeService.modekey) - 1;
-    themeIndex = themeIndex < 0 ? 0 : themeIndex;
     return Obx(
       () => Scaffold(
         appBar: MAppBar(title: Text(S.current.settings)),
@@ -169,39 +167,43 @@ class SettingView extends GetView<SettingController> {
                       icon: Icons.museum,
                       title: S.current.theme,
                       value: Obx(
-                        () => Flex(
-                          direction: Axis.horizontal,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ToggleSwitch(
-                              minWidth: 48.0,
-                              minHeight: 32.0,
-                              initialLabelIndex: themeIndex,
-                              cornerRadius: 20.0,
-                              activeFgColor: themeIndex == 0
-                                  ? Colors.white
-                                  : Colors.blue[700],
-                              inactiveBgColor: Colors.grey[600],
-                              totalSwitches: 2,
-                              icons: [
-                                Icons.light_mode,
-                                Icons.dark_mode,
-                              ],
-                              iconSize: 30.0,
-                              activeBgColors: [
-                                [Colors.yellow, Colors.orange],
-                                [Colors.black45, Colors.black26],
-                              ],
-                              animate: true,
-                              curve: Curves
-                                  .bounceInOut, // animate must be set to true when using custom curve
-                              onToggle: (index) async {
-                                await ThemeService.setThemeMode(index! + 1);
-                                gloabalService.restartApp();
-                              },
-                            ),
-                          ],
-                        ),
+                        () {
+                          var themeIndex = int.parse(ThemeService.modekey) - 1;
+                          themeIndex = themeIndex < 0 ? 0 : themeIndex;
+                          return Flex(
+                            direction: Axis.horizontal,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ToggleSwitch(
+                                minWidth: 48.0,
+                                minHeight: 32.0,
+                                initialLabelIndex: themeIndex,
+                                cornerRadius: 20.0,
+                                activeFgColor: themeIndex == 0
+                                    ? Colors.white
+                                    : Colors.blue[700],
+                                inactiveBgColor: Colors.grey[600],
+                                totalSwitches: 2,
+                                icons: [
+                                  Icons.light_mode,
+                                  Icons.dark_mode,
+                                ],
+                                iconSize: 30.0,
+                                activeBgColors: [
+                                  [Colors.yellow, Colors.orange],
+                                  [Colors.black45, Colors.black26],
+                                ],
+                                animate: true,
+                                curve: Curves
+                                    .bounceInOut, // animate must be set to true when using custom curve
+                                onToggle: (index) async {
+                                  await ThemeService.setThemeMode(index! + 1);
+                                  gloabalService.restartApp();
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ],

@@ -4,9 +4,10 @@ class Songs {
   late String id;
   late String title;
   late String album;
-  late String artist;
-  late String genre;
   late String albumId;
+  late String artist;
+  late String artistId;
+  late String genre;
   late int duration;
   late int bitRate;
   late String suffix;
@@ -22,9 +23,10 @@ class Songs {
     required this.id,
     required this.title,
     required this.album,
-    required this.artist,
-    required this.genre,
     required this.albumId,
+    required this.artist,
+    required this.artistId,
+    required this.genre,
     required this.duration,
     required this.bitRate,
     required this.suffix,
@@ -41,9 +43,10 @@ class Songs {
     id = json['id'] ?? "";
     title = json['title'] ?? "";
     album = json['album'] ?? "";
-    artist = json['artist'] ?? "";
-    genre = json['genre'] ?? "0";
     albumId = json['albumId'] ?? "";
+    artist = json['artist'] ?? "";
+    artistId = json['artistId'] ?? "";
+    genre = json['genre'] ?? "0";
     duration = json['duration'] ?? 0;
     bitRate = json['bitRate'] ?? 0;
     suffix = json['suffix'] ?? "";
@@ -68,9 +71,10 @@ class Songs {
     data['id'] = id;
     data['title'] = title;
     data['album'] = album;
-    data['artist'] = artist;
-    data['genre'] = genre;
     data['albumId'] = albumId;
+    data['artist'] = artist;
+    data['artistId'] = artistId;
+    data['genre'] = genre;
     data['duration'] = duration;
     data['bitRate'] = bitRate;
     data['suffix'] = suffix;
@@ -88,9 +92,10 @@ class Songs {
     id = ndsong.id ?? '';
     title = ndsong.title ?? '';
     album = ndsong.album ?? '';
-    artist = ndsong.artist ?? '';
-    genre = ndsong.genre ?? '0';
     albumId = ndsong.albumId ?? '';
+    artist = ndsong.artist ?? '';
+    artistId = ndsong.artistId ?? '';
+    genre = ndsong.genre ?? '0';
     duration = ndsong.duration?.toInt() ?? 0;
     bitRate = ndsong.bitRate ?? 0;
     suffix = ndsong.suffix ?? '';
@@ -105,9 +110,10 @@ class Songs {
     id = "";
     title = "";
     album = "";
-    artist = "";
-    genre = "0";
     albumId = "";
+    artist = "";
+    artistId = "";
+    genre = "0";
     duration = 0;
     bitRate = 0;
     suffix = "";

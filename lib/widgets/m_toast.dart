@@ -106,7 +106,7 @@ class MToast {
     toastificationInstance = toastification.show(
       context: Get.context,
       type: type,
-      style: type! == ToastificationType.info
+      style: type == ToastificationType.info
           ? ToastificationStyle.simple
           : ToastificationStyle.flat,
       title: Center(child: Text(title)),

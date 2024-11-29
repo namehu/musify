@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Rx;
+import 'package:musify/routes/pages.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/m_text.dart';
 import 'package:musify/widgets/music/lyric_reader.dart';
@@ -198,24 +199,45 @@ class PlayView extends GetResponsiveView<PlayController> {
                       children: [
                         Container(
                           constraints: BoxConstraints(
-                              maxWidth: constraints.maxWidth / 3),
-                          child: Text(
-                            (value.artist.isEmpty)
-                                ? S.current.unknown
-                                : value.artist,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: gray1),
+                              maxWidth: constraints.maxWidth / 2),
+                          child: GestureDetector(
+                            onTap: () {
+                              if (value.artistId.isNotEmpty) {
+                                Get.toNamed(
+                                  Routes.ARTIST_DETAIL,
+                                  arguments: {"id": value.artistId},
+                                );
+                              }
+                            },
+                            child: Text(
+                              (value.artist.isEmpty)
+                                  ? S.current.unknown
+                                  : value.artist,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: gray1),
+                            ),
                           ),
                         ),
-                        Container(
-                          constraints: BoxConstraints(
-                              maxWidth: constraints.maxWidth / 3 * 2),
-                          child: Text(
-                            ' - ${value.album.isEmpty ? S.current.unknown : value.album}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: gray1),
+                        Expanded(
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxWidth: constraints.maxWidth,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (value.albumId.isNotEmpty) {
+                                  Get.toNamed(Routes.ALBUM,
+                                      arguments: {"id": value.albumId});
+                                }
+                              },
+                              child: Text(
+                                ' - ${value.album.isEmpty ? S.current.unknown : value.album}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(color: gray1),
+                              ),
+                            ),
                           ),
                         ),
                       ],

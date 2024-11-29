@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
