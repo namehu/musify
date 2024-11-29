@@ -75,7 +75,7 @@ class SearchView extends GetView<SearchViewController> {
                             controller: controller.artistcontroller,
                             itemCount: controller.artists.length,
                             itemBuilder: (ctx, index) {
-                              var _tem = controller.artists[index];
+                              var artistsTem = controller.artists[index];
                               return Container(
                                 padding: index == 0
                                     ? leftrightPadding
@@ -84,21 +84,21 @@ class SearchView extends GetView<SearchViewController> {
                                   onTap: () {
                                     Get.offNamed(
                                       Routes.ARTIST_DETAIL,
-                                      arguments: {"id": _tem.id},
+                                      arguments: {"id": artistsTem.id},
                                       preventDuplicates: false,
                                     );
                                   },
                                   child: Column(
                                     children: [
                                       Expanded(
-                                          child:
-                                              MCover(url: _tem.artistImageUrl)),
+                                          child: MCover(
+                                              url: artistsTem.artistImageUrl)),
                                       SizedBox(height: 5),
                                       Container(
                                         constraints:
                                             BoxConstraints(maxWidth: 200 - 67),
                                         child: Text(
-                                          _tem.name,
+                                          artistsTem.name,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -133,9 +133,9 @@ class SearchView extends GetView<SearchViewController> {
     );
   }
 
-  _buildSongItem(Songs _song, int index) {
+  _buildSongItem(Songs song, int index) {
     return MSongTableRow(
-      song: _song,
+      song: song,
       index: index,
       onTap: () {
         controller.audioPlayerService

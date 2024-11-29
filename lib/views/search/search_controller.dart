@@ -54,20 +54,20 @@ class SearchViewController extends GetxController {
     List<dynamic> resAlbum = _mergeAndDeduplicate(
         searchData["album"] ?? [], searchDat2["album"] ?? []);
 
-    for (var _element in resAlbum) {
-      String url = getCoverArt(_element["id"]);
-      _element["coverUrl"] = url;
-      Albums tem = Albums.fromJson(_element);
+    for (var albumElement in resAlbum) {
+      String url = getCoverArt(albumElement["id"]);
+      albumElement["coverUrl"] = url;
+      Albums tem = Albums.fromJson(albumElement);
       listAlbums.add(tem);
     }
 
     List<dynamic> resArtist = _mergeAndDeduplicate(
         searchData["artist"] ?? [], searchDat2["artist"] ?? []);
 
-    for (var _element in resArtist) {
-      String url = getCoverArt(_element["id"]);
-      _element["artistImageUrl"] = url;
-      Artists tem = Artists.fromJson(_element);
+    for (var artistElement in resArtist) {
+      String url = getCoverArt(artistElement["id"]);
+      artistElement["artistImageUrl"] = url;
+      Artists tem = Artists.fromJson(artistElement);
       listArtists.add(tem);
     }
 

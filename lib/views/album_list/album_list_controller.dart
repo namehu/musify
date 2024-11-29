@@ -7,7 +7,6 @@ import '../../generated/l10n.dart';
 
 class AlbumListController extends GetxController {
   static const _pageSize = 100;
-  RxList<Albums> albums = <Albums>[].obs;
 
   var selectOrder = AlbumListTypeEnum.recent.obs;
 
@@ -43,15 +42,15 @@ class AlbumListController extends GetxController {
 
   _getAllAlbums(int pageKey) async {
     var pageNum = ((pageKey / _pageSize) + 1).toInt();
-    List<Albums> _list = await MRequest.api.getAlbumList(
+    List<Albums> albumList = await MRequest.api.getAlbumList(
         pageSize: _pageSize, pageNum: pageNum, type: selectOrder.value);
 
-    final isLastPage = _list.length < _pageSize;
+    final isLastPage = albumList.length < _pageSize;
     if (isLastPage) {
-      pagingController.appendLastPage(_list);
+      pagingController.appendLastPage(albumList);
     } else {
-      final nextPageKey = pageKey + _list.length;
-      pagingController.appendPage(_list, nextPageKey);
+      final nextPageKey = pageKey + albumList.length;
+      pagingController.appendPage(albumList, nextPageKey);
     }
   }
 }

@@ -33,43 +33,41 @@ class AlbumController extends GetxController {
   }
 
   _getAlbum(String albumId) async {
-    final _albumtem = await MRequest.api.getAlbum(albumId);
-    if (_albumtem == null || _albumtem.length <= 0) {
+    final albumRes = await MRequest.api.getAlbum(albumId);
+    if (albumRes == null || albumRes.length <= 0) {
       return;
     }
 
-    final _songsList = _albumtem["song"];
+    final albumSongList = albumRes["song"];
 
-    String _url = getCoverArt(_albumtem["id"]);
+    String songCoverUrl = getCoverArt(albumRes["id"]);
 
-    _albumtem["coverUrl"] = _url;
-    _albumtem["title"] = _albumtem["name"];
-    Albums _albums = Albums.fromJson(_albumtem);
-    _album.value = _albums;
+    albumRes["coverUrl"] = songCoverUrl;
+    albumRes["title"] = albumRes["name"];
+    Albums albumsData = Albums.fromJson(albumRes);
+    _album.value = albumsData;
 
-    if (_songsList != null) {
-      List<Songs> _songtem = [];
-      List<bool> _startem = [];
-      for (var _element in _songsList) {
-        String _stream = getServerInfo("stream");
-        String _url = await getCoverArt(_element["id"]);
-        _element["stream"] = '$_stream&id=${_element["id"]}';
-        _element["coverUrl"] = _url;
-        if (_element["starred"] != null) {
-          _startem.add(true);
+    if (albumSongList != null) {
+      List<Songs> songtem = [];
+      List<bool> startem = [];
+      for (var elementAl in albumSongList) {
+        elementAl["stream"] =
+            '${getServerInfo("stream")}&id=${elementAl["id"]}';
+        elementAl["coverUrl"] = getCoverArt(elementAl["id"]);
+        if (elementAl["starred"] != null) {
+          startem.add(true);
         } else {
-          _startem.add(false);
+          startem.add(false);
         }
-        Songs _song = Songs.fromJson(_element);
-        _songtem.add(_song);
+        songtem.add(Songs.fromJson(elementAl));
       }
-      if (_albumtem["starred"] != null) {
+      if (albumRes["starred"] != null) {
         staralbum.value = true;
       } else {
         staralbum.value = false;
       }
 
-      _songs.value = _songtem;
+      _songs.value = songtem;
     }
   }
 
@@ -88,7 +86,7 @@ class AlbumController extends GetxController {
   }
 
   /// 点击歌曲播放
-  handleSongClick(Songs _song, int index) {
+  handleSongClick(Songs songData, int index) {
     audioPlayerService.palySongList(songs, index: index);
   }
 }

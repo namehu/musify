@@ -48,16 +48,16 @@ class IconMore extends StatelessWidget {
           itemCount: controller.sortOrderList.length,
           separatorBuilder: (c, i) => Divider(),
           itemBuilder: (ctx, i) {
-            var _item = controller.sortOrderList[i];
+            var sortOrderItem = controller.sortOrderList[i];
             return GestureDetector(
               child: Container(
                 height: StyleSize.listItemSmallHeight,
                 alignment: Alignment.center,
-                child: Text(_item[1] as String),
+                child: Text(sortOrderItem[1] as String),
               ),
               onTap: () {
                 Navigator.of(context, rootNavigator: true).pop();
-                controller.selectOrder(_item[0] as AlbumListTypeEnum);
+                controller.selectOrder(sortOrderItem[0] as AlbumListTypeEnum);
               },
             );
           },

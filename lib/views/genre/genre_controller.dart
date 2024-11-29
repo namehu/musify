@@ -14,15 +14,15 @@ class GenreController extends GetxController {
   }
 
   _getGenres() async {
-    final _genresList = await getGenres();
+    final genresListRes = await getGenres();
 
-    if (_genresList != null) {
-      List<Genres> _genreslist = [];
-      for (var element in _genresList) {
-        Genres _genres = Genres.fromJson(element);
-        _genreslist.add(_genres);
+    if (genresListRes != null) {
+      List<Genres> genreslist = [];
+      for (var element in genresListRes) {
+        Genres genresItem = Genres.fromJson(element);
+        genreslist.add(genresItem);
       }
-      genres(_genreslist);
+      genres(genreslist);
     }
   }
 }

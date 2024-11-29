@@ -67,23 +67,23 @@ class PlayListView extends GetResponsiveView<PlayListController> {
             itemCount: controller.playlistnum,
             itemExtent: 50.0, //强制高度为50.0
             itemBuilder: (BuildContext context, int index) {
-              Playlist _tem = controller.playlistsList[index];
+              Playlist playListtem = controller.playlistsList[index];
 
               // ignore: unrelated_type_equality_checks
               return screen == ScreenType.Phone
                   ? Dismissible(
-                      key: Key(_tem.id),
+                      key: Key(playListtem.id),
                       confirmDismiss: (direction) {
-                        bool _result = false;
+                        bool dimssResult = false;
                         if (direction == DismissDirection.endToStart &&
                             isMobile) {
                           // 从右向左  也就是删除
-                          _result = true;
+                          dimssResult = true;
                         } else if (direction == DismissDirection.startToEnd) {
                           //从左向右
-                          _result = false;
+                          dimssResult = false;
                         }
-                        return Future<bool>.value(_result);
+                        return Future<bool>.value(dimssResult);
                       },
                       onDismissed: (direction) async {
                         if (direction == DismissDirection.endToStart) {
@@ -97,28 +97,28 @@ class PlayListView extends GetResponsiveView<PlayListController> {
                         color: Colors.red,
                         child: Icon(Icons.delete, color: Colors.white),
                       ),
-                      child: _buidListItem(context, _tem),
+                      child: _buidListItem(context, playListtem),
                     )
-                  : _buidListItem(context, _tem);
+                  : _buidListItem(context, playListtem);
             },
           )),
     );
   }
 
-  _buidListItem(BuildContext context, Playlist _tem) {
+  _buidListItem(BuildContext context, Playlist playListTem) {
     return InkWell(
       onTap: () async {
-        Get.toNamed(Routes.PLAY_LIST_DETAIL, arguments: {'id': _tem.id});
+        Get.toNamed(Routes.PLAY_LIST_DETAIL, arguments: {'id': playListTem.id});
       },
       onSecondaryTapDown: (details) {
         controller.handleSecondaryTapDel(
           context,
           details.globalPosition.dx,
           details.globalPosition.dy,
-          _tem.id,
+          playListTem.id,
         );
       },
-      child: _buildRow(_tem),
+      child: _buildRow(playListTem),
     );
   }
 

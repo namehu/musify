@@ -81,12 +81,12 @@ class ArtistsView extends GetView<ArtistsController> {
               () => MStarToogle(
                 value: controller.star[index],
                 onChange: (value) async {
-                  Favorite _favorite = Favorite(id: item.id, type: 'artist');
+                  Favorite favorite = Favorite(id: item.id, type: 'artist');
                   if (value) {
-                    await addStarred(_favorite);
+                    await addStarred(favorite);
                     MToast.show(S.current.add + S.current.favorite);
                   } else {
-                    await delStarred(_favorite);
+                    await delStarred(favorite);
                     MToast.show(S.current.cancel + S.current.favorite);
                   }
 

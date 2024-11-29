@@ -133,10 +133,10 @@ class AlbumView extends GetView<AlbumController> {
             value: controller.staralbum.value,
             size: 16,
             onChange: (val) async {
-              var _favorite = Favorite(id: activeID.value, type: 'album');
+              var favorite = Favorite(id: activeID.value, type: 'album');
               controller.staralbum.value
-                  ? await delStarred(_favorite)
-                  : await addStarred(_favorite);
+                  ? await delStarred(favorite)
+                  : await addStarred(favorite);
               controller.staralbum.value = !controller.staralbum.value;
             },
           ),
@@ -145,9 +145,9 @@ class AlbumView extends GetView<AlbumController> {
     );
   }
 
-  Widget _songsBody(BuildContext _context) {
+  Widget _songsBody(BuildContext context) {
     return MediaQuery.removePadding(
-      context: _context,
+      context: context,
       removeTop: true,
       child: Obx(() => ListView.builder(
             physics: NeverScrollableScrollPhysics(),
@@ -156,19 +156,19 @@ class AlbumView extends GetView<AlbumController> {
             itemCount: controller.songs.length,
             itemExtent: 50.0, //强制高度为50.0
             itemBuilder: (BuildContext context, int index) {
-              Songs _song = controller.songs[index];
-              List<String> _title = [
-                _song.title,
-                formatDuration(_song.duration),
-                _song.id
+              Songs song = controller.songs[index];
+              List<String> title = [
+                song.title,
+                formatDuration(song.duration),
+                song.id
               ];
               return InkWell(
-                onTap: () => controller.handleSongClick(_song, index),
+                onTap: () => controller.handleSongClick(song, index),
                 child: ListTile(
                   title: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: _songlistView(
-                      _title,
+                      title,
                       index,
                     ),
                   ),
@@ -180,19 +180,19 @@ class AlbumView extends GetView<AlbumController> {
   }
 
   List<Widget> _songlistView(
-    List<String> _title,
-    int _index,
+    List<String> title,
+    int idx,
   ) {
-    var _id = _title[2];
-    return _title.asMap().keys.map((i) {
+    var id = title[2];
+    return title.asMap().keys.map((i) {
       if (i == 0) {
         return Expanded(
           flex: 1,
           child: Obx(() {
             var active =
-                controller.audioPlayerService.currentSong.value.id == _id;
+                controller.audioPlayerService.currentSong.value.id == id;
             return Text(
-              _title[i],
+              title[i],
               textDirection: (i == 0) ? TextDirection.ltr : TextDirection.rtl,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -204,7 +204,7 @@ class AlbumView extends GetView<AlbumController> {
             );
           }),
         );
-      } else if (i == _title.length - 1) {
+      } else if (i == title.length - 1) {
         return InkWell(
           onTap: () {
             // TODO: 还没做
@@ -220,7 +220,7 @@ class AlbumView extends GetView<AlbumController> {
       return Container(
         margin: EdgeInsets.only(left: 15, right: 15),
         child: Text(
-          _title[i],
+          title[i],
           textDirection: (i == 0) ? TextDirection.ltr : TextDirection.rtl,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,

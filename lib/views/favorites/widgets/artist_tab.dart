@@ -73,12 +73,12 @@ class ArtistTab extends StatelessWidget {
             child: MStarToogle(
               value: favs[index],
               onChange: (val) async {
-                Favorite _favorite = Favorite(id: data.id, type: 'artist');
+                Favorite favorite = Favorite(id: data.id, type: 'artist');
                 if (val) {
-                  await addStarred(_favorite);
+                  await addStarred(favorite);
                   MToast.show(S.current.add + S.current.favorite);
                 } else {
-                  await delStarred(_favorite);
+                  await delStarred(favorite);
                   MToast.show(S.current.cancel + S.current.favorite);
                 }
 

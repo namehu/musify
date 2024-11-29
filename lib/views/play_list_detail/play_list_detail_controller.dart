@@ -24,17 +24,17 @@ class PlayListDetailController extends GetxController {
   }
 
   _getData(String id) async {
-    var _playList = await MRequest.api.getPlaylist(id);
+    var playListRes = await MRequest.api.getPlaylist(id);
 
-    if (_playList != null) {
-      songslist.value = _playList.songs ?? [];
-      songsNum.value = _playList.songCount;
-      name.value = _playList.name;
-      duration.value = _playList.duration;
-      coverUrl.value = _playList.imageUrl;
+    if (playListRes != null) {
+      songslist.value = playListRes.songs ?? [];
+      songsNum.value = playListRes.songCount;
+      name.value = playListRes.name;
+      duration.value = playListRes.duration;
+      coverUrl.value = playListRes.imageUrl;
 
-      if (_playList.songs != null && _playList.songs!.isNotEmpty) {
-        playCount.value = (_playList.songs ?? [])
+      if (playListRes.songs != null && playListRes.songs!.isNotEmpty) {
+        playCount.value = (playListRes.songs ?? [])
             .map((e) => e.playCount)
             .reduce((a, b) => a + b);
       }

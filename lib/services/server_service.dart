@@ -21,10 +21,10 @@ class ServerService extends GetxService {
   ).obs;
 
   Future<ServerService> init() async {
-    final _serverInfo = await DbProvider.instance.getServerInfo();
+    final dbServerInfo = await DbProvider.instance.getServerInfo();
 
-    if (_serverInfo != null) {
-      updateCurrentServerInfo(_serverInfo);
+    if (dbServerInfo != null) {
+      updateCurrentServerInfo(dbServerInfo);
     }
 
     return this;

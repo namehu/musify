@@ -86,9 +86,9 @@ class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
   }
 
   _buildItem(int index) {
-    Songs _song = controller.songslist[index];
+    Songs song = controller.songslist[index];
     return MSongTableRow(
-      song: _song,
+      song: song,
       index: index,
       onTap: () {
         controller.audioPlayerService
