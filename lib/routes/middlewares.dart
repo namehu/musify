@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/enums/tab_type_enmu.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/global_service.dart';
 import 'package:musify/services/music_bar_service.dart';
@@ -13,6 +14,8 @@ List<String> _hiddenRoutes = [
 ]; //
 
 bool inited = false;
+
+/// 切换音乐栏显示与否
 toggleMusicBar(Routing? routing) {
   var route = routing?.current;
   if (route != null && isMobile) {
@@ -25,6 +28,23 @@ toggleMusicBar(Routing? routing) {
       MusicBarService.show();
     } else {
       MusicBarService.hide();
+    }
+  }
+}
+
+/// 路由变更更新tabbar激活栏
+togglePCTabActive(Routing? routing) {
+  var route = routing?.current;
+  if (route != null && !isMobile) {
+    if (GloabalService.tabTypeMap.containsValue(route)) {
+      var key = GloabalService.tabTypeMap.entries.firstWhere((element) {
+        return element.value == route;
+      }).key;
+      Future.delayed(Duration(milliseconds: 50), () {
+        GloabalService.tabType(key);
+      });
+    } else {
+      GloabalService.tabType(TabTypeEnmu.none);
     }
   }
 }

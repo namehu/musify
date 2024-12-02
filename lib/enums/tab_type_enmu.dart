@@ -1,18 +1,29 @@
+/// p'c 端侧边tab激活类型
 enum TabTypeEnmu {
-  // 首页
+  /// 无
+  none,
+
+  /// 首页
   home,
-  // 播放列表
+
+  /// 播放列表
   playList,
-  // 收藏
+
+  /// 收藏
   favorite,
-  // 专辑
+
+  /// 专辑
   album,
-  // 艺人
+
+  /// 艺人
   artist,
-  // 流派
+
+  /// 流派
   genres,
-  // 设置
+
+  /// 设置
   setting,
-  // 全部歌曲
+
+  /// 全部歌曲
   allSong,
 }

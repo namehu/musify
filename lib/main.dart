@@ -108,6 +108,7 @@ class MyApp extends StatelessWidget {
           transitionDuration: isMobile ? null : Duration(milliseconds: 0),
           routingCallback: (routing) {
             toggleMusicBar(routing);
+            togglePCTabActive(routing);
           },
           builder: (context, child) {
             if (isMobile) {

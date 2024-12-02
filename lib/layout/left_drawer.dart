@@ -33,21 +33,10 @@ class LeftDrawerState extends State<LeftDrawer> {
   // 处理点击事件
   _handleClick(TabTypeEnmu type) {
     // 将swich转换成map
-    var map = {
-      TabTypeEnmu.home: Routes.HOME,
-      TabTypeEnmu.playList: Routes.PLAY_LIST,
-      TabTypeEnmu.favorite: Routes.FAVORITE,
-      TabTypeEnmu.artist: Routes.ARTISTS,
-      TabTypeEnmu.album: Routes.ALBUM_LIST,
-      TabTypeEnmu.genres: Routes.GENRE,
-      TabTypeEnmu.setting: Routes.SETTING,
-      TabTypeEnmu.allSong: Routes.SONG_LIST,
-    };
-
-    if (map[type] != null) {
-      GloabalService.tabType(type);
+    var path = GloabalService.tabTypeMap[type];
+    if (path != null) {
       if (isMobile) Navigator.pop(context);
-      Get.toNamed(map[type]!);
+      Get.toNamed(path);
     }
   }
 
