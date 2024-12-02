@@ -110,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "shuffle": MessageLookupByLibrary.simpleMessage("随机播放"),
         "similar": MessageLookupByLibrary.simpleMessage("相似"),
         "simplified": MessageLookupByLibrary.simpleMessage("简体中文"),
+        "slogan": MessageLookupByLibrary.simpleMessage("音乐，让生活更美好"),
         "song": MessageLookupByLibrary.simpleMessage("歌曲"),
         "success": MessageLookupByLibrary.simpleMessage("成功"),
         "systemSettings": MessageLookupByLibrary.simpleMessage("系统设置"),

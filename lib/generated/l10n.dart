@@ -1040,11 +1040,21 @@ class S {
     );
   }
 
-  /// `全部歌曲`
+  /// `All Song`
   String get allSong {
     return Intl.message(
-      '全部歌曲',
+      'All Song',
       name: 'allSong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Music makes life better`
+  String get slogan {
+    return Intl.message(
+      'Music makes life better',
+      name: 'slogan',
       desc: '',
       args: [],
     );
