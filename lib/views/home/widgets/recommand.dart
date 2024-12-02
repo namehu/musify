@@ -4,14 +4,12 @@ import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
-import 'package:musify/services/album_servrice.dart';
-import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:musify/widgets/m_title.dart';
-import '../../../services/theme_service.dart';
+import 'slider_cover.dart';
 
 class HomeRecommand extends StatelessWidget {
   final List<Albums> albums;
@@ -20,9 +18,17 @@ class HomeRecommand extends StatelessWidget {
     required this.albums,
   });
 
+  handleSlideClick(String id) {
+    Get.toNamed(Routes.ALBUM, arguments: {'id': id});
+  }
+
   @override
   Widget build(BuildContext context) {
     var space = isMobile ? StyleSize.spaceSmall : StyleSize.spaceLarge;
+    double height = isMobile ? 150 : 280.0;
+
+    double containerVerticalPadding = isMobile ? space : space + space;
+    double coverSize = height - containerVerticalPadding * 2;
 
     return Container(
       margin: StyleProperty.allPadding,
@@ -33,7 +39,7 @@ class HomeRecommand extends StatelessWidget {
             constraints: con,
             child: CarouselSlider(
               options: CarouselOptions(
-                height: isMobile ? 150 : 280.0,
+                height: height,
                 viewportFraction: 1,
               ),
               items: albums.map((item) {
@@ -53,8 +59,7 @@ class HomeRecommand extends StatelessWidget {
                                     sigmaX: 50.0, sigmaY: 50.0),
                                 child: InkWell(
                                   onTap: () {
-                                    Get.toNamed(Routes.ALBUM,
-                                        arguments: {'id': item.id});
+                                    handleSlideClick(item.id);
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -67,7 +72,10 @@ class HomeRecommand extends StatelessWidget {
                                     ),
                                     child: Row(
                                       children: [
-                                        MCover(url: item.coverUrl),
+                                        SliderCover(
+                                          data: item,
+                                          size: coverSize,
+                                        ),
                                         SizedBox(width: space),
                                         Expanded(
                                           child: Container(
@@ -77,39 +85,23 @@ class HomeRecommand extends StatelessWidget {
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
                                               children: [
                                                 _buildText(
                                                   item.title,
                                                   isMobile ? 24 : 30,
                                                 ),
+                                                SizedBox(
+                                                  height: StyleSize.spaceSmall,
+                                                ),
                                                 _buildText(item.artist),
+                                                SizedBox(
+                                                  height: StyleSize.spaceSmall,
+                                                ),
                                                 MTitle(
                                                   level: 6,
                                                   title:
                                                       '${S.current.song}: ${item.songCount}   ${S.current.playCount}: ${item.playCount}',
                                                 ),
-                                                if (!isMobile)
-                                                  IconButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          WidgetStateProperty
-                                                              .all(
-                                                        gray4,
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-                                                      Get.find<AlbumServrice>()
-                                                          .playAlbum(item.id);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.play_arrow,
-                                                      color: ThemeService
-                                                          .color.textColor,
-                                                    ),
-                                                  ),
                                               ],
                                             ),
                                           ),
