@@ -87,17 +87,13 @@ MusicApi subsonicApi = (
     }
     return res;
   },
-  getAlbum: (String id) async {
-    var response = await _dio.get('getAlbum', queryParameters: {'id': id});
-    if (response.data == null) return null;
-    return response.data['album'];
-  },
   getSong: _getSong,
   createPlaylist: _createPlaylist,
   deletePlaylist: _deletePlaylist,
   getPlaylists: _getPlaylists,
   getPlaylist: _getPlaylist,
   getAlbumList: _getAlbumList,
+  getAlbum: _getAlbum,
   getSongs: _getSongs,
   getGenres: _getGenres,
 );
@@ -191,6 +187,19 @@ Future<List<Albums>> _getAlbumList({
     }
   }
   return list;
+}
+
+Future<Albums?> _getAlbum(String id) async {
+  var response = await _dio.get('getAlbum', queryParameters: {'id': id});
+
+  if (response.data == null || response.data['album'] == null) return null;
+
+  final albumRes = response.data['album'];
+  albumRes["coverUrl"] = getCoverArt(albumRes["id"]);
+  albumRes["title"] = albumRes["name"];
+  Albums albumsData = Albums.fromJson(albumRes);
+
+  return albumsData;
 }
 
 Future<List<Songs>> _getSongs({

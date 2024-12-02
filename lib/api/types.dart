@@ -13,9 +13,6 @@ typedef MusicApi = ({
   Future<Map<String, dynamic>> Function(
       String baseUrl, String username, String password) authenticate,
 
-  /// 查询专辑详情
-  Future<dynamic> Function(String id) getAlbum,
-
   /// 查询歌曲详情
   Future<Songs?> Function(String id) getSong,
 
@@ -32,6 +29,9 @@ typedef MusicApi = ({
     int? pageSize,
     AlbumListTypeEnum? type,
   }) getAlbumList,
+
+  /// 查询专辑详情
+  Future<Albums?> Function(String id) getAlbum,
 
   /// 获取专辑详情
   Future<Playlist?> Function(String id) getPlaylist,

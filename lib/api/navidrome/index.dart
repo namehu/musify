@@ -124,7 +124,6 @@ MusicApi navidromeApi = (
     }
     return res;
   },
-  getAlbum: subsonicApi.getAlbum,
   getSong: (String id) async {
     var queryParameters = {
       '_end': 15,
@@ -156,6 +155,7 @@ MusicApi navidromeApi = (
   getPlaylists: subsonicApi.getPlaylists,
   getPlaylist: subsonicApi.getPlaylist,
   getAlbumList: subsonicApi.getAlbumList,
+  getAlbum: subsonicApi.getAlbum,
   getSongs: subsonicApi.getSongs,
   getGenres: subsonicApi.getGenres,
 );

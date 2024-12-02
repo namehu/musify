@@ -1,5 +1,7 @@
 import 'package:musify/models/navidrome/nd_song.dart';
 
+import '../api/subsonic/utils.dart';
+
 class Songs {
   late String id;
   late String title;
@@ -57,6 +59,15 @@ class Songs {
     coverUrl = json['coverUrl'] ?? "";
     lyrics = json['lyrics'] ?? "";
 
+    // 判断是否已经拼接过流地址
+    if (!stream.contains('id=')) {
+      stream = getSongStream(id);
+    }
+    if (!coverUrl.contains('id=')) {
+      coverUrl = getCoverArt(id);
+    }
+
+    // 处理starred字段
     if (json['starred'] == null) {
       starred = false;
     } else if (json['starred'] is bool) {

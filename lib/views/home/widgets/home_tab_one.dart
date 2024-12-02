@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/views/home/home_controller.dart';
+import 'package:musify/views/home/widgets/recommand.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../models/myModel.dart';
@@ -50,20 +51,11 @@ class _HomeTabOneState extends State<HomeTabOne> {
 
       return Obx(
         () => CustomScrollView(
-          slivers: <Widget>[
+          slivers: [
             if (_randomalbums.isNotEmpty)
               SliverToBoxAdapter(
-                child: MySliverControlBar(
-                  title: S.current.random,
-                  controller: _randomAlbumcontroller,
-                ),
-              ),
-            if (_randomalbums.isNotEmpty)
-              SliverToBoxAdapter(
-                child: MySliverControlList(
-                  controller: _randomAlbumcontroller,
+                child: HomeRecommand(
                   albums: _randomalbums,
-                  height: itemHeight,
                 ),
               ),
             if (_mostalbums.isNotEmpty)

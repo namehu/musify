@@ -25,7 +25,7 @@ class MCover extends StatelessWidget {
     this.url = '',
     this.radius = 4,
     this.size,
-    this.imagePlaceholder = true,
+    this.imagePlaceholder = false,
     this.shape = MCoverShapeEnum.squareRound,
     this.round = false,
     this.placeholder,
@@ -73,7 +73,7 @@ class MCover extends StatelessWidget {
                   size: max(24, size != null ? size! / 3 : 32),
                 );
               }
-            : null,
+            : (context, url) => SizedBox(width: size, height: size),
         errorWidget: (ctx, s, ss) => Icon(
           Icons.music_off,
           color: ThemeService.color.textDisabledColor,

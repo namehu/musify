@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, unnecessary_this, prefer_collection_literals, unnecessary_new, no_leading_underscores_for_local_identifiers
 
+import 'package:musify/models/songs.dart';
+
 class PositionData {
   final Duration position;
   final Duration bufferedPosition;
@@ -172,19 +174,22 @@ class Albums {
   late int songCount;
   late String created;
   late String coverUrl;
+  late List<Songs> song;
 
-  Albums(
-      {required this.id,
-      required this.artistId,
-      required this.title,
-      required this.artist,
-      required this.genre,
-      required this.year,
-      required this.duration,
-      required this.playCount,
-      required this.songCount,
-      required this.created,
-      required this.coverUrl});
+  Albums({
+    required this.id,
+    required this.artistId,
+    required this.title,
+    required this.artist,
+    required this.genre,
+    required this.year,
+    required this.duration,
+    required this.playCount,
+    required this.songCount,
+    required this.created,
+    required this.coverUrl,
+    required this.song,
+  });
 
   Albums.fromJson(Map<String, dynamic> json) {
     id = json['id'] ?? '';
@@ -198,6 +203,14 @@ class Albums {
     songCount = json['songCount'] ?? 0;
     created = json['created'] ?? '';
     coverUrl = json['coverUrl'] ?? '';
+
+    // 处理 song
+    song = [];
+    if (json['song'] != null) {
+      for (var item in json['song']) {
+        song.add(Songs.fromJson(item));
+      }
+    }
   }
 
   get length => null;
@@ -215,6 +228,8 @@ class Albums {
     _data['songCount'] = this.songCount;
     _data['created'] = this.created;
     _data['coverUrl'] = this.coverUrl;
+    // 处理song
+    _data['songs'] = this.song.map((v) => v.toJson()).toList();
     return _data;
   }
 }

@@ -10,6 +10,7 @@ import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
 import 'package:musify/layout/left_drawer.dart';
+import 'package:musify/services/album_servrice.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/music_bar_service.dart';
@@ -77,6 +78,7 @@ void main() async {
   await Get.putAsync(() => ServerService().init());
   await Get.putAsync(() => PlayListService().init());
   await Get.putAsync(() => AudioPlayerService().init());
+  await Get.putAsync(() => AlbumServrice().init());
 
   runApp(MyApp());
 }

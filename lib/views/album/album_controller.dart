@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/api/index.dart';
-import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
@@ -34,40 +33,10 @@ class AlbumController extends GetxController {
   }
 
   _getAlbum(String albumId) async {
-    final albumRes = await MRequest.api.getAlbum(albumId);
-    if (albumRes == null || albumRes.length <= 0) {
-      return;
-    }
-
-    final albumSongList = albumRes["song"];
-
-    String songCoverUrl = getCoverArt(albumRes["id"]);
-
-    albumRes["coverUrl"] = songCoverUrl;
-    albumRes["title"] = albumRes["name"];
-    Albums albumsData = Albums.fromJson(albumRes);
-    _album.value = albumsData;
-
-    if (albumSongList != null) {
-      List<Songs> songtem = [];
-      List<bool> startem = [];
-      for (var elementAl in albumSongList) {
-        elementAl["stream"] = getSongStream(elementAl["id"]);
-        elementAl["coverUrl"] = getCoverArt(elementAl["id"]);
-        if (elementAl["starred"] != null) {
-          startem.add(true);
-        } else {
-          startem.add(false);
-        }
-        songtem.add(Songs.fromJson(elementAl));
-      }
-      if (albumRes["starred"] != null) {
-        staralbum.value = true;
-      } else {
-        staralbum.value = false;
-      }
-
-      _songs.value = songtem;
+    Albums? albumsData = await MRequest.api.getAlbum(albumId);
+    if (albumsData != null) {
+      _songs.value = albumsData.song;
+      _album(albumsData);
     }
   }
 
