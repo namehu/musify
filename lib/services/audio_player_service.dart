@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,7 @@ class AudioPlayerService extends GetxService {
   }
 
   late Worker _playListWorker;
+  late StreamSubscription<int?> _currentIndexStream;
 
   /// 歌词模型
   get lyricModel =>
@@ -84,28 +86,16 @@ class AudioPlayerService extends GetxService {
     // 监听替换播放列表
     _playListWorker = ever(playSongs, (songs) {
       if (activeSongValue.value != "1") {
-        //新加列表的时候关闭乱序，避免出错
-        // player.setShuffleModeEnabled(false);
-        // player.setLoopMode(LoopMode.all);
         _setAudioSource(songs);
       }
     });
 
-    player.currentIndexStream.listen((event) async {
+    _currentIndexStream = player.currentIndexStream.listen((event) async {
       if (player.sequenceState == null) return;
       // 更新当前歌曲
       final currentItem = player.sequenceState!.currentSource;
       // final playlist = player.sequenceState!.effectiveSequence;
-      if (currentItem == null) {
-        //更新上下首歌曲
-        // if (playlist.isEmpty) {
-        //   isFirstSongNotifier.value = true;
-        //   isLastSongNotifier.value = true;
-        // }
-      } else {
-        // isFirstSongNotifier.value = playlist.first == currentItem;
-        // isLastSongNotifier.value = playlist.last == currentItem;
-
+      if (currentItem != null) {
         MediaItem mediaItem = currentItem.tag;
         scrobble(mediaItem.id, false);
         await getSongDetail(mediaItem.id);
@@ -119,6 +109,7 @@ class AudioPlayerService extends GetxService {
   onClose() {
     hideMusicEventBus.destroy();
     _playListWorker.dispose();
+    _currentIndexStream.cancel();
   }
 
   // 显示播放列表
