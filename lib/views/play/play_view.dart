@@ -5,13 +5,13 @@ import 'package:musify/routes/pages.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/m_text.dart';
 import 'package:musify/widgets/music/lyric_reader.dart';
-import 'package:musify/views/play/widgets/player_control_bar.dart';
 import 'package:musify/widgets/music/music_seek_bar.dart';
 import 'package:musify/widgets/music/operation_icons.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'package:musify/widgets/m_cover.dart';
+import 'package:musify/widgets/music/player_contro_bar.dart';
 import '../../generated/l10n.dart';
 import 'play_controller.dart';
 
@@ -100,7 +100,7 @@ class PlayView extends GetResponsiveView<PlayController> {
                   left: _commonPadding,
                   right: _commonPadding,
                 ),
-                child: PlayerControlBar(),
+                child: PlayerControllBar(),
               ),
             ],
           ),

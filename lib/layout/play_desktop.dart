@@ -10,7 +10,7 @@ import 'package:musify/widgets/music/music_seek_bar.dart';
 import '../generated/l10n.dart';
 import '../models/notifierValue.dart';
 import '../util/mycss.dart';
-import 'player_contro_bar.dart';
+import '../widgets/music/player_contro_bar.dart';
 
 class PlayDesktop extends StatefulWidget {
   const PlayDesktop({super.key});
@@ -70,7 +70,7 @@ class _PlayDesktopState extends State<PlayDesktop> {
                         height: 10,
                         child: MusicSeekBar(dotRaidus: 5),
                       ),
-                      SizedBox(height: 80, child: PlayerControBar()),
+                      SizedBox(height: 80, child: PlayerControllBar()),
                     ],
                   ),
                 ),

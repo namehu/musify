@@ -36,6 +36,12 @@ class AudioPlayerService extends GetxService {
   /// 当前播放歌曲
   Rx<Songs> currentSong = Songs.fromInitial().obs;
 
+  /// 当前播放音量
+  Rx<double> volume = 1.0.obs;
+
+  /// 静音
+  RxBool volumeMute = false.obs;
+
   /// 当前播放歌曲索引
   RxInt currentSongIndex = 0.obs;
 

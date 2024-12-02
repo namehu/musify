@@ -19,6 +19,7 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
+/// 基础灰色
 const gray1 = Color.fromRGBO(255, 255, 255, 1);
 const gray2 = Color.fromRGBO(250, 250, 250, 1);
 const gray3 = Color.fromRGBO(245, 245, 245, 1);
@@ -32,6 +33,10 @@ const gray10 = Color.fromRGBO(38, 38, 38, 1);
 const gray11 = Color.fromRGBO(31, 31, 31, 1);
 const gray12 = Color.fromRGBO(20, 20, 20, 1);
 const gray13 = Color.fromRGBO(0, 0, 0, 1);
+
+// 播放按钮颜色
+const operationIconColor = gray3;
+const operationIconDarkColor = gray8;
 
 const normalTitleColor = Color.fromRGBO(0, 0, 0, 0.88);
 const darkTitleColor = Color.fromRGBO(255, 255, 255, 0.85);

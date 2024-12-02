@@ -8,8 +8,8 @@ import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_cover.dart';
 import '../util/mycss.dart';
 import '../widgets/music/music_seek_bar.dart';
-import 'player_contro_bar.dart';
-import 'player_volume_bar.dart';
+import '../widgets/music/player_contro_bar.dart';
+import '../widgets/music/player_volume_bar.dart';
 import 'play_desktop.dart';
 
 class BottomDesktop extends StatefulWidget {
@@ -89,8 +89,20 @@ class _BottomDesktopState extends State<BottomDesktop>
                       },
                     ),
                   ),
-                  Expanded(flex: 2, child: PlayerControBar()),
-                  Expanded(flex: 1, child: PlayerVolumeBar(player: player))
+                  Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: PlayerControllBar(
+                        dark: true,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: PlayerVolumeBar(
+                      dark: true,
+                    ),
+                  ),
                 ],
               ),
             ),

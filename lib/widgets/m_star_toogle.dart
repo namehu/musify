@@ -26,7 +26,7 @@ class MStarToogle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: disabled!
+      onTap: disabled! || onChange == null
           ? null
           : () {
               if (onChange != null) onChange!(!value);

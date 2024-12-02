@@ -47,6 +47,7 @@ dependencies:
   template_expressions: ^3.3.0+2
   flutter_screenutil: ^5.9.3
   toggle_switch: ^2.3.0
+  flutter_xlider: ^3.5.0
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0
