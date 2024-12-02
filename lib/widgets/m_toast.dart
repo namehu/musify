@@ -101,7 +101,7 @@ class MToast {
     }
 
     var iconMargin = type! == ToastificationType.info ? 20 : 90;
-    var margin = (Get.width - (title.length * 20 + iconMargin)) / 2;
+    var margin = (375 - (title.length * 15 + iconMargin)) / 2;
 
     toastificationInstance = toastification.show(
       context: Get.context,
