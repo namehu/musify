@@ -13,7 +13,6 @@ class AlbumServrice extends GetxService {
   /// 播放专辑
   playAlbum(String id) async {
     Albums? albumsData = await MRequest.api.getAlbum(id);
-    MToast.show(S.current.noSong);
 
     if (albumsData != null) {
       if (albumsData.song.isEmpty) {
