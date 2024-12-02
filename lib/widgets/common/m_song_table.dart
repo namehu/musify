@@ -10,6 +10,9 @@ import '../../util/util.dart';
 import '../m_table_list.dart';
 import '../m_text.dart';
 
+const double _albumWidth = 200;
+const double _indexWidth = 36;
+
 class MSongTableHead extends StatelessWidget {
   final bool? showIndex;
   const MSongTableHead({
@@ -24,11 +27,11 @@ class MSongTableHead extends StatelessWidget {
         return MTableList(
           isHead: true,
           data: [
-            MColumn(text: '#', width: 36, show: showIndex),
+            MColumn(text: '#', width: _indexWidth, show: showIndex),
             MColumn(flex: 1, text: S.current.song),
             MColumn(
               text: (S.current.album),
-              width: 150,
+              width: _albumWidth,
               show: !isMobile,
             ),
             MColumn(child: Icon(Icons.access_time_outlined, size: 14)),
@@ -92,7 +95,7 @@ class MSongTableRow extends StatelessWidget {
                           color: ThemeService.color.textSecondColor,
                         ),
                       ),
-                width: 36,
+                width: _indexWidth,
                 show: showIndex,
               ),
               MColumn(
@@ -145,7 +148,7 @@ class MSongTableRow extends StatelessWidget {
               ),
               MColumn(
                 text: song.album,
-                width: 200,
+                width: _albumWidth,
                 show: !isMobile,
               ),
               MColumn(
