@@ -2,26 +2,6 @@
 
 import 'package:dio/dio.dart';
 import '../models/notifierValue.dart';
-import 'mycss.dart';
-
-Future<bool> testServer(
-    String _baseUrl, String _username, String _password) async {
-  try {
-    var _response = await Dio().get(
-      _baseUrl +
-          '/rest/ping?v=$version&c=musify&f=json&u=' +
-          _username +
-          '&p=' +
-          _password,
-    );
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return false;
-    return true;
-  } catch (e) {
-    print(e);
-  }
-  return false;
-}
 
 checkResponse(Response<dynamic> _response) {
   if (_response.statusCode == 200) {
@@ -50,21 +30,6 @@ _getServerInfo(String _api) {
       '&t=' +
       serversInfo.value.hash;
   return _request;
-}
-
-(String, Map<String, dynamic>) getServerInfo2(String path) {
-  String requestPath = serversInfo.value.baseurl + '/rest/$path';
-  return (
-    requestPath,
-    {
-      'v': '0.0.1',
-      'c': 'musify',
-      'f': 'json',
-      'u': serversInfo.value.username,
-      's': serversInfo.value.salt,
-      't': serversInfo.value.hash
-    }
-  );
 }
 
 getRandomSongs() async {
@@ -111,25 +76,6 @@ search3(String _query) async {
   }
 }
 
-//playlistId Yes (if updating) || name Yes (if creating)
-createPlaylist(String _nameOrId, String _songId) async {
-  String _sql = await _getServerInfo("createPlaylist");
-  if (_songId == "") {
-    _sql = _sql + '&name=' + _nameOrId;
-  } else {
-    _sql = _sql + '&name=' + _nameOrId + '&songId=' + _songId;
-  }
-  try {
-    var _response = await Dio().get(_sql);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    return _subsonic;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 updatePlaylist(String playlistId, String songIdToAdd) async {
   String _sql = await _getServerInfo("updatePlaylist");
   _sql = _sql + '&playlistId=' + playlistId + '&songIdToAdd=' + songIdToAdd;
@@ -156,22 +102,6 @@ delSongfromPlaylist(String playlistId, String? index) async {
     var _subsonic = checkResponse(_response);
     if (_subsonic == null) return null;
     return _subsonic;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
-@Deprecated('plaese use Api request')
-getPlaylists() async {
-  String _sql = await _getServerInfo("getPlaylists");
-  try {
-    var _response = await Dio().get(_sql);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    Map _playlists = _subsonic['playlists'];
-    List _playlist = _playlists['playlist'];
-    return _playlist;
   } catch (e) {
     print(e);
     return null;
@@ -291,50 +221,6 @@ createShare(String _id, {String description = ""}) async {
   try {
     var _response =
         await Dio().get(_sql + "&id=" + _id + "&description=" + description);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    if (_subsonic['shares'] == null) return null;
-    Map _shares = _subsonic['shares'];
-    if (_shares['share'] == null) return null;
-    List _share = _shares['share'];
-    return _share;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
-updateShare(String _id, {String description = ""}) async {
-  String _sql = await _getServerInfo("updateShare");
-  try {
-    var _response =
-        await Dio().get(_sql + "&id=" + _id + "&description=" + description);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    return _subsonic;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
-deleteShare(String _id) async {
-  String _sql = await _getServerInfo("deleteShare");
-  try {
-    var _response = await Dio().get(_sql + "&id=" + _id);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    return _subsonic;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
-getShares() async {
-  String _sql = await _getServerInfo("getShares");
-  try {
-    var _response = await Dio().get(_sql);
     var _subsonic = checkResponse(_response);
     if (_subsonic == null) return null;
     if (_subsonic['shares'] == null) return null;
