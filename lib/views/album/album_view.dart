@@ -146,6 +146,7 @@ class AlbumView extends GetView<AlbumController> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
+                                      color: controller.textColor,
                                       fontSize: isMobile ? 32 : 50,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -159,31 +160,48 @@ class AlbumView extends GetView<AlbumController> {
                                       Icon(Icons.music_note_rounded),
                                     if (controller.album.year != 0 && !isMobile)
                                       Text(
-                                          '${S.current.year}: ${controller.album.year}'),
+                                        '${S.current.year}: ${controller.album.year}',
+                                        style: TextStyle(
+                                          color: controller.textColor,
+                                        ),
+                                      ),
                                     if (controller.album.year != 0 && !isMobile)
                                       _buildDot(),
                                     MText(
                                       text:
                                           "${S.current.song}: ${controller.album.songCount}",
+                                      style: TextStyle(
+                                        color: controller.textColor,
+                                      ),
                                     ),
                                     _buildDot(),
                                     MText(
                                       text:
                                           "${S.current.duration}: ${formatDuration(controller.album.duration)}",
+                                      style: TextStyle(
+                                        color: controller.textColor,
+                                      ),
                                     ),
                                     if (!isMobile) _buildDot(),
                                     if (!isMobile)
                                       MText(
                                         text:
                                             "${S.current.playCount}: ${controller.album.playCount}",
+                                        style: TextStyle(
+                                          color: controller.textColor,
+                                        ),
                                       )
                                   ],
                                 ),
                               ),
                               Obx(
-                                () => MTitle(
-                                  title: controller.album.artist,
-                                  level: 4,
+                                () => Text(
+                                  controller.album.artist,
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: controller.textColor,
+                                  ),
                                 ),
                               ),
                             ],
@@ -205,7 +223,7 @@ class AlbumView extends GetView<AlbumController> {
       width: 6,
       height: 6,
       decoration: BoxDecoration(
-        color: ThemeService.color.textColor,
+        color: controller.textColor,
         borderRadius: BorderRadius.circular(10),
       ),
     );

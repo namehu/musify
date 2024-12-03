@@ -6,6 +6,8 @@ import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/util/httpclient.dart';
 // import 'package:musify/util/httpclient.dart';
 import 'package:musify/widgets/m_toast.dart';
@@ -34,6 +36,16 @@ class AlbumController extends GetxController {
   List<Songs> get songs => _album.value.song;
 
   Color? get imageMainColor => paletteGenerator.value.dominantColor?.color;
+
+  Color? get textColor {
+    if (imageMainColor != null) {
+      return imageMainColor!.computeLuminance() > 0.5
+          ? ThemeService.color.textColor
+          : gray1;
+    }
+
+    return ThemeService.color.textColor;
+  }
 
   @override
   void onInit() {
