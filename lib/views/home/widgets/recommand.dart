@@ -11,12 +11,20 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:musify/widgets/m_title.dart';
 import 'slider_cover.dart';
 
-class HomeRecommand extends StatelessWidget {
+class HomeRecommand extends StatefulWidget {
   final List<Albums> albums;
   const HomeRecommand({
     super.key,
     required this.albums,
   });
+
+  @override
+  State<HomeRecommand> createState() => _HomeRecommandState();
+}
+
+class _HomeRecommandState extends State<HomeRecommand> {
+  int _current = 0;
+  final CarouselSliderController _controller = CarouselSliderController();
 
   handleSlideClick(String id) {
     Get.toNamed(Routes.ALBUM, arguments: {'id': id});
@@ -31,113 +39,98 @@ class HomeRecommand extends StatelessWidget {
     double coverSize = height - containerVerticalPadding * 2;
 
     return Container(
-      margin: StyleProperty.allPadding,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(StyleSize.borderRadius),
-        child: LayoutBuilder(
-          builder: (ctx, con) => Container(
-            constraints: con,
-            child: CarouselSlider(
-              options: CarouselOptions(
-                height: height,
-                viewportFraction: 1,
-              ),
-              items: albums.map((item) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return SizedBox(
-                      width: con.maxWidth,
-                      child: Stack(
-                        children: [
-                          ConstrainedBox(
-                            constraints: const BoxConstraints.expand(),
-                            child: MCover(url: item.coverUrl),
-                          ),
-                          SizedBox.expand(
-                            child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                    sigmaX: 50.0, sigmaY: 50.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    handleSlideClick(item.id);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical:
-                                          isMobile ? space : space + space,
-                                      horizontal: space,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.2),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        SliderCover(
-                                          data: item,
-                                          size: coverSize,
-                                        ),
-                                        SizedBox(width: space),
-                                        Expanded(
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: StyleSize.spaceSmall,
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                _buildText(
-                                                  item.title,
-                                                  isMobile ? 24 : 30,
-                                                ),
-                                                SizedBox(
-                                                  height: StyleSize.spaceSmall,
-                                                ),
-                                                _buildText(item.artist),
-                                                SizedBox(
-                                                  height: StyleSize.spaceSmall,
-                                                ),
-                                                MTitle(
-                                                  level: 6,
-                                                  title:
-                                                      '${S.current.song}: ${item.songCount}   ${S.current.playCount}: ${item.playCount}',
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                          ),
-                        ],
-                      ),
-                    );
+      margin: EdgeInsets.only(top: StyleSize.space),
+      child: Column(
+        children: [
+          LayoutBuilder(
+            builder: (ctx, con) => Container(
+              constraints: con,
+              child: CarouselSlider(
+                carouselController: _controller,
+                options: CarouselOptions(
+                  height: height,
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 5),
+                  autoPlayAnimationDuration: Duration(milliseconds: 300),
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
                   },
-                );
-              }).toList(),
+                ),
+                items: widget.albums.asMap().entries.map((item) {
+                  return ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(StyleSize.smallBorderRadius),
+                    child: Stack(
+                      children: [
+                        ConstrainedBox(
+                          constraints: const BoxConstraints.expand(),
+                          child: MCover(url: item.value.coverUrl),
+                        ),
+                        ClipRect(
+                          child: BackdropFilter(
+                            filter:
+                                ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
+                            child: SliderCover(
+                              data: item.value,
+                              size: coverSize,
+                              active: item.key == _current,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
-        ),
+          SizedBox(
+            height:
+                GetPlatform.isMobile ? StyleSize.spaceSmall : StyleSize.space,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: widget.albums.asMap().entries.map((entry) {
+              return InkWell(
+                onTap: () => _controller.animateToPage(entry.key),
+                child: Container(
+                  width: _current == entry.key ? 10 : 6.0,
+                  height: _current == entry.key ? 10 : 6.0,
+                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black)
+                          .withOpacity(_current == entry.key ? 0.8 : 0.2)),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
 
   _buildText(String text, [double size = 24]) {
-    return LayoutBuilder(builder: (ctx, con) {
-      return Container(
-        constraints: con,
-        child: Text(
-          text,
-          maxLines: 1,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: size,
+    return LayoutBuilder(
+      builder: (ctx, con) {
+        return Container(
+          constraints: BoxConstraints(maxWidth: con.maxWidth),
+          child: Text(
+            text,
+            maxLines: 1,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: size,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
-          overflow: TextOverflow.ellipsis,
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

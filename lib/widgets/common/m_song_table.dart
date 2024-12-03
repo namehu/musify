@@ -61,7 +61,7 @@ class MSongTableRow extends StatelessWidget {
   final double _coverSize = 48;
   final double contentPadding = StyleSize.spaceSmall;
 
-  MSongTableRow({
+  const MSongTableRow({
     super.key,
     required this.song,
     required this.index,
