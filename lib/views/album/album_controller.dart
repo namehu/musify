@@ -3,21 +3,21 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/enums/play_mode_enum.dart';
+import 'package:musify/enums/star_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/star_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
-import 'package:musify/util/httpclient.dart';
-// import 'package:musify/util/httpclient.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'package:palette_generator/palette_generator.dart';
-
 import '../../models/songs.dart';
 
 class AlbumController extends GetxController {
   final AudioPlayer player = AudioPlayerService.player;
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
+  final StarService starService = Get.find<StarService>();
 
   final _album = (Albums.fromJson({})).obs;
 
@@ -103,13 +103,15 @@ class AlbumController extends GetxController {
     handleSongClick(song, index);
   }
 
-  handleStarToggle(val) async {
-    var favorite = Favorite(id: album.id, type: 'album');
-    album.starred ? await delStarred(favorite) : await addStarred(favorite);
+  handleStarToggle(bool val) async {
+    await starService.toggleStar(
+      id: album.id,
+      type: StarTypeEnum.album,
+      star: val,
+    );
+
     _album.update((va) {
       va!.starred = !va.starred;
-      String msg = va.starred ? S.current.success : S.current.cancel;
-      MToast.success(msg + S.current.favorite + S.current.album);
     });
   }
 
@@ -119,7 +121,7 @@ class AlbumController extends GetxController {
   }
 
   playSong([int? index = 0]) {
-    var songs = album?.song ?? [];
+    var songs = album.song;
     audioPlayerService.palySongList(songs, index: index);
   }
 }

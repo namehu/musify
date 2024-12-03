@@ -5,6 +5,7 @@ import 'package:musify/models/myModel.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'audio_player_service.dart';
 
+/// 专辑服务
 class AlbumServrice extends GetxService {
   Future<AlbumServrice> init() async {
     return this;

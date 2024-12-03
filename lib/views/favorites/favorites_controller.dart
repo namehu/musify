@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/services/star_service.dart';
 import 'package:musify/util/httpclient.dart' hide getCoverArt;
 import '../../api/subsonic/utils.dart';
 import '../../generated/l10n.dart';
 
 class FavoritesController extends GetxController {
+  StarService starService = Get.find<StarService>();
   var songs = <Songs>[].obs;
   var songsFav = <bool>[].obs;
 
@@ -32,10 +34,10 @@ class FavoritesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _getFavorite();
+    _getFavoritesData();
   }
 
-  _getFavorite() async {
+  _getFavoritesData() async {
     final favoriteList = await getStarred();
 
     if (favoriteList != null) {

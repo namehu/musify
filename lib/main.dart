@@ -10,13 +10,14 @@ import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
 import 'package:musify/layout/left_drawer.dart';
-import 'package:musify/services/album_servrice.dart';
+import 'package:musify/services/album_service.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/music_bar_service.dart';
 import 'package:musify/services/play_list_service.dart';
 import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
+import 'package:musify/services/star_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
@@ -79,6 +80,7 @@ void main() async {
   await Get.putAsync(() => PlayListService().init());
   await Get.putAsync(() => AudioPlayerService().init());
   await Get.putAsync(() => AlbumServrice().init());
+  await Get.putAsync(() => StarService().init());
 
   runApp(MyApp());
 }

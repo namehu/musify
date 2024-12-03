@@ -112,23 +112,4 @@ class _HomeRecommandState extends State<HomeRecommand> {
       ),
     );
   }
-
-  _buildText(String text, [double size = 24]) {
-    return LayoutBuilder(
-      builder: (ctx, con) {
-        return Container(
-          constraints: BoxConstraints(maxWidth: con.maxWidth),
-          child: Text(
-            text,
-            maxLines: 1,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: size,
-            ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      },
-    );
-  }
 }

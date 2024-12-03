@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers, prefer_interpolation_to_compose_strings
 
 import 'package:dio/dio.dart';
-import '../models/myModel.dart';
 import '../models/notifierValue.dart';
 import 'mycss.dart';
 
@@ -273,32 +272,6 @@ getSong(String _id) async {
   }
 }
 
-addStarred(Favorite _starred) async {
-  String _sql = await _getServerInfo("star");
-  switch (_starred.type) {
-    case "song":
-      _sql = _sql + '&id=' + _starred.id;
-      break;
-    case "album":
-      _sql = _sql + '&albumId=' + _starred.id;
-      break;
-    case "artist":
-      _sql = _sql + '&artistId=' + _starred.id;
-      break;
-    default:
-      _sql = _sql + '&id=' + _starred.id;
-  }
-  try {
-    var _response = await Dio().get(_sql);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    return _subsonic;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
 getStarred() async {
   String _sql = await _getServerInfo("getStarred2");
   try {
@@ -369,32 +342,6 @@ getShares() async {
     if (_shares['share'] == null) return null;
     List _share = _shares['share'];
     return _share;
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
-delStarred(Favorite _starred) async {
-  String _sql = await _getServerInfo("unstar");
-  switch (_starred.type) {
-    case "song":
-      _sql = _sql + '&id=' + _starred.id;
-      break;
-    case "album":
-      _sql = _sql + '&albumId=' + _starred.id;
-      break;
-    case "artist":
-      _sql = _sql + '&artistId=' + _starred.id;
-      break;
-    default:
-      _sql = _sql + '&id=' + _starred.id;
-  }
-  try {
-    var _response = await Dio().get(_sql);
-    var _subsonic = checkResponse(_response);
-    if (_subsonic == null) return null;
-    return _subsonic;
   } catch (e) {
     print(e);
     return null;

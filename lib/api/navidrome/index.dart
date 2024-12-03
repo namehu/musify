@@ -158,4 +158,6 @@ MusicApi navidromeApi = (
   getAlbum: subsonicApi.getAlbum,
   getSongs: subsonicApi.getSongs,
   getGenres: subsonicApi.getGenres,
+  addStar: subsonicApi.addStar,
+  removeStar: subsonicApi.removeStar,
 );

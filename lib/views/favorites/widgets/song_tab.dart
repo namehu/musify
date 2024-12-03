@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/enums/star_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/util/httpclient.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
 import 'package:musify/views/favorites/favorites_controller.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_table_list.dart';
-
-import '../../../models/myModel.dart';
-import '../../../widgets/m_toast.dart';
 
 class SongTab extends StatelessWidget {
   final audioPlayerService = Get.find<AudioPlayerService>();
@@ -82,14 +79,11 @@ class SongTab extends StatelessWidget {
             child: MStarToogle(
               value: songsFav[index],
               onChange: (val) async {
-                Favorite favorite = Favorite(id: data.id, type: 'song');
-                if (val) {
-                  await addStarred(favorite);
-                  MToast.show(S.current.add + S.current.favorite);
-                } else {
-                  await delStarred(favorite);
-                  MToast.show(S.current.cancel + S.current.favorite);
-                }
+                await controller.starService.toggleStar(
+                  id: data.id,
+                  type: StarTypeEnum.song,
+                  star: val,
+                );
 
                 controller.songsFav[index] = val;
               },

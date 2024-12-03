@@ -13,7 +13,6 @@ import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_text.dart';
-import 'package:musify/widgets/m_title.dart';
 import 'package:musify/widgets/music/icon_play.dart';
 import 'package:musify/widgets/sliver/sliver_header_delegate.dart';
 
@@ -272,57 +271,5 @@ class AlbumView extends GetView<AlbumController> {
         },
       );
     });
-  }
-
-  List<Widget> _songlistView(
-    List<String> title,
-    int idx,
-  ) {
-    var id = title[2];
-    return title.asMap().keys.map((i) {
-      if (i == 0) {
-        return Expanded(
-          flex: 1,
-          child: Obx(() {
-            var active =
-                controller.audioPlayerService.currentSong.value.id == id;
-            return Text(
-              title[i],
-              textDirection: (i == 0) ? TextDirection.ltr : TextDirection.rtl,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: active
-                    ? ThemeService.color.textPrimaryColor
-                    : ThemeService.color.textColor,
-              ),
-            );
-          }),
-        );
-      } else if (i == title.length - 1) {
-        return InkWell(
-          onTap: () {
-            // TODO: 还没做
-          },
-          child: Icon(
-            Icons.more_vert,
-            size: 24,
-            color: textGray,
-          ),
-        );
-      }
-      // 时长
-      return Container(
-        margin: EdgeInsets.only(left: 15, right: 15),
-        child: Text(
-          title[i],
-          textDirection: (i == 0) ? TextDirection.ltr : TextDirection.rtl,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              color: ThemeService.color.textSecondColor, fontSize: 12),
-        ),
-      );
-    }).toList();
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:musify/enums/star_type_enum.dart';
 import 'package:musify/models/genres.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/play_list.dart';
@@ -45,6 +46,12 @@ typedef MusicApi = ({
 
   /// 查询流派列表
   Future<List<Genres>> Function() getGenres,
+
+  /// 收藏歌曲/专辑/歌手
+  Future<dynamic> Function(String id, StarTypeEnum type) addStar,
+
+  /// 取消收藏歌曲/专辑/歌手
+  Future<dynamic> Function(String id, StarTypeEnum type) removeStar,
 });
 
 logResponse(Response response) {

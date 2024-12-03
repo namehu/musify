@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
-import 'package:musify/services/album_servrice.dart';
+import 'package:musify/services/album_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';

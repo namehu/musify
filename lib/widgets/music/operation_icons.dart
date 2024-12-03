@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/enums/play_mode_enum.dart';
-import 'package:musify/models/myModel.dart';
+import 'package:musify/enums/star_type_enum.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/star_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
-import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 
 /// 播放模式切换按钮
@@ -257,6 +257,7 @@ class PlayFastForwardIcon extends StatelessWidget {
 // 收藏歌曲
 class PlayStarIcon extends StatelessWidget {
   final audioPlayerService = Get.find<AudioPlayerService>();
+  final starService = Get.find<StarService>();
   final Color? color;
   final double? size;
 
@@ -278,11 +279,11 @@ class PlayStarIcon extends StatelessWidget {
         onChange: song.id.isNotEmpty
             ? (val) async {
                 if (song.id.isNotEmpty) {
-                  Favorite favorite = Favorite(id: song.id, type: 'song');
-
-                  value
-                      ? await delStarred(favorite)
-                      : await addStarred(favorite);
+                  await starService.toggleStar(
+                    id: song.id,
+                    type: StarTypeEnum.song,
+                    star: val,
+                  );
                   audioPlayerService.currentSong.update((song) {
                     song?.starred = !value;
                   });

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:musify/constant.dart';
 import 'package:musify/enums/album_list_type_enum.dart';
+import 'package:musify/enums/star_type_enum.dart';
 import 'package:musify/models/play_list.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/server_service.dart';
@@ -96,6 +97,8 @@ MusicApi subsonicApi = (
   getAlbum: _getAlbum,
   getSongs: _getSongs,
   getGenres: _getGenres,
+  addStar: _addStar,
+  removeStar: _removeStar,
 );
 
 Future<Songs?> _getSong(String id) async {
@@ -248,4 +251,38 @@ Future<List<Genres>> _getGenres() async {
     }
   }
   return genresList;
+}
+
+Future<dynamic> _addStar(String id, StarTypeEnum type) async {
+  var queryParameters = <String, String>{};
+  switch (type) {
+    case StarTypeEnum.album:
+      queryParameters.addAll({'albumId': id});
+      break;
+    case StarTypeEnum.artist:
+      queryParameters.addAll({'artistId': id});
+      break;
+    default:
+      queryParameters.addAll({'id': id});
+  }
+
+  var response = await _dio.get('star', queryParameters: queryParameters);
+  return response.data;
+}
+
+Future<dynamic> _removeStar(String id, StarTypeEnum type) async {
+  var queryParameters = <String, String>{};
+  switch (type) {
+    case StarTypeEnum.album:
+      queryParameters.addAll({'albumId': id});
+      break;
+    case StarTypeEnum.artist:
+      queryParameters.addAll({'artistId': id});
+      break;
+    default:
+      queryParameters.addAll({'id': id});
+  }
+
+  var response = await _dio.get('unstar', queryParameters: queryParameters);
+  return response.data;
 }
