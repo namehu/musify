@@ -3,12 +3,16 @@ import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/size.dart';
 import 'package:musify/util/httpClient.dart';
 import 'package:musify/views/artists/artists_controller.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
+import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_table_list.dart';
 import 'package:musify/widgets/m_toast.dart';
+import 'package:musify/widgets/sliver/sliver_header_delegate.dart';
 
 import '../../util/mycss.dart';
 
@@ -31,8 +35,13 @@ class ArtistsView extends GetView<ArtistsController> {
       ),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: _buildHead(),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: SliverHeaderDelegate(
+              maxHeight: 48,
+              minHeight: 48,
+              child: _buildHead(),
+            ),
           ),
           Obx(
             () => SliverList.builder(
@@ -49,17 +58,20 @@ class ArtistsView extends GetView<ArtistsController> {
   }
 
   _buildHead() {
-    return MTableList(
-      isHead: true,
-      data: [
-        MColumn(flex: 1, text: S.current.artist),
-        MColumn(text: (S.current.album)),
-        MColumn(
-          text: S.current.favorite,
-          width: 50,
-        ),
-      ],
-      divider: true,
+    return Container(
+      color: ThemeService.color.bgColor,
+      child: MTableList(
+        isHead: true,
+        data: [
+          MColumn(text: '#', width: 48),
+          MColumn(flex: 1, text: S.current.artist),
+          MColumn(
+            text: '',
+            width: 50,
+          ),
+        ],
+        divider: true,
+      ),
     );
   }
 
@@ -70,34 +82,74 @@ class ArtistsView extends GetView<ArtistsController> {
       onTap: () {
         Get.toNamed(Routes.ARTIST_DETAIL, arguments: {'id': item.id});
       },
-      child: MTableList(
-        data: [
-          MColumn(flex: 1, text: item.name),
-          MColumn(text: item.albumCount.toString()),
-          MColumn(
-            text: S.current.favorite,
-            width: 50,
-            child: Obx(
-              () => MStarToogle(
-                value: controller.star[index],
-                onChange: (value) async {
-                  Favorite favorite = Favorite(id: item.id, type: 'artist');
-                  if (value) {
-                    await addStarred(favorite);
-                    MToast.show(S.current.add + S.current.favorite);
-                  } else {
-                    await delStarred(favorite);
-                    MToast.show(S.current.cancel + S.current.favorite);
-                  }
+      child: SizedBox(
+        height: StyleSize.listItemLargeHeight,
+        child: MTableList(
+          data: [
+            MColumn(text: (index + 1).toString().padLeft(2, '0'), width: 48),
+            MColumn(flex: 1, child: _buildMainColumn(item)),
+            MColumn(
+              text: S.current.favorite,
+              width: 50,
+              child: Obx(
+                () => MStarToogle(
+                  value: controller.star[index],
+                  onChange: (value) async {
+                    Favorite favorite = Favorite(id: item.id, type: 'artist');
+                    if (value) {
+                      await addStarred(favorite);
+                      MToast.show(S.current.add + S.current.favorite);
+                    } else {
+                      await delStarred(favorite);
+                      MToast.show(S.current.cancel + S.current.favorite);
+                    }
 
-                  controller.star[index] = value;
-                },
+                    controller.star[index] = value;
+                  },
+                ),
               ),
             ),
-          ),
-        ],
-        divider: true,
+          ],
+          divider: true,
+        ),
       ),
+    );
+  }
+
+  _buildMainColumn(Artists data) {
+    return Row(
+      children: [
+        MCover(
+          url: data.artistImageUrl,
+          size: 48,
+        ),
+        SizedBox(
+          width: StyleSize.space,
+        ),
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: StyleSize.spaceSmall),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  data.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  '${S.current.album} ${data.albumCount.toString()}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: ThemeService.color.textSecondColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

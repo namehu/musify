@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/services/theme_service.dart';
 import 'package:musify/util/httpClient.dart' hide getCoverArt;
 
 class ArtistDetailController extends GetxController {
+  final AudioPlayer player = AudioPlayerService.player;
+  final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
   ScrollController albumscontroller = ScrollController();
   ScrollController similarArtistcontroller = ScrollController();
 
@@ -25,15 +30,42 @@ class ArtistDetailController extends GetxController {
   var topSongs = <Songs>[].obs; // top歌曲
   var topSongsFav = <bool>[].obs; //top歌曲是否收藏
 
+  final ScrollController scrollController = ScrollController();
+
+  final double headHeight = GetPlatform.isMobile ? 200 : 300;
+
+  RxBool showTitle = false.obs;
+
+  Color? get imageMainColor => ThemeService.color.bgColor;
+  Color? get textColor {
+    return ThemeService.color.textColor;
+  }
+
   @override
   void onInit() async {
     super.onInit();
+
+    scrollController.addListener(() {
+      showTitle(scrollController.offset > headHeight - 50);
+    });
 
     String id = Get.arguments?['id'] ?? '';
     if (id.isNotEmpty) {
       _getArtist(id);
       _getArtistInfo2(id);
     }
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+
+    scrollController.dispose();
+  }
+
+  playSong([int? index = 0]) {
+    var songs = topSongs.value;
+    audioPlayerService.palySongList(songs, index: index);
   }
 
   _getArtist(String artistId) async {

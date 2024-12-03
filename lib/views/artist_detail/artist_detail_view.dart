@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
-import 'package:musify/widgets/common/m_list_head.dart';
+import 'package:musify/widgets/common/m_song_table.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_cover.dart';
-import 'package:musify/widgets/m_table_list.dart';
 import 'package:musify/widgets/m_text.dart';
 import 'package:musify/widgets/m_title.dart';
-import 'package:musify/widgets/m_toast.dart';
 import '../../screens/common/mySliverControlBar.dart';
 import '../../screens/common/mySliverControlList.dart';
-import '../../util/httpClient.dart';
-import '../../widgets/m_star_toogle.dart';
 import 'artist_detail_controller.dart';
 
 class ArtistDetailBinding implements Bindings {
@@ -38,28 +34,51 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.current.artist)),
+      backgroundColor: gray1,
       body: SafeArea(
         child: Obx(
           () => CustomScrollView(
+            controller: controller.scrollController,
             slivers: [
-              SliverToBoxAdapter(child: _buildTopWidget()),
+              SliverAppBar(
+                pinned: true, // 滑动到顶端时会固定住
+                expandedHeight: controller.headHeight,
+                backgroundColor: controller.imageMainColor,
+                foregroundColor: controller.imageMainColor,
+                leading: InkWell(
+                  onTap: () => Get.back(),
+                  child: Icon(Icons.arrow_back_ios_outlined),
+                ),
+                title: Obx(() {
+                  return controller.showTitle.value
+                      ? Text(controller.artilstname.value)
+                      : Container();
+                }),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: _buildTopHead(),
+                ),
+              ),
+              // SliverToBoxAdapter(child: _buildTopWidget()),
               SliverToBoxAdapter(child: _buildBiography()),
+
               SliverToBoxAdapter(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: StyleSize.space),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: StyleSize.space,
+                    vertical: StyleSize.spaceSmall,
+                  ),
                   child: MTitle(title: S.current.song),
                 ),
               ),
               if (controller.topSongs.isNotEmpty)
                 SliverToBoxAdapter(
-                  child: _buidTopSongHead(),
+                  child: MSongTableHead(),
                 ),
               if (controller.topSongs.isNotEmpty)
                 SliverList.builder(
                   itemCount: controller.topSongs.length,
                   itemBuilder: (ctx, index) {
-                    return _buidTopSong(index);
+                    return _buildSongList(index);
                   },
                 ),
               if (controller.albums.isNotEmpty)
@@ -138,104 +157,160 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
     );
   }
 
-  Widget _buildTopWidget() {
-    return Obx(
-      () => MListHead(
-        cover: MCover(
-          url: controller.arturl.value,
-          shape: MCoverShapeEnum.squareRound,
-        ),
-        title: controller.artilstname.value,
-        subWidgets: [
-          Row(
-            children: [
-              Text(
-                "${S.current.album}: ${controller.albumsnum.value}",
-              ),
-              SizedBox(width: 15),
-              Text(
-                "${S.current.song}: ${controller.songCount.value}",
-              )
-            ],
-          ),
-          MText(
-            text:
-                "${S.current.duration}: ${formatDuration(controller.duration.value)}",
-          ),
-          MText(
-            text: "${S.current.playCount}: ${controller.playCount.value}",
-          ),
+  Widget _buildTopHead() {
+    // FIXME: 这里状态栏高度有问题
+    double appBarHeight =
+        (GetPlatform.isMobile ? 40 : 0) + AppBar().preferredSize.height;
+
+    double coverMargin = isMobile ? StyleSize.spaceSmall : StyleSize.space * 2;
+
+    double coverSize = controller.headHeight - appBarHeight - coverMargin;
+
+    return SizedBox(
+      height: controller.headHeight,
+      child: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: StyleSize.spaceLarge),
+            color: controller.imageMainColor,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: appBarHeight),
+                Container(
+                    margin: EdgeInsets.only(bottom: coverMargin),
+                    child: LayoutBuilder(builder: (ctx, con) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Obx(
+                            () => MCover(
+                              url: controller.arturl.value,
+                              size: coverSize,
+                            ),
+                          ),
+                          SizedBox(width: StyleSize.space),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (!isMobile)
+                                Obx(
+                                  () => Text(
+                                    S.current.artist,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: controller.textColor,
+                                    ),
+                                  ),
+                                ),
+                              Container(
+                                constraints: BoxConstraints(
+                                  maxWidth: con.maxWidth -
+                                      coverSize -
+                                      StyleSize.space,
+                                ),
+                                child: Obx(
+                                  () => Text(
+                                    controller.artilstname.value,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: controller.textColor,
+                                      fontSize: isMobile ? 32 : 50,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Obx(
+                                () => Row(
+                                  children: [
+                                    MText(
+                                      text:
+                                          "${S.current.song}: ${controller.albumsnum.value}",
+                                      style: TextStyle(
+                                        color: controller.textColor,
+                                      ),
+                                    ),
+                                    _buildDot(),
+                                    MText(
+                                      text:
+                                          "${S.current.duration}: ${formatDuration(controller.duration.value)}",
+                                      style: TextStyle(
+                                        color: controller.textColor,
+                                      ),
+                                    ),
+                                    if (!isMobile) _buildDot(),
+                                    if (!isMobile)
+                                      MText(
+                                        text:
+                                            "${S.current.playCount}: ${controller.playCount.value}",
+                                        style: TextStyle(
+                                          color: controller.textColor,
+                                        ),
+                                      )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    })),
+              ],
+            ),
+          )
         ],
+      ),
+    );
+  }
+
+  _buildDot() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: StyleSize.spaceSmall),
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        color: controller.textColor,
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
 
   Widget _buildBiography() {
     return Obx(
-      () => Container(
-        padding: EdgeInsets.all(StyleSize.space),
-        child: Text(
-          controller.biography.value,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 100,
-        ),
-      ),
-    );
-  }
-
-  Widget _buidTopSongHead() {
-    return MTableList(
-      isHead: true,
-      data: [
-        MColumn(flex: 1, text: S.current.song),
-        MColumn(text: S.current.album),
-        MColumn(text: S.current.duration),
-        MColumn(text: S.current.bitRange, show: !isMobile),
-        MColumn(text: S.current.playCount, show: !isMobile),
-        MColumn(text: S.current.favorite, width: 50),
-      ],
-    );
-  }
-
-  Widget _buidTopSong(int index) {
-    var item = controller.topSongs[index];
-    return InkWell(
-      onTap: () {
-        audioPlayerService.palySongList(
-          controller.topSongs.value,
-          index: index,
-        );
-      },
-      child: MTableList(
-        data: [
-          MColumn(flex: 1, text: item.title),
-          MColumn(text: item.album),
-          MColumn(text: formatDuration(item.duration)),
-          MColumn(text: item.bitRate.toString(), show: !isMobile),
-          MColumn(text: item.playCount.toString(), show: !isMobile),
-          MColumn(
-            text: S.current.favorite,
-            width: 50,
-            child: Obx(
-              () => MStarToogle(
-                value: controller.topSongsFav[index],
-                onChange: (value) async {
-                  Favorite favorite = Favorite(id: item.id, type: 'song');
-                  if (value) {
-                    await addStarred(favorite);
-                    MToast.show(S.current.add + S.current.favorite);
-                  } else {
-                    await delStarred(favorite);
-                    MToast.show(S.current.cancel + S.current.favorite);
-                  }
-
-                  controller.topSongsFav[index] = value;
-                },
+      () => controller.biography.value.isNotEmpty
+          ? Container(
+              padding: EdgeInsets.all(StyleSize.space),
+              child: Text(
+                controller.biography.value,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 100,
               ),
-            ),
-          ),
-        ],
-      ),
+            )
+          : Container(),
     );
+  }
+
+  _buildSongList(int index) {
+    var song = controller.topSongs[index];
+
+    return Obx(() {
+      var isActive =
+          controller.audioPlayerService.currentSong.value.id == song.id;
+      return MSongTableRow(
+        song: song,
+        index: index,
+        showIndex: true,
+        active: isActive,
+        onTap: () {
+          controller.playSong(index);
+        },
+      );
+    });
   }
 }
