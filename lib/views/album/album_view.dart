@@ -1,46 +1,74 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/myModel.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/util/httpclient.dart';
+import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
 import 'package:musify/views/album/album_controller.dart';
-import 'package:musify/widgets/common/m_list_head.dart';
+import 'package:musify/widgets/common/m_song_table.dart';
 import 'package:musify/widgets/m_bottom_placeholder.dart';
-import 'package:musify/widgets/m_button.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_text.dart';
+import 'package:musify/widgets/m_title.dart';
+import 'package:musify/widgets/music/icon_play.dart';
+import 'package:musify/widgets/sliver/sliver_header_delegate.dart';
 
 class AlbumBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AlbumController>(() => AlbumController());
+    Get.lazyPut(() => AlbumController());
   }
 }
 
 class AlbumView extends GetView<AlbumController> {
-  // 顶部区域
-  final double _toprightwidth =
-      windowsWidth.value - screenImageWidthAndHeight - 40 - 15;
-
-  AlbumView({super.key});
+  const AlbumView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('专辑')),
       body: Obx(
         () => CustomScrollView(
+          controller: controller.scrollController,
           slivers: [
-            SliverToBoxAdapter(child: _buildTopWidget()),
-            SliverToBoxAdapter(child: _buildOperations()),
-            SliverToBoxAdapter(child: _songsBody(context)),
+            SliverAppBar(
+              pinned: true, // 滑动到顶端时会固定住
+              expandedHeight: controller.headHeight,
+              backgroundColor: controller.imageMainColor,
+              leading: InkWell(
+                onTap: () => Get.back(),
+                child: Icon(Icons.arrow_back_ios_outlined),
+              ),
+              title: Obx(() {
+                return controller.showTitle.value
+                    ? Text(controller.album.title)
+                    : Container();
+              }),
+              flexibleSpace: FlexibleSpaceBar(
+                background: _buildTopHead(),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: _buildOperations(),
+            ),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: SliverHeaderDelegate(
+                maxHeight: 48,
+                minHeight: 48,
+                child: MSongTableHead(),
+              ),
+            ),
+            SliverList.builder(
+              itemCount: controller.album.song.length,
+              itemBuilder: (context, index) {
+                var song = controller.album.song[index];
+                return _buildSongList(song, index);
+              },
+            ),
             SliverToBoxAdapter(child: MBottomPlaceholder()),
           ],
         ),
@@ -48,56 +76,157 @@ class AlbumView extends GetView<AlbumController> {
     );
   }
 
-  Widget _buildTopWidget() {
-    return MListHead(
-      cover: Obx(
-        () => MCover(url: controller.album.coverUrl),
+  Widget _buildTopHead() {
+    // FIXME: 这里状态栏高度有问题
+    double appBarHeight =
+        (GetPlatform.isMobile ? 40 : 0) + AppBar().preferredSize.height;
+
+    double coverMargin = isMobile ? StyleSize.spaceSmall : StyleSize.space * 2;
+
+    double coverSize = controller.headHeight - appBarHeight - coverMargin;
+
+    return SizedBox(
+      height: controller.headHeight,
+      child: Stack(
+        children: [
+          SizedBox.expand(
+            child: ClipRect(
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                child: Obx(
+                  () => Container(
+                    color: controller.imageMainColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: StyleSize.spaceLarge),
+            color: controller.imageMainColor,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: appBarHeight,
+                ),
+                Container(
+                    margin: EdgeInsets.only(bottom: coverMargin),
+                    child: LayoutBuilder(builder: (ctx, con) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Obx(
+                            () => MCover(
+                              url: controller.album.coverUrl,
+                              size: coverSize,
+                            ),
+                          ),
+                          SizedBox(width: StyleSize.space),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (!isMobile)
+                                MTitle(
+                                  title: S.current.album,
+                                  level: 4,
+                                ),
+                              Container(
+                                constraints: BoxConstraints(
+                                  maxWidth: con.maxWidth -
+                                      coverSize -
+                                      StyleSize.space,
+                                ),
+                                child: Obx(
+                                  () => Text(
+                                    controller.album.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: isMobile ? 32 : 50,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Obx(
+                                () => Row(
+                                  children: [
+                                    if (controller.album.year != 0 && !isMobile)
+                                      Icon(Icons.music_note_rounded),
+                                    if (controller.album.year != 0 && !isMobile)
+                                      Text(
+                                          '${S.current.year}: ${controller.album.year}'),
+                                    if (controller.album.year != 0 && !isMobile)
+                                      _buildDot(),
+                                    MText(
+                                      text:
+                                          "${S.current.song}: ${controller.album.songCount}",
+                                    ),
+                                    _buildDot(),
+                                    MText(
+                                      text:
+                                          "${S.current.duration}: ${formatDuration(controller.album.duration)}",
+                                    ),
+                                    if (!isMobile) _buildDot(),
+                                    if (!isMobile)
+                                      MText(
+                                        text:
+                                            "${S.current.playCount}: ${controller.album.playCount}",
+                                      )
+                                  ],
+                                ),
+                              ),
+                              Obx(
+                                () => MTitle(
+                                  title: controller.album.artist,
+                                  level: 4,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    })),
+              ],
+            ),
+          )
+        ],
       ),
-      title: controller.album.title,
-      subWidgets: [
-        _buildTopUser(),
-        Obx(
-          () => controller.album.year != 0
-              ? MText(
-                  text: "${S.current.year}: ${controller.album.year}",
-                  style: nomalText,
-                )
-              : Container(),
-        ),
-        Obx(
-          () => MText(
-            text: "${S.current.song}: ${controller.album.songCount}",
-            type: MTextTypeEnum.secondary,
-          ),
-        ),
-        Obx(
-          () => MText(
-            text: "${S.current.playCount}: ${controller.album.playCount}",
-            type: MTextTypeEnum.secondary,
-          ),
-        ),
-      ],
+    );
+  }
+
+  _buildDot() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: StyleSize.spaceSmall),
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        color: ThemeService.color.textColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
     );
   }
 
   _buildOperations() {
     return Container(
       padding: allPadding,
+      color: ThemeService.color.bgColor,
       child: Row(
         children: [
-          Expanded(
-              child: MButton(
-            icon: Icons.play_arrow,
-            title: S.current.playAll,
-            onTap: () => controller.handlePlay(),
-          )),
-          SizedBox(width: 10),
-          Expanded(
-            child: MButton(
-              icon: Icons.shuffle,
-              title: S.current.playShuffle,
-              type: ButtonType.secondary,
-              onTap: () => controller.handlePlay(PlayModeEnum.shuffle),
+          IconPlay(
+            onTap: () => controller.playSong(),
+          ),
+          SizedBox(width: StyleSize.space),
+          Obx(
+            () => MStarToogle(
+              value: controller.album.starred,
+              onChange: (val) async {
+                controller.handleStarToggle(val);
+              },
             ),
           ),
         ],
@@ -105,78 +234,20 @@ class AlbumView extends GetView<AlbumController> {
     );
   }
 
-  /// 歌手名称
-  Widget _buildTopUser() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        // 歌手名
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: _toprightwidth,
-          ),
-          child: Obx(
-            () => MText(
-              onTap: () {
-                // TODO: 调整至歌手页面
-              },
-              text: controller.album.artist,
-              type: MTextTypeEnum.secondary,
-            ),
-          ),
-        ),
-        // 收藏按钮
-        SizedBox(
-          width: 25,
-          child: MStarToogle(
-            value: controller.staralbum.value,
-            size: 16,
-            onChange: (val) async {
-              var favorite = Favorite(id: activeID.value, type: 'album');
-              controller.staralbum.value
-                  ? await delStarred(favorite)
-                  : await addStarred(favorite);
-              controller.staralbum.value = !controller.staralbum.value;
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _songsBody(BuildContext context) {
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: Obx(() => ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: controller.songs.length,
-            itemExtent: 50.0, //强制高度为50.0
-            itemBuilder: (BuildContext context, int index) {
-              Songs song = controller.songs[index];
-              List<String> title = [
-                song.title,
-                formatDuration(song.duration),
-                song.id
-              ];
-              return InkWell(
-                onTap: () => controller.handleSongClick(song, index),
-                child: ListTile(
-                  title: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: _songlistView(
-                      title,
-                      index,
-                    ),
-                  ),
-                ),
-              );
-            },
-          )),
-    );
+  _buildSongList(Songs song, int index) {
+    return Obx(() {
+      var isActive =
+          controller.audioPlayerService.currentSong.value.id == song.id;
+      return MSongTableRow(
+        song: song,
+        index: index,
+        showIndex: true,
+        active: isActive,
+        onTap: () {
+          controller.playSong(index);
+        },
+      );
+    });
   }
 
   List<Widget> _songlistView(

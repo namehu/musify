@@ -36,7 +36,7 @@ class LeftDrawerState extends State<LeftDrawer> {
     var path = GloabalService.tabTypeMap[type];
     if (path != null) {
       if (isMobile) Navigator.pop(context);
-      Get.toNamed(path);
+      Get.offAndToNamed(path);
     }
   }
 
@@ -195,7 +195,7 @@ class LeftDrawerState extends State<LeftDrawer> {
                     size: 13,
                   ),
                   onTap: () {
-                    Get.toNamed(Routes.PLAY_LIST);
+                    Get.offAndToNamed(Routes.PLAY_LIST);
                   },
                 )
               ],
@@ -285,10 +285,9 @@ class _PlayListItemState extends State<PlayListItem> {
               preventDuplicates: false,
             );
           } else {
-            Get.toNamed(
+            Get.offAndToNamed(
               Routes.PLAY_LIST_DETAIL,
               arguments: {'id': widget.data.id},
-              preventDuplicates: false,
             );
           }
         },

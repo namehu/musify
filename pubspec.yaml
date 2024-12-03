@@ -49,6 +49,7 @@ dependencies:
   toggle_switch: ^2.3.0
   flutter_xlider: ^3.5.0
   carousel_slider: ^5.0.0
+  palette_generator: ^0.3.3+5
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0

@@ -22,31 +22,34 @@ class MSongTableHead extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (ctx, con) {
-        return MTableList(
-          isHead: true,
-          data: [
-            MColumn(text: '#', width: _indexWidth, show: showIndex),
-            MColumn(flex: 1, text: S.current.song),
-            MColumn(
-              text: (S.current.album),
-              width: _albumWidth,
-              show: !isMobile,
-            ),
-            MColumn(child: Icon(Icons.access_time_outlined, size: 14)),
-            MColumn(
-              text: S.current.bitRange,
-              show: !isMobile && con.maxWidth > 700,
-            ),
-            MColumn(
-              text: S.current.playCount,
-              show: !isMobile && con.maxWidth > 700,
-            ),
-          ],
-          divider: true,
-        );
-      },
+    return Container(
+      color: ThemeService.color.bgColor,
+      child: LayoutBuilder(
+        builder: (ctx, con) {
+          return MTableList(
+            isHead: true,
+            data: [
+              MColumn(text: '#', width: _indexWidth, show: showIndex),
+              MColumn(flex: 1, text: S.current.song),
+              MColumn(
+                text: (S.current.album),
+                width: _albumWidth,
+                show: !isMobile,
+              ),
+              MColumn(child: Icon(Icons.access_time_outlined, size: 14)),
+              MColumn(
+                text: S.current.bitRange,
+                show: !isMobile && con.maxWidth > 700,
+              ),
+              MColumn(
+                text: S.current.playCount,
+                show: !isMobile && con.maxWidth > 700,
+              ),
+            ],
+            divider: true,
+          );
+        },
+      ),
     );
   }
 }

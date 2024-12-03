@@ -174,6 +174,7 @@ class Albums {
   late int songCount;
   late String created;
   late String coverUrl;
+  late bool starred;
   late List<Songs> song;
 
   Albums({
@@ -188,6 +189,7 @@ class Albums {
     required this.songCount,
     required this.created,
     required this.coverUrl,
+    required this.starred,
     required this.song,
   });
 
@@ -203,6 +205,7 @@ class Albums {
     songCount = json['songCount'] ?? 0;
     created = json['created'] ?? '';
     coverUrl = json['coverUrl'] ?? '';
+    starred = json["starred"] != null;
 
     // 处理 song
     song = [];
@@ -228,6 +231,7 @@ class Albums {
     _data['songCount'] = this.songCount;
     _data['created'] = this.created;
     _data['coverUrl'] = this.coverUrl;
+    _data['starred'] = this.starred;
     // 处理song
     _data['songs'] = this.song.map((v) => v.toJson()).toList();
     return _data;

@@ -12,6 +12,7 @@ final Map<int, double> _sizeMap = {
 class MTitle extends StatelessWidget {
   final String title;
   final int level;
+  final double? size;
   final List<dynamic>? actions;
   final void Function(int index)? onActionsTap;
 
@@ -19,6 +20,7 @@ class MTitle extends StatelessWidget {
     super.key,
     required this.title,
     this.level = 4,
+    this.size,
     this.actions,
     this.onActionsTap,
   });
@@ -54,7 +56,7 @@ class MTitle extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontSize: _sizeMap[level],
+            fontSize: size ?? _sizeMap[level],
             fontWeight: FontWeight.bold,
           ),
         ),
