@@ -130,9 +130,15 @@ class AlbumView extends GetView<AlbumController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               if (!isMobile)
-                                MTitle(
-                                  title: S.current.album,
-                                  level: 4,
+                                Obx(
+                                  () => Text(
+                                    S.current.album,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: controller.textColor,
+                                    ),
+                                  ),
                                 ),
                               Container(
                                 constraints: BoxConstraints(

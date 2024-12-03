@@ -1,14 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:musify/widgets/m_title.dart';
 import 'slider_cover.dart';
 
 class HomeRecommand extends StatefulWidget {

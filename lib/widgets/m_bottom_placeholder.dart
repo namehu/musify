@@ -6,12 +6,24 @@ import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 
 class MBottomPlaceholder extends StatelessWidget {
-  const MBottomPlaceholder({super.key});
+  const MBottomPlaceholder({
+    super.key,
+    this.extraMargin = const [32.0, 0.0],
+  });
+
+  final List<double>? extraMargin;
 
   @override
   Widget build(BuildContext context) {
+    var top = extraMargin![0];
+    var bottom = extraMargin!.length > 1 ? extraMargin![1] : extraMargin![0];
+
     return Column(children: [
-      SizedBox(
+      Container(
+        margin: EdgeInsets.only(
+          top: top,
+          bottom: bottom,
+        ),
         height: 48,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -35,7 +35,8 @@ class AlbumController extends GetxController {
 
   List<Songs> get songs => _album.value.song;
 
-  Color? get imageMainColor => paletteGenerator.value.dominantColor?.color;
+  Color? get imageMainColor =>
+      paletteGenerator.value.dominantColor?.color ?? ThemeService.color.bgColor;
 
   Color? get textColor {
     if (imageMainColor != null) {
