@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
@@ -21,6 +20,10 @@ class MusicBar extends StatefulWidget {
 class _MusicBarState extends State<MusicBar> {
   final AudioPlayer player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
+
+  handleToPlay() {
+    AudioPlayerService.showPlayView();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,7 @@ class _MusicBarState extends State<MusicBar> {
               children: [
                 InkWell(
                   onTap: () async {
-                    Get.toNamed(Routes.PLAY);
+                    handleToPlay();
                   },
                   child: Container(
                     margin: EdgeInsets.only(left: 5, right: 10),
@@ -72,7 +75,7 @@ class _MusicBarState extends State<MusicBar> {
                       constraints: constraints,
                       child: InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.PLAY);
+                          handleToPlay();
                         },
                         child: Obx(() {
                           var currentSong =

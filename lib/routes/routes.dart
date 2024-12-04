@@ -2,6 +2,9 @@
 part of 'pages.dart';
 
 abstract class Routes {
+  static const PLAY_LIST_MODAL = '/play_list_modal';
+  static const PLAY_DETAIL_MODAL = '/play_detail_modal';
+
   static const INITIAL = '/';
   static const HOME = '/home';
   static const LOGIN = '/login';

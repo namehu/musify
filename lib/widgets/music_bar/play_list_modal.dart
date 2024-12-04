@@ -16,11 +16,6 @@ class PlayListModal extends StatefulWidget {
 
 class _PlayListModalState extends State<PlayListModal> {
   final audioPlayerService = Get.find<AudioPlayerService>();
-  @override
-  void deactivate() {
-    AudioPlayerService.hideMusicEventBus.fire(HideMusicBarEvent());
-    super.deactivate();
-  }
 
   handleItemClick(Songs song, int index) {
     var player = AudioPlayerService.player;

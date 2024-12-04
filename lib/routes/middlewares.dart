@@ -11,6 +11,8 @@ List<String> _hiddenRoutes = [
   Routes.CHANGE_SERVER,
   Routes.LOGIN,
   Routes.PLAY,
+  Routes.PLAY_LIST_MODAL,
+  Routes.PLAY_DETAIL_MODAL,
 ]; //
 
 bool inited = false;

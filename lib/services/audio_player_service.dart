@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/util/m_lyric_ui.dart';
+import 'package:musify/views/play/play_controller.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -19,10 +21,9 @@ import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'package:musify/widgets/music_bar/play_list_modal.dart';
 import '../models/myModel.dart';
+import '../views/play/play_view.dart';
 
-class HideMusicBarEvent {
-  // HideMusicBarEvent();
-}
+class HideMusicBarEvent {}
 
 /// 播放器服务
 /// 提供全局的播放器实例
@@ -84,11 +85,6 @@ class AudioPlayerService extends GetxService {
   Future<AudioPlayerService> init() async {
     player = AudioPlayer(); // 实例化播放器
 
-    // 监听播放器bar显示隐藏事件
-    hideMusicEventBus.on<HideMusicBarEvent>().listen((event) {
-      hideMusicBar.value = false;
-    });
-
     // 监听替换播放列表
     _playListWorker = ever(playSongs, (songs) {
       if (activeSongValue.value != "1") {
@@ -121,12 +117,29 @@ class AudioPlayerService extends GetxService {
   // 显示播放列表
   static showPlayList() async {
     var context = navigatorKey.currentState!.context;
-    hideMusicBar.value = true;
 
     await showMaterialModalBottomSheet(
       context: context,
       isDismissible: false,
+      settings: RouteSettings(name: Routes.PLAY_LIST_MODAL),
       builder: (BuildContext ctx) => PlayListModal(),
+    );
+  }
+
+  /// 显示播放详情
+  static showPlayView() async {
+    var context = navigatorKey.currentState!.context;
+
+    await showMaterialModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      settings: RouteSettings(name: Routes.PLAY_DETAIL_MODAL),
+      builder: (BuildContext ctx) {
+        return GetBuilder<PlayController>(
+          init: PlayController(),
+          builder: (ctr) => PlayView(),
+        );
+      },
     );
   }
 
