@@ -280,6 +280,10 @@ class AudioPlayerService extends GetxService {
 
       _setLoopModeAndShuffle();
 
+      /// FIXME: windows 播放bug
+      if (GetPlatform.isWindows) {
+        await Future.delayed(Duration(milliseconds: 500));
+      }
       player.play();
 
       final currentSong = songs[currentSongIndex.value];
