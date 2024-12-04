@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/enums/size_enums.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/routes/pages.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/views/play/play_controller.dart';

@@ -6,9 +6,6 @@ import 'package:musify/enums/serve_type_enum.dart';
 
 import 'myModel.dart';
 
-//监听当前歌曲
-ValueNotifier<String> activeSongValue = ValueNotifier<String>("1");
-
 ValueNotifier<ServerInfo> serversInfo = ValueNotifier<ServerInfo>(ServerInfo(
   serverType: ServeTypeEnum.subsnoic.label,
   baseurl: '',

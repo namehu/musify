@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
@@ -15,7 +16,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/notifierValue.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/util/audioTools.dart';
 import 'package:musify/util/httpClient.dart';
@@ -60,7 +60,9 @@ class AudioPlayerService extends GetxService {
 
   /// 播放模式
   Rx<PlayModeEnum> playMode = PlayModeEnum.loop.obs;
+
   bool _shuffleModeEnabled = false;
+
   LoopMode _loopMode = LoopMode.all;
 
   /// 当前歌曲播放进度
@@ -88,9 +90,7 @@ class AudioPlayerService extends GetxService {
 
     // 监听替换播放列表
     _playListWorker = ever(playSongs, (songs) {
-      if (activeSongValue.value != "1") {
-        _setAudioSource(songs);
-      }
+      _setAudioSource(songs);
     });
 
     _currentIndexStream = player.currentIndexStream.listen((event) async {
@@ -105,11 +105,23 @@ class AudioPlayerService extends GetxService {
       }
     });
 
+    // Catching errors during playback (e.g. lost network connection)
+    player.playbackEventStream.listen((event) {},
+        onError: (Object e, StackTrace st) {
+      if (e is PlatformException) {
+        logger.e(
+            'Error code: ${e.code}\nError message: ${e.message}\nAudioSource index: ${e.details?["index"]}');
+      } else {
+        logger.e('An error occurred: $e');
+      }
+    });
+
     return this;
   }
 
   @override
   onClose() {
+    player.dispose();
     hideMusicEventBus.destroy();
     _playListWorker.dispose();
     _currentIndexStream.cancel();
@@ -153,6 +165,7 @@ class AudioPlayerService extends GetxService {
     List<Songs> songs, {
     Songs? song,
     int? index = 0,
+    bool showView = true,
   }) {
     int idx = index!;
     if (song != null) {
@@ -163,14 +176,17 @@ class AudioPlayerService extends GetxService {
       }
     }
 
-    Songs playSong = song ?? songs[idx];
+    // Songs playSong = song ?? songs[idx];
 
     if (listEquals(playSongs.value, songs)) {
       player.seek(Duration.zero, index: idx);
     } else {
-      activeSongValue.value = playSong.id;
       currentSongIndex(idx);
       playSongs(songs); //歌曲所在专辑歌曲List
+
+      if (showView) {
+        showPlayView();
+      }
     }
   }
 
@@ -212,6 +228,10 @@ class AudioPlayerService extends GetxService {
     }
 
     playMode(nextMode);
+    _setLoopModeAndShuffle();
+  }
+
+  _setLoopModeAndShuffle() {
     player.setLoopMode(_loopMode);
     player.setShuffleModeEnabled(_shuffleModeEnabled);
   }
@@ -222,40 +242,67 @@ class AudioPlayerService extends GetxService {
       player.sequenceState!.effectiveSequence.clear();
     }
 
+    /// Define the playlist
     List<AudioSource> children = [];
-    for (var el in songs) {
-      if (el.suffix != "ape") {
+    for (var song in songs) {
+      if (song.suffix != "ape") {
         children.add(
           AudioSource.uri(
-            Uri.parse(el.stream),
+            Uri.parse(song.stream),
+
+            /// just_audio_background support
             tag: MediaItem(
-              id: el.id,
-              album: el.album,
-              artist: el.artist,
-              genre: el.genre,
-              title: el.title,
-              duration: Duration(milliseconds: el.duration.toInt()),
-              artUri: Uri.parse(getCoverArt(el.id)),
+              // Specify a unique ID for each media item:
+              id: song.id,
+              // Metadata to display in the notification:
+              album: song.album,
+              title: song.title,
+              artUri: Uri.parse(getCoverArt(song.id)),
+              artist: song.artist,
+              genre: song.genre,
+              duration: Duration(milliseconds: song.duration.toInt()),
             ),
           ),
         );
       }
     }
 
-    playlist =
-        ConcatenatingAudioSource(useLazyPreparation: true, children: children);
+    try {
+      playlist = ConcatenatingAudioSource(
+          useLazyPreparation: true, children: children);
 
-    await player.setAudioSource(
-      playlist,
-      initialIndex: currentSongIndex.value,
-      initialPosition: Duration.zero,
-    );
+      /// Load and play the playlist
+      await player.setAudioSource(
+        playlist,
+        initialIndex: currentSongIndex.value,
+        initialPosition: Duration.zero,
+      );
 
-    player.play();
+      _setLoopModeAndShuffle();
 
-    final currentItem = player.sequenceState!.currentSource;
-    MediaItem mediaItem = currentItem?.tag;
+      player.play();
 
-    await getSongDetail(mediaItem.id);
+      final currentSong = songs[currentSongIndex.value];
+      getSongDetail(currentSong.id);
+    } on PlayerException catch (e) {
+      // iOS/macOS: maps to NSError.code
+      // Android: maps to ExoPlayerException.type
+      // Web: maps to MediaError.code
+      // Linux/Windows: maps to PlayerErrorCode.index
+      logger.e("Error code: ${e.code}");
+      // iOS/macOS: maps to NSError.localizedDescription
+      // Android: maps to ExoPlaybackException.getMessage()
+      // Web/Linux: a generic message
+      // Windows: MediaPlayerError.message
+      logger.e("Error message: ${e.message}");
+    } on PlayerInterruptedException catch (e) {
+      // This call was interrupted since another audio source was loaded or the
+      // player was stopped or disposed before this audio source could complete
+      // loading.
+      logger.e("Connection aborted: ${e.message}");
+    } catch (e) {
+      // Fallback for all other errors
+      logger.e('An error occured: $e');
+    }
   }
 }

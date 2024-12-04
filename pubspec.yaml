@@ -18,6 +18,7 @@ dependencies:
   just_audio: ^0.9.41
   just_audio_background: ^0.0.1-beta.13
   just_audio_windows: ^0.2.2
+  audio_video_progress_bar: ^2.0.3
   #https://pub.flutter-io.cn/packages/just_audio_mpv
   window_manager: ^0.4.2
   dio: ^5.7.0
