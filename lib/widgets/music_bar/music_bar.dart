@@ -98,7 +98,10 @@ class _MusicBarState extends State<MusicBar> {
                               Text(
                                 currentSong.title,
                                 maxLines: 1,
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ThemeService.color.textColor,
+                                ),
                               ),
                               Text(
                                 currentSong.artist,
