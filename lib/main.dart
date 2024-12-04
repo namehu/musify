@@ -55,8 +55,6 @@ void main() async {
       await windowManager.focus();
     });
 
-    // windowManager.addListener(MWindowListener());
-
     isMobile = false;
   } else {
     isMobile = true;
