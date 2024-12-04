@@ -6,6 +6,7 @@ import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/util/m_lyric_ui.dart';
+import 'package:musify/util/mycss.dart';
 import 'package:musify/views/play/play_controller.dart';
 import 'package:rxdart/rxdart.dart' as rx_dart;
 import 'package:just_audio/just_audio.dart';
@@ -133,6 +134,7 @@ class AudioPlayerService extends GetxService {
     await showMaterialModalBottomSheet(
       context: context,
       isDismissible: false,
+      useRootNavigator: !isMobile,
       settings: RouteSettings(name: Routes.PLAY_DETAIL_MODAL),
       builder: (BuildContext ctx) {
         return GetBuilder<PlayController>(

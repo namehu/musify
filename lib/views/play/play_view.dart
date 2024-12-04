@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Rx;
+import 'package:musify/views/play/widgets/build_desktop.dart';
 import 'package:musify/views/play/widgets/build_phone.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'play_controller.dart';
@@ -18,11 +19,8 @@ class PlayView extends GetResponsiveView<PlayController> {
   @override
   Widget phone() {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      // appBar: ,
       body: Stack(
         children: [
-          // 背景图片
           ConstrainedBox(
             constraints: const BoxConstraints.expand(),
             child: Obx(
@@ -37,6 +35,29 @@ class PlayView extends GetResponsiveView<PlayController> {
                 child: SafeArea(
                   child: BuildPhone(),
                 ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget desktop() {
+    return Scaffold(
+      body: Stack(
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints.expand(),
+            child: Obx(() => MCover(url: controller.currentSong.coverUrl)),
+          ),
+          SizedBox.expand(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.6)),
+                child: BuildDeskTop(),
               ),
             ),
           ),

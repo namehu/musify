@@ -122,7 +122,7 @@ class MDialog extends StatelessWidget {
                               ),
                               MButton(
                                 title: S.current.confrim,
-                                size: SizeEnum.samll,
+                                size: SizeEnum.small,
                                 width: 50,
                                 onTap: () {
                                   if (onOk != null) {

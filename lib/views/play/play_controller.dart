@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
+import 'package:musify/util/mycss.dart';
 
 class PlayController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -33,5 +35,30 @@ class PlayController extends GetxController
   void onClose() {
     super.onClose();
     tabController.dispose();
+  }
+
+  navBack() {
+    if (isMobile) {
+      Get.back();
+    } else {
+      Navigator.of(Get.context!, rootNavigator: true).pop();
+    }
+  }
+
+  navToAlubum(String albumId) {
+    if (albumId.isNotEmpty) {
+      navBack();
+      Get.toNamed(Routes.ALBUM, arguments: {"id": albumId});
+    }
+  }
+
+  navToArtist(String artistId) {
+    if (artistId.isNotEmpty) {
+      navBack();
+      Get.toNamed(
+        Routes.ARTIST_DETAIL,
+        arguments: {"id": artistId},
+      );
+    }
   }
 }

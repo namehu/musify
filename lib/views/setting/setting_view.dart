@@ -61,7 +61,7 @@ class SettingView extends GetView<SettingController> {
                     children: [
                       MTitle(title: S.current.server),
                       MButton(
-                        size: SizeEnum.samll,
+                        size: SizeEnum.small,
                         onTap: () {
                           Get.toNamed(Routes.CHANGE_SERVER);
                         },

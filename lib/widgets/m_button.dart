@@ -34,7 +34,7 @@ class MButton extends StatelessWidget {
         right: size!.paddingLeft,
       );
 
-  double get fontSize => size == SizeEnum.samll ? 12 : 14;
+  double get fontSize => size == SizeEnum.small ? 12 : 14;
   get _color {
     return switch (type) {
       ButtonType.primary => ThemeService.color.primaryButtonColor,
@@ -54,7 +54,7 @@ class MButton extends StatelessWidget {
         padding: padding,
         decoration: BoxDecoration(
           color: _color,
-          borderRadius: size == SizeEnum.samll
+          borderRadius: size == SizeEnum.small
               ? StyleProperty.smallBorderRadius
               : StyleProperty.borderRadius,
         ),

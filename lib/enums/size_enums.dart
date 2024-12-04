@@ -1,5 +1,5 @@
 enum SizeEnum {
-  samll,
+  small,
 
   normal,
 
@@ -9,7 +9,7 @@ enum SizeEnum {
 extension ButtonPaddingSize on SizeEnum {
   double get paddingLeft {
     switch (this) {
-      case SizeEnum.samll:
+      case SizeEnum.small:
         return 8;
       case SizeEnum.normal:
         return 16;
@@ -20,7 +20,7 @@ extension ButtonPaddingSize on SizeEnum {
 
   double get paddingTop {
     switch (this) {
-      case SizeEnum.samll:
+      case SizeEnum.small:
         return 2;
       case SizeEnum.normal:
         return 14;

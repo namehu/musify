@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/routes/pages.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/styles/size.dart';
@@ -71,9 +70,12 @@ class BuildPhone extends GetView<PlayController> {
       child: Row(
         children: [
           InkWell(
-            child: Icon(Icons.keyboard_arrow_down),
+            child: Icon(
+              Icons.keyboard_arrow_down,
+              color: gray1,
+            ),
             onTap: () {
-              Get.back();
+              controller.navBack();
             },
           ),
           Expanded(
@@ -152,7 +154,7 @@ class BuildPhone extends GetView<PlayController> {
                   size: size,
                   shape: MCoverShapeEnum.squareRound,
                   placeholder: Container(
-                    color: gray6,
+                    color: gray7.withOpacity(0.8),
                   ),
                 ),
               ),
@@ -222,12 +224,7 @@ class BuildPhone extends GetView<PlayController> {
                               maxWidth: constraints.maxWidth / 2),
                           child: GestureDetector(
                             onTap: () {
-                              if (value.artistId.isNotEmpty) {
-                                Get.toNamed(
-                                  Routes.ARTIST_DETAIL,
-                                  arguments: {"id": value.artistId},
-                                );
-                              }
+                              controller.navToArtist(value.albumId);
                             },
                             child: Text(
                               (value.artist.isEmpty)
@@ -246,10 +243,7 @@ class BuildPhone extends GetView<PlayController> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                if (value.albumId.isNotEmpty) {
-                                  Get.toNamed(Routes.ALBUM,
-                                      arguments: {"id": value.albumId});
-                                }
+                                controller.navToAlubum(value.album);
                               },
                               child: Text(
                                 ' - ${value.album.isEmpty ? S.current.unknown : value.album}',
