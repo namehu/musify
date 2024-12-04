@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -31,8 +32,11 @@ class _IconPlayControlState extends State<IconPlayControl> {
     _durationSubscription = player.positionStream.listen((position) {
       if (player.duration != null) {
         setState(() {
-          _sliderValue = position.inMilliseconds.toDouble() /
-              player.duration!.inMilliseconds.toDouble();
+          _sliderValue = min(
+            position.inMilliseconds.toDouble() /
+                player.duration!.inMilliseconds.toDouble(),
+            1.0,
+          );
         });
       }
     });
