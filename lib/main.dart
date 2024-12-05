@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,6 +27,8 @@ import 'generated/l10n.dart';
 import 'services/global_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import 'util/audio_player_handler.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,6 +39,18 @@ void main() async {
       methodCount: 0,
     ), // Use the PrettyPrinter to format and print log
   );
+
+  //Register Get Services
+  await Get.putAsync(() => GloabalService().init());
+  await Get.putAsync(() => PreferencesService().init(sharedPreferences));
+  await Get.putAsync(() => LanguageService().init());
+  await Get.putAsync(() => ThemeService().init());
+  await Get.putAsync(() => MusicBarService().init());
+  await Get.putAsync(() => ServerService().init());
+  await Get.putAsync(() => PlayListService().init());
+  await Get.putAsync(() => AudioPlayerService().init());
+  await Get.putAsync(() => AlbumServrice().init());
+  await Get.putAsync(() => StarService().init());
 
   if (Platform.isWindows) {
     sqfliteFfiInit();
@@ -59,26 +74,31 @@ void main() async {
   } else {
     isMobile = true;
     //Enable background playback on the mobile terminal
-    await JustAudioBackground.init(
-      androidNotificationChannelId: 'com.namehu.musify.audio',
-      androidNotificationChannelName: 'Audio playback',
-      androidNotificationOngoing: true,
+    // await JustAudioBackground.init(
+    //   androidNotificationChannelId: 'com.namehu.musify.audio',
+    //   androidNotificationChannelName: 'Audio playback',
+    //   androidNotificationOngoing: true,
+    // );
+
+    audioHandler = await AudioService.init(
+      builder: () => AudioPlayerHandler(),
+      config: AudioServiceConfig(
+        androidNotificationChannelId: 'com.namehu.musify.audio',
+        androidNotificationChannelName: 'Audio playback',
+        androidNotificationOngoing: true,
+        androidResumeOnClick: true,
+        androidNotificationIcon: 'mipmap/ic_launcher',
+        androidShowNotificationBadge: false,
+        androidNotificationClickStartsActivity: true,
+        androidStopForegroundOnPause: true,
+        fastForwardInterval: const Duration(seconds: 10),
+        rewindInterval: const Duration(seconds: 10),
+        preloadArtwork: false,
+      ),
     );
   }
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-
-  //Register Get Services
-  await Get.putAsync(() => GloabalService().init());
-  await Get.putAsync(() => PreferencesService().init(sharedPreferences));
-  await Get.putAsync(() => LanguageService().init());
-  await Get.putAsync(() => ThemeService().init());
-  await Get.putAsync(() => MusicBarService().init());
-  await Get.putAsync(() => ServerService().init());
-  await Get.putAsync(() => PlayListService().init());
-  await Get.putAsync(() => AudioPlayerService().init());
-  await Get.putAsync(() => AlbumServrice().init());
-  await Get.putAsync(() => StarService().init());
 
   runApp(MyApp());
 }

@@ -266,6 +266,7 @@ class AudioPlayerService extends GetxService {
     player.stop();
 
     List<Media> children = [];
+    List<MediaItem> mediaItems = [];
     for (var song in songs) {
       children.add(
         Media(
@@ -280,10 +281,30 @@ class AudioPlayerService extends GetxService {
             'artist': song.artist,
             'genre': song.genre,
             'duration': Duration(milliseconds: song.duration.toInt()),
+            'mediaItem': song
           },
         ),
       );
+
+      mediaItems.add(MediaItem(
+        // Specify a unique ID for each media item:
+        id: song.id,
+        displayTitle: song.title,
+        displaySubtitle: song.artist,
+        displayDescription: song.album,
+
+        // Metadata to display in the notification:
+        album: song.album,
+        title: song.title,
+        artUri: Uri.parse(getCoverArt(song.id)),
+        artist: song.artist,
+        genre: song.genre,
+        duration: Duration(milliseconds: song.duration.toInt()),
+      ));
     }
+
+    audioHandler.addQueueItems(mediaItems);
+
     final playable = Playlist(
       children,
       index: currentSongIndex.value,
