@@ -64,7 +64,7 @@ class AudioPlayerService extends GetxService {
 
   late Worker _playListWorker;
 
-  late StreamSubscription<dynamic> _currentIndexStream;
+  late StreamSubscription<dynamic> _playListStream;
 
   Stream<Duration> get positionStream => player.stream.position;
 
@@ -94,7 +94,7 @@ class AudioPlayerService extends GetxService {
       _setAudioSource(songs);
     });
 
-    _currentIndexStream = player.stream.playlist.listen((Playlist event) {
+    _playListStream = player.stream.playlist.listen((Playlist event) {
       // print('audioParams: $event');
       if (event.medias.isEmpty) return;
 
@@ -116,11 +116,11 @@ class AudioPlayerService extends GetxService {
 
   @override
   onClose() async {
-    await player.dispose();
-
     hideMusicEventBus.destroy();
     _playListWorker.dispose();
-    _currentIndexStream.cancel();
+    _playListStream.cancel();
+
+    await player.dispose();
   }
 
   // 显示播放列表
