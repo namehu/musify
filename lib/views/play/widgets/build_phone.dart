@@ -127,9 +127,7 @@ class BuildPhone extends GetView<PlayController> {
           KeepAliveWrapper(
             child: Container(
               alignment: Alignment.center,
-              child: LyricReader(
-                positionDataStream: controller.positionDataStream,
-              ),
+              child: LyricReader(),
             ),
           ),
         ],

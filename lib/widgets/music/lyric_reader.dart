@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/myModel.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/util/m_lyric_ui.dart';
@@ -11,12 +10,7 @@ import 'package:musify/util/util.dart';
 typedef Change = void Function(MLyricUI ui);
 
 class LyricReader extends StatefulWidget {
-  final Stream<PositionData> positionDataStream;
-
-  const LyricReader({
-    super.key,
-    required this.positionDataStream,
-  });
+  const LyricReader({super.key});
 
   @override
   State<LyricReader> createState() => _LyricReaderState();
@@ -24,23 +18,21 @@ class LyricReader extends StatefulWidget {
 
 class _LyricReaderState extends State<LyricReader> {
   final audioPlayerService = Get.find<AudioPlayerService>();
-  final player = AudioPlayerService.player;
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       var model = audioPlayerService.lyricModel;
 
-      return StreamBuilder<PositionData>(
-          stream: widget.positionDataStream,
+      return StreamBuilder(
+          stream: audioPlayerService.positionStream,
           builder: (context, snapshot) {
-            final positionData = snapshot.data;
-            final position = positionData?.position.inMilliseconds ?? 0;
-
+            var position = snapshot.data ?? Duration.zero;
+            position = position < Duration.zero ? Duration.zero : position;
             return LyricsReader(
               padding: EdgeInsets.symmetric(horizontal: 40),
               model: model,
-              position: position,
+              position: position.inMilliseconds,
               lyricUi: audioPlayerService.lyricUI,
               playing: true,
               emptyBuilder: () => Center(
@@ -55,7 +47,8 @@ class _LyricReaderState extends State<LyricReader> {
                     IconButton(
                         onPressed: () {
                           confirm.call();
-                          player.seek(Duration(milliseconds: progress));
+                          audioPlayerService
+                              .seek(Duration(milliseconds: progress));
                           audioPlayerService.lyricUI =
                               MLyricUI.clone(audioPlayerService.lyricUI);
                         },

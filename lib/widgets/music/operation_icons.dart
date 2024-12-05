@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/enums/star_type_enum.dart';
 import 'package:musify/services/audio_player_service.dart';
@@ -47,7 +46,6 @@ class PlayModeToggleIcon extends StatelessWidget {
 
 /// 播放上一曲
 class PlayPreIcon extends StatelessWidget {
-  final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
   final Color? color;
 
@@ -65,7 +63,7 @@ class PlayPreIcon extends StatelessWidget {
           Icons.skip_previous,
           color: color ?? operationIconColor,
         ),
-        onPressed: canClick ? player.seekToPrevious : null,
+        onPressed: canClick ? audioPlayerService.playPre : null,
       );
     });
   }
@@ -73,7 +71,6 @@ class PlayPreIcon extends StatelessWidget {
 
 /// 下一曲
 class PlayNextIcon extends StatelessWidget {
-  final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
   final Color? color;
 
@@ -92,7 +89,7 @@ class PlayNextIcon extends StatelessWidget {
             Icons.skip_next,
             color: color ?? operationIconColor,
           ),
-          onPressed: canClick ? player.seekToNext : null,
+          onPressed: canClick ? audioPlayerService.playNext : null,
         );
       },
     );
@@ -101,7 +98,8 @@ class PlayNextIcon extends StatelessWidget {
 
 /// 播放暂停按钮
 class PlayToggleIcon extends StatelessWidget {
-  final player = AudioPlayerService.player;
+  final audioPlayerService = Get.find<AudioPlayerService>();
+
   final Color? color;
   final double? iconSize;
 
@@ -113,13 +111,14 @@ class PlayToggleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PlayerState>(
-      stream: player.playerStateStream,
+    return StreamBuilder<bool>(
+      stream: audioPlayerService.player.stream.playing,
       builder: (context, snapshot) {
         final playerState = snapshot.data;
-        final processingState = playerState?.processingState;
-        final playing = playerState?.playing;
-        if (player.sequenceState == null) {
+        final playing = playerState;
+
+        var player = audioPlayerService.player;
+        if (player.state == null) {
           return IconButton(
             padding: EdgeInsets.all(0),
             icon: Icon(
@@ -139,7 +138,7 @@ class PlayToggleIcon extends StatelessWidget {
             iconSize: iconSize,
             onPressed: player.play,
           );
-        } else if (processingState != ProcessingState.completed) {
+        } else if (!player.state.completed) {
           return IconButton(
             padding: EdgeInsets.all(0),
             icon: Icon(
@@ -167,7 +166,6 @@ class PlayToggleIcon extends StatelessWidget {
 
 /// 播放列表
 class PlayListIcon extends StatelessWidget {
-  final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
   final Color? color;
 
@@ -196,7 +194,6 @@ class PlayListIcon extends StatelessWidget {
 }
 
 class PlayFastRewindIcon extends StatelessWidget {
-  final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
   final Color? color;
 
@@ -215,9 +212,10 @@ class PlayFastRewindIcon extends StatelessWidget {
         ),
         onPressed: audioPlayerService.playSongs.isNotEmpty
             ? () {
-                if (player.position.inSeconds - 15 > 0) {
-                  player
-                      .seek(Duration(seconds: player.position.inSeconds - 15));
+                var seconds =
+                    audioPlayerService.player.state.position.inSeconds - 15;
+                if (seconds > 0) {
+                  audioPlayerService.player.seek(Duration(seconds: seconds));
                 }
               }
             : null,
@@ -227,7 +225,6 @@ class PlayFastRewindIcon extends StatelessWidget {
 }
 
 class PlayFastForwardIcon extends StatelessWidget {
-  final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
   final Color? color;
 
@@ -246,7 +243,12 @@ class PlayFastForwardIcon extends StatelessWidget {
         ),
         onPressed: audioPlayerService.playSongs.isNotEmpty
             ? () {
-                player.seek(Duration(seconds: player.position.inSeconds + 15));
+                audioPlayerService.player.seek(
+                  Duration(
+                      seconds:
+                          audioPlayerService.player.state.position.inSeconds +
+                              15),
+                );
               }
             : null,
       );

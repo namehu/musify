@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
@@ -18,7 +17,6 @@ class MusicBar extends StatefulWidget {
 }
 
 class _MusicBarState extends State<MusicBar> {
-  final AudioPlayer player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
 
   handleToPlay() {

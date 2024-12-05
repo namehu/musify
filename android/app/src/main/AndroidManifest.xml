@@ -1,6 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools">
+xmlns:tools="http://schemas.android.com/tools" package="com.example.musify">
+    <!--Internet access permissions. -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--
+    Media access permissions.
+    Android 13 or higher.
+    https://developer.android.com/about/versions/13/behavior-changes-13#granular-media-permissions
+    -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+      <!--
+      Storage access permissions.
+      Android 12 or lower.
+      -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <!-- ALSO ADD THIS PERMISSION IF TARGETING SDK 34 -->

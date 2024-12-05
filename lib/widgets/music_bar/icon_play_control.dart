@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:get/get.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
@@ -20,7 +20,7 @@ class IconPlayControl extends StatefulWidget {
 }
 
 class _IconPlayControlState extends State<IconPlayControl> {
-  final player = AudioPlayerService.player;
+  var audioPlayerService = Get.find<AudioPlayerService>();
 
   double _sliderValue = 0.0;
   late StreamSubscription<Duration> _durationSubscription;
@@ -29,12 +29,14 @@ class _IconPlayControlState extends State<IconPlayControl> {
   void initState() {
     super.initState();
 
-    _durationSubscription = player.positionStream.listen((position) {
-      if (player.duration != null) {
+    _durationSubscription =
+        audioPlayerService.positionStream.listen((position) {
+      if (audioPlayerService.player.state.duration.inMilliseconds > 0) {
         setState(() {
           _sliderValue = min(
             position.inMilliseconds.toDouble() /
-                player.duration!.inMilliseconds.toDouble(),
+                audioPlayerService.player.state.duration.inMilliseconds
+                    .toDouble(),
             1.0,
           );
         });
@@ -50,18 +52,16 @@ class _IconPlayControlState extends State<IconPlayControl> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PlayerState>(
-      stream: player.playerStateStream,
+    return StreamBuilder<Duration>(
+      stream: audioPlayerService.player.stream.duration,
       builder: (context, snapshot) {
-        final playerState = snapshot.data;
-
         return SizedBox(
           width: 42,
           height: 42,
           child: Stack(
             alignment: Alignment.center,
             children: [
-              _buildIcon(playerState),
+              _buildIcon(),
               _buildCircle(),
             ],
           ),
@@ -97,11 +97,9 @@ class _IconPlayControlState extends State<IconPlayControl> {
     );
   }
 
-  Widget _buildIcon(PlayerState? playerState) {
-    final processingState = playerState?.processingState;
-    final playing = playerState?.playing ?? false;
-
-    if (player.sequenceState != null) {
+  Widget _buildIcon() {
+    if (audioPlayerService.player.state.playlist.medias.isNotEmpty) {
+      var playing = audioPlayerService.player.state.playing;
       if (playing == false) {
         return InkWell(
           child: Icon(
@@ -109,18 +107,18 @@ class _IconPlayControlState extends State<IconPlayControl> {
             color: ThemeService.color.textSecondColor,
             size: widget.size,
           ),
-          onTap: () => player.play(),
+          onTap: () => audioPlayerService.player.play(),
         );
       }
 
-      if (processingState != ProcessingState.completed) {
+      if (!audioPlayerService.player.state.completed) {
         return InkWell(
           child: Icon(
             Icons.pause_circle_filled,
             color: ThemeService.color.textSecondColor,
             size: widget.size,
           ),
-          onTap: () => player.pause(),
+          onTap: () => audioPlayerService.player.pause(),
         );
       }
     }

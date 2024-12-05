@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/util/util.dart';
 import 'package:musify/widgets/common/m_list_head.dart';
 import 'package:musify/widgets/m_cover.dart';
@@ -19,8 +18,6 @@ class PlayListDetailBinding implements Bindings {
 }
 
 class PlayListDetailView extends GetResponsiveView<PlayListDetailController> {
-  final player = AudioPlayerService.player;
-
   PlayListDetailView({super.key});
 
   @override

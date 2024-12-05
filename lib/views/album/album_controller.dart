@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/enums/star_type_enum.dart';
@@ -15,7 +14,6 @@ import 'package:palette_generator/palette_generator.dart';
 import '../../models/songs.dart';
 
 class AlbumController extends GetxController {
-  final AudioPlayer player = AudioPlayerService.player;
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
   final StarService starService = Get.find<StarService>();
 

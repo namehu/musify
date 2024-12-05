@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
@@ -9,7 +8,6 @@ import 'package:musify/services/theme_service.dart';
 import 'package:musify/util/httpClient.dart' hide getCoverArt;
 
 class ArtistDetailController extends GetxController {
-  final AudioPlayer player = AudioPlayerService.player;
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
   ScrollController albumscontroller = ScrollController();
   ScrollController similarArtistcontroller = ScrollController();

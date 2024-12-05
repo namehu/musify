@@ -74,9 +74,7 @@ class BuildDeskTop extends GetView<PlayController> {
           child: KeepAliveWrapper(
             child: Container(
               alignment: Alignment.center,
-              child: LyricReader(
-                positionDataStream: controller.positionDataStream,
-              ),
+              child: LyricReader(),
             ),
           ),
         ),

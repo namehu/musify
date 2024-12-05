@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_cover.dart';
@@ -18,7 +17,6 @@ class BottomDesktop extends StatefulWidget {
 
 class _BottomDesktopState extends State<BottomDesktop>
     with TickerProviderStateMixin {
-  final AudioPlayer player = AudioPlayerService.player;
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
 
   @override

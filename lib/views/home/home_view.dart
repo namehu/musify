@@ -5,7 +5,6 @@ import 'package:musify/styles/colors.dart';
 import 'package:musify/views/home/widgets/home_tab_two.dart';
 import 'package:musify/widgets/keep_alive_wrapper.dart';
 import 'home_controller.dart';
-import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/server_service.dart';
 import '../../models/notifierValue.dart';
 import '../../util/mycss.dart';
@@ -20,7 +19,6 @@ class HomeViewBinding implements Bindings {
 
 class HomeView extends GetResponsiveView<HomeController> {
   final serverService = Get.find<ServerService>();
-  final player = AudioPlayerService.player;
 
   HomeView({super.key});
 

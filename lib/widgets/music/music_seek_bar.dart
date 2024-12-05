@@ -25,7 +25,6 @@ class MusicSeekBar extends StatefulWidget {
 }
 
 class MusicSeekBarState extends State<MusicSeekBar> {
-  final player = AudioPlayerService.player;
   final audioPlayerService = Get.find<AudioPlayerService>();
   double? _dragValue;
 
@@ -43,12 +42,11 @@ class MusicSeekBarState extends State<MusicSeekBar> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: audioPlayerService.positionDataStream,
+      stream: audioPlayerService.positionStream,
       builder: (context, snapshot) {
-        final positionData = snapshot.data;
-
-        var duration = positionData?.duration ?? Duration.zero;
-        var position = positionData?.position ?? Duration.zero;
+        var position = snapshot.data ?? Duration.zero;
+        position = position < Duration.zero ? Duration.zero : position;
+        var duration = audioPlayerService.player.state.duration;
         // var bufferedPosition = positionData?.bufferedPosition ?? Duration.zero;
 
         return Column(
@@ -87,7 +85,7 @@ class MusicSeekBarState extends State<MusicSeekBar> {
                   if (widget.onChangeEnd != null) {
                     widget.onChangeEnd!(time);
                   }
-                  player.seek(time);
+                  audioPlayerService.seek(time);
                   _dragValue = null;
                 },
               ),

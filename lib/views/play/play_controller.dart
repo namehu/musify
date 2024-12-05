@@ -10,13 +10,9 @@ class PlayController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
 
-  final player = AudioPlayerService.player;
-
   late final TabController tabController;
 
   List<String> get tabs => [S.current.song, S.current.lyric];
-
-  get positionDataStream => audioPlayerService.positionDataStream;
 
   Songs get currentSong => audioPlayerService.currentSong.value;
 

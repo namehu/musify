@@ -18,8 +18,7 @@ class _PlayListModalState extends State<PlayListModal> {
   final audioPlayerService = Get.find<AudioPlayerService>();
 
   handleItemClick(Songs song, int index) {
-    var player = AudioPlayerService.player;
-    player.seek(Duration.zero, index: index);
+    audioPlayerService.player.jump(index);
   }
 
   handleItemRemove(Songs song, int index) {
