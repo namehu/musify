@@ -1,10 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/services/audio_player_service.dart';
-
-import '../models/songs.dart';
 
 class AudioPlayerHandler extends BaseAudioHandler
     with
@@ -12,10 +9,13 @@ class AudioPlayerHandler extends BaseAudioHandler
         SeekHandler {
   // mix in default seek callback implementations
 
-  final _player = Get.find<AudioPlayerService>().player;
+  final audioPlayerService = Get.find<AudioPlayerService>();
+  late Player _player;
 
   AudioPlayerHandler() {
-    // _notifyAudioHandlerAboutPlayListEvents();
+    _player = audioPlayerService.player;
+
+    _notifyAudioHandlerAboutPlayListEvents();
     _notifyAudioHandlerAboutPlaybackEvents();
   }
 
@@ -37,37 +37,41 @@ class AudioPlayerHandler extends BaseAudioHandler
 
   @override
   Future<void> skipToNext() async {
-    return _player.next();
+    return audioPlayerService.playNext();
   }
 
   @override
   Future<void> skipToPrevious() async {
-    return _player.previous();
+    return audioPlayerService.playPre();
+  }
+
+  @override
+  Future<void> addQueueItems(List<MediaItem> mediaItems) async {
+    queue.value.clear();
+    queue.add(mediaItems);
   }
 
   /// Handling new queue items in AudioHandler
   _notifyAudioHandlerAboutPlayListEvents() {
     _player.stream.playlist.listen((Playlist event) {
       if (event.medias.isEmpty) {
-        queue.add([]);
-      } else {
-        var mediaItems = event.medias.map((el) {
-          Songs song = el.extras!['mediaItem'];
-          return MediaItem(
-            // Specify a unique ID for each media item:
-            id: song.id,
-            // Metadata to display in the notification:
-            album: song.album,
-            title: song.title,
-            artUri: Uri.parse(getCoverArt(song.id)),
-            artist: song.artist,
-            genre: song.genre,
-            duration: Duration(milliseconds: song.duration.toInt()),
-          );
-        }).toList();
-        // queue.add(mediaItems);
-        addQueueItems(mediaItems);
+        addQueueItems([]);
+        return;
       }
+
+      var mediaItems = event.medias.map((el) {
+        return el.extras!['mediaItem'] as MediaItem;
+      }).toList();
+
+      addQueueItems(mediaItems);
+      mediaItem.add(mediaItems[event.index]);
+
+      var queueIndex = event.index;
+      playbackState.add(
+        playbackState.value.copyWith(
+          queueIndex: queueIndex,
+        ),
+      );
     });
   }
 
@@ -75,21 +79,6 @@ class AudioPlayerHandler extends BaseAudioHandler
   void _notifyAudioHandlerAboutPlaybackEvents() {
     _player.stream.playing.listen(
       (playing) async {
-        AudioProcessingState processingState = AudioProcessingState.idle;
-        if (_player.state.buffering) {
-          processingState = AudioProcessingState.buffering;
-        }
-
-        if (_player.state.completed) {
-          processingState = AudioProcessingState.completed;
-        }
-
-        if (playing) {
-          processingState = AudioProcessingState.ready;
-        } else if (_player.state.duration > Duration.zero) {
-          processingState = AudioProcessingState.ready;
-        }
-
         playbackState.add(playbackState.value.copyWith(
           controls: [
             MediaControl.skipToPrevious,
@@ -101,7 +90,7 @@ class AudioPlayerHandler extends BaseAudioHandler
             MediaAction.seek,
           },
           androidCompactActionIndices: const [0, 1, 3],
-          processingState: processingState,
+          processingState: AudioProcessingState.ready,
           // processingState: const {
           //   ProcessingState.idle: AudioProcessingState.idle,
           //   ProcessingState.loading: AudioProcessingState.loading,
@@ -110,11 +99,19 @@ class AudioPlayerHandler extends BaseAudioHandler
           //   ProcessingState.completed: AudioProcessingState.completed,
           // }[_player.state.]!,
           playing: playing,
-          updatePosition: _player.state.position,
-          bufferedPosition: _player.state.buffer,
-          // speed: _player.state.speed,
-          queueIndex: _player.state.playlist.index,
+          // queueIndex: queueIndex,
         ));
+      },
+    );
+
+    _player.stream.position.listen(
+      (position) {
+        playbackState.add(
+          playbackState.value.copyWith(
+            updatePosition: position,
+            bufferedPosition: _player.state.buffer,
+          ),
+        );
       },
     );
   }
