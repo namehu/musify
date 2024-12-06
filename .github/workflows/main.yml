@@ -41,7 +41,7 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo '${{ secrets.KEYSTORE }}' | base64 --decode > android/app/upload-keystore.jks
+          echo '${{ secrets.KEYSTORE }}' | base64 --decode > android/upload-keystore.jks
 
       - name: Ls Android Directory
         run: ls -laq
