@@ -109,17 +109,10 @@ class HomeTabTwo extends StatelessWidget {
               onTap: () => Get.toNamed(Routes.SEARCH),
               child: Container(
                 decoration: BoxDecoration(
-                  color: ThemeService.color.secondBgColor,
+                  color: ThemeService.color.cardColor,
                   borderRadius: BorderRadius.all(
                     Radius.circular(36),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ThemeService.color.thirdBgColor,
-                      blurRadius: 10,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -155,13 +148,13 @@ class HomeTabTwo extends StatelessWidget {
       decoration: BoxDecoration(
         color: ThemeService.color.cardColor,
         borderRadius: BorderRadius.circular(StyleSize.borderRadius),
-        boxShadow: [
-          BoxShadow(
-            color: ThemeService.color.thirdBgColor,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: ThemeService.color.thirdBgColor,
+        //     blurRadius: 10,
+        //     offset: Offset(0, 5),
+        //   ),
+        // ],
       ),
       child: Column(
         children: [
@@ -268,14 +261,10 @@ class HomeTabTwo extends StatelessWidget {
             Icon(
               icon,
               size: 32,
-              color: ThemeService.color.iconColor,
             ),
             SizedBox(height: StyleSize.spaceSmall),
             Text(
               title,
-              style: TextStyle(
-                color: ThemeService.color.iconColor,
-              ),
             ),
           ],
         ),
