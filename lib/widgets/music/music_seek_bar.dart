@@ -52,9 +52,15 @@ class MusicSeekBarState extends State<MusicSeekBar> {
           bufferedBarColor: ThemeService.color.primaryColor.withOpacity(0.3),
           baseBarColor: ThemeService.color.sliderBorderColor,
           thumbRadius: _thumbSize,
-          timeLabelLocation: widget.timeShow! ? TimeLabelLocation.below : null,
+          thumbGlowRadius: widget.dotRaidus!,
+          timeLabelLocation: widget.timeShow!
+              ? TimeLabelLocation.sides
+              : TimeLabelLocation.none,
           timeLabelTextStyle: TextStyle(fontSize: 12, color: gray1),
           onSeek: (time) {
+            if (duration <= Duration.zero) {
+              return;
+            }
             if (widget.onChangeEnd != null) {
               widget.onChangeEnd!(time);
             }

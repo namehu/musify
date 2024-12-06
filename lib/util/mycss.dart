@@ -17,8 +17,6 @@ const double topSafeheight = 40;
 const double bottomSafeheight = 25;
 //安全高度
 const double safeheight = 65;
-//底部图片大小
-const double bottomImageWidthAndHeight = 50;
 //正常页面图片大小
 const double screenImageWidthAndHeight = 180;
 //正在播放图片大小

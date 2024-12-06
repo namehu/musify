@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/widgets/m_cover.dart';
-import '../util/mycss.dart';
 import '../widgets/music/music_seek_bar.dart';
 import '../widgets/music/player_contro_bar.dart';
 import '../widgets/music/player_volume_bar.dart';
@@ -28,7 +28,10 @@ class _BottomDesktopState extends State<BottomDesktop>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // 进度条
-            MusicSeekBar(dotRaidus: 5),
+            MusicSeekBar(
+              dotRaidus: 5,
+              timeShow: false,
+            ),
             // 歌曲区域
             SizedBox(
               height: 80,
@@ -39,41 +42,76 @@ class _BottomDesktopState extends State<BottomDesktop>
                     child: Obx(
                       () {
                         var csong = audioPlayerService.currentSong.value;
-                        return Row(
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  AudioPlayerService.showPlayView();
-                                },
+                        return InkWell(
+                          onTap: () {
+                            AudioPlayerService.showPlayView();
+                          },
+                          child: Row(
+                            children: [
+                              MouseRegion(
+                                cursor: SystemMouseCursors.click,
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 10, right: 10),
-                                  height: bottomImageWidthAndHeight,
-                                  width: bottomImageWidthAndHeight,
+                                  margin: EdgeInsets.all(10),
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                    color: ThemeService.color.secondBgColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ThemeService.color.borderColor,
+                                        blurRadius: 5,
+                                      )
+                                    ],
+                                  ),
                                   child: csong.coverUrl.isEmpty
-                                      ? SvgPicture.asset(
-                                          'assets/images/icon_music.svg',
-                                          semanticsLabel: 'Acme Logo')
+                                      ? Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: SvgPicture.asset(
+                                            'assets/images/icon_bottom_icon.svg',
+                                          ),
+                                        )
                                       : MCover(
                                           url: csong.coverUrl,
-                                          size: bottomImageWidthAndHeight,
+                                          size: 60,
                                         ),
-                                )),
-                            Expanded(
-                              child: InkWell(
-                                onTap: () {
-                                  // TODO: 跳转到歌曲详情页
-                                },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildOverflowTitle(csong.title),
-                                    _buildOverflowTitle(csong.artist),
-                                    _buildOverflowTitle(csong.album),
-                                  ],
                                 ),
                               ),
-                            )
-                          ],
+                              Expanded(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      _buildOverflowTitle(
+                                        csong.title,
+                                        fontSize: 14,
+                                        color: ThemeService.color.textColor,
+                                      ),
+                                      _buildOverflowTitle(
+                                        csong.artist,
+                                        onTap: () => {
+                                          Get.toNamed(
+                                            Routes.ARTIST_DETAIL,
+                                            arguments: {"id": csong.artistId},
+                                          )
+                                        },
+                                      ),
+                                      _buildOverflowTitle(
+                                        csong.album,
+                                        onTap: () => {
+                                          Get.toNamed(
+                                            Routes.ALBUM,
+                                            arguments: {"id": csong.albumId},
+                                          )
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       },
                     ),
@@ -99,12 +137,23 @@ class _BottomDesktopState extends State<BottomDesktop>
         ));
   }
 
-  _buildOverflowTitle(String text) {
-    return Text(
-      text,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      style: TextStyle(fontSize: 12, color: ThemeService.color.textSecondColor),
+  _buildOverflowTitle(
+    String text, {
+    double? fontSize = 12,
+    Color? color,
+    void Function()? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Text(
+        text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: fontSize,
+          color: color ?? ThemeService.color.textSecondColor,
+        ),
+      ),
     );
   }
 }

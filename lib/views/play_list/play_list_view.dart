@@ -68,38 +68,7 @@ class PlayListView extends GetResponsiveView<PlayListController> {
             itemExtent: 50.0, //强制高度为50.0
             itemBuilder: (BuildContext context, int index) {
               Playlist playListtem = controller.playlistsList[index];
-
-              // ignore: unrelated_type_equality_checks
-              return screen == ScreenType.Phone
-                  ? Dismissible(
-                      key: Key(playListtem.id),
-                      confirmDismiss: (direction) {
-                        bool dimssResult = false;
-                        if (direction == DismissDirection.endToStart &&
-                            isMobile) {
-                          // 从右向左  也就是删除
-                          dimssResult = true;
-                        } else if (direction == DismissDirection.startToEnd) {
-                          //从左向右
-                          dimssResult = false;
-                        }
-                        return Future<bool>.value(dimssResult);
-                      },
-                      onDismissed: (direction) async {
-                        if (direction == DismissDirection.endToStart) {
-                          // TODO: 删除确认做一下
-                          // controller.handleSwipeDelPlayList(_tem.id);
-                        }
-                      },
-                      background: Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(right: 24),
-                        color: Colors.red,
-                        child: Icon(Icons.delete, color: Colors.white),
-                      ),
-                      child: _buidListItem(context, playListtem),
-                    )
-                  : _buidListItem(context, playListtem);
+              return _buidListItem(context, playListtem);
             },
           )),
     );

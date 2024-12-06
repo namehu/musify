@@ -6,7 +6,6 @@ import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/music_bar/icon_play_list.dart';
-import '../../../util/mycss.dart';
 import 'icon_play_control.dart';
 
 class MusicBar extends StatefulWidget {
@@ -61,7 +60,7 @@ class _MusicBarState extends State<MusicBar> {
                         size: audioPlayerService
                                 .currentSong.value.coverUrl.isEmpty
                             ? 0
-                            : bottomImageWidthAndHeight,
+                            : 50,
                         shape: MCoverShapeEnum.round,
                       );
                     }),
