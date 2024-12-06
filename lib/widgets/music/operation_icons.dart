@@ -117,22 +117,20 @@ class PlayToggleIcon extends StatelessWidget {
         var player = audioPlayerService.player;
         final playing = player.state.playing;
 
-        if (!player.state.completed) {
-          return IconButton(
-            padding: EdgeInsets.all(0),
-            icon: Icon(Icons.pause_circle_filled,
-                color: color ?? operationIconColor),
-            iconSize: iconSize,
-            onPressed: player.pause,
-          );
-        }
-
         if (!playing) {
           return IconButton(
             padding: EdgeInsets.all(0),
             icon: Icon(Icons.play_circle, color: color ?? operationIconColor),
             iconSize: iconSize,
             onPressed: player.play,
+          );
+        } else if (!player.state.completed) {
+          return IconButton(
+            padding: EdgeInsets.all(0),
+            icon: Icon(Icons.pause_circle_filled,
+                color: color ?? operationIconColor),
+            iconSize: iconSize,
+            onPressed: player.pause,
           );
         }
 

@@ -1,10 +1,10 @@
 import 'dart:math';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/colors.dart';
-import 'package:musify/util/util.dart';
 
 class MusicSeekBar extends StatefulWidget {
   final bool? timeShow;
@@ -26,89 +26,40 @@ class MusicSeekBar extends StatefulWidget {
 
 class MusicSeekBarState extends State<MusicSeekBar> {
   final audioPlayerService = Get.find<AudioPlayerService>();
-  double? _dragValue;
-
-  // get slidePadding => widget.padding! - widget.dotSize!;
 
   double get _innerTrachHeight => min<double>(5.0, widget.dotRaidus!);
 
   double get _thumbSize => max(_innerTrachHeight, min(10, widget.dotRaidus!));
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: audioPlayerService.positionStream,
       builder: (context, snapshot) {
-        var position = snapshot.data ?? Duration.zero;
-        position = position < Duration.zero ? Duration.zero : position;
-        var duration = audioPlayerService.player.state.duration;
-        // var bufferedPosition = positionData?.bufferedPosition ?? Duration.zero;
+        var state = audioPlayerService.player.state;
 
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                activeTrackColor: ThemeService.color.primaryColor,
-                inactiveTrackColor: ThemeService.color.sliderBorderColor,
-                thumbColor: ThemeService.color.primaryColor,
-                overlayColor: ThemeService.color.primaryColor.withOpacity(0.3),
-                overlayShape:
-                    RoundSliderOverlayShape(overlayRadius: widget.dotRaidus!),
-                trackHeight: _innerTrachHeight,
-                thumbShape: RoundSliderThumbShape(
-                  enabledThumbRadius: _thumbSize,
-                ),
-              ),
-              child: Slider(
-                min: 0.0,
-                max: duration.inMilliseconds.toDouble(),
-                value: min(
-                  _dragValue ?? position.inMilliseconds.toDouble(),
-                  duration.inMilliseconds.toDouble(),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _dragValue = value;
-                  });
-                  if (widget.onChanged != null) {
-                    widget.onChanged!(Duration(milliseconds: value.round()));
-                  }
-                },
-                onChangeEnd: (value) {
-                  var time = Duration(milliseconds: value.round());
-                  if (widget.onChangeEnd != null) {
-                    widget.onChangeEnd!(time);
-                  }
-                  audioPlayerService.seek(time);
-                  _dragValue = null;
-                },
-              ),
-            ),
-            if (widget.timeShow!)
-              Container(
-                padding: EdgeInsets.only(
-                    left: widget.dotRaidus!, right: widget.dotRaidus!),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      formatSongDuration(position),
-                      style: TextStyle(fontSize: 12, color: gray1),
-                    ),
-                    Text(
-                      formatSongDuration(duration),
-                      style: TextStyle(fontSize: 12, color: gray1),
-                    )
-                  ],
-                ),
-              )
-          ],
+        var position =
+            state.position < Duration.zero ? Duration.zero : state.position;
+        var duration = state.duration;
+        var buffered = state.buffer;
+
+        return ProgressBar(
+          progress: position.compareTo(duration) < 0 ? position : duration,
+          buffered: buffered,
+          total: duration,
+          barHeight: _innerTrachHeight,
+          progressBarColor: ThemeService.color.primaryColor,
+          bufferedBarColor: ThemeService.color.primaryColor.withOpacity(0.3),
+          baseBarColor: ThemeService.color.sliderBorderColor,
+          thumbRadius: _thumbSize,
+          timeLabelLocation: widget.timeShow! ? TimeLabelLocation.below : null,
+          timeLabelTextStyle: TextStyle(fontSize: 12, color: gray1),
+          onSeek: (time) {
+            if (widget.onChangeEnd != null) {
+              widget.onChangeEnd!(time);
+            }
+            audioPlayerService.seek(time);
+          },
         );
       },
     );

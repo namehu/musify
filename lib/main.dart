@@ -31,6 +31,9 @@ import 'util/audio_player_handler.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  if (Platform.isWindows || Platform.isLinux) {
+    sqfliteFfiInit();
+  }
   sharedPreferences = await SharedPreferences.getInstance();
 
   logger = Logger(
@@ -50,10 +53,6 @@ void main() async {
   await Get.putAsync(() => AudioPlayerService().init());
   await Get.putAsync(() => AlbumServrice().init());
   await Get.putAsync(() => StarService().init());
-
-  if (Platform.isWindows) {
-    sqfliteFfiInit();
-  }
 
   if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
     await windowManager.ensureInitialized();
