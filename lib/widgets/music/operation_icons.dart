@@ -111,43 +111,37 @@ class PlayToggleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// FIXME: 播放状态监听性能不是很理想。可以优化下 合并多个stream 监听
-    return StreamBuilder<Duration>(
+    return StreamBuilder(
       stream: audioPlayerService.player.stream.position,
       builder: (context, snapshot) {
         var player = audioPlayerService.player;
         final playing = player.state.playing;
-        if (!playing) {
+
+        if (!player.state.completed) {
           return IconButton(
             padding: EdgeInsets.all(0),
-            icon: Icon(
-              Icons.play_circle,
-              color: color ?? operationIconColor,
-            ),
-            iconSize: iconSize,
-            onPressed: player.play,
-          );
-        } else if (!player.state.completed) {
-          return IconButton(
-            padding: EdgeInsets.all(0),
-            icon: Icon(
-              Icons.pause_circle_filled,
-              color: color ?? operationIconColor,
-            ),
+            icon: Icon(Icons.pause_circle_filled,
+                color: color ?? operationIconColor),
             iconSize: iconSize,
             onPressed: player.pause,
           );
-        } else {
+        }
+
+        if (!playing) {
           return IconButton(
             padding: EdgeInsets.all(0),
-            icon: Icon(
-              Icons.play_circle,
-              color: color ?? operationIconColor,
-            ),
+            icon: Icon(Icons.play_circle, color: color ?? operationIconColor),
             iconSize: iconSize,
-            onPressed: null,
+            onPressed: player.play,
           );
         }
+
+        return IconButton(
+          padding: EdgeInsets.all(0),
+          icon: Icon(Icons.play_circle, color: color ?? operationIconColor),
+          iconSize: iconSize,
+          onPressed: null,
+        );
       },
     );
   }
