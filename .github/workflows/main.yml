@@ -37,7 +37,7 @@ jobs:
           echo "storeFile=../upload-keystore.jks" >> key.properties
           ls -laq
           cat key.properties
-          working-directory: android
+        working-directory: android
 
       - name: Decode Keystore
         run: |
