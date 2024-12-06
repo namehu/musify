@@ -46,7 +46,7 @@ const Color darkTextColor = Color.fromRGBO(255, 255, 255, 0.85);
 
 const dialogBackgroundColor = Color.fromARGB(255, 52, 53, 54);
 
-var primaryColor = createMaterialColor(Color.fromARGB(255, 240, 87, 91));
+var primaryColor = createMaterialColor(Color.fromARGB(255, 239, 83, 80));
 
 typedef ColorMapType = ({
   Color titleColor, // 标题文本
