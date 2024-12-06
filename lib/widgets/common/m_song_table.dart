@@ -23,7 +23,7 @@ class MSongTableHead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ThemeService.color.bgColor,
+      color: ThemeService.color.secondBgColor,
       child: LayoutBuilder(
         builder: (ctx, con) {
           return MTableList(

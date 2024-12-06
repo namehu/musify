@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/theme_service.dart';
@@ -76,13 +77,9 @@ class AlbumView extends GetView<AlbumController> {
   }
 
   Widget _buildTopHead() {
-    // FIXME: 这里状态栏高度有问题
-    double appBarHeight =
-        (GetPlatform.isMobile ? 40 : 0) + AppBar().preferredSize.height;
-
+    double fullAppBarHeight = statusBarHeight + appBarHeight;
     double coverMargin = isMobile ? StyleSize.spaceSmall : StyleSize.space * 2;
-
-    double coverSize = controller.headHeight - appBarHeight - coverMargin;
+    double coverSize = controller.headHeight - fullAppBarHeight - coverMargin;
 
     return SizedBox(
       height: controller.headHeight,
@@ -107,9 +104,7 @@ class AlbumView extends GetView<AlbumController> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: appBarHeight,
-                ),
+                SizedBox(height: fullAppBarHeight),
                 Container(
                     margin: EdgeInsets.only(bottom: coverMargin),
                     child: LayoutBuilder(builder: (ctx, con) {

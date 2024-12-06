@@ -108,6 +108,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    statusBarHeight = MediaQuery.of(context).viewPadding.top;
+
     return MaterialApp(
       home: Obx(
         () => GetMaterialApp(

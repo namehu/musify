@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/styles/colors.dart';
+import 'package:musify/services/theme_service.dart';
 import 'package:musify/styles/size.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/util/util.dart';
@@ -12,6 +12,7 @@ import 'package:musify/widgets/m_bottom_placeholder.dart';
 import 'package:musify/widgets/m_cover.dart';
 import 'package:musify/widgets/m_text.dart';
 import 'package:musify/widgets/m_title.dart';
+import '../../constant.dart';
 import '../../screens/common/mySliverControlBar.dart';
 import '../../screens/common/mySliverControlList.dart';
 import 'artist_detail_controller.dart';
@@ -34,137 +35,136 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: gray1,
-      body: SafeArea(
-        child: Obx(
-          () => CustomScrollView(
-            controller: controller.scrollController,
-            slivers: [
-              SliverAppBar(
-                pinned: true, // 滑动到顶端时会固定住
-                expandedHeight: controller.headHeight,
-                backgroundColor: controller.imageMainColor,
-                foregroundColor: controller.imageMainColor,
-                leading: InkWell(
-                  onTap: () => Get.back(),
-                  child: Icon(Icons.arrow_back_ios_outlined),
-                ),
-                title: Obx(() {
-                  return controller.showTitle.value
-                      ? Text(controller.artilstname.value)
-                      : Container();
-                }),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: _buildTopHead(),
+      backgroundColor: ThemeService.color.secondBgColor,
+      body: Obx(
+        () => CustomScrollView(
+          controller: controller.scrollController,
+          slivers: [
+            SliverAppBar(
+              pinned: true, // 滑动到顶端时会固定住
+              expandedHeight: controller.headHeight,
+              backgroundColor: controller.imageMainColor,
+              foregroundColor: controller.imageMainColor,
+              leading: InkWell(
+                onTap: () => Get.back(),
+                child: Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: ThemeService.color.textColor,
                 ),
               ),
-              // SliverToBoxAdapter(child: _buildTopWidget()),
-              SliverToBoxAdapter(child: _buildBiography()),
+              title: Obx(() {
+                return controller.showTitle.value
+                    ? Text(
+                        controller.artilstname.value,
+                        style: TextStyle(color: ThemeService.color.textColor),
+                      )
+                    : Container();
+              }),
+              flexibleSpace: FlexibleSpaceBar(
+                background: _buildTopHead(),
+              ),
+            ),
+            // SliverToBoxAdapter(child: _buildTopWidget()),
+            SliverToBoxAdapter(child: _buildBiography()),
 
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: StyleSize.space,
+                  vertical: StyleSize.spaceSmall,
+                ),
+                child: MTitle(title: S.current.song),
+              ),
+            ),
+            if (controller.topSongs.isNotEmpty)
               SliverToBoxAdapter(
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: StyleSize.space,
-                    vertical: StyleSize.spaceSmall,
-                  ),
-                  child: MTitle(title: S.current.song),
+                child: MSongTableHead(),
+              ),
+            if (controller.topSongs.isNotEmpty)
+              SliverList.builder(
+                itemCount: controller.topSongs.length,
+                itemBuilder: (ctx, index) {
+                  return _buildSongList(index);
+                },
+              ),
+            if (controller.albums.isNotEmpty)
+              SliverToBoxAdapter(
+                child: MySliverControlBar(
+                  title: "${S.current.album}(${controller.albums.length})",
+                  controller: controller.albumscontroller,
                 ),
               ),
-              if (controller.topSongs.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: MSongTableHead(),
+            if (controller.albums.isNotEmpty)
+              SliverToBoxAdapter(
+                child: MySliverControlList(
+                  controller: controller.albumscontroller,
+                  albums: controller.albums,
                 ),
-              if (controller.topSongs.isNotEmpty)
-                SliverList.builder(
-                  itemCount: controller.topSongs.length,
-                  itemBuilder: (ctx, index) {
-                    return _buildSongList(index);
-                  },
+              ),
+            if (controller.similarArtist.isNotEmpty)
+              SliverToBoxAdapter(
+                child: MySliverControlBar(
+                  title: S.current.artist,
+                  controller: controller.similarArtistcontroller,
                 ),
-              if (controller.albums.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: MySliverControlBar(
-                    title: "${S.current.album}(${controller.albums.length})",
-                    controller: controller.albumscontroller,
-                  ),
-                ),
-              if (controller.albums.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: MySliverControlList(
-                    controller: controller.albumscontroller,
-                    albums: controller.albums,
-                  ),
-                ),
-              if (controller.similarArtist.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: MySliverControlBar(
-                    title: S.current.artist,
+              ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 200,
+                child: Obx(
+                  () => ListView.builder(
+                    scrollDirection: Axis.horizontal,
                     controller: controller.similarArtistcontroller,
-                  ),
-                ),
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 200,
-                  child: Obx(
-                    () => ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      controller: controller.similarArtistcontroller,
-                      itemCount: controller.similarArtist.length,
-                      itemBuilder: (ctx, index) {
-                        var artist = controller.similarArtist[index];
-                        return Container(
-                          padding: index == 0
-                              ? leftrightPadding
-                              : EdgeInsets.only(right: 15),
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.offNamed(
-                                Routes.ARTIST_DETAIL,
-                                arguments: {"id": artist['id']},
-                                preventDuplicates: false,
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Expanded(
-                                    child: MCover(url: artist["coverUrl"])),
-                                SizedBox(height: 5),
-                                Container(
-                                  constraints:
-                                      BoxConstraints(maxWidth: 200 - 67),
-                                  child: Text(
-                                    artist["name"],
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                    itemCount: controller.similarArtist.length,
+                    itemBuilder: (ctx, index) {
+                      var artist = controller.similarArtist[index];
+                      return Container(
+                        padding: index == 0
+                            ? leftrightPadding
+                            : EdgeInsets.only(right: 15),
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.offNamed(
+                              Routes.ARTIST_DETAIL,
+                              arguments: {"id": artist['id']},
+                              preventDuplicates: false,
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Expanded(child: MCover(url: artist["coverUrl"])),
+                              SizedBox(height: 5),
+                              Container(
+                                constraints: BoxConstraints(maxWidth: 200 - 67),
+                                child: Text(
+                                  artist["name"],
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
-              SliverToBoxAdapter(
-                child: MBottomPlaceholder(),
-              ),
-            ],
-          ),
+            ),
+            SliverToBoxAdapter(
+              child: MBottomPlaceholder(),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildTopHead() {
-    // FIXME: 这里状态栏高度有问题
-    double appBarHeight =
-        (GetPlatform.isMobile ? 40 : 0) + AppBar().preferredSize.height;
-
+    /// TODO: 优化.这里与album_view中代码重复度很高
+    double fullAppBarHeight = statusBarHeight + appBarHeight;
     double coverMargin = isMobile ? StyleSize.spaceSmall : StyleSize.space * 2;
-
-    double coverSize = controller.headHeight - appBarHeight - coverMargin;
+    double coverSize = controller.headHeight - fullAppBarHeight - coverMargin;
 
     return SizedBox(
       height: controller.headHeight,
@@ -177,7 +177,7 @@ class ArtistDetailView extends GetView<ArtistDetailController> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: appBarHeight),
+                SizedBox(height: fullAppBarHeight),
                 Container(
                     margin: EdgeInsets.only(bottom: coverMargin),
                     child: LayoutBuilder(builder: (ctx, con) {

@@ -23,3 +23,6 @@ late SharedPreferences sharedPreferences;
 late Logger logger;
 
 late AudioHandler audioHandler; // singleton.
+
+/// 状态栏高度
+late double statusBarHeight;

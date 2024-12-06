@@ -7,6 +7,8 @@ import 'package:musify/views/favorites/favorites_controller.dart';
 import 'package:musify/widgets/m_star_toogle.dart';
 import 'package:musify/widgets/m_table_list.dart';
 
+import '../../../routes/pages.dart';
+
 class ArtistTab extends StatelessWidget {
   final controller = Get.find<FavoritesController>();
 
@@ -57,11 +59,10 @@ class ArtistTab extends StatelessWidget {
   _buildContent(Artists data, int index) {
     return InkWell(
       onTap: () {
-        // TODO: 挑战未做
-        // Get.toNamed(
-        //   Routes.ALBUM,
-        //   arguments: {'id': data.id},
-        // );
+        Get.toNamed(
+          Routes.ARTIST_DETAIL,
+          arguments: {'id': data.id},
+        );
       },
       child: MTableList(
         data: [
