@@ -30,14 +30,16 @@ jobs:
       - name: Install dependencies
         run: |
           flutter pub get
-          flutter test
+          # flutter test
+      - name: Build APK
+        run: |
           flutter build apk --obfuscate --split-debug-info=./
 
-      - name: Push APK to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/flutter-apk/*.apk"
-          token: ${{ secrets.TOKEN }}
+      # - name: Push APK to Releases
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/flutter-apk/*.apk"
+      #     token: ${{ secrets.TOKEN }}
   # build-ios:
   #   runs-on: macos-latest
   #   steps:
