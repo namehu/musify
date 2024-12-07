@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:musify/api/subsonic/utils.dart';
 import 'package:musify/services/audio_player_service.dart';
-import 'package:musify/util/httpClient.dart' hide getCoverArt;
+import '../../util/httpClient.dart' hide getCoverArt;
 import 'package:musify/util/util.dart';
 import 'package:musify/widgets/m_toast.dart';
 

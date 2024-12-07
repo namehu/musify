@@ -20,10 +20,10 @@ import 'package:musify/constant.dart';
 import 'package:musify/enums/play_mode_enum.dart';
 import 'package:musify/generated/l10n.dart';
 import 'package:musify/models/songs.dart';
-import 'package:musify/util/httpClient.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'package:musify/widgets/music_bar/play_list_modal.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../util/httpclient.dart';
 import '../views/play/play_view.dart';
 
 class HideMusicBarEvent {}

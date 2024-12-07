@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/star_service.dart';
-import 'package:musify/util/httpclient.dart' hide getCoverArt;
+import '../../util/httpclient.dart' hide getCoverArt;
 import '../../api/subsonic/utils.dart';
 import '../../generated/l10n.dart';
 

@@ -5,7 +5,7 @@ import 'package:musify/models/myModel.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/audio_player_service.dart';
 import 'package:musify/services/theme_service.dart';
-import 'package:musify/util/httpClient.dart' hide getCoverArt;
+import '../../util/httpClient.dart' hide getCoverArt;
 
 class ArtistDetailController extends GetxController {
   final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
