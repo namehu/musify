@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/services/star_service.dart';
-import '../../util/httpClient.dart';
+import '../../util/httpclient.dart';
 
 class ArtistsController extends GetxController {
   final StarService starService = Get.find<StarService>();
