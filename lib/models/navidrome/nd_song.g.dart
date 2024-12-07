@@ -34,7 +34,7 @@ NdSong _$NdSongFromJson(Map<String, dynamic> json) => NdSong(
       bitRate: (json['bitRate'] as num?)?.toInt(),
       channels: (json['channels'] as num?)?.toInt(),
       genre: json['genre'] as String?,
-      genres: json['genres'] as String?,
+      genres: json['genres'] as List<dynamic>?,
       fullText: json['fullText'] as String?,
       orderTitle: json['orderTitle'] as String?,
       orderAlbumName: json['orderAlbumName'] as String?,

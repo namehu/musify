@@ -58,7 +58,7 @@ class NdSong {
   @JsonKey(name: 'genre')
   String? genre;
   @JsonKey(name: 'genres')
-  String? genres;
+  List<dynamic>? genres;
   @JsonKey(name: 'fullText')
   String? fullText;
   @JsonKey(name: 'orderTitle')

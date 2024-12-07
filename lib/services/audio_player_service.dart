@@ -94,21 +94,29 @@ class AudioPlayerService extends GetxService {
       _setAudioSource(songs);
     });
 
-    _playListStream = player.stream.playlist.listen((Playlist event) {
+    _playListStream = player.stream.playlist.listen((Playlist event) async {
       // print('audioParams: $event');
       if (event.medias.isEmpty) return;
 
       var media = event.medias[event.index];
 
-      if (media.extras == null || media.extras!['id'] == null) {
+      if (media.extras == null || media.extras!['song'] == null) {
         return;
       }
 
-      var id = media.extras!['id'];
-      if (currentSong.value.id != id) {
-        scrobble(id, false);
-        _getSongDetail(id);
+      var song = media.extras!['song'];
+      if (currentSong.value.id != song.id) {
+        scrobble(song.id, false);
+        try {
+          var songDetail = await _getSongDetail(song.id);
+          if (songDetail != null) {
+            song = songDetail;
+          }
+        } catch (e) {
+          //
+        }
       }
+      currentSong(song);
     });
 
     return this;
@@ -271,7 +279,7 @@ class AudioPlayerService extends GetxService {
         Media(
           song.stream,
           extras: {
-            'id': song.id,
+            'song': song,
             'mediaItem': MediaItem(
               // Specify a unique ID for each media item:
               id: song.id,
@@ -303,7 +311,6 @@ class AudioPlayerService extends GetxService {
     if (song == null) {
       return null;
     }
-    currentSong.value = song;
 
     var lyrics = Lyrics.fromJsonString(song.lyrics);
     var lyrictem = lyrics.toPlayerlyric();
