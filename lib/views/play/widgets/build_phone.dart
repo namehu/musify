@@ -202,7 +202,9 @@ class BuildPhone extends GetView<PlayController> {
                     ),
                     SizedBox(width: StyleSize.spaceSmall),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        // TODO: 详情操作
+                      },
                       child: Icon(
                         Icons.more_vert,
                         color: gray3,
@@ -222,7 +224,7 @@ class BuildPhone extends GetView<PlayController> {
                               maxWidth: constraints.maxWidth / 2),
                           child: GestureDetector(
                             onTap: () {
-                              controller.navToArtist(value.albumId);
+                              controller.navToArtist();
                             },
                             child: Text(
                               (value.artist.isEmpty)
@@ -241,7 +243,7 @@ class BuildPhone extends GetView<PlayController> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                controller.navToAlubum(value.album);
+                                controller.navToAlubum();
                               },
                               child: Text(
                                 ' - ${value.album.isEmpty ? S.current.unknown : value.album}',

@@ -135,7 +135,7 @@ class BuildDeskTop extends GetView<PlayController> {
                     constraints: BoxConstraints(maxWidth: constraints.maxWidth),
                     child: GestureDetector(
                       onTap: () {
-                        controller.navToAlubum(value.albumId);
+                        controller.navToAlubum();
                       },
                       child: Text(
                         value.album.isEmpty ? '-' : value.album,
@@ -162,7 +162,7 @@ class BuildDeskTop extends GetView<PlayController> {
                               maxWidth: constraints.maxWidth / 2),
                           child: GestureDetector(
                             onTap: () {
-                              controller.navToArtist(value.artistId);
+                              controller.navToArtist();
                             },
                             child: Text(
                               (value.artist.isEmpty) ? '-' : value.artist,

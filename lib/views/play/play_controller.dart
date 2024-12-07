@@ -41,19 +41,19 @@ class PlayController extends GetxController
     }
   }
 
-  navToAlubum(String albumId) {
-    if (albumId.isNotEmpty) {
+  navToAlubum() {
+    if (currentSong.albumId.isNotEmpty) {
       navBack();
-      Get.toNamed(Routes.ALBUM, arguments: {"id": albumId});
+      Get.toNamed(Routes.ALBUM, arguments: {"id": currentSong.albumId});
     }
   }
 
-  navToArtist(String artistId) {
-    if (artistId.isNotEmpty) {
+  navToArtist() {
+    if (currentSong.artistId.isNotEmpty) {
       navBack();
       Get.toNamed(
         Routes.ARTIST_DETAIL,
-        arguments: {"id": artistId},
+        arguments: {"id": currentSong.artistId},
       );
     }
   }
