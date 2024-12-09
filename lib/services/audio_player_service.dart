@@ -10,7 +10,7 @@ import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:musify/api/index.dart';
-import 'package:musify/models/lyrics.dart';
+import 'package:musify/models/navidrome/nd_lyrics.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/util/m_lyric_ui.dart';
 import 'package:musify/util/mycss.dart';
@@ -320,8 +320,8 @@ class AudioPlayerService extends GetxService {
     if (song == null) {
       return null;
     }
-    var lyrics = Lyrics.fromJsonString(song.lyrics);
-    var lyrictem = lyrics.toPlayerlyric();
+    var lyrics = NdLyrics.fromJsonString(song.lyrics);
+    var lyrictem = lyrics.toPlayerlyric(song);
     lyric.value = lyrictem;
 
     await songLyricRepository.insert(lyrictem, id);
