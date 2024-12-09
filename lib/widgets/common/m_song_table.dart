@@ -132,14 +132,17 @@ class MSongTableRow extends StatelessWidget {
                                     color: active! ? activeColor : null),
                               ),
                             ),
-                            MText(
-                              text: song.artist,
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: active!
-                                    ? activeColor
-                                    : ThemeService.color.textSecondColor,
+                            Container(
+                              constraints: BoxConstraints(maxWidth: maxWidth),
+                              child: MText(
+                                text: song.artist,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: active!
+                                      ? activeColor
+                                      : ThemeService.color.textSecondColor,
+                                ),
                               ),
                             ),
                           ],

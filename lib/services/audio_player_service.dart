@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lyric/lyrics_model_builder.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:musify/api/index.dart';
@@ -136,12 +137,19 @@ class AudioPlayerService extends GetxService {
   static showPlayList() async {
     var context = navigatorKey.currentState!.context;
 
-    await showMaterialModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      settings: RouteSettings(name: Routes.PLAY_LIST_MODAL),
-      builder: (BuildContext ctx) => PlayListModal(),
-    );
+    if (GetPlatform.isDesktop) {
+      SmartDialog.show(
+        alignment: Alignment.centerRight,
+        maskColor: Colors.transparent,
+        builder: (BuildContext ctx) => PlayListModal(),
+      );
+    } else {
+      showMaterialModalBottomSheet(
+        context: context,
+        settings: RouteSettings(name: Routes.PLAY_LIST_MODAL),
+        builder: (BuildContext ctx) => PlayListModal(),
+      );
+    }
   }
 
   /// 显示播放详情

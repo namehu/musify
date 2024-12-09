@@ -3,6 +3,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:musify/constant.dart';
@@ -111,6 +112,8 @@ class MyApp extends StatelessWidget {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
 
     return MaterialApp(
+      navigatorObservers: [FlutterSmartDialog.observer],
+      builder: FlutterSmartDialog.init(),
       home: Obx(
         () => GetMaterialApp(
           navigatorKey: navigatorKey,
@@ -132,6 +135,7 @@ class MyApp extends StatelessWidget {
             toggleMusicBar(routing);
             togglePCTabActive(routing);
           },
+
           builder: (context, child) {
             if (isMobile) {
               return child ?? Container();
