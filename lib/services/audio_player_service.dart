@@ -49,9 +49,6 @@ class AudioPlayerService extends GetxService {
   /// 静音
   RxBool volumeMute = false.obs;
 
-  /// 当前播放歌曲索引
-  RxInt currentSongIndex = 0.obs;
-
   /// 当前歌曲歌词
   Rx<String> lyric = ''.obs;
 
@@ -63,8 +60,6 @@ class AudioPlayerService extends GetxService {
   bool _shuffleModeEnabled = false;
 
   PlaylistMode _loopMode = PlaylistMode.loop;
-
-  late Worker _playListWorker;
 
   late StreamSubscription<dynamic> _playListStream;
 
@@ -87,14 +82,6 @@ class AudioPlayerService extends GetxService {
       // 修复 鸿蒙系统播放高码率文件时闪退问题
       await nativePlayer.setProperty("ao", "audiotrack,opensles,");
     }
-
-    // 监听替换播放列表
-    _playListWorker = ever(playSongs, (songs) async {
-      await _requsetPermission();
-
-      _resetLoopModeAndShuffle();
-      _setAudioSource(songs);
-    });
 
     _playListStream = player.stream.playlist.listen((Playlist event) async {
       // print('audioParams: $event');
@@ -127,7 +114,6 @@ class AudioPlayerService extends GetxService {
   @override
   onClose() async {
     hideMusicEventBus.destroy();
-    _playListWorker.dispose();
     _playListStream.cancel();
 
     await player.dispose();
@@ -179,7 +165,7 @@ class AudioPlayerService extends GetxService {
     Songs? song,
     int? index = 0,
     bool showView = true,
-  }) {
+  }) async {
     int idx = index!;
     if (song != null) {
       idx = songs.indexWhere((element) => element.id == song.id);
@@ -189,17 +175,16 @@ class AudioPlayerService extends GetxService {
       }
     }
 
-    // Songs playSong = song ?? songs[idx];
-
     if (listEquals(playSongs.value, songs)) {
       player.jump(idx);
     } else {
-      currentSongIndex(idx);
       playSongs(songs); //歌曲所在专辑歌曲List
 
-      if (showView) {
-        showPlayView();
-      }
+      if (showView) showPlayView();
+
+      await _requsetPermission();
+      _resetLoopModeAndShuffle();
+      _setAudioSource(songs, idx);
     }
   }
 
@@ -221,6 +206,19 @@ class AudioPlayerService extends GetxService {
 
   seek(Duration duration) async {
     await player.seek(duration);
+  }
+
+  /// 根据索引下标移除播放中的歌曲
+  removeFromPlayList(int index) async {
+    var songs = playSongs.value.map((item) => item).toList();
+    var removedSong = songs.removeAt(index);
+
+    if (songs.isEmpty) {
+      await player.stop();
+      currentSong(Songs.fromInitial());
+    }
+    playSongs(songs);
+    player.remove(index);
   }
 
   /// 切换播放模式
@@ -278,7 +276,7 @@ class AudioPlayerService extends GetxService {
   }
 
 // 设置播放歌曲和列表
-  Future<void> _setAudioSource(List<Songs> songs) async {
+  Future<void> _setAudioSource(List<Songs> songs, int index) async {
     /// 停止播放
     player.stop();
 
@@ -305,10 +303,7 @@ class AudioPlayerService extends GetxService {
       );
     }
 
-    final playable = Playlist(
-      children,
-      index: currentSongIndex.value,
-    );
+    final playable = Playlist(children, index: index);
 
     _setLoopModeAndShuffle();
 

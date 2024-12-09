@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/services/audio_player_service.dart';
 
 class AudioPlayerHandler extends BaseAudioHandler
@@ -64,7 +65,6 @@ class AudioPlayerHandler extends BaseAudioHandler
       }).toList();
 
       addQueueItems(mediaItems);
-      mediaItem.add(mediaItems[event.index]);
 
       var queueIndex = event.index;
       playbackState.add(
@@ -72,6 +72,11 @@ class AudioPlayerHandler extends BaseAudioHandler
           queueIndex: queueIndex,
         ),
       );
+
+      // 更新正在播放
+      Future.delayed(Duration(milliseconds: 200), () {
+        mediaItem.add(mediaItems[event.index]);
+      });
     });
   }
 

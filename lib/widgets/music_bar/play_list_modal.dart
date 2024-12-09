@@ -18,12 +18,6 @@ class PlayListModal extends GetResponsiveView {
     audioPlayerService.player.jump(index);
   }
 
-  handleItemRemove(Songs song, int index) {
-    var songs = audioPlayerService.playSongs.value.map((item) => item).toList();
-    songs.removeAt(index);
-    audioPlayerService.playSongs.value = songs;
-  }
-
   @override
   Widget? desktop() {
     return Container(
@@ -219,7 +213,7 @@ class PlayListModal extends GetResponsiveView {
         ),
         trailing: GestureDetector(
           onTap: () {
-            handleItemRemove(item, index);
+            audioPlayerService.removeFromPlayList(index);
           },
           child: Icon(
             Icons.close,
