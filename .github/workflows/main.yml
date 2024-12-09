@@ -1,0 +1,81 @@
+name: Test, Build and Release apk
+on:
+  push:
+    branches:
+      - "master"
+      - "releases/**"
+    tags:
+      - v**
+
+env:
+  FLUTTER_VERSION: 3.24.3
+
+jobs:
+  build-andriod-apk:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2.12.0
+        with:
+          cache: true
+          cache-key: ubuntu-latest-flutter-${{ hashFiles('**/pubspec.yaml') }}
+          flutter-version: ${{ env.FLUTTER_VERSION  }}
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+          cache: "gradle"
+          check-latest: true
+
+      - name: Create Keystore Properties
+        run: |
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" > key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> key.properties
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> key.properties
+          echo "storeFile=../upload-keystore.jks" >> key.properties
+          ls -laq
+          cat key.properties
+        working-directory: android
+
+      - name: Decode Keystore
+        run: |
+          echo '${{ secrets.KEYSTORE }}' | base64 --decode > android/upload-keystore.jks
+
+      - name: Ls Android Directory
+        run: ls -laq
+        working-directory: android
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+          # flutter test
+
+      - name: Build APK
+        run: |
+          flutter build apk
+
+      # - name: Push APK to Releases
+      #   uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: "build/app/outputs/flutter-apk/*.apk"
+      #     token: ${{ secrets.TOKEN }}
+  # build-ios:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Setup Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable"
+  #         cache: true
+  #         architecture: x64
+
+  #     - name: Install dependencies
+  #       run: flutter pub get
+
+  #     - name: Build iOS
+  #       run: flutter build ios --release --no-codesign
