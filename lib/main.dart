@@ -31,6 +31,8 @@ import 'generated/l10n.dart';
 import 'services/global_service.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
+import 'util/initializers.dart';
+
 void main(List<String> rawArgs) async {
   //   if (rawArgs.contains("web_view_title_bar")) {
   //   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +45,10 @@ void main(List<String> rawArgs) async {
   AppLogger.initialize(arguments["verbose"]);
 
   AppLogger.runZoned(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+    await registerWindowsScheme("musify");
+
     // Necessary initialization for package:media_kit.
     MediaKit.ensureInitialized();
 

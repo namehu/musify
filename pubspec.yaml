@@ -61,6 +61,7 @@ dependencies:
   package_info_plus: ^8.1.1
   args: ^2.6.0
   flutter_displaymode: ^0.6.0
+  win32_registry: ^1.1.5
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0
