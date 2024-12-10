@@ -1,0 +1,4 @@
+enum CloseBehavior {
+  minimizeToTray,
+  close,
+}

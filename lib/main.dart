@@ -5,9 +5,13 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:local_notifier/local_notifier.dart';
 import 'package:logger/logger.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:musify/constant.dart';
+import 'package:musify/hooks/configurators/use_close_behavior.dart';
+import 'package:musify/hooks/configurators/use_fix_window_stretching.dart';
 import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
@@ -24,6 +28,7 @@ import 'package:musify/services/theme_service.dart';
 import 'package:musify/util/cli.dart';
 import 'package:musify/util/logger.dart';
 import 'package:musify/util/platform.dart';
+import 'package:musify/util/wins/wm_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:musify/util/mycss.dart';
@@ -47,7 +52,7 @@ void main(List<String> rawArgs) async {
   AppLogger.runZoned(() async {
     final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-    await registerWindowsScheme("musify");
+    await registerWindowsScheme("Musify");
 
     // Necessary initialization for package:media_kit.
     MediaKit.ensureInitialized();
@@ -55,6 +60,10 @@ void main(List<String> rawArgs) async {
     // force High Refresh Rate on some Android devices (like One Plus)
     if (kIsAndroid) {
       await FlutterDisplayMode.setHighRefreshRate();
+    }
+
+    if (kIsDesktop) {
+      await windowManager.setPreventClose(true);
     }
 
     if (Platform.isWindows || Platform.isLinux) {
@@ -81,19 +90,6 @@ void main(List<String> rawArgs) async {
     await Get.putAsync(() => StarService().init());
 
     if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      await windowManager.ensureInitialized();
-      WindowOptions windowOptions = WindowOptions(
-        size: Size(1280, 800),
-        minimumSize: Size(800, 600),
-        backgroundColor: Colors.black,
-        skipTaskbar: false,
-        titleBarStyle: TitleBarStyle.normal,
-      );
-      windowManager.waitUntilReadyToShow(windowOptions, () async {
-        await windowManager.show();
-        await windowManager.focus();
-      });
-
       isMobile = false;
     } else {
       isMobile = true;
@@ -105,20 +101,33 @@ void main(List<String> rawArgs) async {
       // );
     }
 
+    if (kIsDesktop) {
+      await localNotifier.setup(appName: "Musify");
+      await WindowManagerTools.initialize();
+    }
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
-    runApp(MyApp());
+    runApp(ProviderScope(
+      // For widgets to be able to read providers, we need to wrap the entire
+      // application in a "ProviderScope" widget.
+      // This is where the state of our providers will be stored.
+      child: MyApp(),
+    ));
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
+
+    useFixWindowStretching();
+    useCloseBehavior(ref);
 
     return MaterialApp(
       navigatorObservers: [FlutterSmartDialog.observer],

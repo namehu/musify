@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:musify/enums/close_behavior.dart';
+import 'package:musify/util/wins/wm_tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum PreferencesEnum {
@@ -70,4 +74,37 @@ class PreferencesService extends GetxService {
       PreferencesEnum key, List<String> value) async {
     return await PreferencesService.instance.setStringList(key.key, value);
   }
+
+  // specifics
+  static WindowSize? get windowSize {
+    final raw = instance.getString('windowSize');
+
+    if (raw == null) {
+      return null;
+    }
+    return WindowSize.fromJson(jsonDecode(raw));
+  }
+
+  static Future<void> setWindowSize(WindowSize value) async =>
+      await instance.setString(
+        'windowSize',
+        jsonEncode(
+          value.toJson(),
+        ),
+      );
+
+  static CloseBehavior get closeBehavior {
+    final raw = instance.getString('closeBehavior');
+
+    return CloseBehavior.values.firstWhere(
+      (element) => element.name == raw,
+      orElse: () => CloseBehavior.minimizeToTray,
+    );
+  }
+
+  static Future<void> setCloseBehavior(CloseBehavior value) async =>
+      await instance.setString(
+        'closeBehavior',
+        value.name,
+      );
 }
