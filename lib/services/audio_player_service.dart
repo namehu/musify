@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:event_bus/event_bus.dart';
@@ -13,6 +12,8 @@ import 'package:media_kit/media_kit.dart';
 import 'package:musify/api/index.dart';
 import 'package:musify/models/navidrome/nd_lyrics.dart';
 import 'package:musify/routes/pages.dart';
+import 'package:musify/services/audio_player/audio_player.dart';
+import 'package:musify/services/audio_services/mobile_audio_handler.dart';
 import 'package:musify/util/m_lyric_ui.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/views/play/play_controller.dart';
@@ -26,6 +27,7 @@ import 'package:musify/widgets/music_bar/play_list_modal.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../dao/song_lyric_repository.dart';
 import '../util/httpclient.dart';
+import '../util/platform.dart';
 import '../views/play/play_view.dart';
 
 class HideMusicBarEvent {}
@@ -34,6 +36,7 @@ class HideMusicBarEvent {}
 /// 提供全局的播放器实例
 class AudioPlayerService extends GetxService {
   late final Player player;
+  MobileAudioHandler? mobile;
 
   static final hideMusicEventBus = EventBus();
 
@@ -71,17 +74,24 @@ class AudioPlayerService extends GetxService {
 
   /// 初始化
   Future<AudioPlayerService> init() async {
-    // Necessary initialization for package:media_kit.
-    MediaKit.ensureInitialized();
+    // init player
+    audioPlayer = MyAudioPlayer();
+    player = audioPlayer.mkPlayer;
 
-    player = Player();
-
-    NativePlayer nativePlayer = player.platform as NativePlayer;
-
-    if (Platform.isAndroid) {
-      // 修复 鸿蒙系统播放高码率文件时闪退问题
-      await nativePlayer.setProperty("ao", "audiotrack,opensles,");
-    }
+    mobile = kIsMobile || kIsMacOS || kIsLinux
+        ? await AudioService.init(
+            builder: () => MobileAudioHandler(),
+            config: AudioServiceConfig(
+              androidNotificationChannelId:
+                  kIsLinux ? 'musify' : 'com.namehu.musify.audio',
+              androidNotificationChannelName: 'Musify',
+              androidNotificationOngoing: false,
+              androidStopForegroundOnPause: false,
+              androidNotificationIcon: 'mipmap/ic_launcher',
+              androidNotificationChannelDescription: "Musify Media Controls",
+            ),
+          )
+        : null;
 
     _playListStream = player.stream.playlist.listen((Playlist event) async {
       // print('audioParams: $event');
@@ -94,7 +104,10 @@ class AudioPlayerService extends GetxService {
       }
 
       var song = media.extras!['song'];
+      MediaItem mediaItem = media.extras!['mediaItem'];
       if (currentSong.value.id != song.id) {
+        mobile?.addItem(mediaItem);
+
         scrobble(song.id, false);
         try {
           var songDetail = await _getSongDetail(song.id);
@@ -116,7 +129,8 @@ class AudioPlayerService extends GetxService {
     hideMusicEventBus.destroy();
     _playListStream.cancel();
 
-    await player.dispose();
+    // For enabling hot reload for audio player
+    audioPlayer.dispose();
   }
 
   // 显示播放列表
@@ -303,11 +317,9 @@ class AudioPlayerService extends GetxService {
       );
     }
 
-    final playable = Playlist(children, index: index);
-
     _setLoopModeAndShuffle();
 
-    await player.open(playable);
+    audioPlayer.openPlaylist(children, initialIndex: index);
   }
 
   _getSongDetail(String id) async {
