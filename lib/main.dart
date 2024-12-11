@@ -14,6 +14,7 @@ import 'package:musify/hooks/configurators/use_close_behavior.dart';
 import 'package:musify/hooks/configurators/use_fix_window_stretching.dart';
 import 'package:musify/models/database/database.dart';
 import 'package:musify/provider/database/database.dart';
+import 'package:musify/provider/tray_manager/tray_manager.dart';
 import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
@@ -132,6 +133,8 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
+
+    ref.listen(trayManagerProvider, (_, __) {});
 
     useFixWindowStretching();
     useCloseBehavior(ref);

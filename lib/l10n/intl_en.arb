@@ -99,5 +99,7 @@
     "reachBottom": "Alerady Reached Bottom",
     "noSong": "No Song",
     "allSong": "All Song",
-    "slogan": "Music makes life better"
+    "slogan": "Music makes life better",
+    "exit": "exit",
+    "trayVisibleToggle": "Show/Hide Window"
 }

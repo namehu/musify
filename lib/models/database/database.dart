@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
+import 'package:musify/enums/close_behavior.dart';
+import 'package:musify/enums/music/source_qualities.dart';
 import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/util/platform.dart';
 import 'package:path/path.dart';
@@ -10,6 +12,7 @@ import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 part 'tables/lyrics.dart';
+part 'tables/preferences.dart';
 part 'tables/server.dart';
 part 'database.g.dart';
 
@@ -30,8 +33,9 @@ part 'database.g.dart';
 @DriftDatabase(tables: [
   // TodoItems,
   // TodoCategory,
-  ServerTable,
   LyricsTable,
+  PreferencesTable,
+  ServerTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

@@ -1059,6 +1059,26 @@ class S {
       args: [],
     );
   }
+
+  /// `exit`
+  String get exit {
+    return Intl.message(
+      'exit',
+      name: 'exit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show/Hide Window`
+  String get trayVisibleToggle {
+    return Intl.message(
+      'Show/Hide Window',
+      name: 'trayVisibleToggle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

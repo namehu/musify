@@ -99,5 +99,7 @@
     "reachBottom": "已經到底了",
     "noSong": "沒有歌曲",
     "allSong": "全部歌曲",
-    "slogan": "音樂,讓生活更美好"
+    "slogan": "音樂,讓生活更美好",
+    "exit": "退出",
+    "trayVisibleToggle": "顯示/隱藏窗口"
 }

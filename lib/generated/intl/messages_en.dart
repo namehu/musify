@@ -45,6 +45,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "enforceRefresh":
             MessageLookupByLibrary.simpleMessage("Enforce Refresh"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
+        "exit": MessageLookupByLibrary.simpleMessage("exit"),
         "expires": MessageLookupByLibrary.simpleMessage("Expires"),
         "failure": MessageLookupByLibrary.simpleMessage("Failure"),
         "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
@@ -123,6 +124,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "to": MessageLookupByLibrary.simpleMessage("to"),
         "top": MessageLookupByLibrary.simpleMessage("Top "),
         "traditional": MessageLookupByLibrary.simpleMessage("Traditional"),
+        "trayVisibleToggle":
+            MessageLookupByLibrary.simpleMessage("Show/Hide Window"),
         "type": MessageLookupByLibrary.simpleMessage("Type"),
         "udpateDate": MessageLookupByLibrary.simpleMessage("Update Date"),
         "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
