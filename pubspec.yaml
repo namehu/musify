@@ -63,16 +63,21 @@ dependencies:
   package_info_plus: ^8.1.1
   args: ^2.6.0
   flutter_displaymode: ^0.6.0
+  drift: ^2.22.1
+  drift_flutter: ^0.1.0
   win32_registry: ^1.1.5
   local_notifier: ^0.1.6
   tray_manager: ^0.3.0
+  riverpod_generator: ^2.6.3
+  riverpod_lint: ^2.6.3
+  sqlite3_flutter_libs: ^0.5.27
+  sqlite3: ^2.5.0
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0
-  build_runner: ^2.4.13
+  drift_dev: ^2.22.0
+  build_runner: ^2.3.3
   custom_lint: ^0.7.0
-  riverpod_generator: ^2.6.3
-  riverpod_lint: ^2.6.3
   json_serializable: ^6.8.0
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.14.2

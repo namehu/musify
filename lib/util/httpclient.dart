@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_print, no_leading_underscores_for_local_identifiers, prefer_interpolation_to_compose_strings
 
 import 'package:dio/dio.dart';
-import '../models/notifierValue.dart';
+import 'package:get/get.dart' hide Response;
+import 'package:musify/services/server_service.dart';
 
 checkResponse(Response<dynamic> _response) {
   if (_response.statusCode == 200) {
@@ -22,13 +23,15 @@ getCoverArt(String _id, {int size = 350}) {
 }
 
 _getServerInfo(String _api) {
-  String _request = serversInfo.value.baseurl +
+  var serverInfo = Get.find<ServerService>().serverInfo;
+
+  String _request = serverInfo.value.baseurl +
       '/rest/$_api?v=0.0.1&c=musify&f=json&u=' +
-      serversInfo.value.username +
+      serverInfo.value.username +
       '&s=' +
-      serversInfo.value.salt +
+      serverInfo.value.salt +
       '&t=' +
-      serversInfo.value.hash;
+      serverInfo.value.hash;
   return _request;
 }
 
@@ -249,44 +252,44 @@ scrobble(String _songId, bool _submission) async {
   }
 }
 
-searchNeteasAPI(String _name, String _type) async {
-  String _neteaseapi = serversInfo.value.neteaseapi;
-  String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-  String _request = _neteaseapi +
-      "/search?limit=5&type=$_type&offset=0&keywords=$_name&timestamp=$_timestamp";
-  print(_request);
-  try {
-    var response = await Dio().get(_request);
-    if (response.statusCode == 200) {
-      var _result = response.data['result'];
-      if (_result == null) return null;
-      return _result;
-    } else {
-      return null;
-    }
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
+// searchNeteasAPI(String _name, String _type) async {
+//   String _neteaseapi = serversInfo.value.neteaseapi;
+//   String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+//   String _request = _neteaseapi +
+//       "/search?limit=5&type=$_type&offset=0&keywords=$_name&timestamp=$_timestamp";
+//   print(_request);
+//   try {
+//     var response = await Dio().get(_request);
+//     if (response.statusCode == 200) {
+//       var _result = response.data['result'];
+//       if (_result == null) return null;
+//       return _result;
+//     } else {
+//       return null;
+//     }
+//   } catch (e) {
+//     print(e);
+//     return null;
+//   }
+// }
 
-getLyric(String _songId) async {
-  String _neteaseapi = serversInfo.value.neteaseapi;
-  String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-  String _request = _neteaseapi + "/lyric?id=$_songId&timestamp=$_timestamp";
-  try {
-    var response = await Dio().get(_request);
-    if (response.statusCode == 200) {
-      var _value = response.data['lrc'];
-      if (_value == null) return null;
-      var _lyric = _value["lyric"];
-      if (_lyric == null) return null;
-      return _lyric;
-    } else {
-      return null;
-    }
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
+// getLyric(String _songId) async {
+//   String _neteaseapi = serversInfo.value.neteaseapi;
+//   String _timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+//   String _request = _neteaseapi + "/lyric?id=$_songId&timestamp=$_timestamp";
+//   try {
+//     var response = await Dio().get(_request);
+//     if (response.statusCode == 200) {
+//       var _value = response.data['lrc'];
+//       if (_value == null) return null;
+//       var _lyric = _value["lyric"];
+//       if (_lyric == null) return null;
+//       return _lyric;
+//     } else {
+//       return null;
+//     }
+//   } catch (e) {
+//     print(e);
+//     return null;
+//   }
+// }

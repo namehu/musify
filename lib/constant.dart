@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
+import 'package:musify/models/database/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// app名称
@@ -23,3 +24,5 @@ late Logger logger;
 
 /// 状态栏高度
 late double statusBarHeight;
+
+late final AppDatabase database;

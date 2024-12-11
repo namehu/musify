@@ -1,25 +1,13 @@
 import 'package:get/get.dart';
 import 'package:musify/api/index.dart';
-import 'package:musify/dao/server_info_repository.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/enums/serve_type_enum.dart';
-import 'package:musify/models/myModel.dart';
-import 'package:musify/models/notifierValue.dart';
+import 'package:musify/models/database/database.dart';
 import 'package:musify/services/preferences_service.dart';
 
 class ServerService extends GetxService {
   /// 当前服务器信息
-  var serverInfo = ServerInfo(
-    serverType: ServeTypeEnum.navidrome.label,
-    baseurl: '',
-    hash: '',
-    neteaseapi: '',
-    salt: '',
-    ndCredential: '',
-    userId: '',
-    username: '',
-    password: '',
-    languageCode: '',
-  ).obs;
+  var serverInfo = ServerTable.defaults().obs;
 
   ServeTypeEnum? get serverType {
     var type = serverInfo.value.serverType;
@@ -28,10 +16,18 @@ class ServerService extends GetxService {
 
   Future<ServerService> init() async {
     var id = PreferencesService.getInt(PreferencesEnum.serverId);
-    final dbServerInfo = await ServerInfoRepository().getServerInfo(id);
 
-    if (dbServerInfo != null) {
-      updateCurrentServerInfo(dbServerInfo);
+    ServerTableData? data = await (database.select(database.serverTable)
+          ..where((tbl) {
+            if (id.isEqual(0)) {
+              return tbl.id.isNotNull();
+            }
+            return tbl.id.equals(id);
+          }))
+        .getSingleOrNull();
+
+    if (data != null) {
+      updateCurrentServerInfo(data);
     }
 
     return this;
@@ -39,9 +35,7 @@ class ServerService extends GetxService {
 
   /// 更新当前服务器信息
   /// 同时重新加载国际化
-  updateCurrentServerInfo(ServerInfo sInfo) {
-    // TODO: 移除serversInfo
-    serversInfo.value = sInfo;
+  updateCurrentServerInfo(ServerTableData sInfo) {
     serverInfo.value = sInfo;
 
     // 更新api 请求端口

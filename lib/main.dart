@@ -12,6 +12,8 @@ import 'package:media_kit/media_kit.dart';
 import 'package:musify/constant.dart';
 import 'package:musify/hooks/configurators/use_close_behavior.dart';
 import 'package:musify/hooks/configurators/use_fix_window_stretching.dart';
+import 'package:musify/models/database/database.dart';
+import 'package:musify/provider/database/database.dart';
 import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
@@ -77,6 +79,8 @@ void main(List<String> rawArgs) async {
       ), // Use the PrettyPrinter to format and print log
     );
 
+    database = AppDatabase();
+
     //Register Get Services
     await Get.putAsync(() => GloabalService().init());
     await Get.putAsync(() => PreferencesService().init(sharedPreferences));
@@ -109,6 +113,9 @@ void main(List<String> rawArgs) async {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     runApp(ProviderScope(
+      overrides: [
+        databaseProvider.overrideWith((ref) => database),
+      ],
       // For widgets to be able to read providers, we need to wrap the entire
       // application in a "ProviderScope" widget.
       // This is where the state of our providers will be stored.

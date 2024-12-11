@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:drift/drift.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,12 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:musify/api/index.dart';
+import 'package:musify/models/database/database.dart';
 import 'package:musify/models/navidrome/nd_lyrics.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/audio_player/audio_player.dart';
 import 'package:musify/services/audio_services/mobile_audio_handler.dart';
+import 'package:musify/services/preferences_service.dart';
 import 'package:musify/util/m_lyric_ui.dart';
 import 'package:musify/util/mycss.dart';
 import 'package:musify/views/play/play_controller.dart';
@@ -25,7 +28,6 @@ import 'package:musify/models/songs.dart';
 import 'package:musify/widgets/m_toast.dart';
 import 'package:musify/widgets/music_bar/play_list_modal.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../dao/song_lyric_repository.dart';
 import '../util/httpclient.dart';
 import '../util/platform.dart';
 import '../views/play/play_view.dart';
@@ -324,10 +326,15 @@ class AudioPlayerService extends GetxService {
 
   _getSongDetail(String id) async {
     // 从存储库获取歌词
-    var songLyricRepository = SongLyricRepository();
-    var songLyric = await songLyricRepository.queryBySongId(id);
-    if (songLyric != null) {
-      lyric.value = songLyric.lyric;
+    var serverId = PreferencesService.getInt(PreferencesEnum.serverId);
+
+    final cachedLyrics = await (database.select(database.lyricsTable)
+          ..where(
+              (tbl) => tbl.songId.equals(id) & tbl.serverId.equals(serverId)))
+        .map((row) => row.lyric)
+        .getSingleOrNull();
+    if (cachedLyrics != null) {
+      lyric.value = cachedLyrics;
       return null;
     }
 
@@ -335,11 +342,22 @@ class AudioPlayerService extends GetxService {
     if (song == null) {
       return null;
     }
-    var lyrics = NdLyrics.fromJsonString(song.lyrics);
-    var lyrictem = lyrics.toPlayerlyric(song);
-    lyric.value = lyrictem;
 
-    await songLyricRepository.insert(lyrictem, id);
+    if (song.lyrics.isNotEmpty) {
+      var lyrics = NdLyrics.fromJsonString(song.lyrics);
+      var lyrictem = lyrics.toPlayerlyric(song);
+      lyric.value = lyrictem;
+
+      Insertable<LyricsTableData> entity = LyricsTableCompanion.insert(
+        songId: id,
+        serverId: serverId,
+        lyric: lyrictem,
+      );
+      await database.into(database.lyricsTable).insert(
+            entity,
+            mode: InsertMode.replace,
+          );
+    }
 
     return song;
   }

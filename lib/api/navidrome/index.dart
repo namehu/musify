@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:musify/api/subsonic/index.dart';
-import 'package:musify/dao/server_info_repository.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/models/navidrome/nd_song.dart';
 import 'package:musify/models/songs.dart';
 import 'package:musify/services/server_service.dart';
@@ -61,10 +61,13 @@ Interceptor navidromeInterceptor = InterceptorsWrapper(
       );
       var serverService = Get.find<ServerService>();
 
-      serverInfo.ndCredential = auth['credential'];
+      var newData = serverInfo.copyWith(ndCredential: auth['credential']);
 
-      serverService.updateCurrentServerInfo(serverInfo);
-      await ServerInfoRepository().updateServerInfo(serverInfo);
+      serverService.updateCurrentServerInfo(newData);
+
+      await (database.update(database.serverTable)
+            ..where((fi) => fi.id.equals(serverInfo.id)))
+          .replace(newData);
 
       var option = error.requestOptions;
       var headers = error.requestOptions.headers;

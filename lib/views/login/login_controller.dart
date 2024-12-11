@@ -1,9 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:musify/api/index.dart';
-import 'package:musify/dao/server_info_repository.dart';
+import 'package:musify/constant.dart';
 import 'package:musify/enums/serve_type_enum.dart';
 import 'package:musify/generated/l10n.dart';
+import 'package:musify/models/database/database.dart';
 import 'package:musify/models/myModel.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/services/server_service.dart';
@@ -15,7 +16,6 @@ import '../../widgets/m_notification.dart';
 class LoginController extends GetxController {
   var serverService = Get.find<ServerService>();
   var homeController = Get.find<HomeController>();
-  final serverInfoRepository = ServerInfoRepository();
 
   final loading = false.obs;
   final serverType = (ServeTypeEnum.navidrome).obs;
@@ -26,7 +26,7 @@ class LoginController extends GetxController {
 
   RxInt? editId; // 编辑数据id
 
-  get serversInfo => serverService.serverInfo;
+  Rx<ServerTableData> get serversInfo => serverService.serverInfo;
 
   @override
   void onInit() {
@@ -84,30 +84,44 @@ class LoginController extends GetxController {
         message: S.current.serverErr,
       );
     } else {
-      ServerInfo serverInfo = ServerInfo(
-        serverType: serverType.value.label,
-        baseurl: baseurl,
-        userId: res['userId'] ?? '',
-        username: username,
-        password: password,
-        salt: res['salt'] ?? '',
-        hash: res['hash'] ?? '',
-        ndCredential: res['credential'] ?? '',
-        neteaseapi: "",
-        languageCode: '',
-      );
-
       try {
         if (editId != null) {
-          serverInfo.id = editId!.value;
-          await serverInfoRepository.updateServerInfo(serverInfo);
+          ServerTableData data = ServerTableData(
+            id: editId!.value,
+            serverType: serverType.value.label,
+            baseurl: baseurl,
+            userId: res['userId'] ?? '',
+            username: username,
+            password: password,
+            salt: res['salt'] ?? '',
+            hash: res['hash'] ?? '',
+            ndCredential: res['credential'] ?? '',
+          );
+          final query = (database.update(database.serverTable)
+            ..where((fi) => fi.id.equals(editId!.value)));
+
+          await query.replace(data);
+
           Get.back();
         } else {
-          var id = await serverInfoRepository.addServerInfo(serverInfo);
-          if (id != null) {
-            serverInfo.id = id;
-            PreferencesService.setInt(PreferencesEnum.serverId, id);
-          }
+          var id = await database.into(database.serverTable).insert(
+                ServerTableCompanion.insert(
+                  serverType: serverType.value.label,
+                  baseurl: baseurl,
+                  userId: res['userId'] ?? '',
+                  username: username,
+                  password: password,
+                  salt: res['salt'] ?? '',
+                  hash: res['hash'] ?? '',
+                  ndCredential: res['credential'] ?? '',
+                ),
+              );
+
+          PreferencesService.setInt(PreferencesEnum.serverId, id);
+
+          var serverInfo = await (database.select(database.serverTable)
+                ..where((fi) => fi.id.equals(id)))
+              .getSingle();
 
           serverService.updateCurrentServerInfo(serverInfo);
 
@@ -116,6 +130,7 @@ class LoginController extends GetxController {
         }
       } catch (e) {
         ///
+        logger.e(e);
       }
     }
 

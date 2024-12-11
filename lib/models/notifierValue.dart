@@ -2,22 +2,6 @@
 
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
-import 'package:musify/enums/serve_type_enum.dart';
-
-import 'myModel.dart';
-
-ValueNotifier<ServerInfo> serversInfo = ValueNotifier<ServerInfo>(ServerInfo(
-  serverType: ServeTypeEnum.subsnoic.label,
-  baseurl: '',
-  userId: '',
-  username: '',
-  password: '',
-  salt: '',
-  hash: '',
-  ndCredential: '',
-  neteaseapi: '',
-  languageCode: '',
-));
 
 //监听当前资源ID 艺人/专辑/歌曲都是它
 ValueNotifier<String> activeID = ValueNotifier<String>("1");

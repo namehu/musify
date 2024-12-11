@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musify/generated/l10n.dart';
-import 'package:musify/models/myModel.dart';
+import 'package:musify/models/database/database.dart';
 import 'package:musify/services/language_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/services/theme_service.dart';
@@ -12,7 +12,7 @@ class SettingController extends GetxController {
   final languageService = Get.find<LanguageService>();
   final themeService = Get.find<ThemeService>();
 
-  ServerInfo get sever => serverService.serverInfo.value;
+  ServerTableData get sever => serverService.serverInfo.value;
 
   final selectedSort = 'en'.obs;
   final lanMenuItems = <DropdownMenuItem<String>>[].obs;
