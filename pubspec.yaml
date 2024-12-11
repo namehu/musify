@@ -65,6 +65,7 @@ dependencies:
   flutter_displaymode: ^0.6.0
   win32_registry: ^1.1.5
   local_notifier: ^0.1.6
+  tray_manager: ^0.3.0
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0
