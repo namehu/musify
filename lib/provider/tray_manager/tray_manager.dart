@@ -22,9 +22,9 @@ class SystemTrayManager with TrayListener {
       await trayManager.setIcon(
         kIsWindows
             ? 'assets/images/app_icon.ico'
-            // : kIsFlatpak
-            //     ? 'com.github.KRTirtho.Spotube'
-            : 'assets/images/app_icon.png',
+            : kIsFlatpak
+                ? 'com.github.namehu.musify'
+                : 'assets/images/app_icon.png',
       );
       trayManager.addListener(this);
     } else {
