@@ -35,7 +35,6 @@
     "username": "用户名",
     "password": "密码",
     "serverURL": "服务器地址",
-    "theme": "主题",
     "index": "首页",
     "playAll": "全部播放",
     "playShuffle": "随机播放",
@@ -101,5 +100,12 @@
     "allSong": "全部歌曲",
     "slogan": "音乐，让生活更美好",
     "exit": "退出",
-    "trayVisibleToggle": "显示/隐藏窗口"
+    "trayVisibleToggle": "显示/隐藏窗口",
+    "pick_color_scheme": "选择主题配色",
+    "theme": "主题",
+    "dark": "深色",
+    "light": "浅色",
+    "system": "系统",
+    "accent_color": "主色调",
+    "restore_defaults": "恢复默认值"
 }

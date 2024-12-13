@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
+import 'package:flutter/material.dart';
 import 'package:musify/models/database/database.dart';
+import 'package:musify/modules/settings/color_scheme_picker_dialog.dart';
 import 'package:musify/util/logger.dart';
 import 'package:musify/util/platform.dart';
 import 'package:open_file/open_file.dart';
@@ -111,8 +113,20 @@ class UserPreferences extends _$UserPreferences {
     }
   }
 
+  void setThemeMode(ThemeMode mode) {
+    setData(PreferencesTableCompanion(themeMode: Value(mode)));
+  }
+
   void setCheckUpdate(bool check) {
     setData(PreferencesTableCompanion(checkUpdate: Value(check)));
+  }
+
+  void setAccentColorScheme(SpotubeColor color) {
+    setData(PreferencesTableCompanion(accentColorScheme: Value(color)));
+  }
+
+  void setLocale(Locale locale) {
+    setData(PreferencesTableCompanion(locale: Value(locale)));
   }
 
   Future<String> _getDefaultDownloadDirectory() async {

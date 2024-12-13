@@ -410,16 +410,6 @@ class S {
     );
   }
 
-  /// `Theme`
-  String get theme {
-    return Intl.message(
-      'Theme',
-      name: 'theme',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Index`
   String get index {
     return Intl.message(
@@ -1075,6 +1065,76 @@ class S {
     return Intl.message(
       'Show/Hide Window',
       name: 'trayVisibleToggle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick color scheme`
+  String get pick_color_scheme {
+    return Intl.message(
+      'Pick color scheme',
+      name: 'pick_color_scheme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get theme {
+    return Intl.message(
+      'Theme',
+      name: 'theme',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark`
+  String get dark {
+    return Intl.message(
+      'Dark',
+      name: 'dark',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Light`
+  String get light {
+    return Intl.message(
+      'Light',
+      name: 'light',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System`
+  String get system {
+    return Intl.message(
+      'System',
+      name: 'system',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accent Color`
+  String get accent_color {
+    return Intl.message(
+      'Accent Color',
+      name: 'accent_color',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore defaults`
+  String get restore_defaults {
+    return Intl.message(
+      'Restore defaults',
+      name: 'restore_defaults',
       desc: '',
       args: [],
     );

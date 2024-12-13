@@ -293,6 +293,16 @@ class $PreferencesTableTable extends PreferencesTable
               defaultValue: Constant(SourceQualities.high.name))
           .withConverter<SourceQualities>(
               $PreferencesTableTable.$converteraudioQuality);
+  static const VerificationMeta _showSystemTrayIconMeta =
+      const VerificationMeta('showSystemTrayIcon');
+  @override
+  late final GeneratedColumn<bool> showSystemTrayIcon = GeneratedColumn<bool>(
+      'show_system_tray_icon', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("show_system_tray_icon" IN (0, 1))'),
+      defaultValue: const Constant(true));
   static const VerificationMeta _systemTitleBarMeta =
       const VerificationMeta('systemTitleBar');
   @override
@@ -324,14 +334,47 @@ class $PreferencesTableTable extends PreferencesTable
               defaultValue: Constant(CloseBehavior.close.name))
           .withConverter<CloseBehavior>(
               $PreferencesTableTable.$convertercloseBehavior);
+  static const VerificationMeta _themeModeMeta =
+      const VerificationMeta('themeMode');
+  @override
+  late final GeneratedColumnWithTypeConverter<ThemeMode, String> themeMode =
+      GeneratedColumn<String>('theme_mode', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: false,
+              defaultValue: Constant(ThemeMode.system.name))
+          .withConverter<ThemeMode>($PreferencesTableTable.$converterthemeMode);
+  static const VerificationMeta _accentColorSchemeMeta =
+      const VerificationMeta('accentColorScheme');
+  @override
+  late final GeneratedColumnWithTypeConverter<SpotubeColor, String>
+      accentColorScheme = GeneratedColumn<String>(
+              'accent_color_scheme', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: false,
+              defaultValue: const Constant("Blue:0xFF2196F3"))
+          .withConverter<SpotubeColor>(
+              $PreferencesTableTable.$converteraccentColorScheme);
+  static const VerificationMeta _localeMeta = const VerificationMeta('locale');
+  @override
+  late final GeneratedColumnWithTypeConverter<Locale, String> locale =
+      GeneratedColumn<String>('locale', aliasedName, false,
+              type: DriftSqlType.string,
+              requiredDuringInsert: false,
+              defaultValue: const Constant(
+                  '{"languageCode":"system","countryCode":"system"}'))
+          .withConverter<Locale>($PreferencesTableTable.$converterlocale);
   @override
   List<GeneratedColumn> get $columns => [
         id,
         downloadLocation,
         audioQuality,
+        showSystemTrayIcon,
         systemTitleBar,
         checkUpdate,
-        closeBehavior
+        closeBehavior,
+        themeMode,
+        accentColorScheme,
+        locale
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -354,6 +397,12 @@ class $PreferencesTableTable extends PreferencesTable
               data['download_location']!, _downloadLocationMeta));
     }
     context.handle(_audioQualityMeta, const VerificationResult.success());
+    if (data.containsKey('show_system_tray_icon')) {
+      context.handle(
+          _showSystemTrayIconMeta,
+          showSystemTrayIcon.isAcceptableOrUnknown(
+              data['show_system_tray_icon']!, _showSystemTrayIconMeta));
+    }
     if (data.containsKey('system_title_bar')) {
       context.handle(
           _systemTitleBarMeta,
@@ -367,6 +416,9 @@ class $PreferencesTableTable extends PreferencesTable
               data['check_update']!, _checkUpdateMeta));
     }
     context.handle(_closeBehaviorMeta, const VerificationResult.success());
+    context.handle(_themeModeMeta, const VerificationResult.success());
+    context.handle(_accentColorSchemeMeta, const VerificationResult.success());
+    context.handle(_localeMeta, const VerificationResult.success());
     return context;
   }
 
@@ -383,6 +435,8 @@ class $PreferencesTableTable extends PreferencesTable
       audioQuality: $PreferencesTableTable.$converteraudioQuality.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}audio_quality'])!),
+      showSystemTrayIcon: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}show_system_tray_icon'])!,
       systemTitleBar: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}system_title_bar'])!,
       checkUpdate: attachedDatabase.typeMapping
@@ -390,6 +444,15 @@ class $PreferencesTableTable extends PreferencesTable
       closeBehavior: $PreferencesTableTable.$convertercloseBehavior.fromSql(
           attachedDatabase.typeMapping.read(
               DriftSqlType.string, data['${effectivePrefix}close_behavior'])!),
+      themeMode: $PreferencesTableTable.$converterthemeMode.fromSql(
+          attachedDatabase.typeMapping.read(
+              DriftSqlType.string, data['${effectivePrefix}theme_mode'])!),
+      accentColorScheme: $PreferencesTableTable.$converteraccentColorScheme
+          .fromSql(attachedDatabase.typeMapping.read(DriftSqlType.string,
+              data['${effectivePrefix}accent_color_scheme'])!),
+      locale: $PreferencesTableTable.$converterlocale.fromSql(attachedDatabase
+          .typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}locale'])!),
     );
   }
 
@@ -404,6 +467,12 @@ class $PreferencesTableTable extends PreferencesTable
   static JsonTypeConverter2<CloseBehavior, String, String>
       $convertercloseBehavior =
       const EnumNameConverter<CloseBehavior>(CloseBehavior.values);
+  static JsonTypeConverter2<ThemeMode, String, String> $converterthemeMode =
+      const EnumNameConverter<ThemeMode>(ThemeMode.values);
+  static TypeConverter<SpotubeColor, String> $converteraccentColorScheme =
+      const SpotubeColorConverter();
+  static TypeConverter<Locale, String> $converterlocale =
+      const LocaleConverter();
 }
 
 class PreferencesTableData extends DataClass
@@ -411,16 +480,24 @@ class PreferencesTableData extends DataClass
   final int id;
   final String downloadLocation;
   final SourceQualities audioQuality;
+  final bool showSystemTrayIcon;
   final bool systemTitleBar;
   final bool checkUpdate;
   final CloseBehavior closeBehavior;
+  final ThemeMode themeMode;
+  final SpotubeColor accentColorScheme;
+  final Locale locale;
   const PreferencesTableData(
       {required this.id,
       required this.downloadLocation,
       required this.audioQuality,
+      required this.showSystemTrayIcon,
       required this.systemTitleBar,
       required this.checkUpdate,
-      required this.closeBehavior});
+      required this.closeBehavior,
+      required this.themeMode,
+      required this.accentColorScheme,
+      required this.locale});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -430,11 +507,25 @@ class PreferencesTableData extends DataClass
       map['audio_quality'] = Variable<String>(
           $PreferencesTableTable.$converteraudioQuality.toSql(audioQuality));
     }
+    map['show_system_tray_icon'] = Variable<bool>(showSystemTrayIcon);
     map['system_title_bar'] = Variable<bool>(systemTitleBar);
     map['check_update'] = Variable<bool>(checkUpdate);
     {
       map['close_behavior'] = Variable<String>(
           $PreferencesTableTable.$convertercloseBehavior.toSql(closeBehavior));
+    }
+    {
+      map['theme_mode'] = Variable<String>(
+          $PreferencesTableTable.$converterthemeMode.toSql(themeMode));
+    }
+    {
+      map['accent_color_scheme'] = Variable<String>($PreferencesTableTable
+          .$converteraccentColorScheme
+          .toSql(accentColorScheme));
+    }
+    {
+      map['locale'] = Variable<String>(
+          $PreferencesTableTable.$converterlocale.toSql(locale));
     }
     return map;
   }
@@ -444,9 +535,13 @@ class PreferencesTableData extends DataClass
       id: Value(id),
       downloadLocation: Value(downloadLocation),
       audioQuality: Value(audioQuality),
+      showSystemTrayIcon: Value(showSystemTrayIcon),
       systemTitleBar: Value(systemTitleBar),
       checkUpdate: Value(checkUpdate),
       closeBehavior: Value(closeBehavior),
+      themeMode: Value(themeMode),
+      accentColorScheme: Value(accentColorScheme),
+      locale: Value(locale),
     );
   }
 
@@ -458,10 +553,16 @@ class PreferencesTableData extends DataClass
       downloadLocation: serializer.fromJson<String>(json['downloadLocation']),
       audioQuality: $PreferencesTableTable.$converteraudioQuality
           .fromJson(serializer.fromJson<String>(json['audioQuality'])),
+      showSystemTrayIcon: serializer.fromJson<bool>(json['showSystemTrayIcon']),
       systemTitleBar: serializer.fromJson<bool>(json['systemTitleBar']),
       checkUpdate: serializer.fromJson<bool>(json['checkUpdate']),
       closeBehavior: $PreferencesTableTable.$convertercloseBehavior
           .fromJson(serializer.fromJson<String>(json['closeBehavior'])),
+      themeMode: $PreferencesTableTable.$converterthemeMode
+          .fromJson(serializer.fromJson<String>(json['themeMode'])),
+      accentColorScheme:
+          serializer.fromJson<SpotubeColor>(json['accentColorScheme']),
+      locale: serializer.fromJson<Locale>(json['locale']),
     );
   }
   @override
@@ -472,10 +573,15 @@ class PreferencesTableData extends DataClass
       'downloadLocation': serializer.toJson<String>(downloadLocation),
       'audioQuality': serializer.toJson<String>(
           $PreferencesTableTable.$converteraudioQuality.toJson(audioQuality)),
+      'showSystemTrayIcon': serializer.toJson<bool>(showSystemTrayIcon),
       'systemTitleBar': serializer.toJson<bool>(systemTitleBar),
       'checkUpdate': serializer.toJson<bool>(checkUpdate),
       'closeBehavior': serializer.toJson<String>(
           $PreferencesTableTable.$convertercloseBehavior.toJson(closeBehavior)),
+      'themeMode': serializer.toJson<String>(
+          $PreferencesTableTable.$converterthemeMode.toJson(themeMode)),
+      'accentColorScheme': serializer.toJson<SpotubeColor>(accentColorScheme),
+      'locale': serializer.toJson<Locale>(locale),
     };
   }
 
@@ -483,16 +589,24 @@ class PreferencesTableData extends DataClass
           {int? id,
           String? downloadLocation,
           SourceQualities? audioQuality,
+          bool? showSystemTrayIcon,
           bool? systemTitleBar,
           bool? checkUpdate,
-          CloseBehavior? closeBehavior}) =>
+          CloseBehavior? closeBehavior,
+          ThemeMode? themeMode,
+          SpotubeColor? accentColorScheme,
+          Locale? locale}) =>
       PreferencesTableData(
         id: id ?? this.id,
         downloadLocation: downloadLocation ?? this.downloadLocation,
         audioQuality: audioQuality ?? this.audioQuality,
+        showSystemTrayIcon: showSystemTrayIcon ?? this.showSystemTrayIcon,
         systemTitleBar: systemTitleBar ?? this.systemTitleBar,
         checkUpdate: checkUpdate ?? this.checkUpdate,
         closeBehavior: closeBehavior ?? this.closeBehavior,
+        themeMode: themeMode ?? this.themeMode,
+        accentColorScheme: accentColorScheme ?? this.accentColorScheme,
+        locale: locale ?? this.locale,
       );
   PreferencesTableData copyWithCompanion(PreferencesTableCompanion data) {
     return PreferencesTableData(
@@ -503,6 +617,9 @@ class PreferencesTableData extends DataClass
       audioQuality: data.audioQuality.present
           ? data.audioQuality.value
           : this.audioQuality,
+      showSystemTrayIcon: data.showSystemTrayIcon.present
+          ? data.showSystemTrayIcon.value
+          : this.showSystemTrayIcon,
       systemTitleBar: data.systemTitleBar.present
           ? data.systemTitleBar.value
           : this.systemTitleBar,
@@ -511,6 +628,11 @@ class PreferencesTableData extends DataClass
       closeBehavior: data.closeBehavior.present
           ? data.closeBehavior.value
           : this.closeBehavior,
+      themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
+      accentColorScheme: data.accentColorScheme.present
+          ? data.accentColorScheme.value
+          : this.accentColorScheme,
+      locale: data.locale.present ? data.locale.value : this.locale,
     );
   }
 
@@ -520,16 +642,29 @@ class PreferencesTableData extends DataClass
           ..write('id: $id, ')
           ..write('downloadLocation: $downloadLocation, ')
           ..write('audioQuality: $audioQuality, ')
+          ..write('showSystemTrayIcon: $showSystemTrayIcon, ')
           ..write('systemTitleBar: $systemTitleBar, ')
           ..write('checkUpdate: $checkUpdate, ')
-          ..write('closeBehavior: $closeBehavior')
+          ..write('closeBehavior: $closeBehavior, ')
+          ..write('themeMode: $themeMode, ')
+          ..write('accentColorScheme: $accentColorScheme, ')
+          ..write('locale: $locale')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, downloadLocation, audioQuality,
-      systemTitleBar, checkUpdate, closeBehavior);
+  int get hashCode => Object.hash(
+      id,
+      downloadLocation,
+      audioQuality,
+      showSystemTrayIcon,
+      systemTitleBar,
+      checkUpdate,
+      closeBehavior,
+      themeMode,
+      accentColorScheme,
+      locale);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -537,49 +672,74 @@ class PreferencesTableData extends DataClass
           other.id == this.id &&
           other.downloadLocation == this.downloadLocation &&
           other.audioQuality == this.audioQuality &&
+          other.showSystemTrayIcon == this.showSystemTrayIcon &&
           other.systemTitleBar == this.systemTitleBar &&
           other.checkUpdate == this.checkUpdate &&
-          other.closeBehavior == this.closeBehavior);
+          other.closeBehavior == this.closeBehavior &&
+          other.themeMode == this.themeMode &&
+          other.accentColorScheme == this.accentColorScheme &&
+          other.locale == this.locale);
 }
 
 class PreferencesTableCompanion extends UpdateCompanion<PreferencesTableData> {
   final Value<int> id;
   final Value<String> downloadLocation;
   final Value<SourceQualities> audioQuality;
+  final Value<bool> showSystemTrayIcon;
   final Value<bool> systemTitleBar;
   final Value<bool> checkUpdate;
   final Value<CloseBehavior> closeBehavior;
+  final Value<ThemeMode> themeMode;
+  final Value<SpotubeColor> accentColorScheme;
+  final Value<Locale> locale;
   const PreferencesTableCompanion({
     this.id = const Value.absent(),
     this.downloadLocation = const Value.absent(),
     this.audioQuality = const Value.absent(),
+    this.showSystemTrayIcon = const Value.absent(),
     this.systemTitleBar = const Value.absent(),
     this.checkUpdate = const Value.absent(),
     this.closeBehavior = const Value.absent(),
+    this.themeMode = const Value.absent(),
+    this.accentColorScheme = const Value.absent(),
+    this.locale = const Value.absent(),
   });
   PreferencesTableCompanion.insert({
     this.id = const Value.absent(),
     this.downloadLocation = const Value.absent(),
     this.audioQuality = const Value.absent(),
+    this.showSystemTrayIcon = const Value.absent(),
     this.systemTitleBar = const Value.absent(),
     this.checkUpdate = const Value.absent(),
     this.closeBehavior = const Value.absent(),
+    this.themeMode = const Value.absent(),
+    this.accentColorScheme = const Value.absent(),
+    this.locale = const Value.absent(),
   });
   static Insertable<PreferencesTableData> custom({
     Expression<int>? id,
     Expression<String>? downloadLocation,
     Expression<String>? audioQuality,
+    Expression<bool>? showSystemTrayIcon,
     Expression<bool>? systemTitleBar,
     Expression<bool>? checkUpdate,
     Expression<String>? closeBehavior,
+    Expression<String>? themeMode,
+    Expression<String>? accentColorScheme,
+    Expression<String>? locale,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (downloadLocation != null) 'download_location': downloadLocation,
       if (audioQuality != null) 'audio_quality': audioQuality,
+      if (showSystemTrayIcon != null)
+        'show_system_tray_icon': showSystemTrayIcon,
       if (systemTitleBar != null) 'system_title_bar': systemTitleBar,
       if (checkUpdate != null) 'check_update': checkUpdate,
       if (closeBehavior != null) 'close_behavior': closeBehavior,
+      if (themeMode != null) 'theme_mode': themeMode,
+      if (accentColorScheme != null) 'accent_color_scheme': accentColorScheme,
+      if (locale != null) 'locale': locale,
     });
   }
 
@@ -587,16 +747,24 @@ class PreferencesTableCompanion extends UpdateCompanion<PreferencesTableData> {
       {Value<int>? id,
       Value<String>? downloadLocation,
       Value<SourceQualities>? audioQuality,
+      Value<bool>? showSystemTrayIcon,
       Value<bool>? systemTitleBar,
       Value<bool>? checkUpdate,
-      Value<CloseBehavior>? closeBehavior}) {
+      Value<CloseBehavior>? closeBehavior,
+      Value<ThemeMode>? themeMode,
+      Value<SpotubeColor>? accentColorScheme,
+      Value<Locale>? locale}) {
     return PreferencesTableCompanion(
       id: id ?? this.id,
       downloadLocation: downloadLocation ?? this.downloadLocation,
       audioQuality: audioQuality ?? this.audioQuality,
+      showSystemTrayIcon: showSystemTrayIcon ?? this.showSystemTrayIcon,
       systemTitleBar: systemTitleBar ?? this.systemTitleBar,
       checkUpdate: checkUpdate ?? this.checkUpdate,
       closeBehavior: closeBehavior ?? this.closeBehavior,
+      themeMode: themeMode ?? this.themeMode,
+      accentColorScheme: accentColorScheme ?? this.accentColorScheme,
+      locale: locale ?? this.locale,
     );
   }
 
@@ -614,6 +782,9 @@ class PreferencesTableCompanion extends UpdateCompanion<PreferencesTableData> {
           .$converteraudioQuality
           .toSql(audioQuality.value));
     }
+    if (showSystemTrayIcon.present) {
+      map['show_system_tray_icon'] = Variable<bool>(showSystemTrayIcon.value);
+    }
     if (systemTitleBar.present) {
       map['system_title_bar'] = Variable<bool>(systemTitleBar.value);
     }
@@ -625,6 +796,19 @@ class PreferencesTableCompanion extends UpdateCompanion<PreferencesTableData> {
           .$convertercloseBehavior
           .toSql(closeBehavior.value));
     }
+    if (themeMode.present) {
+      map['theme_mode'] = Variable<String>(
+          $PreferencesTableTable.$converterthemeMode.toSql(themeMode.value));
+    }
+    if (accentColorScheme.present) {
+      map['accent_color_scheme'] = Variable<String>($PreferencesTableTable
+          .$converteraccentColorScheme
+          .toSql(accentColorScheme.value));
+    }
+    if (locale.present) {
+      map['locale'] = Variable<String>(
+          $PreferencesTableTable.$converterlocale.toSql(locale.value));
+    }
     return map;
   }
 
@@ -634,9 +818,13 @@ class PreferencesTableCompanion extends UpdateCompanion<PreferencesTableData> {
           ..write('id: $id, ')
           ..write('downloadLocation: $downloadLocation, ')
           ..write('audioQuality: $audioQuality, ')
+          ..write('showSystemTrayIcon: $showSystemTrayIcon, ')
           ..write('systemTitleBar: $systemTitleBar, ')
           ..write('checkUpdate: $checkUpdate, ')
-          ..write('closeBehavior: $closeBehavior')
+          ..write('closeBehavior: $closeBehavior, ')
+          ..write('themeMode: $themeMode, ')
+          ..write('accentColorScheme: $accentColorScheme, ')
+          ..write('locale: $locale')
           ..write(')'))
         .toString();
   }
@@ -1275,18 +1463,26 @@ typedef $$PreferencesTableTableCreateCompanionBuilder
   Value<int> id,
   Value<String> downloadLocation,
   Value<SourceQualities> audioQuality,
+  Value<bool> showSystemTrayIcon,
   Value<bool> systemTitleBar,
   Value<bool> checkUpdate,
   Value<CloseBehavior> closeBehavior,
+  Value<ThemeMode> themeMode,
+  Value<SpotubeColor> accentColorScheme,
+  Value<Locale> locale,
 });
 typedef $$PreferencesTableTableUpdateCompanionBuilder
     = PreferencesTableCompanion Function({
   Value<int> id,
   Value<String> downloadLocation,
   Value<SourceQualities> audioQuality,
+  Value<bool> showSystemTrayIcon,
   Value<bool> systemTitleBar,
   Value<bool> checkUpdate,
   Value<CloseBehavior> closeBehavior,
+  Value<ThemeMode> themeMode,
+  Value<SpotubeColor> accentColorScheme,
+  Value<Locale> locale,
 });
 
 class $$PreferencesTableTableFilterComposer
@@ -1310,6 +1506,10 @@ class $$PreferencesTableTableFilterComposer
           column: $table.audioQuality,
           builder: (column) => ColumnWithTypeConverterFilters(column));
 
+  ColumnFilters<bool> get showSystemTrayIcon => $composableBuilder(
+      column: $table.showSystemTrayIcon,
+      builder: (column) => ColumnFilters(column));
+
   ColumnFilters<bool> get systemTitleBar => $composableBuilder(
       column: $table.systemTitleBar,
       builder: (column) => ColumnFilters(column));
@@ -1320,6 +1520,21 @@ class $$PreferencesTableTableFilterComposer
   ColumnWithTypeConverterFilters<CloseBehavior, CloseBehavior, String>
       get closeBehavior => $composableBuilder(
           column: $table.closeBehavior,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnWithTypeConverterFilters<ThemeMode, ThemeMode, String> get themeMode =>
+      $composableBuilder(
+          column: $table.themeMode,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnWithTypeConverterFilters<SpotubeColor, SpotubeColor, String>
+      get accentColorScheme => $composableBuilder(
+          column: $table.accentColorScheme,
+          builder: (column) => ColumnWithTypeConverterFilters(column));
+
+  ColumnWithTypeConverterFilters<Locale, Locale, String> get locale =>
+      $composableBuilder(
+          column: $table.locale,
           builder: (column) => ColumnWithTypeConverterFilters(column));
 }
 
@@ -1343,6 +1558,10 @@ class $$PreferencesTableTableOrderingComposer
       column: $table.audioQuality,
       builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<bool> get showSystemTrayIcon => $composableBuilder(
+      column: $table.showSystemTrayIcon,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<bool> get systemTitleBar => $composableBuilder(
       column: $table.systemTitleBar,
       builder: (column) => ColumnOrderings(column));
@@ -1353,6 +1572,16 @@ class $$PreferencesTableTableOrderingComposer
   ColumnOrderings<String> get closeBehavior => $composableBuilder(
       column: $table.closeBehavior,
       builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get themeMode => $composableBuilder(
+      column: $table.themeMode, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get accentColorScheme => $composableBuilder(
+      column: $table.accentColorScheme,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get locale => $composableBuilder(
+      column: $table.locale, builder: (column) => ColumnOrderings(column));
 }
 
 class $$PreferencesTableTableAnnotationComposer
@@ -1374,6 +1603,9 @@ class $$PreferencesTableTableAnnotationComposer
       $composableBuilder(
           column: $table.audioQuality, builder: (column) => column);
 
+  GeneratedColumn<bool> get showSystemTrayIcon => $composableBuilder(
+      column: $table.showSystemTrayIcon, builder: (column) => column);
+
   GeneratedColumn<bool> get systemTitleBar => $composableBuilder(
       column: $table.systemTitleBar, builder: (column) => column);
 
@@ -1383,6 +1615,16 @@ class $$PreferencesTableTableAnnotationComposer
   GeneratedColumnWithTypeConverter<CloseBehavior, String> get closeBehavior =>
       $composableBuilder(
           column: $table.closeBehavior, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ThemeMode, String> get themeMode =>
+      $composableBuilder(column: $table.themeMode, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SpotubeColor, String>
+      get accentColorScheme => $composableBuilder(
+          column: $table.accentColorScheme, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Locale, String> get locale =>
+      $composableBuilder(column: $table.locale, builder: (column) => column);
 }
 
 class $$PreferencesTableTableTableManager extends RootTableManager<
@@ -1416,33 +1658,49 @@ class $$PreferencesTableTableTableManager extends RootTableManager<
             Value<int> id = const Value.absent(),
             Value<String> downloadLocation = const Value.absent(),
             Value<SourceQualities> audioQuality = const Value.absent(),
+            Value<bool> showSystemTrayIcon = const Value.absent(),
             Value<bool> systemTitleBar = const Value.absent(),
             Value<bool> checkUpdate = const Value.absent(),
             Value<CloseBehavior> closeBehavior = const Value.absent(),
+            Value<ThemeMode> themeMode = const Value.absent(),
+            Value<SpotubeColor> accentColorScheme = const Value.absent(),
+            Value<Locale> locale = const Value.absent(),
           }) =>
               PreferencesTableCompanion(
             id: id,
             downloadLocation: downloadLocation,
             audioQuality: audioQuality,
+            showSystemTrayIcon: showSystemTrayIcon,
             systemTitleBar: systemTitleBar,
             checkUpdate: checkUpdate,
             closeBehavior: closeBehavior,
+            themeMode: themeMode,
+            accentColorScheme: accentColorScheme,
+            locale: locale,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> downloadLocation = const Value.absent(),
             Value<SourceQualities> audioQuality = const Value.absent(),
+            Value<bool> showSystemTrayIcon = const Value.absent(),
             Value<bool> systemTitleBar = const Value.absent(),
             Value<bool> checkUpdate = const Value.absent(),
             Value<CloseBehavior> closeBehavior = const Value.absent(),
+            Value<ThemeMode> themeMode = const Value.absent(),
+            Value<SpotubeColor> accentColorScheme = const Value.absent(),
+            Value<Locale> locale = const Value.absent(),
           }) =>
               PreferencesTableCompanion.insert(
             id: id,
             downloadLocation: downloadLocation,
             audioQuality: audioQuality,
+            showSystemTrayIcon: showSystemTrayIcon,
             systemTitleBar: systemTitleBar,
             checkUpdate: checkUpdate,
             closeBehavior: closeBehavior,
+            themeMode: themeMode,
+            accentColorScheme: accentColorScheme,
+            locale: locale,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

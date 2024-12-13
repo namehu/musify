@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accent_color": MessageLookupByLibrary.simpleMessage("Accent Color"),
         "add": MessageLookupByLibrary.simpleMessage("Add "),
         "album": MessageLookupByLibrary.simpleMessage("Album"),
         "allSong": MessageLookupByLibrary.simpleMessage("All Song"),
@@ -37,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confrim": MessageLookupByLibrary.simpleMessage("Confrim"),
         "create": MessageLookupByLibrary.simpleMessage("Create "),
         "createuser": MessageLookupByLibrary.simpleMessage("Create User"),
+        "dark": MessageLookupByLibrary.simpleMessage("Dark"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete "),
         "directory": MessageLookupByLibrary.simpleMessage("directory"),
         "disConnect": MessageLookupByLibrary.simpleMessage("Disconnect"),
@@ -57,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "language": MessageLookupByLibrary.simpleMessage("Language "),
         "last": MessageLookupByLibrary.simpleMessage("Last "),
         "less": MessageLookupByLibrary.simpleMessage("Less "),
+        "light": MessageLookupByLibrary.simpleMessage("Light"),
         "link": MessageLookupByLibrary.simpleMessage("link "),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
@@ -77,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "other": MessageLookupByLibrary.simpleMessage("Other "),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "photoLibrary": MessageLookupByLibrary.simpleMessage("PhotoLibrary"),
+        "pick_color_scheme":
+            MessageLookupByLibrary.simpleMessage("Pick color scheme"),
         "play": MessageLookupByLibrary.simpleMessage("Play "),
         "playAll": MessageLookupByLibrary.simpleMessage("Play"),
         "playCount": MessageLookupByLibrary.simpleMessage("Play Count"),
@@ -92,6 +97,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "refresh": MessageLookupByLibrary.simpleMessage("Refresh..."),
         "repeatall": MessageLookupByLibrary.simpleMessage("Repeat All"),
         "repeatone": MessageLookupByLibrary.simpleMessage("Repeat One"),
+        "restore_defaults":
+            MessageLookupByLibrary.simpleMessage("Restore defaults"),
         "result": MessageLookupByLibrary.simpleMessage("Result"),
         "save": MessageLookupByLibrary.simpleMessage("Save "),
         "scan": MessageLookupByLibrary.simpleMessage("Scan "),
@@ -118,6 +125,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Music makes life better"),
         "song": MessageLookupByLibrary.simpleMessage("Song "),
         "success": MessageLookupByLibrary.simpleMessage("Success "),
+        "system": MessageLookupByLibrary.simpleMessage("System"),
         "systemSettings":
             MessageLookupByLibrary.simpleMessage("SystemSettings"),
         "theme": MessageLookupByLibrary.simpleMessage("Theme"),

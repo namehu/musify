@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,7 @@ import 'package:musify/hooks/configurators/use_fix_window_stretching.dart';
 import 'package:musify/models/database/database.dart';
 import 'package:musify/provider/database/database.dart';
 import 'package:musify/provider/tray_manager/tray_manager.dart';
+import 'package:musify/provider/user_preferences/user_preferences_provider.dart';
 import 'package:musify/routes/middlewares.dart';
 import 'package:musify/routes/pages.dart';
 import 'package:musify/layout/bottom_desktop.dart';
@@ -28,6 +30,7 @@ import 'package:musify/services/preferences_service.dart';
 import 'package:musify/services/server_service.dart';
 import 'package:musify/services/star_service.dart';
 import 'package:musify/services/theme_service.dart';
+import 'package:musify/styles/theme.dart';
 import 'package:musify/util/cli.dart';
 import 'package:musify/util/logger.dart';
 import 'package:musify/util/platform.dart';
@@ -133,6 +136,24 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    final themeMode =
+        ref.watch(userPreferencesProvider.select((s) => s.themeMode));
+    final accentMaterialColor =
+        ref.watch(userPreferencesProvider.select((s) => s.accentColorScheme));
+    final locale = ref.watch(userPreferencesProvider.select((s) => s.locale));
+
+    final lightTheme = useMemoized(
+      () => theme(accentMaterialColor, Brightness.light, false),
+      [accentMaterialColor],
+    );
+    final darkTheme = useMemoized(
+      () => theme(
+        accentMaterialColor,
+        Brightness.dark,
+        false,
+      ),
+      [accentMaterialColor],
+    );
 
     ref.listen(trayManagerProvider, (_, __) {});
 
@@ -142,58 +163,60 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp(
       navigatorObservers: [FlutterSmartDialog.observer],
       builder: FlutterSmartDialog.init(),
-      home: Obx(
-        () => GetMaterialApp(
-          navigatorKey: navigatorKey,
-          debugShowCheckedModeBanner: false,
-          //useInheritedMediaQuery: true,
-          title: APP_NAME,
-          localizationsDelegates: [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          theme: ThemeService.theme,
-          getPages: AppPages.pages,
-          initialRoute: Routes.HOME,
-          transitionDuration: isMobile ? null : Duration(milliseconds: 0),
-          routingCallback: (routing) {
-            toggleMusicBar(routing);
-            togglePCTabActive(routing);
-          },
+      home: GetMaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        //useInheritedMediaQuery: true,
+        title: APP_NAME,
+        locale: locale.languageCode == "system" ? null : locale,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        // theme: ThemeService.theme,
+        themeMode: themeMode,
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        getPages: AppPages.pages,
+        initialRoute: Routes.HOME,
+        transitionDuration: isMobile ? null : Duration(milliseconds: 0),
+        routingCallback: (routing) {
+          toggleMusicBar(routing);
+          togglePCTabActive(routing);
+        },
 
-          builder: (context, child) {
-            if (isMobile) {
-              return child ?? Container();
-            }
+        builder: (context, child) {
+          if (isMobile) {
+            return child ?? Container();
+          }
 
-            return Scaffold(
-              body: Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Obx(
-                          () => GloabalService.hidePCLayout.value
-                              ? Container()
-                              : LeftDrawer(),
-                        ),
-                        Expanded(child: child ?? Container()),
-                      ],
-                    ),
+          return Scaffold(
+            body: Column(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Obx(
+                        () => GloabalService.hidePCLayout.value
+                            ? Container()
+                            : LeftDrawer(),
+                      ),
+                      Expanded(child: child ?? Container()),
+                    ],
                   ),
-                  Obx(
-                    () => GloabalService.hidePCLayout.value
-                        ? Container()
-                        : BottomDesktop(),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+                Obx(
+                  () => GloabalService.hidePCLayout.value
+                      ? Container()
+                      : BottomDesktop(),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

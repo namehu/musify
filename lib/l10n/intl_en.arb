@@ -35,7 +35,6 @@
     "username": "Username",
     "password": "Password",
     "serverURL": "Server Address",
-    "theme": "Theme",
     "index": "Index",
     "playAll": "Play",
     "playShuffle": "Shuffle",
@@ -101,5 +100,12 @@
     "allSong": "All Song",
     "slogan": "Music makes life better",
     "exit": "exit",
-    "trayVisibleToggle": "Show/Hide Window"
+    "trayVisibleToggle": "Show/Hide Window",
+    "pick_color_scheme": "Pick color scheme",
+    "theme": "Theme",
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "accent_color": "Accent Color",
+    "restore_defaults": "Restore defaults"
 }

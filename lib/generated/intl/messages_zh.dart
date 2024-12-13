@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accent_color": MessageLookupByLibrary.simpleMessage("主色调"),
         "add": MessageLookupByLibrary.simpleMessage("添加"),
         "album": MessageLookupByLibrary.simpleMessage("专辑"),
         "allSong": MessageLookupByLibrary.simpleMessage("全部歌曲"),
@@ -37,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confrim": MessageLookupByLibrary.simpleMessage("确认"),
         "create": MessageLookupByLibrary.simpleMessage("创建"),
         "createuser": MessageLookupByLibrary.simpleMessage("创建者"),
+        "dark": MessageLookupByLibrary.simpleMessage("深色"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "directory": MessageLookupByLibrary.simpleMessage("文件夹"),
         "disConnect": MessageLookupByLibrary.simpleMessage("断开连接"),
@@ -56,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "language": MessageLookupByLibrary.simpleMessage("语言"),
         "last": MessageLookupByLibrary.simpleMessage("最近"),
         "less": MessageLookupByLibrary.simpleMessage("更少"),
+        "light": MessageLookupByLibrary.simpleMessage("浅色"),
         "link": MessageLookupByLibrary.simpleMessage("链接"),
         "login": MessageLookupByLibrary.simpleMessage("登录"),
         "logout": MessageLookupByLibrary.simpleMessage("退出登录"),
@@ -76,6 +79,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "other": MessageLookupByLibrary.simpleMessage("其他"),
         "password": MessageLookupByLibrary.simpleMessage("密码"),
         "photoLibrary": MessageLookupByLibrary.simpleMessage("相册"),
+        "pick_color_scheme": MessageLookupByLibrary.simpleMessage("选择主题配色"),
         "play": MessageLookupByLibrary.simpleMessage("播放"),
         "playAll": MessageLookupByLibrary.simpleMessage("全部播放"),
         "playCount": MessageLookupByLibrary.simpleMessage("播放"),
@@ -90,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "refresh": MessageLookupByLibrary.simpleMessage("刷新..."),
         "repeatall": MessageLookupByLibrary.simpleMessage("顺序循环"),
         "repeatone": MessageLookupByLibrary.simpleMessage("单曲循环"),
+        "restore_defaults": MessageLookupByLibrary.simpleMessage("恢复默认值"),
         "result": MessageLookupByLibrary.simpleMessage("结果"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "scan": MessageLookupByLibrary.simpleMessage("扫描"),
@@ -114,6 +119,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "slogan": MessageLookupByLibrary.simpleMessage("音乐，让生活更美好"),
         "song": MessageLookupByLibrary.simpleMessage("歌曲"),
         "success": MessageLookupByLibrary.simpleMessage("成功"),
+        "system": MessageLookupByLibrary.simpleMessage("系统"),
         "systemSettings": MessageLookupByLibrary.simpleMessage("系统设置"),
         "theme": MessageLookupByLibrary.simpleMessage("主题"),
         "to": MessageLookupByLibrary.simpleMessage("到"),
