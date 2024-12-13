@@ -107,5 +107,7 @@
     "light": "Light",
     "system": "System",
     "accent_color": "Accent Color",
-    "restore_defaults": "Restore defaults"
+    "restore_defaults": "Restore defaults",
+    "downloads": "Download",
+    "download_location": "Download location"
 }

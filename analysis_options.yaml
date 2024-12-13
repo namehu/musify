@@ -7,15 +7,8 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
-analyzer:
-  errors:
-    invalid_use_of_protected_member: ignore
-    invalid_annotation_target: ignore
 
 include: package:flutter_lints/flutter.yaml
-
-plugins:
-  - custom_lint
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -34,3 +27,15 @@ linter:
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
 # https://dart.dev/guides/language/analysis-options
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+  plugins:
+    - custom_lint
+  exclude:
+    - "**.freezed.dart"
+    - "**.g.dart"
+    - "**.gr.dart"
+    - "**/generated_plugin_registrant.dart"
+    - test/**/*.dart

@@ -13,6 +13,7 @@ import 'package:musify/util/mycss.dart';
 import 'package:musify/util/platform.dart';
 import 'package:musify/views/setting/setting_controller.dart';
 import 'package:musify/views/setting/widgets/appearance.dart';
+import 'package:musify/views/setting/widgets/downloads.dart';
 import 'package:musify/views/setting/widgets/language_region.dart';
 import 'package:musify/widgets/m_button.dart';
 import 'package:musify/widgets/m_title.dart';
@@ -59,7 +60,7 @@ class SettingView extends HookConsumerWidget {
                     const SettingsLanguageRegionSection(),
                     const SettingsAppearanceSection(),
                     // const SettingsPlaybackSection(),
-                    // const SettingsDownloadsSection(),
+                    const SettingsDownloadsSection(),
                     // if (kIsDesktop) const SettingsDesktopSection(),
                     // if (!kIsWeb) const SettingsDevelopersSection(),
                     // const SettingsAboutSection(),

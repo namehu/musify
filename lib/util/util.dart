@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:ui';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
+import 'package:musify/util/platform.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart' as paths;
 
 class ColorsUtil {
   static Color hexColor(int hex, {double alpha = 1}) {
@@ -128,4 +131,16 @@ converToTraditional(String simplified) {
     }
   }
   return traditional;
+}
+
+Future<String> getDefaultDownloadDirectory() async {
+  if (kIsAndroid) return "/storage/emulated/0/Download/Spotube";
+
+  if (kIsMacOS) {
+    return join((await paths.getLibraryDirectory()).path, "Caches");
+  }
+
+  return paths.getDownloadsDirectory().then((dir) {
+    return join(dir!.path, "Musify");
+  });
 }

@@ -4,6 +4,7 @@ import 'package:musify/models/database/database.dart';
 import 'package:musify/modules/settings/color_scheme_picker_dialog.dart';
 import 'package:musify/util/logger.dart';
 import 'package:musify/util/platform.dart';
+import 'package:musify/util/util.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -34,7 +35,7 @@ class UserPreferences extends _$UserPreferences {
         await db.into(db.preferencesTable).insert(
               PreferencesTableCompanion.insert(
                 id: const Value(0),
-                downloadLocation: Value(await _getDefaultDownloadDirectory()),
+                downloadLocation: Value(await getDefaultDownloadDirectory()),
               ),
             );
       }
@@ -86,7 +87,8 @@ class UserPreferences extends _$UserPreferences {
 
     final query = db.update(db.preferencesTable)..where((t) => t.id.equals(0));
 
-    await query.replace(PreferencesTableCompanion.insert());
+    await query
+        .write(PreferencesTable.defaults(await getDefaultDownloadDirectory()));
   }
 
   static Future<String> getMusicCacheDir() async {
@@ -129,15 +131,8 @@ class UserPreferences extends _$UserPreferences {
     setData(PreferencesTableCompanion(locale: Value(locale)));
   }
 
-  Future<String> _getDefaultDownloadDirectory() async {
-    if (kIsAndroid) return "/storage/emulated/0/Download/Spotube";
-
-    if (kIsMacOS) {
-      return join((await paths.getLibraryDirectory()).path, "Caches");
-    }
-
-    return paths.getDownloadsDirectory().then((dir) {
-      return join(dir!.path, "Musify");
-    });
+  void setDownloadLocation(String downloadDir) {
+    if (downloadDir.isEmpty) return;
+    setData(PreferencesTableCompanion(downloadLocation: Value(downloadDir)));
   }
 }

@@ -107,5 +107,7 @@
     "light": "浅色",
     "system": "系统",
     "accent_color": "主色调",
-    "restore_defaults": "恢复默认值"
+    "restore_defaults": "恢复默认值",
+    "downloads": "下载",
+    "download_location": "下载路径"
 }

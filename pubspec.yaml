@@ -80,6 +80,10 @@ dependencies:
   flutter_feather_icons: ^2.0.0+1
   fluentui_system_icons: ^1.1.234
   gap: ^3.0.1
+  file_selector: ^1.0.3
+  file_picker: ^8.0.0+1
+
+
 
 dev_dependencies:
   dio_mock_interceptor: ^2.1.0

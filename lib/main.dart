@@ -120,6 +120,9 @@ void main(List<String> rawArgs) async {
       overrides: [
         databaseProvider.overrideWith((ref) => database),
       ],
+      observers: const [
+        AppLoggerProviderObserver(),
+      ],
       // For widgets to be able to read providers, we need to wrap the entire
       // application in a "ProviderScope" widget.
       // This is where the state of our providers will be stored.

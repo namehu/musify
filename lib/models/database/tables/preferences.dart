@@ -28,16 +28,15 @@ class PreferencesTable extends Table {
 
   TextColumn get locale => text()
       .withDefault(
-        const Constant(
-            '{"languageCode":"system","countryCode":"system", scriptCode: ""}'),
+        const Constant('{"languageCode":"system","countryCode":"system"}'),
       )
       .map(const LocaleConverter())();
 
   // Default values as PreferencesTableData
-  static PreferencesTableData defaults() {
+  static PreferencesTableData defaults([String? downloadLocation]) {
     return PreferencesTableData(
       id: 0,
-      downloadLocation: "",
+      downloadLocation: downloadLocation ?? "",
       audioQuality: SourceQualities.high,
       showSystemTrayIcon: true,
       systemTitleBar: false,
@@ -45,8 +44,7 @@ class PreferencesTable extends Table {
       closeBehavior: CloseBehavior.close,
       themeMode: ThemeMode.system,
       accentColorScheme: SpotubeColor(Colors.blue.value, name: "Blue"),
-      locale: const Locale.fromSubtags(
-          languageCode: "system", countryCode: "system", scriptCode: 'system'),
+      locale: const Locale("system", "system"),
     );
   }
 }

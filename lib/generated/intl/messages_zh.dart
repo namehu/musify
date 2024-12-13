@@ -43,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "directory": MessageLookupByLibrary.simpleMessage("文件夹"),
         "disConnect": MessageLookupByLibrary.simpleMessage("断开连接"),
         "download": MessageLookupByLibrary.simpleMessage("下载"),
+        "download_location": MessageLookupByLibrary.simpleMessage("下载路径"),
+        "downloads": MessageLookupByLibrary.simpleMessage("下载"),
         "duration": MessageLookupByLibrary.simpleMessage("时长"),
         "enforceRefresh": MessageLookupByLibrary.simpleMessage("强制刷新"),
         "english": MessageLookupByLibrary.simpleMessage("英文"),

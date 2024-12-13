@@ -1139,6 +1139,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Download`
+  String get downloads {
+    return Intl.message(
+      'Download',
+      name: 'downloads',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Download location`
+  String get download_location {
+    return Intl.message(
+      'Download location',
+      name: 'download_location',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
