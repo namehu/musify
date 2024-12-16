@@ -11,7 +11,7 @@ ThemeData getThemData() {
 }
 
 class ThemeService extends GetxService {
-  static final mode = ThemeMode.dark.obs;
+  static final mode = ThemeMode.light.obs;
 
   static const _modeKey = "theme_mode"; // 用于持久化存储的key
 
@@ -28,7 +28,7 @@ class ThemeService extends GetxService {
   }
 
   Future<ThemeService> init() async {
-    mode.value = ThemeService.getThemeMode();
+    // mode.value = ThemeService.getThemeMode();
     return this;
   }
 

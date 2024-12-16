@@ -63,8 +63,6 @@ class HomeView extends GetResponsiveView<HomeController> {
               child: TabBar(
                 controller: controller.tabController,
                 dividerHeight: 0,
-                labelPadding: EdgeInsets.only(bottom: 5),
-                unselectedLabelColor: gray1,
                 tabs: tabs,
               ),
             )

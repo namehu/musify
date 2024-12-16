@@ -146,16 +146,22 @@ class MyApp extends HookConsumerWidget {
     final locale = ref.watch(userPreferencesProvider.select((s) => s.locale));
 
     final lightTheme = useMemoized(
-      () => theme(accentMaterialColor, Brightness.light, false),
-      [accentMaterialColor],
+      () => theme(
+        seed: accentMaterialColor,
+        brightness: Brightness.light,
+        mode: themeMode,
+        isAmoled: false,
+      ),
+      [accentMaterialColor, themeMode],
     );
     final darkTheme = useMemoized(
       () => theme(
-        accentMaterialColor,
-        Brightness.dark,
-        false,
+        seed: accentMaterialColor,
+        brightness: Brightness.dark,
+        mode: themeMode,
+        isAmoled: false,
       ),
-      [accentMaterialColor],
+      [accentMaterialColor, themeMode],
     );
 
     ref.listen(trayManagerProvider, (_, __) {});

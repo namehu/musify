@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:musify/styles/colors.dart';
 
-ThemeData theme(Color seed, Brightness brightness, bool isAmoled) {
+ThemeData theme({
+  required Color seed,
+  required Brightness brightness,
+  required ThemeMode mode,
+  bool? isAmoled = false,
+}) {
   final scheme = ColorScheme.fromSeed(
     seedColor: seed,
     shadow: Colors.black12,
-    surface: isAmoled ? Colors.black : null,
+    surface: isAmoled! ? Colors.black : null,
     brightness: brightness,
   );
+
+  ColorMapType color = mode == ThemeMode.dark ? darkColorMap : normalColorMap;
+
   return ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
@@ -34,15 +43,25 @@ ThemeData theme(Color seed, Brightness brightness, bool isAmoled) {
       ),
     ),
     tabBarTheme: TabBarTheme(
-      indicatorSize: TabBarIndicatorSize.tab,
-      labelStyle: const TextStyle(fontWeight: FontWeight.w600),
       labelColor: scheme.primary,
-      dividerColor: Colors.transparent,
+      unselectedLabelColor: scheme.secondaryContainer,
+      indicatorColor: scheme.secondaryContainer,
       indicator: BoxDecoration(
-        color: scheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(15),
+        border: Border(
+          bottom: BorderSide(width: 2, color: scheme.primary),
+        ),
       ),
     ),
+    // tabBarTheme: TabBarTheme(
+    //   indicatorSize: TabBarIndicatorSize.tab,
+    //   labelStyle: const TextStyle(fontWeight: FontWeight.w600),
+    //   labelColor: scheme.primary,
+    //   dividerColor: Colors.transparent,
+    //   indicator: BoxDecoration(
+    //     color: scheme.secondaryContainer,
+    //     borderRadius: BorderRadius.circular(15),
+    //   ),
+    // ),
     popupMenuTheme: PopupMenuThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       color: scheme.surface,
