@@ -466,10 +466,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: "89500471922dd3a89ab0d6e13ab4a2268c25474bff4ca7c628f55c76e0ced1de"
+      sha256: aac85f20436608e01a6ffd1fdd4e746a7f33c93a2c83752e626bdfaea139b877
       url: "https://pub.dev"
     source: hosted
-    version: "8.1.5"
+    version: "8.1.3"
   file_selector:
     dependency: "direct main"
     description:
@@ -1850,10 +1850,10 @@ packages:
     dependency: "direct main"
     description:
       name: system_theme
-      sha256: "1f208db140a3d1e1eac2034b54920d95699c1534df576ced44b3312c5de3975f"
+      sha256: "5f93485401689601d4636a695f99f7c70a30873ee68c1d95025d908a3386be7e"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "3.1.2"
   system_theme_web:
     dependency: transitive
     description:

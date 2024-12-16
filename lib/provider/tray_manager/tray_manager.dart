@@ -67,9 +67,10 @@ final trayManagerProvider = Provider(
 
       trayManager.setContextMenu(menu);
     });
-
     var menu = ref.read(trayMenuProvider);
-    trayManager.setContextMenu(menu);
+    if (kIsDesktop) {
+      trayManager.setContextMenu(menu);
+    }
 
     ref.onDispose(manager.dispose);
 
